@@ -1,2 +1,2 @@
 # contentstack-javascript
-A javascript SDK for Built.io Contentstack's Content Delivery API (Nodejs and Browser)
+Javascript SDK for Built.io Contentstack - Content Delivery API (Nodejs and Browser)
