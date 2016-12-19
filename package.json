@@ -1,0 +1,68 @@
+{
+  "name": "contentstack",
+  "version": "3.0.0",
+  "description": "The Built.io Contentstack Javascript SDK",
+  "homepage": "https://www.built.io/products/contentstack/overview",
+  "author": {
+    "name": "Built.io Contentstack",
+    "url": "https://www.built.io/"
+  },
+  "main": "contentstack.js",
+  "dependencies": {
+    "localStorage": "1.0.3",
+    "when": "3.7.7",
+    "xmlhttprequest": "1.8.0"
+  },
+  "browser": {
+    "xmlhttprequest": false,
+    "localStorage": false
+  },
+  "_id": "contentstack@3.0.0",
+  "scripts": {
+    "test": "node test.js",
+    "generate-docs": "node_modules/.bin/jsdoc --configure config.json --verbose"
+  },
+  "_shasum": "a328ed07240476a26b31a23261355dc929e1da63",
+  "_from": "contentstack@latest",
+  "_npmVersion": "3.8.9",
+  "_nodeVersion": "6.2.0",
+  "_npmUser": {
+    "name": "mynk",
+    "email": "mayank@raweng.com"
+  },
+  "maintainers": [
+    {
+      "name": "hiteshbal",
+      "email": "hitesh.baldaniya@raweng.com"
+    },
+    {
+      "name": "mynk",
+      "email": "mayank@raweng.com"
+    }
+  ],
+  "dist": {
+    "shasum": "a328ed07240476a26b31a23261355dc929e1da63",
+    "tarball": "https://registry.npmjs.org/contentstack/-/contentstack-3.0.0.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/contentstack/-/contentstack-3.0.0.tgz",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/contentstack-3.0.0.tgz_1477830884275_0.9869455888401717"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-minify": "0.0.14",
+    "gulp-replace": "^0.5.4",
+    "gulp-util": "^3.0.7",
+    "jsdoc": "^3.4.3",
+    "json-loader": "^0.5.4",
+    "lodash": "^4.17.2",
+    "minami": "^1.1.1",
+    "tap-json": "^1.0.0",
+    "tape": "^4.6.3",
+    "webpack": "^1.14.0",
+    "when": "^3.7.7"
+  }
+}
