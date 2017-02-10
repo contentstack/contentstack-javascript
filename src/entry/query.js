@@ -159,7 +159,7 @@ Query.prototype.greaterThanOrEqualTo = _extend.compare('$gte');
  * @returns {Query}
  */
 Query.prototype.equalTo = Query.prototype.where = function(key, value) {
-    if (key && value && typeof key === 'string' && typeof value === 'string') {
+    if (key && value && typeof key === 'string') {
         this._query['query'][key] = value;
         return this;
     } else {
