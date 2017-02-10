@@ -29,7 +29,10 @@ var Contentstack = function() {};
  *
  * @returns {Stack}
  */
-Contentstack.prototype.Stack = Stack.initialize();
+Contentstack.prototype.Stack = function() {
+    var stack = new Stack();
+    return stack.initialize.apply(stack, arguments);
+}
 
 /**
  * @constant CachePolicy
@@ -52,9 +55,10 @@ var contentstack = new Contentstack();
 /**
  * @ignore
  */
-// set an instance in 'window' for browser else exports for node.
-if (Utils.isBrowser()) {
+// set an instance in 'window' for browser.
+if (Utils.isBrowser())
     window.Contentstack = contentstack;
-} else {
+
+// set an instance in exports for node.
+if (typeof module === "object" && module.exports)
     module.exports = contentstack;
-}

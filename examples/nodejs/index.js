@@ -8,6 +8,7 @@ var Demo = new ContentstackDemo({'api_key': 'bltsomething1234', 'access_token': 
 Demo
     .getEntries('blog')
     .then(function (result) {
+        console.info("Result1 : ", result)
         // result object with entries
     })
     .catch(function (err) {
@@ -18,6 +19,7 @@ Demo
 Demo
     .getEntry('home', 'blt1234567890')
     .then(function (result) {
+        console.info("Result2 : ", result)
         // result object with entry
     })
     .catch(function (err) {
