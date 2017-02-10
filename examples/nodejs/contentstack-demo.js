@@ -23,7 +23,7 @@ class ContentstackDemo {
      */
     getEntries(contentTypeUid) {
         contentTypeUid = contentTypeUid || 'blog_content_type'
-        return this.Stack.ContentType(contentTypeUid).Query().find()
+        return this.Stack.ContentType(contentTypeUid).Query().toJSON().find()
     }
 
     /**
