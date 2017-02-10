@@ -63,34 +63,32 @@ Stack.prototype.initialize = function () {
     var self = this;
     self.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
     self.provider = CacheProvider.providers('localstorage');
-    return function () {
-        switch (arguments.length) {
-            case 1:
-                if (typeof arguments[0] === "object" && typeof arguments[0].api_key === "string" && typeof arguments[0].access_token === "string" && typeof arguments[0].environment === "string") {
-                    self.headers = {
-                        api_key: arguments[0].api_key,
-                        access_token: arguments[0].access_token
-                    };
-                    self.environment = arguments[0].environment;
-                    return self;
-                } else {
-                    console.error("Kindly provide valid object parameters.");
-                }
-            case 3:
-                if (typeof arguments[0] === "string" && typeof arguments[1] === "string" && typeof arguments[2] === "string") {
-                    self.headers = {
-                        api_key: arguments[0],
-                        access_token: arguments[1]
-                    };
-                    self.environment = arguments[2];
-                    return self;
-                } else {
-                    console.error("Kindly provide valid string parameters.");
-                }
-            default:
-                console.error("Kindly provide valid parameters to initialize the Built.io Contentstack javascript-SDK Stack.");
-        }
-    };
+    switch (arguments.length) {
+        case 1:
+            if (typeof arguments[0] === "object" && typeof arguments[0].api_key === "string" && typeof arguments[0].access_token === "string" && typeof arguments[0].environment === "string") {
+                self.headers = {
+                    api_key: arguments[0].api_key,
+                    access_token: arguments[0].access_token
+                };
+                self.environment = arguments[0].environment;
+                return self;
+            } else {
+                console.error("Kindly provide valid object parameters.");
+            }
+        case 3:
+            if (typeof arguments[0] === "string" && typeof arguments[1] === "string" && typeof arguments[2] === "string") {
+                self.headers = {
+                    api_key: arguments[0],
+                    access_token: arguments[1]
+                };
+                self.environment = arguments[2];
+                return self;
+            } else {
+                console.error("Kindly provide valid string parameters.");
+            }
+        default:
+            console.error("Kindly provide valid parameters to initialize the Built.io Contentstack javascript-SDK Stack.");
+    }
 };
 
 /**
@@ -264,4 +262,4 @@ Stack.prototype.getLastActivities = function () {
  * Expose `Stack`.
  * @ignore
  */
-module.exports = new Stack();
+module.exports = Stack;
