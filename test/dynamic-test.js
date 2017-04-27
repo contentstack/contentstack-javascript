@@ -2,6 +2,7 @@
 
 var Request = require('./dynamic-stack'),
 	when = require('when'),
+	Utils = require('./utils.js'),
 	init = require('./config'),
 	userLogin = {
 		url: init.url + '/user-session' ,
