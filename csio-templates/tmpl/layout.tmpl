@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title><?js= title ?> - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <?js= this.nav ?>
+</nav>
+
+<div id="main">
+    <?js if (title != 'Home') { ?>
+    <h1 class="page-title"><?js= title ?></h1>
+    <?js } else { ?>
+        <h1 class="page-title">Built.io Contentstack - Javascript SDK</h1>
+        <div id="installation" class="group">
+            <h2>Overview</h2>
+            <p>Built.io Contentstack is a content management system that facilitates the process of publication by separating the content from site-related programming and design.</p>
+            <h2 class="first-header ">Installation</h2>
+            <div id="install_and_configure" class="subgroup">
+                <h3>For Node.js</h3>
+                <p>You need to install <a href="http://nodejs.org/" target="_blank">node.js</a> v0.10.22 or later to use the Built.io Contentstack SDK.</p>
+                <ol>
+                    <li>
+                        Run this command in a Terminal or Command Prompt&nbsp;to&nbsp;obtain and install the latest&nbsp;version of the&nbsp;Javascript SDK on your system.
+                        <pre class=" hljs coffeescript">$ <span class="hljs-built_in">npm</span> install contentstack</pre>
+                        <span class="imp-note">Note:</span> You might need administrator privileges to perform this installation.
+                    </li>
+                    <li>
+                        To&nbsp;require the SDK module in your application use the following command.
+                        <pre class=" hljs coffeescript"><span class="hljs-reserved">var</span> contentstack = <span class="hljs-built_in">require</span>(<span class="hljs-string">'contentstack'</span>);</pre>
+                    </li>
+                </ol>
+                <h3>For web browsers</h3>
+                <ol>
+                    <li>Download the latest version of the Built.io Contentstack Javascript SDK from <a href="/sdk/js/contentstack.zip" target="_blank">here</a>.</li>
+                    <li>
+                        Extract the zip package to get the <strong>contentstack.min.js</strong> file, and include it in a script tag as shown below.
+                        <pre class=" hljs xml"><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"contentstack.min.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></pre>
+                    </li>
+                </ol>
+                <h3>Initalize the Stack</h3>
+                <p>
+                    <strong>Built.io Contentstack</strong><strong>&nbsp;object</strong> would be available for use, as shown below.
+                    <pre class=" hljs coffeescript"><span class="hljs-reserved">var</span> Stack = Contentstack.Stack({
+                <span class="hljs-string">"api_key"</span>: <span class="hljs-string">"blt123456789000000"</span>,
+                <span class="hljs-string">"access_token"</span>: <span class="hljs-string">"bltqwertyuiop1234"</span>,
+                <span class="hljs-string">"environment"</span>: <span class="hljs-string">"development"</span>
+            });</pre>
+                </p>
+            </div>
+        </div>
+    <?js } ?>
+    <?js= content ?>
+</div>
+
+<br class="clear">
+
+<footer>
+    <div class="inner-content center">
+        <span class="copy-right"><a href="mailto:support-contentstack@built.io" target="_self">support-contentstack@built.io</a> | Copyright © 2012-2016 Built.io. All Rights Reserved.</span>
+    </div>
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
