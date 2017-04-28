@@ -4,8 +4,9 @@
  */
 
 var test = require('tape'),
-    Contentstack = require('./contentstack.js'),
+    Contentstack = require('../dist/node/contentstack.js'),
     init = require('./config'),
+    Utils = require('./utils.js'),
     when = require('when'),
     Stack = {},
     HTTPRequest = require('xmlhttprequest').XMLHttpRequest;

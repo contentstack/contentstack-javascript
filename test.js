@@ -2,6 +2,7 @@
 /*
  * Module Dependencies.
  */
+require('./test/dynamic-test');
 require('./test/find'); 
 require('./test/find-result-wrapper');
 require('./test/findone');

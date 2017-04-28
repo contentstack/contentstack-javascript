@@ -3,10 +3,11 @@
  * Module Dependencies.
  */
 var test = require('tape');
-var Contentstack = require('./contentstack.js');
+//var Contentstack = require('contentstack');
+var Contentstack = require('../dist/node/contentstack.js');
 var init = require('./config');
-var Utils = require('./../lib/utils.js');
-var localStorage = require('./../src/cache.js');
+//var Utils = require('../src/core/lib/utils.js');
+//var localStorage = require('./../node_modules/contentstack/src/cache.js');
 
 var Stack;
 
@@ -30,6 +31,11 @@ test('CACHE_ELSE_NETWORK Policy', function(TC) {
         Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_ELSE_NETWORK);
         Query = Stack.ContentType('blog').Query().toJSON();
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
+        // if(Query.environment_uid) {
+        //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
+        // } else {
+        //     Query.requestParams.body.query.environment = Query.environment;
+        // }
         var toJson = Query.tojson;
         var hash = Utils.getHash(Utils.parseQueryFromParams(Query, isSingle, Query.tojson));
         localStorage.set(hash, null);
@@ -38,7 +44,10 @@ test('CACHE_ELSE_NETWORK Policy', function(TC) {
             .find()
             .then(function success(result) {
                 try {
+                    console.log("toJson:");
                     var cacheData = getHashData(hash, toJson);
+                    // console.log(cacheData);
+                    // console.log(result);
                     assert.ok(result.length, 'Entries exists in resultset');
                     assert.ok(cacheData.length, hash+' for this request exists in localstorage');
                     if(result[0].length && cacheData[0].length) {
@@ -60,6 +69,11 @@ test('CACHE_ELSE_NETWORK Policy', function(TC) {
     TC.test('GET the SAME Result from the cache', function (assert) {
         Query = Stack.ContentType('blog').Query().toJSON();
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
+        // if(Query.environment_uid) {
+        //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
+        // } else {
+        //     Query.requestParams.body.query.environment = Query.environment;
+        // }
         var hash = Utils.getHash(Utils.parseQueryFromParams(Query, isSingle, Query.tojson));
         var cacheData = getHashData(hash, Query.tojson);
         assert.ok((cacheData && cacheData[0].length), hash+' for this request exists in localstorage');
@@ -74,6 +88,11 @@ test('CACHE_THEN_NETWORK Policy', function(TC) {
         Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK);
         Query = Stack.ContentType('blog').Query().toJSON().skip(1).limit(2);
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
+        // if(Query.environment_uid) {
+        //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
+        // } else {
+        //     Query.requestParams.body.query.environment = Query.environment;
+        // }
         var toJson = Query.tojson;
         var hash = Utils.getHash(Utils.parseQueryFromParams(Query, isSingle, Query.tojson));
         localStorage.set(hash, null);
@@ -105,6 +124,11 @@ test('CACHE_THEN_NETWORK Policy', function(TC) {
     TC.test('GET the SAME Result from the cache', function (assert) {
         Query = Stack.ContentType('blog').Query().toJSON().skip(1).limit(2);
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
+        // if(Query.environment_uid) {
+        //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
+        // } else {
+        //     Query.requestParams.body.query.environment = Query.environment;
+        // }
         var hash = Utils.getHash(Utils.parseQueryFromParams(Query, isSingle, Query.tojson));
         var cacheData = getHashData(hash, Query.tojson);
         assert.ok(cacheData[0].length, hash+' for this request exists in localstorage');
@@ -118,6 +142,11 @@ test('ONLY_NETWORK Policy', function(TC) {
         Stack.setCachePolicy(Contentstack.CachePolicy.ONLY_NETWORK);
         Query = Stack.ContentType('blog').Query().skip(1).limit(2).toJSON();
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
+        // if(Query.environment_uid) {
+        //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
+        // } else {
+        //     Query.requestParams.body.query.environment = Query.environment;
+        // }
         var toJson = Query.tojson;
         var hash = Utils.getHash(Utils.parseQueryFromParams(Query, isSingle, Query.tojson));
         localStorage.set(hash, null);
@@ -143,6 +172,11 @@ test('ONLY_NETWORK Policy', function(TC) {
     TC.test('GET the SAME Result from the cache', function (assert) {
         Query = Stack.ContentType('blog').Query().skip(1).limit(2).toJSON();
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
+        // if(Query.environment_uid) {
+        //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
+        // } else {
+        //     Query.requestParams.body.query.environment = Query.environment;
+        // }
         var hash = Utils.getHash(Utils.parseQueryFromParams(Query, isSingle, Query.tojson));
         var cacheData = getHashData(hash, Query.tojson);
         assert.ok(cacheData[0].length, hash+' for this request exists in localstorage');
@@ -156,6 +190,11 @@ test('IGNORE_CACHE Policy', function(TC) {
         Stack.setCachePolicy(Contentstack.CachePolicy.IGNORE_CACHE);
         Query = Stack.ContentType('blog').Query().skip(1).limit(2).toJSON();
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
+        // if(Query.environment_uid) {
+        //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
+        // } else {
+        //     Query.requestParams.body.query.environment = Query.environment;
+        // }
         var toJson = Query.tojson;
         var hash = Utils.getHash(Utils.parseQueryFromParams(Query, isSingle, Query.tojson));
         localStorage.set(hash, null);
