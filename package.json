@@ -11,12 +11,14 @@
   "_id": "contentstack@3.0.0",
   "scripts": {
     "test": "node test.js",
-    "rimraf": "rimraf",
-    "prepublish": "rimraf dist; npm run buildnode; npm run buildweb; npm run buildreactnative;",
     "buildnode": "webpack --config webpack/webpack.node.js",
     "buildweb": "webpack -p --config webpack/webpack.web.js",
     "buildreactnative": "webpack --config webpack/webpack.react-native.js",
     "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose"
+  },
+  "repository": { 
+    "type" : "git", 
+    "url" : "https://github.com/builtio-contentstack/contentstack-javascript.git"
   },
   "_shasum": "a328ed07240476a26b31a23261355dc929e1da63",
   "_from": "contentstack@latest",
