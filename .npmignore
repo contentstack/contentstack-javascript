@@ -1,0 +1,10 @@
+docs-config.json
+.idea/
+.git/
+test.js
+test/
+reports/
+csio-templates/
+js-sdk-reference/
+examples/
+
