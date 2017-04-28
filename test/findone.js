@@ -3,7 +3,7 @@
  * Module Dependencies.
  */
 var test = require('tape');
-var Contentstack = require('./../contentstack.js');
+var Contentstack = require('../dist/node/contentstack.js');
 var Utils = require('./utils.js');
 var init = require('./config');
 

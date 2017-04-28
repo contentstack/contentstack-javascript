@@ -1,0 +1,49 @@
+{
+  "name": "minami",
+  "version": "1.1.1",
+  "description": "Clean and minimal JSDoc 3 Template / Theme",
+  "main": "publish.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nijikokun/minami.git"
+  },
+  "author": {
+    "name": "Nijiko Yonskai",
+    "email": "nijikokun@gmail.com"
+  },
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/Nijikokun/minami/issues"
+  },
+  "homepage": "https://github.com/Nijikokun/minami",
+  "gitHead": "afae369e61aeec0e909cf8c53c374ce26f4ffb85",
+  "_id": "minami@1.1.1",
+  "_shasum": "11e33c46f5fff6d391085e17df9a5e4a761f9dfc",
+  "_from": "minami@*",
+  "_npmVersion": "2.9.1",
+  "_nodeVersion": "0.12.3",
+  "_npmUser": {
+    "name": "nijikokun",
+    "email": "nijikokun@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "nijikokun",
+      "email": "nijikokun@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "11e33c46f5fff6d391085e17df9a5e4a761f9dfc",
+    "tarball": "http://registry.npmjs.org/minami/-/minami-1.1.1.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/minami/-/minami-1.1.1.tgz"
+}
