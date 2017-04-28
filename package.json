@@ -40,6 +40,7 @@
     "shasum": "a328ed07240476a26b31a23261355dc929e1da63",
     "tarball": "https://registry.npmjs.org/contentstack/-/contentstack-3.0.0.tgz"
   },
+  "license": "MIT",
   "directories": {},
   "_resolved": "https://registry.npmjs.org/contentstack/-/contentstack-3.0.0.tgz",
   "_npmOperationalInternal": {
