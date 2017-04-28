@@ -1,5 +1,5 @@
-module.exports = exports = {
-    protocol: "https",
+const config = {
+	protocol: "https",
     host: "cdn.contentstack.io",
     port: 443,
     version: "v3",
@@ -8,4 +8,6 @@ module.exports = exports = {
         entries: "/entries/",
         environments: "/environments/"
     }
-}
+}; 
+
+export default config; 

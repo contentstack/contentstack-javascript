@@ -1,0 +1,23 @@
+{
+  "opts": {
+    "template": "csio-templates",
+    "encoding": "utf8",
+    "destination": "./js-sdk-reference/",
+    "recurse": true
+  },
+  "source": {
+    "include": [
+      "src/core/contentstack.js",
+      "src/core/stack.js",
+      "src/core/entry/entry.js",
+      "src/core/entry/query.js",
+      "src/core/entry/result.js"
+    ],
+    "exclude": [
+      "src/core/cache.js"
+    ]
+  },
+  "tags": {
+    "dictionaries": ["jsdoc","closure"]
+  }
+}
