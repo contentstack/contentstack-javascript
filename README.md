@@ -49,4 +49,4 @@ entry
  - [Official Documentation](https://contentstackdocs.built.io/developer/javascript/quickstart)
 
 ### License
-Copyright © 2012-2016 [Built.io](https://www.built.io/). All Rights Reserved.
+Copyright © 2012-2017 [Built.io](https://www.built.io/). All Rights Reserved.
