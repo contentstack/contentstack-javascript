@@ -1,4 +1,6 @@
 docs-config.json
+.idea/
+.git/
 test.js
 test/
 reports/
