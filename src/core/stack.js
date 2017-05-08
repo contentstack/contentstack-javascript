@@ -5,6 +5,7 @@ import Query from './entry/query';
 import Request from  './lib/request';
 import * as cache from './cache';
 import CacheProvider from './cache-provider/index';
+import * as Package from './../../src/package.json';
 
 /**
  * Expose `Stack`.
@@ -21,7 +22,8 @@ export default class Stack{
                 if (typeof stack_arguments[0] === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].access_token === "string" && typeof stack_arguments[0].environment === "string") {
                     this.headers = {
                         api_key: stack_arguments[0].api_key,
-                        access_token: stack_arguments[0].access_token
+                        access_token: stack_arguments[0].access_token,
+                        "User-Agent": "contentstack-(JS-SDK)/" + Package.version
                     };
                     this.environment = stack_arguments[0].environment;
                     return this;
@@ -32,7 +34,8 @@ export default class Stack{
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
-                        access_token: stack_arguments[1]
+                        access_token: stack_arguments[1],
+                        "User-Agent": "contentstack-(JS-SDK)/" + Package.version
                     };
                     this.environment = stack_arguments[2];
                     return this;
