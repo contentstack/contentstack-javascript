@@ -285,7 +285,7 @@ export default class Query extends Entry{
      * @returns {Query}
      */
     equalTo(key, value){
-        if (key && typeof key === 'string' && (value || typeof value === 'boolean')) {
+        if (key && typeof key === 'string') {
             this._query['query'][key] = value;
             return this;
         } else {
@@ -294,7 +294,7 @@ export default class Query extends Entry{
     }
 
     where(key, value){
-        if (key && typeof key === 'string' && (value || typeof value === 'boolean')) {
+        if (key && typeof key === 'string') {
             this._query['query'][key] = value;
             return this;
         } else {
