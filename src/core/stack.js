@@ -5,7 +5,7 @@ import Query from './entry/query';
 import Request from  './lib/request';
 import * as cache from './cache';
 import CacheProvider from './cache-provider/index';
-import * as Package from './../../src/package.json';
+import * as Package from '../../package.json';
 
 /**
  * Expose `Stack`.
