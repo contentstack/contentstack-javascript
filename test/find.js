@@ -261,6 +261,76 @@ test('Find operations', function(TC) {
             });
     });
 
+    TC.test('.where() compare boolean value (true)', function(assert) {
+        var Query = Stack.ContentType('source').Query();
+
+        Query
+            .where('boolean', true)
+            .toJSON()
+            .find()
+            .then(function success(entries) {
+                assert.ok(entries[0].length, 'Entries present in the resultset');
+                assert.equal(entries[0].length, 3, ' three entries present in the resultset');
+                assert.end();
+            }, function error(err) {
+                console.error("error :", err);
+                assert.fail(".where()");
+                assert.end();
+            });
+    });
+
+    TC.test('.where() compare boolean value (false)', function(assert) {
+        var Query = Stack.ContentType('source').Query();
+        Query
+            .where('boolean', false)
+            .toJSON()
+            .find()
+            .then(function success(entries) {
+                assert.ok(entries[0].length, 'Entries present in the resultset');
+                assert.equal(entries[0].length, 2, ' three entries present in the resultset');
+                assert.end();
+            }, function error(err) {
+                console.error("error :", err);
+                assert.fail(".where() boolean value having false");
+                assert.end();
+            });
+    });
+
+    TC.test('.equalTo() compare boolean value (true)', function(assert) {
+        var Query = Stack.ContentType('source').Query();
+
+        Query
+            .equalTo('boolean', true)
+            .toJSON()
+            .find()
+            .then(function success(entries) {
+                assert.ok(entries[0].length, 'Entries present in the resultset');
+                assert.equal(entries[0].length, 3, ' three entries present in the resultset');
+                assert.end();
+            }, function error(err) {
+                console.error("error :", err);
+                assert.fail(".equalTo compare boolean value (true)");
+                assert.end();
+            });
+    });
+
+    TC.test('.equalTo() compare boolean value (false)', function(assert) {
+        var Query = Stack.ContentType('source').Query();
+        Query
+            .equalTo('boolean', false)
+            .toJSON()
+            .find()
+            .then(function success(entries) {
+                assert.ok(entries[0].length, 'Entries present in the resultset');
+                assert.equal(entries[0].length, 2, ' three entries present in the resultset');
+                assert.end();
+            }, function error(err) {
+                console.error("error :", err);
+                assert.fail(".equalTo compare boolean value (false)");
+                assert.end();
+            });
+    });
+
 
     /*!
      * Array/Subset
