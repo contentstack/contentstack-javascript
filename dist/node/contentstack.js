@@ -4905,7 +4905,7 @@ var Query = function (_Entry) {
     _createClass(Query, [{
         key: 'equalTo',
         value: function equalTo(key, value) {
-            if (key && typeof key === 'string' && (value || typeof value === 'boolean')) {
+            if (key && typeof key === 'string') {
                 this._query['query'][key] = value;
                 return this;
             } else {
@@ -4915,7 +4915,7 @@ var Query = function (_Entry) {
     }, {
         key: 'where',
         value: function where(key, value) {
-            if (key && typeof key === 'string' && (value || typeof value === 'boolean')) {
+            if (key && typeof key === 'string') {
                 this._query['query'][key] = value;
                 return this;
             } else {
@@ -5251,7 +5251,7 @@ exports.default = _localStorage2.default;
 
 module.exports = {
 	"name": "contentstack",
-	"version": "3.1.0",
+	"version": "3.1.1",
 	"description": "The Built.io Contentstack Javascript SDK",
 	"homepage": "https://www.built.io/products/contentstack/overview",
 	"author": {
@@ -5259,7 +5259,7 @@ module.exports = {
 		"url": "https://www.built.io/"
 	},
 	"main": "dist/node/contentstack.js",
-	"_id": "contentstack@3.0.0",
+	"_id": "contentstack@3.1.1",
 	"scripts": {
 		"test": "node test.js",
 		"buildnode": "webpack --config webpack/webpack.node.js",

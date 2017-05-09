@@ -14,8 +14,7 @@ app.get('/', function (req, res, next) {
    Stack
        .ContentType('source')
        .Query()
-       .equalTo('boolean', false)
-       .toJSON()
+       .where('title', '')
        .find()
        .then(function (data) {
            if(data) {
