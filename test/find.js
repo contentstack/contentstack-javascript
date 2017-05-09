@@ -287,11 +287,46 @@ test('Find operations', function(TC) {
             .find()
             .then(function success(entries) {
                 assert.ok(entries[0].length, 'Entries present in the resultset');
-                assert.equal(entries[0].length, 2, ' three entries present in the resultset');
+                assert.equal(entries[0].length, 2, ' two entries present in the resultset');
                 assert.end();
             }, function error(err) {
                 console.error("error :", err);
                 assert.fail(".where() boolean value having false");
+                assert.end();
+            });
+    });
+
+    TC.test('.where() num_field:0', function(assert) {
+        var Query = Stack.ContentType('numbers_content_type').Query();
+
+        Query
+            .where('num_field', 0)
+            .toJSON()
+            .find()
+            .then(function success(entries) {
+                assert.ok(entries[0].length, 'Entry present in the resultset');
+                assert.equal(entries[0].length, 1, ' one entry present in the resultset');
+                assert.end();
+            }, function error(err) {
+                console.error("error :", err);
+                assert.fail(".equalTo compare boolean value (true)");
+                assert.end();
+            });
+    });
+
+    TC.test('.where()', function(assert) {
+        var Query = Stack.ContentType('source').Query();
+
+        Query
+            .where('title', '')
+            .toJSON()
+            .find()
+            .then(function success(entries) {
+                assert.equal(entries[0].length, 0, ' zero entry present in the resultset');
+                assert.end();
+            }, function error(err) {
+                console.error("error :", err);
+                assert.fail(".equalTo compare boolean value (true)");
                 assert.end();
             });
     });
@@ -309,7 +344,7 @@ test('Find operations', function(TC) {
                 assert.end();
             }, function error(err) {
                 console.error("error :", err);
-                assert.fail(".equalTo compare boolean value (true)");
+                assert.fail(".where()");
                 assert.end();
             });
     });
@@ -322,11 +357,29 @@ test('Find operations', function(TC) {
             .find()
             .then(function success(entries) {
                 assert.ok(entries[0].length, 'Entries present in the resultset');
-                assert.equal(entries[0].length, 2, ' three entries present in the resultset');
+                assert.equal(entries[0].length, 2, ' two entries present in the resultset');
                 assert.end();
             }, function error(err) {
                 console.error("error :", err);
-                assert.fail(".equalTo compare boolean value (false)");
+                assert.fail(".where() boolean value having false");
+                assert.end();
+            });
+    });
+
+    TC.test('.equalTo() num_field:0', function(assert) {
+        var Query = Stack.ContentType('numbers_content_type').Query();
+
+        Query
+            .equalTo('num_field', 0)
+            .toJSON()
+            .find()
+            .then(function success(entries) {
+                assert.ok(entries[0].length, 'Entry present in the resultset');
+                assert.equal(entries[0].length, 1, ' one entry present in the resultset');
+                assert.end();
+            }, function error(err) {
+                console.error("error :", err);
+                assert.fail(".equalTo compare boolean value (true)");
                 assert.end();
             });
     });
