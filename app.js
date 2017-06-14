@@ -1,20 +1,20 @@
 /**
  * Created by Aamod Pisat on 09-05-2017.
  */
-var Contentstack = require('./dist/node/contentstack.js'),
+var Contentstack = require('./dist/node/contentstack'),
     app = require('express')(app);
 
 var Stack  = Contentstack.Stack({
-    "api_key": "bltf9cdecd012ea43cc",
-    "access_token": "blte6d3fe16e678f835096754b7",
-    "environment": "development"
+    "api_key": "blt920bb7e90248f607",
+    "access_token": "blt0c4300391e033d4a59eb2857",
+    "environment": "production"
 });
 
 app.get('/', function (req, res, next) {
    Stack
-       .ContentType('source')
+       .ContentType('news')
        .Query()
-       .where('title', '')
+       .only('title')
        .find()
        .then(function (data) {
            if(data) {
