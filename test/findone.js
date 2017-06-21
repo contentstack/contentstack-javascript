@@ -6,7 +6,10 @@ var test = require('tape');
 var Contentstack = require('../dist/node/contentstack.js');
 var Utils = require('./utils.js');
 var init = require('./config');
-
+var contentTypes = {
+    source: "source",
+    numbers_content_type: "numbers_content_type"
+};
 var Stack;
 /*
  * Initalise the Contentstack Instance
@@ -20,7 +23,7 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
 });
 
 test('findOne:  default .toJSON().findOne()', function(assert) {
-    var Query = Stack.ContentType('blog').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
     Query
         .toJSON().findOne()
         .then(function success(entry) {
@@ -37,7 +40,7 @@ test('findOne:  default .toJSON().findOne()', function(assert) {
  * SORTING
  * !*/
 test('findOne:  .ascending()', function(assert) {
-    var Query = Stack.ContentType('blog').Query(),
+    var Query = Stack.ContentType(contentTypes.source).Query(),
         field = 'created_at';
 
     Query
@@ -54,7 +57,7 @@ test('findOne:  .ascending()', function(assert) {
 });
 
 test('findOne:  .descending()', function(assert) {
-    var Query = Stack.ContentType('blog').Query(),
+    var Query = Stack.ContentType(contentTypes.source).Query(),
         field = 'created_at';
 
     Query
@@ -75,7 +78,7 @@ test('findOne:  .descending()', function(assert) {
  * COMPARISION
  * !*/
 test('findOne:  .lessThan()', function(assert) {
-    var Query = Stack.ContentType('numbers_content_type').Query(),
+    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
         value = 11;
     Query
         .lessThan('num_field', value)
@@ -92,7 +95,7 @@ test('findOne:  .lessThan()', function(assert) {
 });
 
 test('findOne:  .lessThanOrEqualTo()', function(assert) {
-    var Query = Stack.ContentType('numbers_content_type').Query(),
+    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
         value = 11;
     Query
         .lessThanOrEqualTo('num_field', value)
@@ -109,9 +112,9 @@ test('findOne:  .lessThanOrEqualTo()', function(assert) {
 });
 
 test('findOne:  .greaterThan()', function(assert) {
-    var Query = Stack.ContentType('numbers_content_type').Query(),
+    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
         field = 'num_field',
-        value = 6;
+        value = 11;
 
     Query
         .greaterThan('num_field', value)
@@ -129,7 +132,7 @@ test('findOne:  .greaterThan()', function(assert) {
 });
 
 test('findOne:  .greaterThanOrEqualTo()', function(assert) {
-    var Query = Stack.ContentType('numbers_content_type').Query(),
+    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
         field = 'num_field',
         value = 11;
 
@@ -149,7 +152,7 @@ test('findOne:  .greaterThanOrEqualTo()', function(assert) {
 });
 
 test('findOne:  .notEqualTo()', function(assert) {
-    var Query = Stack.ContentType('numbers_content_type').Query(),
+    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
         field = 'num_field',
         value = 6;
 
@@ -174,8 +177,8 @@ test('findOne:  .notEqualTo()', function(assert) {
  * !*/
 
 test('findOne:  .containedIn()', function(assert) {
-    var Query = Stack.ContentType('multiple_assets').Query(),
-        _in = ["Multiple Assets", "Multiple Assets 2"];
+    var Query = Stack.ContentType(contentTypes.source).Query(),
+        _in = ["source1", "source2"];
 
     Query
         .containedIn('title', _in)
@@ -192,8 +195,8 @@ test('findOne:  .containedIn()', function(assert) {
 });
 
 test('findOne:  .notContainedIn()', function(assert) {
-    var Query = Stack.ContentType('multiple_assets').Query(),
-        _in = ["Multiple Assets", "Multiple Assets 2"];
+    var Query = Stack.ContentType(contentTypes.source).Query(),
+        _in = ["source1", "source2", "source3", "source4", "source5"];
 
     Query
         .notContainedIn('title', _in)
@@ -215,8 +218,8 @@ test('findOne:  .notContainedIn()', function(assert) {
  * !*/
 
 test('findOne:  .exists()', function(assert) {
-    var Query = Stack.ContentType('multiple_assets').Query(),
-        queryField = "assets";
+    var Query = Stack.ContentType(contentTypes.source).Query(),
+        queryField = "boolean";
 
     Query
         .exists(queryField)
@@ -233,7 +236,7 @@ test('findOne:  .exists()', function(assert) {
 });
 
 test('findOne:  .notExists()', function(assert) {
-    var Query = Stack.ContentType('multiple_assets').Query(),
+    var Query = Stack.ContentType(contentTypes.source).Query(),
         queryField = "isspecial";
 
     Query
@@ -253,14 +256,14 @@ test('findOne:  .notExists()', function(assert) {
 
 // Pagination
 test('findOne:  .skip()', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .toJSON().find()
         .then(function success(allEntries) {
             assert.ok(allEntries.length, 'entry key present in the resultset');
             Stack
-                .ContentType('source')
+                .ContentType(contentTypes.source)
                 .Query()
                 .skip(1)
                 .toJSON().findOne()
@@ -279,53 +282,17 @@ test('findOne:  .skip()', function(assert) {
         });
 });
 
-// Navigation
-// test('findOne:  .beforeUid()', function(assert) {
-//     var Query = Stack.ContentType('source').Query(),
-//         uid = "blt5cbb9523685c42bf";
-
-//     Query
-//         .beforeUid(uid)
-//         .toJSON().findOne()
-//         .then(function success(entry) {
-//             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
-//             assert.end();
-//         }, function error(err) {
-//             console.error("Error :",err);
-//             assert.fail("findOne:  .beforeUid()");
-//             assert.end();
-//         })
-// });
-
-// test('findOne:  .afterUid()', function(assert) {
-//     var Query = Stack.ContentType('source').Query(),
-//         uid = "blt5cbb9523685c42bf";
-
-//     Query
-//         .afterUid(uid)
-//         .toJSON().findOne()
-//         .then(function success(entry) {
-//             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
-//             assert.end();
-//         }, function error(err) {
-//             console.error("Error :",err);
-//             assert.deepEqual(err,  {error_code: 141, error_message: 'The requested entry doesn\'t exist.'}, "No entry found");
-//             assert.end();
-//         })
-// });
-
-
 // Logical
 test('findOne:  .or() - Query Objects', function(assert) {
-    var Query1 = Stack.ContentType('source').Query().containedIn('reference', ['blt02e485ce0a3aef14']);
-    var Query2 = Stack.ContentType('source').Query().containedIn('other_reference', ['blted2d2fa1f02c4981']);
-    var Query = Stack.ContentType('source').Query();
+    var Query1 = Stack.ContentType(contentTypes.source).Query().containedIn('title', ['source1', 'source2']);
+    var Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', true);
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .or(Query1, Query2)
         .toJSON().findOne()
         .then(function success(entry) {
-            assert.ok((entry && (~entry.reference.indexOf('blt02e485ce0a3aef14') || ~entry.other_reference.indexOf('blted2d2fa1f02c4981'))), 'Entry satisfies the $OR condition');
+            assert.ok((entry && (~(entry.title === 'source1' || entry.boolean === true))), 'Entry satisfies the $OR condition');
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
@@ -335,37 +302,16 @@ test('findOne:  .or() - Query Objects', function(assert) {
         });
 });
 
-test('findOne:  .or() - Raw queries', function(assert) {
-    var Query1 = Stack.ContentType('source').Query().containedIn('reference', ['blt02e485ce0a3aef14']).getQuery();
-    var Query2 = Stack.ContentType('source').Query().containedIn('other_reference', ['blted2d2fa1f02c4981']).getQuery();
-    var Query = Stack.ContentType('source').Query();
-
-    Query
-        .or(Query1, Query2)
-        .toJSON().findOne()
-        .then(function success(entry) {
-            assert.ok((entry && (~entry.reference.indexOf('blt02e485ce0a3aef14') || ~entry.other_reference.indexOf('blted2d2fa1f02c4981'))), 'Entry satisfies the $OR condition');
-            assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :",err);
-            assert.fail("findOne:  .or() - Raw queries");
-            assert.end();
-        });
-});
-
 test('findOne:  .and() - Query Objects', function(assert) {
-    var Query1 = Stack.ContentType('source').Query().containedIn('reference', ['blt1ce8bb666a834bfb']);
-    var Query2 = Stack.ContentType('source').Query().containedIn('group.sub_group.reference', ['blt1ce8bb666a834bfb']);
-    var Query3 = Stack.ContentType('source').Query().containedIn('other_reference', ['blt594c88859c50fdb6']);
-    var Query4 = Stack.ContentType('source').Query().containedIn('group.sub_group.sub_sub_group.other_reference', ['blt594c88859c50fdb6']);
-    var Query = Stack.ContentType('source').Query();
+    var Query1 = Stack.ContentType(contentTypes.source).Query().where('title', 'source1');
+    var Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', true);
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
-        .and(Query1, Query2, Query3, Query4)
+        .and(Query1, Query2)
         .toJSON().findOne()
         .then(function success(entry) {
-            assert.ok((~entry.reference.indexOf('blt1ce8bb666a834bfb') && ~entry.group[0].sub_group[0].reference.indexOf('blt1ce8bb666a834bfb') && ~entry.other_reference.indexOf('blt594c88859c50fdb6') && ~entry.group[0].sub_group[0].sub_sub_group.other_reference.indexOf('blt594c88859c50fdb6')), 'Entry satisfies the $AND operation.');
+            assert.ok(~(entry.title === 'source1' || entry.boolean === true), 'Entry satisfies the $AND operation.');
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
@@ -375,38 +321,16 @@ test('findOne:  .and() - Query Objects', function(assert) {
         });
 });
 
-test('findOne:  .and() - Raw queries', function(assert) {
-    var Query1 = Stack.ContentType('source').Query().containedIn('reference', ['blt1ce8bb666a834bfb']).getQuery();
-    var Query2 = Stack.ContentType('source').Query().containedIn('group.sub_group.reference', ['blt1ce8bb666a834bfb']).getQuery();
-    var Query3 = Stack.ContentType('source').Query().containedIn('other_reference', ['blt594c88859c50fdb6']).getQuery();
-    var Query4 = Stack.ContentType('source').Query().containedIn('group.sub_group.sub_sub_group.other_reference', ['blt594c88859c50fdb6']).getQuery();
-    var Query = Stack.ContentType('source').Query();
-
-    Query
-        .and(Query1, Query2, Query3, Query4)
-        .toJSON().findOne()
-        .then(function success(entry) {
-            assert.ok((entry && ~entry.reference.indexOf('blt1ce8bb666a834bfb') && ~entry.group[0].sub_group[0].reference.indexOf('blt1ce8bb666a834bfb') && ~entry.other_reference.indexOf('blt594c88859c50fdb6') && ~entry.group[0].sub_group[0].sub_sub_group.other_reference.indexOf('blt594c88859c50fdb6')),'Entry satisfies the $AND operation.');
-            assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :",err);
-            assert.fail("findOne:  .and() - Raw queries");
-            assert.end();
-        });
-});
-
-
 // Custom query
 test('findOne:  .query() - Raw query', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
-        .query({"$or": [{"reference": {"$in": ["blt1ce8bb666a834bfb"]}}, {"other_reference" : {"$in": ["blted2d2fa1f02c4981"]}}]})
+        .query({"$or": [{"title": "source1"}, {"boolean" : "true"}]})
         .toJSON().findOne()
         .then(function success(entry) {
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
-            assert.ok((~entry.reference.indexOf('blt1ce8bb666a834bfb') || ~entry.other_reference.indexOf('blted2d2fa1f02c4981')), '$OR condition satisfied');
+            assert.ok(~(entry.title === 'source1' || entry.boolean === true), '$OR condition satisfied');
             assert.end();
         }, function error(err) {
             console.error("Error :",err);
@@ -418,7 +342,7 @@ test('findOne:  .query() - Raw query', function(assert) {
 
 // tags
 test('findOne:  .tags()', function(assert) {
-    var Query = Stack.ContentType('source').Query(),
+    var Query = Stack.ContentType(contentTypes.source).Query(),
         tags = ["tag1", "tag2"];
 
     Query
@@ -438,7 +362,7 @@ test('findOne:  .tags()', function(assert) {
 
 // search
 test('findOne:  .search()', function(assert) {
-    var Query = Stack.ContentType('home').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .search('Welcome Back')
@@ -456,7 +380,7 @@ test('findOne:  .search()', function(assert) {
 
 // search
 test('findOne:  .regex()', function(assert) {
-    var Query = Stack.ContentType('source').Query(),
+    var Query = Stack.ContentType(contentTypes.source).Query(),
         field = 'title',
         regex = {
             pattern: '^source',
@@ -480,7 +404,7 @@ test('findOne:  .regex()', function(assert) {
 
 // includeReference
 test('findOne:  .includeReference() - String', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .includeReference('reference')
@@ -496,7 +420,7 @@ test('findOne:  .includeReference() - String', function(assert) {
 });
 
 test('findOne:  .includeReference() - Array', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .includeReference(['reference', 'other_reference'])
@@ -514,7 +438,7 @@ test('findOne:  .includeReference() - Array', function(assert) {
 
 // includeSchema
 test('findOne:  .includeSchema()', function(assert) {
-    var Query = Stack.ContentType('home').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .includeSchema()
@@ -534,7 +458,7 @@ test('findOne:  .includeSchema()', function(assert) {
 
 // only
 test('findOne:  .only() - Single String Parameter', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .only('title')
@@ -551,7 +475,7 @@ test('findOne:  .only() - Single String Parameter', function(assert) {
 });
 
 test('findOne:  .only() - Multiple String Parameter', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .only('BASE', 'title')
@@ -568,7 +492,7 @@ test('findOne:  .only() - Multiple String Parameter', function(assert) {
 });
 
 test('findOne:  .only() - Array Parameter', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .only(['title', 'url'])
@@ -585,7 +509,7 @@ test('findOne:  .only() - Array Parameter', function(assert) {
 });
 
 test('findOne:  .only() - For the reference - String', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .includeReference('reference')
@@ -609,7 +533,7 @@ test('findOne:  .only() - For the reference - String', function(assert) {
 });
 
 test('findOne:  .only() - For the reference - Array', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .includeReference('reference')
@@ -634,7 +558,7 @@ test('findOne:  .only() - For the reference - Array', function(assert) {
 
 // except
 test('findOne:  .except() - Single String Parameter', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .except('title')
@@ -651,7 +575,7 @@ test('findOne:  .except() - Single String Parameter', function(assert) {
 });
 
 test('findOne:  .except() - Multiple String Parameter', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .except('BASE', 'title')
@@ -668,7 +592,7 @@ test('findOne:  .except() - Multiple String Parameter', function(assert) {
 });
 
 test('findOne:  .except() - Array of String Parameter', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .except(['title', 'file'])
@@ -685,7 +609,7 @@ test('findOne:  .except() - Array of String Parameter', function(assert) {
 });
 
 test('findOne:  .except() - For the reference - String', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .includeReference('reference')
@@ -709,7 +633,7 @@ test('findOne:  .except() - For the reference - String', function(assert) {
 });
 
 test('findOne:  .except() - For the reference - Array', function(assert) {
-    var Query = Stack.ContentType('source').Query();
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .includeReference('reference')

@@ -16,9 +16,9 @@
     "buildreactnative": "webpack --config webpack/webpack.react-native.js",
     "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose"
   },
-  "repository": { 
-    "type" : "git", 
-    "url" : "https://github.com/builtio-contentstack/contentstack-javascript.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/builtio-contentstack/contentstack-javascript.git"
   },
   "_shasum": "a328ed07240476a26b31a23261355dc929e1da63",
   "_from": "contentstack@latest",
@@ -71,7 +71,10 @@
   },
   "dependencies": {
     "babel-runtime": "^6.23.0",
+    "fs": "0.0.1-security",
     "localStorage": "1.0.3",
+    "nodemailer": "4.0.1",
+    "path": "^0.12.7",
     "q": "1.4.1",
     "when": "3.7.8",
     "xmlhttprequest": "1.8.0"

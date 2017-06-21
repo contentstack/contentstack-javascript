@@ -1,3 +1,6 @@
+/**
+ * Created by Aamod Pisat on 09-06-2017.
+ */
 'use strict';
 /*
  * Module Dependencies.
@@ -5,6 +8,10 @@
 var test = require('tape');
 var Contentstack = require('../dist/node/contentstack.js');
 var init = require('./config');
+var contentTypes = {
+    source: "source",
+    numbers_content_type: "numbers_content_type"
+};
 
 var Stack;
 /*
@@ -20,7 +27,7 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
 
 test('spread:  .find()', function(TC) {
     TC.test('entries as first argument', function(assert) {
-        var Query = Stack.ContentType('blog').Query(),
+        var Query = Stack.ContentType(contentTypes.source).Query(),
             field = 'updated_at';
 
         Query
@@ -43,7 +50,7 @@ test('spread:  .find()', function(TC) {
     });
 
     TC.test('with entries and count argument', function(assert) {
-        var Query = Stack.ContentType('blog').Query(),
+        var Query = Stack.ContentType(contentTypes.source).Query(),
             field = 'updated_at';
         Query
             .includeCount()
@@ -67,7 +74,7 @@ test('spread:  .find()', function(TC) {
     });
 
     TC.test('with entries, schema and count argument', function(assert) {
-        var Query = Stack.ContentType('blog').Query(),
+        var Query = Stack.ContentType(contentTypes.source).Query(),
             field = 'updated_at';
         Query
             .includeSchema()
@@ -93,7 +100,7 @@ test('spread:  .find()', function(TC) {
     });
 
     TC.test('with entries, schema and count argument', function(assert) {
-        var Query = Stack.ContentType('blog').Query(),
+        var Query = Stack.ContentType(contentTypes.source).Query(),
             field = 'updated_at';
         Query
             .includeCount()
@@ -119,49 +126,3 @@ test('spread:  .find()', function(TC) {
             });
     });
 });
-
-// test('spread:  .findOne()', function(TC) {
-//     TC.test('entry as first argument', function(assert) {
-//         var Query = Stack.ContentType('blog').Query();
-
-//         Query
-//             .findOne()
-//             .spread(function success(entries) {
-//                 assert.ok((entries && !Object.keys(entries).length), 'Entry will not be retrieved');
-//                 assert.ok(entries, 'Entries exists as first parameter');
-//                 assert.end();
-//             }, function error(err) {
-//                 console.log("Error : ", err.stack);
-//                 assert.fail(err.message);
-//                 assert.end();
-//             });
-//     });
-
-//     TC.test('with entry argument', function(assert) {
-//         var Query = Stack.ContentType('blog').Query();
-//         Query
-//             .findOne()
-//             .spread(function success(entries) {
-//                 assert.ok((entries && !Object.keys(entries).length), 'Entry will not be retrieved');
-//                 assert.end();
-//             }, function error(err) {
-//                 assert.fail(err.message);
-//                 assert.end();
-//             });
-//     });
-
-//     TC.test('with entry, schema argument', function(assert) {
-//         var Query = Stack.ContentType('blog').Query();
-//         Query
-//             .includeSchema()
-//             .findOne()
-//             .spread(function success(entries, schema) {
-//                 assert.ok((entries && !Object.keys(entries).length), 'Entry will not be retrieved');
-//                 assert.ok(schema, 'Schema will not be retrieved');
-//                 assert.end();
-//             }, function error(err) {
-//                 assert.fail(err.message);
-//                 assert.end();
-//             });
-//     });
-// });
