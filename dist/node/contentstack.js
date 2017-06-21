@@ -415,7 +415,7 @@ function sendRequest(queryObject) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var __WEBPACK_AMD_DEFINE_RESULT__;
+var __WEBPACK_AMD_DEFINE_RESULT__;var require;
 
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
@@ -459,7 +459,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;
 		} else if (!capturedSetTimeout) {
 			// vert.x
 			var vertxRequire = require;
-			var vertx = vertxRequire('vertx');
+			var vertx = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"vertx\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 			setTimer = function setTimer(f, ms) {
 				return vertx.setTimer(ms, f);
 			};
@@ -542,7 +542,7 @@ function Request(options) {
             if (obj.hasOwnProperty(p)) {
                 var k = prefix ? prefix + "[" + p + "]" : p,
                     v = obj[p];
-                str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : encodeURIComponent(k) + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
+                str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
             }
         }
         return str.join("&");

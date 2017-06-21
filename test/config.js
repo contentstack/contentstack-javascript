@@ -1,12 +1,15 @@
 'use strict';
 module.exports = {
     stack : {
-        "api_key": "blta523fa7af9b3c5c7",
-        "access_token": "blt678ffd9eda113e79",
+        "api_key": "blt9fc7b625627e53be",
+        "access_token": "bltf4a8097118277a6e",
         "environment": "development"
     },
     host: "stag-cdn.contentstack.io",
-    //host: "dev-new-api.contentstack.io",
-    url:"https://stag-cdn.contentstack.io/v3"
-    //host: "stagcontentstack.global.ssl.fastly.net"
+   	url: "https://stag-new-api.contentstack.io/v3",
+    runscope: {
+    	url: "https://api.runscope.com/radar/76730163-fab9-4554-95c1-7ba75aaa2628/trigger?runscope_environment=1f5114ea-7a2d-4adf-9fd3-abc885c47783",
+    	username: "aamod.pisat@raweng.com",
+    	password: "cs@aamod$123",
+    }
 };

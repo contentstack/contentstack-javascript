@@ -440,7 +440,7 @@ function Request(options) {
             if (obj.hasOwnProperty(p)) {
                 var k = prefix ? prefix + "[" + p + "]" : p,
                     v = obj[p];
-                str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : encodeURIComponent(k) + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
+                str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
             }
         }
         return str.join("&");

@@ -14,7 +14,9 @@ app.get('/', function (req, res, next) {
    Stack
        .ContentType('news')
        .Query()
-       .only('title')
+       .only(['title', 'body', 'category'])
+       .only('category', 'title')
+       .includeReference('category')
        .find()
        .then(function (data) {
            if(data) {
