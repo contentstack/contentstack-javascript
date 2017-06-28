@@ -118,7 +118,7 @@ test('Find operations', function(TC) {
      * !*/
     TC.test('.lessThan()', function(assert) {
         var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
-            field = 'updated_at',
+            field = 'num_field',
             value = 11;
         Query
             .lessThan('num_field', value)

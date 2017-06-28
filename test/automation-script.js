@@ -4,19 +4,11 @@ var request = require('request'),
     exec = require('child_process').exec,
     nodemailer = require('nodemailer'),
     config = require('./config.js'),
+    smtpConfig = require('./smtpconfig.js')
     reportFileName = "report.json";
 
 //configure the smtp 
-let smtpConfig = {
-    host: 'smtp.gmail.com',
-    port: 465,
-    secure: true, // upgrade later with STARTTLS
-    auth: {
-        user: 'aamod.pisat@raweng.com',
-        pass: 'abcABC@123'
-    }
-};
-let transporter = nodemailer.createTransport(smtpConfig)
+let transporter = nodemailer.createTransport(smtpConfig);
 
 var automation = function () {
     var self = this;
@@ -43,15 +35,16 @@ automation.prototype.init = function () {
         };
         console.log("Creating data in Built.io Contentstack...");
 
-        //trigger runscope url for data creation in Built.io Contentstack
-        request(options, function (err, res, body) {
-            if (!err && body) {
-                console.log("Data created in Built.io Contentstack...");
-                setTimeout(function () {
-                    self.run();
-                }, 150000);
-            }
-        });
+        // trigger runscope url for data creation in Built.io Contentstack
+        // request(options, function (err, res, body) {
+        //     if (!err && body) {
+        //         setTimeout(function () {
+        //             console.log("Data created in Built.io Contentstack...");
+        //             self.run();
+        //         }, 240000);
+        //     }
+        // });
+         self.run()
     } catch (err) {
         console.error("Init error: ", err.message || err);
         process.exit(0);
@@ -68,14 +61,16 @@ automation.prototype.run = function () {
     let executeCommand = "node index.js | tap-json > " + reportFileName;
     exec(executeCommand, function (err, stdout, stderr) {
         if (!err) {
-            self.mailReport();
+            console.log("Test cases runned successfully....");
+            self.sendMail();
         } else {
             console.error("error: ", err.message || err)
         }
     });
 };
 
-automation.prototype.mailReport = function () {
+automation.prototype.sendMail = function () {
+     console.log("Mailing report....");
     let reportPath = path.join(__dirname, '../', 'test', reportFileName);
     if (fs.existsSync(reportPath)) {
         let message = {
@@ -85,6 +80,7 @@ automation.prototype.mailReport = function () {
             html: '<p>Hi Team, Please check below attachment of test cases report.</p>',
             attachments: [
                 {
+                    filename: "reports.json",
                     path: reportPath
                 }
             ]

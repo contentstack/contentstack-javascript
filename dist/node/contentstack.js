@@ -542,7 +542,7 @@ function Request(options) {
             if (obj.hasOwnProperty(p)) {
                 var k = prefix ? prefix + "[" + p + "]" : p,
                     v = obj[p];
-                str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
+                str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : encodeURIComponent(k) + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
             }
         }
         return str.join("&");
@@ -5322,7 +5322,10 @@ module.exports = {
 	},
 	"dependencies": {
 		"babel-runtime": "^6.23.0",
+		"fs": "0.0.1-security",
 		"localStorage": "1.0.3",
+		"nodemailer": "4.0.1",
+		"path": "^0.12.7",
 		"q": "1.4.1",
 		"when": "3.7.8",
 		"xmlhttprequest": "1.8.0"

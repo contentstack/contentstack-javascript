@@ -13,7 +13,7 @@ export default function Request(options) {
               v = obj[p];
           str.push((v !== null && typeof v === "object" && p !== 'query') ?
             serialize(v, k) :
-            k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
+            encodeURIComponent(k) + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
         }
       }
       return str.join("&");
@@ -29,7 +29,6 @@ export default function Request(options) {
         delete options.body._method;    
         var queryParams = serialize(options.body);
     }
-    
     
     //make all calls as GET instead of POST
     xhr.open(method, url+'?'+queryParams, true);

@@ -196,7 +196,7 @@ test('findOne:  .containedIn()', function(assert) {
 
 test('findOne:  .notContainedIn()', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query(),
-        _in = ["source1", "source2", "source3", "source4", "source5"];
+        _in = ["source1", "source2", "source3", "source4"];
 
     Query
         .notContainedIn('title', _in)
@@ -311,7 +311,7 @@ test('findOne:  .and() - Query Objects', function(assert) {
         .and(Query1, Query2)
         .toJSON().findOne()
         .then(function success(entry) {
-            assert.ok(~(entry.title === 'source1' || entry.boolean === true), 'Entry satisfies the $AND operation.');
+            assert.ok(~(entry.title === 'source1' && entry.boolean === true), 'Entry satisfies the $AND operation.');
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
@@ -326,7 +326,7 @@ test('findOne:  .query() - Raw query', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
-        .query({"$or": [{"title": "source1"}, {"boolean" : "true"}]})
+        .query({"$or": [{"title": "source1"}, {"boolean" : "false"}]})
         .toJSON().findOne()
         .then(function success(entry) {
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
@@ -340,24 +340,24 @@ test('findOne:  .query() - Raw query', function(assert) {
 });
 
 
-// tags
-test('findOne:  .tags()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        tags = ["tag1", "tag2"];
+// // tags
+// test('findOne:  .tags()', function(assert) {
+//     var Query = Stack.ContentType(contentTypes.source).Query(),
+//         tags = ["tag1", "tag2"];
 
-    Query
-        .tags(tags)
-        .toJSON().findOne()
-        .then(function success(entry) {
-            assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
-            assert.equal((Utils.arrayPresentInArray(tags, entry.tags) > 0), true, 'Tags specified are found in result set');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :",err);
-            assert.fail("findOne:  .tags()");
-            assert.end();
-        });
-});
+//     Query
+//         .tags(tags)
+//         .toJSON().findOne()
+//         .then(function success(entry) {
+//             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
+//             assert.equal((Utils.arrayPresentInArray(tags, entry.tags) > 0), true, 'Tags specified are found in result set');
+//             assert.end();
+//         }, function error(err) {
+//             console.error("Error :",err);
+//             assert.fail("findOne:  .tags()");
+//             assert.end();
+//         });
+// });
 
 
 // search
@@ -365,7 +365,7 @@ test('findOne:  .search()', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
-        .search('Welcome Back')
+        .search('source1')
         .toJSON().findOne()
         .then(function success(entry) {
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
