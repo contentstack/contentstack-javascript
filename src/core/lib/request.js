@@ -13,7 +13,7 @@ export default function Request(options) {
               v = obj[p];
           str.push((v !== null && typeof v === "object" && p !== 'query') ?
             serialize(v, k) :
-            encodeURIComponent(k) + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
+            k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
         }
       }
       return str.join("&");
