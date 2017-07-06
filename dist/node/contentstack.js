@@ -542,7 +542,7 @@ function Request(options) {
             if (obj.hasOwnProperty(p)) {
                 var k = prefix ? prefix + "[" + p + "]" : p,
                     v = obj[p];
-                str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : encodeURIComponent(k) + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
+                str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
             }
         }
         return str.join("&");
@@ -710,6 +710,7 @@ var Stack = function () {
                     this.headers = {
                         api_key: stack_arguments[0].api_key,
                         access_token: stack_arguments[0].access_token,
+                        "Content-Type": "application/json",
                         "User-Agent": "contentstack-(JS-SDK)/" + Package.version
                     };
                     this.environment = stack_arguments[0].environment;
@@ -722,6 +723,7 @@ var Stack = function () {
                     this.headers = {
                         api_key: stack_arguments[0],
                         access_token: stack_arguments[1],
+                        "Content-Type": "application/json",
                         "User-Agent": "contentstack-(JS-SDK)/" + Package.version
                     };
                     this.environment = stack_arguments[2];
