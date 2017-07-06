@@ -36,15 +36,14 @@ automation.prototype.init = function () {
         console.log("Creating data in Built.io Contentstack...");
 
         // trigger runscope url for data creation in Built.io Contentstack
-        // request(options, function (err, res, body) {
-        //     if (!err && body) {
-        //         setTimeout(function () {
-        //             console.log("Data created in Built.io Contentstack...");
-        //             self.run();
-        //         }, 240000);
-        //     }
-        // });
-         self.run()
+        request(options, function (err, res, body) {
+            if (!err && body) {
+                setTimeout(function () {
+                    console.log("Data created in Built.io Contentstack...");
+                    self.run();
+                }, 240000);
+            }
+        });
     } catch (err) {
         console.error("Init error: ", err.message || err);
         process.exit(0);
