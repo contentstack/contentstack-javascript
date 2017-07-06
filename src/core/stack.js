@@ -23,6 +23,7 @@ export default class Stack{
                     this.headers = {
                         api_key: stack_arguments[0].api_key,
                         access_token: stack_arguments[0].access_token,
+                        "Content-Type": "application/json",
                         "User-Agent": "contentstack-(JS-SDK)/" + Package.version
                     };
                     this.environment = stack_arguments[0].environment;
@@ -35,6 +36,7 @@ export default class Stack{
                     this.headers = {
                         api_key: stack_arguments[0],
                         access_token: stack_arguments[1],
+                        "Content-Type": "application/json",
                         "User-Agent": "contentstack-(JS-SDK)/" + Package.version
                     };
                     this.environment = stack_arguments[2];
