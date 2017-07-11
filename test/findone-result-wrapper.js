@@ -366,10 +366,10 @@ test('findOne:  .tags()', function(assert) {
 
 // search
 test('findOne:  .search()', function(assert) {
-    var Query = Stack.ContentType('home').Query();
+    var Query = Stack.ContentType('source').Query();
 
     Query
-        .search('Welcome Back')
+        .search('source1')
         .findOne()
         .then(function success(entry) {
             entry = entry.toJSON();
