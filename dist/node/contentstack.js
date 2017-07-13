@@ -415,7 +415,7 @@ function sendRequest(queryObject) {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-var __WEBPACK_AMD_DEFINE_RESULT__;
+var __WEBPACK_AMD_DEFINE_RESULT__;var require;
 
 /** @license MIT License (c) copyright 2010-2014 original author or authors */
 /** @author Brian Cavalier */
@@ -459,7 +459,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;
 		} else if (!capturedSetTimeout) {
 			// vert.x
 			var vertxRequire = require;
-			var vertx = vertxRequire('vertx');
+			var vertx = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"vertx\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 			setTimer = function setTimer(f, ms) {
 				return vertx.setTimer(ms, f);
 			};
@@ -530,6 +530,10 @@ var _when = __webpack_require__(11);
 
 var _when2 = _interopRequireDefault(_when);
 
+var _package = __webpack_require__(35);
+
+var Package = _interopRequireWildcard(_package);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -542,7 +546,7 @@ function Request(options) {
             if (obj.hasOwnProperty(p)) {
                 var k = prefix ? prefix + "[" + p + "]" : p,
                     v = obj[p];
-                str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : encodeURIComponent(k) + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
+                str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
             }
         }
         return str.join("&");
@@ -563,6 +567,7 @@ function Request(options) {
     xhr.open(method, url + '?' + queryParams, true);
     // set headers
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    xhr.setRequestHeader('X-User-Agent', 'contentstack-(JS-SDK)/' + Package.version);
     for (var header in headers) {
         xhr.setRequestHeader(header, headers[header]);
     }
@@ -3845,9 +3850,9 @@ var __WEBPACK_AMD_DEFINE_RESULT__;
  * @license MIT
  */
 
-var Url = __webpack_require__(39);
-var spawn = __webpack_require__(35).spawn;
-var fs = __webpack_require__(36);
+var Url = __webpack_require__(40);
+var spawn = __webpack_require__(36).spawn;
+var fs = __webpack_require__(37);
 
 exports.XMLHttpRequest = function () {
   "use strict";
@@ -3857,8 +3862,8 @@ exports.XMLHttpRequest = function () {
    */
 
   var self = this;
-  var http = __webpack_require__(37);
-  var https = __webpack_require__(38);
+  var http = __webpack_require__(38);
+  var https = __webpack_require__(39);
 
   // Holds http.js objects
   var request;
@@ -4899,7 +4904,7 @@ var Query = function (_Entry) {
     _createClass(Query, [{
         key: 'equalTo',
         value: function equalTo(key, value) {
-            if (key && value && typeof key === 'string' && typeof value === 'string') {
+            if (key && typeof key === 'string') {
                 this._query['query'][key] = value;
                 return this;
             } else {
@@ -4909,7 +4914,7 @@ var Query = function (_Entry) {
     }, {
         key: 'where',
         value: function where(key, value) {
-            if (key && value && typeof key === 'string' && typeof value === 'string') {
+            if (key && typeof key === 'string') {
                 this._query['query'][key] = value;
                 return this;
             } else {
@@ -5243,28 +5248,115 @@ exports.default = _localStorage2.default;
 /* 35 */
 /***/ (function(module, exports) {
 
-module.exports = require("child_process");
+module.exports = {
+	"name": "contentstack",
+	"version": "3.1.1",
+	"description": "The Built.io Contentstack Javascript SDK",
+	"homepage": "https://www.built.io/products/contentstack/overview",
+	"author": {
+		"name": "Built.io Contentstack",
+		"url": "https://www.built.io/"
+	},
+	"main": "dist/node/contentstack.js",
+	"_id": "contentstack@3.1.1",
+	"scripts": {
+		"test": "node test.js",
+		"buildnode": "webpack --config webpack/webpack.node.js",
+		"buildweb": "webpack -p --config webpack/webpack.web.js",
+		"buildreactnative": "webpack --config webpack/webpack.react-native.js",
+		"generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/builtio-contentstack/contentstack-javascript.git"
+	},
+	"_shasum": "a328ed07240476a26b31a23261355dc929e1da63",
+	"_from": "contentstack@latest",
+	"_npmVersion": "3.8.9",
+	"_nodeVersion": "6.2.0",
+	"_npmUser": {
+		"name": "mynk",
+		"email": "mayank@raweng.com"
+	},
+	"maintainers": [
+		{
+			"name": "hiteshbal",
+			"email": "hitesh.baldaniya@raweng.com"
+		},
+		{
+			"name": "mynk",
+			"email": "mayank@raweng.com"
+		}
+	],
+	"dist": {
+		"shasum": "a328ed07240476a26b31a23261355dc929e1da63",
+		"tarball": "https://registry.npmjs.org/contentstack/-/contentstack-3.0.0.tgz"
+	},
+	"license": "MIT",
+	"directories": {},
+	"_resolved": "https://registry.npmjs.org/contentstack/-/contentstack-3.0.0.tgz",
+	"_npmOperationalInternal": {
+		"host": "packages-18-east.internal.npmjs.com",
+		"tmp": "tmp/contentstack-3.0.0.tgz_1477830884275_0.9869455888401717"
+	},
+	"devDependencies": {
+		"babel-core": "^6.24.0",
+		"babel-loader": "^6.4.1",
+		"babel-plugin-transform-runtime": "^6.23.0",
+		"babel-preset-env": "^1.3.2",
+		"babel-preset-es2015": "^6.16.0",
+		"babel-preset-es2016": "^6.22.0",
+		"babel-preset-stage-1": "^6.22.0",
+		"compression-webpack-plugin": "^0.3.1",
+		"es3ify-loader": "^0.2.0",
+		"jshint": "~2.6.3",
+		"string-replace-webpack-plugin": "0.0.3",
+		"tap-json": "^0.1.1",
+		"tape": "^4.4.0",
+		"jsdoc": "^3.4.0",
+		"uglify-js": "^2.6.2",
+		"webpack": "^2.2.1",
+		"webpack-md5-hash": "^0.0.5",
+		"webpack-merge": "^0.17.0"
+	},
+	"dependencies": {
+		"babel-runtime": "^6.23.0",
+		"fs": "0.0.1-security",
+		"localStorage": "1.0.3",
+		"nodemailer": "4.0.1",
+		"path": "^0.12.7",
+		"q": "1.4.1",
+		"when": "3.7.8",
+		"xmlhttprequest": "1.8.0"
+	}
+};
 
 /***/ }),
 /* 36 */
 /***/ (function(module, exports) {
 
-module.exports = require("fs");
+module.exports = require("child_process");
 
 /***/ }),
 /* 37 */
 /***/ (function(module, exports) {
 
-module.exports = require("http");
+module.exports = require("fs");
 
 /***/ }),
 /* 38 */
 /***/ (function(module, exports) {
 
-module.exports = require("https");
+module.exports = require("http");
 
 /***/ }),
 /* 39 */
+/***/ (function(module, exports) {
+
+module.exports = require("https");
+
+/***/ }),
+/* 40 */
 /***/ (function(module, exports) {
 
 module.exports = require("url");

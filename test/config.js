@@ -1,12 +1,15 @@
 'use strict';
 module.exports = {
     stack : {
-        "api_key": "bltf9cdecd012ea43cc",
-        "access_token": "blte6d3fe16e678f835096754b7",
-        "environment": "development"
+        "api_key": "api_key",
+        "access_token": "access_token",
+        "environment": "your_stack_environment"
     },
     host: "cdn.contentstack.io",
-    //host: "dev-new-api.contentstack.io",
-    url:"https://cdn.contentstack.io/v3"
-    //host: "stagcontentstack.global.ssl.fastly.net"
-};
+   	url: "https://api.contentstack.io/v3",
+    runscope: {
+    	url: "your_runscope_url",
+    	username: "Built.io Contentstack username",
+    	password: "Built.io Contentstack password"
+    }
+}
