@@ -3,3 +3,6 @@ node_modules/*
 .idea/*
 reports/*
 apidocs-templates/*
+test/smtpconfig.js
+test/config.js
+
