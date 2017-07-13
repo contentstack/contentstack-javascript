@@ -6,8 +6,8 @@ var test = require('tape');
 //var Contentstack = require('contentstack');
 var Contentstack = require('../dist/node/contentstack.js');
 var init = require('./config');
-//var Utils = require('../src/core/lib/utils.js');
-//var localStorage = require('./../node_modules/contentstack/src/cache.js');
+var Utils = require('../src/core/lib/utils.js');
+var localStorage = require('./../node_modules/contentstack/src/cache.js');
 
 var Stack;
 
@@ -29,7 +29,7 @@ test('CACHE_ELSE_NETWORK Policy', function(TC) {
     var Query,isSingle;
     TC.test('Set Cache Policy On Stack Object', function (assert) {
         Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_ELSE_NETWORK);
-        Query = Stack.ContentType('blog').Query().toJSON();
+        Query = Stack.ContentType('source').Query().toJSON();
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
         // if(Query.environment_uid) {
         //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
@@ -67,7 +67,7 @@ test('CACHE_ELSE_NETWORK Policy', function(TC) {
     });
 
     TC.test('GET the SAME Result from the cache', function (assert) {
-        Query = Stack.ContentType('blog').Query().toJSON();
+        Query = Stack.ContentType('source').Query().toJSON();
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
         // if(Query.environment_uid) {
         //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
@@ -86,7 +86,7 @@ test('CACHE_THEN_NETWORK Policy', function(TC) {
     TC.test('Set Cache Policy On Stack Object', function (assert) {
         var count = 0;
         Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK);
-        Query = Stack.ContentType('blog').Query().toJSON().skip(1).limit(2);
+        Query = Stack.ContentType('source').Query().toJSON().skip(1).limit(2);
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
         // if(Query.environment_uid) {
         //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
@@ -122,7 +122,7 @@ test('CACHE_THEN_NETWORK Policy', function(TC) {
     });    
 
     TC.test('GET the SAME Result from the cache', function (assert) {
-        Query = Stack.ContentType('blog').Query().toJSON().skip(1).limit(2);
+        Query = Stack.ContentType('source').Query().toJSON().skip(1).limit(2);
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
         // if(Query.environment_uid) {
         //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
@@ -140,7 +140,7 @@ test('ONLY_NETWORK Policy', function(TC) {
     var Query, isSingle;
     TC.test('Set Cache Policy On Stack Object', function (assert) {
         Stack.setCachePolicy(Contentstack.CachePolicy.ONLY_NETWORK);
-        Query = Stack.ContentType('blog').Query().skip(1).limit(2).toJSON();
+        Query = Stack.ContentType('source').Query().skip(1).limit(2).toJSON();
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
         // if(Query.environment_uid) {
         //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
@@ -170,7 +170,7 @@ test('ONLY_NETWORK Policy', function(TC) {
     });
 
     TC.test('GET the SAME Result from the cache', function (assert) {
-        Query = Stack.ContentType('blog').Query().skip(1).limit(2).toJSON();
+        Query = Stack.ContentType('source').Query().skip(1).limit(2).toJSON();
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
         // if(Query.environment_uid) {
         //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
@@ -188,7 +188,7 @@ test('IGNORE_CACHE Policy', function(TC) {
     var Query, isSingle;
     TC.test('Set Cache Policy On Stack Object', function (assert) {
         Stack.setCachePolicy(Contentstack.CachePolicy.IGNORE_CACHE);
-        Query = Stack.ContentType('blog').Query().skip(1).limit(2).toJSON();
+        Query = Stack.ContentType('source').Query().skip(1).limit(2).toJSON();
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
         // if(Query.environment_uid) {
         //     Query.requestParams.body.query.environment_uid = Query.environment_uid;
@@ -218,7 +218,7 @@ test('IGNORE_CACHE Policy', function(TC) {
     });
 
     TC.test('GET the SAME Result from the cache', function (assert) {
-        Query = Stack.ContentType('blog').Query().skip(1).limit(2).toJSON();
+        Query = Stack.ContentType('source').Query().skip(1).limit(2).toJSON();
         isSingle = (Query.entry_uid || Query.singleEntry) ? true : false;
         if(Query.environment_uid) {
             Query.requestParams.body.query.environment_uid = Query.environment_uid;
