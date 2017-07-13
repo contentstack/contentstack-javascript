@@ -530,6 +530,10 @@ var _when = __webpack_require__(11);
 
 var _when2 = _interopRequireDefault(_when);
 
+var _package = __webpack_require__(35);
+
+var Package = _interopRequireWildcard(_package);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -563,6 +567,7 @@ function Request(options) {
     xhr.open(method, url + '?' + queryParams, true);
     // set headers
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    xhr.setRequestHeader('X-User-Agent', 'contentstack-(JS-SDK)/' + Package.version);
     for (var header in headers) {
         xhr.setRequestHeader(header, headers[header]);
     }
@@ -678,10 +683,6 @@ var _index = __webpack_require__(4);
 
 var _index2 = _interopRequireDefault(_index);
 
-var _package = __webpack_require__(35);
-
-var Package = _interopRequireWildcard(_package);
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -709,9 +710,7 @@ var Stack = function () {
                 if (_typeof(stack_arguments[0]) === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].access_token === "string" && typeof stack_arguments[0].environment === "string") {
                     this.headers = {
                         api_key: stack_arguments[0].api_key,
-                        access_token: stack_arguments[0].access_token,
-                        "Content-Type": "application/json",
-                        "User-Agent": "contentstack-(JS-SDK)/" + Package.version
+                        access_token: stack_arguments[0].access_token
                     };
                     this.environment = stack_arguments[0].environment;
                     return this;
@@ -722,9 +721,7 @@ var Stack = function () {
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
-                        access_token: stack_arguments[1],
-                        "Content-Type": "application/json",
-                        "User-Agent": "contentstack-(JS-SDK)/" + Package.version
+                        access_token: stack_arguments[1]
                     };
                     this.environment = stack_arguments[2];
                     return this;
