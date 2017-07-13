@@ -1,6 +1,7 @@
 import * as Utils from "./utils.js";
 import HTTPRequest from "runtime/http.js";
 import when from "runtime/when.js";
+import * as Package from '../../../package.json';
 
 
 
@@ -13,7 +14,7 @@ export default function Request(options) {
               v = obj[p];
           str.push((v !== null && typeof v === "object" && p !== 'query') ?
             serialize(v, k) :
-            encodeURIComponent(k) + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
+            k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
         }
       }
       return str.join("&");
@@ -30,11 +31,11 @@ export default function Request(options) {
         var queryParams = serialize(options.body);
     }
     
-    
     //make all calls as GET instead of POST
     xhr.open(method, url+'?'+queryParams, true);
     // set headers
     xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    xhr.setRequestHeader('X-User-Agent', 'contentstack-(JS-SDK)/' + Package.version);
     for (var header in headers) {
         xhr.setRequestHeader(header, headers[header]);
     }

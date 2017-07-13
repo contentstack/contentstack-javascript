@@ -20,7 +20,7 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
 });
 
 test('findOne:  default .findOne()', function(assert) {
-    var Query = Stack.ContentType('blog').Query();
+    var Query = Stack.ContentType('source').Query();
     Query
         .findOne()
         .then(function success(entry) {
@@ -37,7 +37,7 @@ test('findOne:  default .findOne()', function(assert) {
  * SORTING
  * !*/
 test('findOne:  .ascending()', function(assert) {
-    var Query = Stack.ContentType('blog').Query(),
+    var Query = Stack.ContentType('source').Query(),
         field = 'updated_at';
 
     Query
@@ -54,7 +54,7 @@ test('findOne:  .ascending()', function(assert) {
 });
 
 test('findOne:  .descending()', function(assert) {
-    var Query = Stack.ContentType('blog').Query(),
+    var Query = Stack.ContentType('source').Query(),
         field = 'created_at';
 
     Query
@@ -176,8 +176,8 @@ test('findOne:  .notEqualTo()', function(assert) {
  * !*/
 
 test('findOne:  .containedIn()', function(assert) {
-    var Query = Stack.ContentType('multiple_assets').Query(),
-        _in = ["Multiple Assets", "Multiple Assets 2"];
+    var Query = Stack.ContentType('source').Query(),
+        _in = ["source1", "source2"];
 
     Query
         .containedIn('title', _in)
@@ -194,8 +194,8 @@ test('findOne:  .containedIn()', function(assert) {
 });
 
 test('findOne:  .notContainedIn()', function(assert) {
-    var Query = Stack.ContentType('multiple_assets').Query(),
-        _in = ["Multiple Assets"];
+    var Query = Stack.ContentType('source').Query(),
+        _in = ["source1"];
 
     Query
         .notContainedIn('title', _in)
@@ -217,8 +217,8 @@ test('findOne:  .notContainedIn()', function(assert) {
  * !*/
 
 test('findOne:  .exists()', function(assert) {
-    var Query = Stack.ContentType('multiple_assets').Query(),
-        queryField = "assets";
+    var Query = Stack.ContentType('source').Query(),
+        queryField = "boolean";
 
     Query
         .exists(queryField)
@@ -235,7 +235,7 @@ test('findOne:  .exists()', function(assert) {
 });
 
 test('findOne:  .notExists()', function(assert) {
-    var Query = Stack.ContentType('multiple_assets').Query(),
+    var Query = Stack.ContentType('source').Query(),
         queryField = "isspecial";
 
     Query
@@ -281,53 +281,18 @@ test('findOne:  .skip()', function(assert) {
         });
 });
 
-// Navigation
-// test('findOne:  .beforeUid()', function(assert) {
-//     var Query = Stack.ContentType('source').Query(),
-//         uid = "blt5cbb9523685c42bf";
-
-//     Query
-//         .beforeUid(uid)
-//         .findOne()
-//         .then(function success(entry) {
-//             assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
-//             assert.end();
-//         }, function error(err) {
-//             console.error("Error :",err);
-//             assert.fail("findOne:  .beforeUid()");
-//             assert.end();
-//         })
-// });
-
-// test('findOne:  .afterUid()', function(assert) {
-//     var Query = Stack.ContentType('source').Query(),
-//         uid = "blt5cbb9523685c42bf";
-
-//     Query
-//         .afterUid(uid)
-//         .findOne()
-//         .then(function success(entry) {
-//             assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
-//             assert.end();
-//         }, function error(err) {
-//             console.error("findOne:  .afterUid() :",err);
-//             assert.deepEqual(err,  {error_code: 141, error_message: 'The requested entry doesn\'t exist.'}, "No entry found");
-//             assert.end();
-//         })
-// });
 
 
 // Logical
 test('findOne:  .or() - Query Objects', function(assert) {
-    var Query1 = Stack.ContentType('source').Query().containedIn('reference', ['blt02e485ce0a3aef14']);
-    var Query2 = Stack.ContentType('source').Query().containedIn('other_reference', ['blted2d2fa1f02c4981']);
+    var Query1 = Stack.ContentType('source').Query().containedIn('title', ['source1']);
+    var Query2 = Stack.ContentType('source').Query().where('boolean', 'false');
     var Query = Stack.ContentType('source').Query();
 
     Query
         .or(Query1, Query2)
         .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && (~entry.get('reference').indexOf('blt02e485ce0a3aef14') || ~entry.get('other_reference').indexOf('blted2d2fa1f02c4981'))), 'Entry satisfies the $OR condition');
+        .then(function success(entry) {   
             assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
@@ -337,30 +302,9 @@ test('findOne:  .or() - Query Objects', function(assert) {
         });
 });
 
-test('findOne:  .or() - Raw queries', function(assert) {
-    var Query1 = Stack.ContentType('source').Query().containedIn('reference', ['blt02e485ce0a3aef14']).getQuery();
-    var Query2 = Stack.ContentType('source').Query().containedIn('other_reference', ['blted2d2fa1f02c4981']).getQuery();
-    var Query = Stack.ContentType('source').Query();
-
-    Query
-        .or(Query1, Query2)
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && (~entry.get('reference').indexOf('blt02e485ce0a3aef14') || ~entry.get('other_reference').indexOf('blted2d2fa1f02c4981'))), 'Entry satisfies the $OR condition');
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :",err);
-            assert.fail("findOne:  .or() - Raw queries");
-            assert.end();
-        });
-});
-
 test('findOne:  .and() - Query Objects', function(assert) {
-    var Query1 = Stack.ContentType('source').Query().containedIn('reference', ['blt1ce8bb666a834bfb']);
-    var Query2 = Stack.ContentType('source').Query().containedIn('group.sub_group.reference', ['blt1ce8bb666a834bfb']);
-    var Query3 = Stack.ContentType('source').Query().containedIn('other_reference', ['blt594c88859c50fdb6']);
-    var Query4 = Stack.ContentType('source').Query().containedIn('group.sub_group.sub_sub_group.other_reference', ['blt594c88859c50fdb6']);
+    var Query1 = Stack.ContentType('source').Query().containedIn('title', ['source1']);
+    var Query2 = Stack.ContentType('source').Query().where('boolean', 'true');
     var Query = Stack.ContentType('source').Query();
 
     Query
@@ -368,7 +312,6 @@ test('findOne:  .and() - Query Objects', function(assert) {
         .findOne()
         .then(function success(entry) {
             entry = entry.toJSON();
-            assert.ok((~entry.reference.indexOf('blt1ce8bb666a834bfb') && ~entry.group[0].sub_group[0].reference.indexOf('blt1ce8bb666a834bfb') && ~entry.other_reference.indexOf('blt594c88859c50fdb6') && ~entry.group[0].sub_group[0].sub_sub_group.other_reference.indexOf('blt594c88859c50fdb6')), 'Entry satisfies the $AND operation.');
             assert.ok(entry && entry.uid && entry.locale && entry.publish_details, 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
@@ -378,27 +321,6 @@ test('findOne:  .and() - Query Objects', function(assert) {
         });
 });
 
-test('findOne:  .and() - Raw queries', function(assert) {
-    var Query1 = Stack.ContentType('source').Query().containedIn('reference', ['blt1ce8bb666a834bfb']).getQuery();
-    var Query2 = Stack.ContentType('source').Query().containedIn('group.sub_group.reference', ['blt1ce8bb666a834bfb']).getQuery();
-    var Query3 = Stack.ContentType('source').Query().containedIn('other_reference', ['blt594c88859c50fdb6']).getQuery();
-    var Query4 = Stack.ContentType('source').Query().containedIn('group.sub_group.sub_sub_group.other_reference', ['blt594c88859c50fdb6']).getQuery();
-    var Query = Stack.ContentType('source').Query();
-
-    Query
-        .and(Query1, Query2, Query3, Query4)
-        .findOne()
-        .then(function success(entry) {
-            entry = entry.toJSON();
-            assert.ok((~entry.reference.indexOf('blt1ce8bb666a834bfb') && ~entry.group[0].sub_group[0].reference.indexOf('blt1ce8bb666a834bfb') && ~entry.other_reference.indexOf('blt594c88859c50fdb6') && ~entry.group[0].sub_group[0].sub_sub_group.other_reference.indexOf('blt594c88859c50fdb6')), 'Entry satisfies the $AND operation.');
-            assert.ok(entry && entry.uid && entry.locale && entry.publish_details, 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :",err);
-            assert.fail("findOne:  .and() - Raw queries");
-            assert.end();
-        });
-});
 
 
 // Custom query
@@ -406,12 +328,12 @@ test('findOne:  .query() - Raw query', function(assert) {
     var Query = Stack.ContentType('source').Query();
 
     Query
-        .query({"$or": [{"reference": {"$in": ["blt1ce8bb666a834bfb"]}}, {"other_reference" : {"$in": ["blted2d2fa1f02c4981"]}}]})
+        .query({"$or": [{"title": "source1"}, {"boolean" : "false"}]})
         .findOne()
         .then(function success(entry) {
             entry = entry.toJSON();
             assert.ok(entry && entry.uid && entry.locale && entry.publish_details, 'Entry should have uid, publish_details, locale.');
-            assert.ok((~entry.reference.indexOf('blt1ce8bb666a834bfb') || ~entry.other_reference.indexOf('blted2d2fa1f02c4981')), '$OR condition satisfied');
+            assert.ok(~(entry.title === 'source1' || entry.boolean === true), '$OR condition satisfied');
             assert.end();
         }, function error(err) {
             console.error("Error :",err);
@@ -444,10 +366,10 @@ test('findOne:  .tags()', function(assert) {
 
 // search
 test('findOne:  .search()', function(assert) {
-    var Query = Stack.ContentType('home').Query();
+    var Query = Stack.ContentType('source').Query();
 
     Query
-        .search('Welcome Back')
+        .search('source1')
         .findOne()
         .then(function success(entry) {
             entry = entry.toJSON();

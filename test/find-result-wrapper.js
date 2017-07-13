@@ -1,3 +1,4 @@
+
 'use strict';
 /*
  * Module Dependencies.
@@ -7,6 +8,10 @@ var Contentstack = require('../dist/node/contentstack.js');
 var _ = require('lodash');
 var init = require('./config');
 var Utils = require('./utils.js');
+var contentTypes = {
+    source: "source",
+    numbers_content_type: "numbers_content_type"
+};
 
 var Stack;
 /*
@@ -22,7 +27,7 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
 
 test('Find operations', function(TC) {
     TC.test('default .find()', function(assert) {
-        var Query = Stack.ContentType('blog').Query(),
+        var Query = Stack.ContentType(contentTypes.source).Query(),
             field = 'updated_at';
         Query
             .find()
@@ -52,7 +57,7 @@ test('Find operations', function(TC) {
      * SORTING
      * !*/
     TC.test('.ascending()', function(assert) {
-        var Query = Stack.ContentType('blog').Query(),
+        var Query = Stack.ContentType(contentTypes.source).Query(),
             field = 'updated_at';
 
         Query
@@ -80,7 +85,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.descending()', function(assert) {
-        var Query = Stack.ContentType('blog').Query(),
+        var Query = Stack.ContentType(contentTypes.source).Query(),
             field = 'created_at';
 
         Query
@@ -112,7 +117,7 @@ test('Find operations', function(TC) {
      * COMPARISION
      * !*/
     TC.test('.lessThan()', function(assert) {
-        var Query = Stack.ContentType('numbers_content_type').Query(),
+        var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
             value = 11,
             field = 'updated_at';
         Query
@@ -141,7 +146,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.lessThanOrEqualTo()', function(assert) {
-        var Query = Stack.ContentType('numbers_content_type').Query(),
+        var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
             field = 'updated_at',
             value = 11;
         Query
@@ -169,9 +174,9 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.greaterThan()', function(assert) {
-        var Query = Stack.ContentType('numbers_content_type').Query(),
+        var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
             field = 'num_field',
-            value = 6;
+            value = 11;
 
         Query
             .greaterThan('num_field', value)
@@ -199,7 +204,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.greaterThanOrEqualTo()', function(assert) {
-        var Query = Stack.ContentType('numbers_content_type').Query(),
+        var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
             field = 'num_field',
             value = 11;
 
@@ -229,7 +234,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.notEqualTo()', function(assert) {
-        var Query = Stack.ContentType('numbers_content_type').Query(),
+        var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
             field = 'num_field',
             value = 6;
 
@@ -263,8 +268,8 @@ test('Find operations', function(TC) {
      * !*/
 
     TC.test('.containedIn()', function(assert) {
-        var Query = Stack.ContentType('multiple_assets').Query(),
-            _in = ["Multiple Assets", "Multiple Assets 2"],
+        var Query = Stack.ContentType(contentTypes.source).Query(),
+            _in = ["source1", "source2"],
             field = 'updated_at';
 
         Query
@@ -288,15 +293,15 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.notContainedIn()', function(assert) {
-        var Query = Stack.ContentType('multiple_assets').Query(),
-            _in = ["Multiple Assets", "Multiple Assets 2"];
+        var Query = Stack.ContentType(contentTypes.source).Query(),
+            _in = ["sourceddd1", "sourceddddd2"];
 
         Query
             .notContainedIn('title', _in)
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
-                assert.notok(entries[0].length, 'No Entry present in the resultset');
+                assert.ok(entries[0].length, 'No Entry present in the resultset');
                 assert.end();
             }, function error(err) {
                 console.error("error :", err);
@@ -311,8 +316,8 @@ test('Find operations', function(TC) {
      * !*/
 
     TC.test('.exists()', function(assert) {
-        var Query = Stack.ContentType('multiple_assets').Query(),
-            queryField = "isspecial",
+        var Query = Stack.ContentType(contentTypes.source).Query(),
+            queryField = "boolean",
             field = 'updated_at';
 
         Query
@@ -320,7 +325,7 @@ test('Find operations', function(TC) {
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
-                assert.ok(!entries[0].length, 'Entries should not be present in the resultset');
+                assert.ok(entries[0].length, 'Entries should not be present in the resultset');
                 if(entries && entries.length && entries[0].length) {
                     var prev = entries[0][0].get(field);
                     var _entries = entries[0].every(function(entry) {
@@ -339,7 +344,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.notExists()', function(assert) {
-        var Query = Stack.ContentType('multiple_assets').Query(),
+        var Query = Stack.ContentType(contentTypes.source).Query(),
             queryField = "isspecial",
             field = 'updated_at';
 
@@ -367,7 +372,7 @@ test('Find operations', function(TC) {
 
     // Pagination
     TC.test('.skip()', function(assert) {
-        var Query = Stack.ContentType('source').Query(),
+        var Query = Stack.ContentType(contentTypes.source).Query(),
             field = 'updated_at';
 
         Query
@@ -376,7 +381,7 @@ test('Find operations', function(TC) {
             .then(function success(allEntries) {
                 // assert.ok("entries" in allEntries, 'Entries key present in the resultset');
                 Stack
-                    .ContentType('source')
+                    .ContentType(contentTypes.source)
                     .Query()
                     .skip(1)
                     .toJSON()
@@ -410,7 +415,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.limit()', function(assert) {
-        var Query = Stack.ContentType('source').Query(),
+        var Query = Stack.ContentType(contentTypes.source).Query(),
             field = 'updated_at';
 
         Query
@@ -419,7 +424,7 @@ test('Find operations', function(TC) {
             .then(function success(allEntries) {
                 // assert.ok("entries" in allEntries, 'Entries key present in the resultset');
                 Stack
-                    .ContentType('source')
+                    .ContentType(contentTypes.source)
                     .Query()
                     .limit(2)
                     .toJSON()
@@ -451,7 +456,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.count()', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .count()
@@ -468,69 +473,12 @@ test('Find operations', function(TC) {
     });
 
 
-    // Navigation
-    // TC.test('.beforeUid()', function(assert) {
-    //     var Query = Stack.ContentType('source').Query(),
-    //         uid = "blt5cbb9523685c42bf",
-    //         field = 'created_at';
-
-    //     Query
-    //         .beforeUid(uid)
-    //         .find()
-    //         .then(function success(entries) {
-    //             // assert.ok("entries" in result, 'Entries key present in the resultset');
-    //             assert.ok((entries.length >= 1), '1 or more Entries present in the resultset');
-    //             if(entries && entries.length && entries[0].length) {
-    //                 var prev = entries[0][0].get(field);
-    //                 var _entries = entries[0].every(function(entry) {
-    //                     var flag = (prev >= entry.get(field));
-    //                     prev = entry.get(field);
-    //                     return flag;
-    //                 });
-    //                 assert.equal(_entries, true, "entries are before provided one");
-    //             }
-    //             assert.end();
-    //         }, function error(err) {
-    //             console.error("error :", err);
-    //             assert.fail(".beforeUid()");
-    //             assert.end();
-    //         })
-    // });
-
-    // TC.test('.afterUid()', function(assert) {
-    //     var Query = Stack.ContentType('source').Query(),
-    //         field = 'created_at',
-    //         uid = "blt5cbb9523685c42bf";
-
-    //     Query
-    //         .afterUid(uid)
-    //         .find()
-    //         .then(function success(entries) {
-    //             // assert.ok("entries" in result, 'Entries key present in the resultset');
-    //             assert.ok((entries.length >= 1), '1 or more Entries present in the resultset');
-    //             if(entries && entries.length && entries[0].length) {
-    //                 var prev = entries[0][0].get(field);
-    //                 var _entries = entries[0].every(function(entry) {
-    //                     var flag = (prev <= entry.get(field));
-    //                     prev = entry.get(field);
-    //                     return flag;
-    //                 });
-    //                 assert.equal(_entries, true, "entries are after provided one");
-    //             }
-    //             assert.end();
-    //         }, function error(err) {
-    //             console.error("error :", err);
-    //             assert.fail(".afterUid()");
-    //             assert.end();
-    //         })
-    // });
-
 
     // Logical
     TC.test('.or() - Query Objects', function(assert) {
-        var Query1 = Stack.ContentType('source').Query().containedIn('reference', ['blt02e485ce0a3aef14']);
-        var Query2 = Stack.ContentType('source').Query().containedIn('other_reference', ['blted2d2fa1f02c4981']);
-        var Query = Stack.ContentType('source').Query(),
+        var Query1 = Stack.ContentType(contentTypes.source).Query().containedIn('title', ['source1', 'source2']);
+        var Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', true);
+        var Query = Stack.ContentType(contentTypes.source).Query(),
             field = 'updated_at';
 
         Query
@@ -541,7 +489,7 @@ test('Find operations', function(TC) {
                 assert.ok(entries[0].length, 'Entries present in the resultset');
                 if(entries && entries.length && entries[0].length) {
                     var _entries = entries[0].every(function(entry) {
-                        return (~entry.get('reference').indexOf('blt02e485ce0a3aef14') || ~entry.get('other_reference').indexOf('blted2d2fa1f02c4981'));
+                        return (~(entry.title === 'source1' || entry.boolean === true));
                     });
                     assert.ok(_entries, '$OR condition satisfied');
                 }
@@ -553,40 +501,13 @@ test('Find operations', function(TC) {
             });
     });
 
-    TC.test('.or() - Raw queries', function(assert) {
-        var Query1 = Stack.ContentType('source').Query().containedIn('reference', ['blt02e485ce0a3aef14']).getQuery();
-        var Query2 = Stack.ContentType('source').Query().containedIn('other_reference', ['blted2d2fa1f02c4981']).getQuery();
-        var Query = Stack.ContentType('source').Query();
-
-        Query
-            .or(Query1, Query2)
-            .find()
-            .then(function success(entries) {
-                // assert.ok("entries" in result, 'Entries key present in the resultset');
-                assert.ok(entries[0].length, 'Entries present in the resultset');
-                if(entries && entries.length && entries[0].length) {
-                    var _entries = entries[0].every(function(entry) {
-                        return (~entry.get('reference').indexOf('blt02e485ce0a3aef14') || ~entry.get('other_reference').indexOf('blted2d2fa1f02c4981'));
-                    });
-                    assert.ok(_entries, '$OR condition satisfied');
-                }
-                assert.end();
-            }, function error(err) {
-                console.error("error :", err);
-                assert.fail(".or() - Raw queries");
-                assert.end();
-            });
-    });
-
     TC.test('.and() - Query Objects', function(assert) {
-        var Query1 = Stack.ContentType('source').Query().containedIn('reference', ['blt1ce8bb666a834bfb']);
-        var Query2 = Stack.ContentType('source').Query().containedIn('group.sub_group.reference', ['blt1ce8bb666a834bfb']);
-        var Query3 = Stack.ContentType('source').Query().containedIn('other_reference', ['blt594c88859c50fdb6']);
-        var Query4 = Stack.ContentType('source').Query().containedIn('group.sub_group.sub_sub_group.other_reference', ['blt594c88859c50fdb6']);
-        var Query = Stack.ContentType('source').Query();
+        var Query1 = Stack.ContentType(contentTypes.source).Query().where('title', 'source1');
+        var Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', true);
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
-            .and(Query1, Query2, Query3, Query4)
+            .and(Query1, Query2)
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -594,7 +515,7 @@ test('Find operations', function(TC) {
                 if(entries && entries.length && entries[0].length) {
                     var _entries = entries[0].every(function(entry) {
                         entry = entry.toJSON();
-                        return (~entry.reference.indexOf('blt1ce8bb666a834bfb') && ~entry.group[0].sub_group[0].reference.indexOf('blt1ce8bb666a834bfb') && ~entry.other_reference.indexOf('blt594c88859c50fdb6') && ~entry.group[0].sub_group[0].sub_sub_group.other_reference.indexOf('blt594c88859c50fdb6'));
+                        return (~(entry.title === 'source1' || entry.boolean === true));
                     });
                     assert.ok(_entries, '$AND condition satisfied');
                 }
@@ -607,14 +528,12 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.and() - Raw queries', function(assert) {
-        var Query1 = Stack.ContentType('source').Query().containedIn('reference', ['blt1ce8bb666a834bfb']).getQuery();
-        var Query2 = Stack.ContentType('source').Query().containedIn('group.sub_group.reference', ['blt1ce8bb666a834bfb']).getQuery();
-        var Query3 = Stack.ContentType('source').Query().containedIn('other_reference', ['blt594c88859c50fdb6']).getQuery();
-        var Query4 = Stack.ContentType('source').Query().containedIn('group.sub_group.sub_sub_group.other_reference', ['blt594c88859c50fdb6']).getQuery();
-        var Query = Stack.ContentType('source').Query();
+        var Query1 = Stack.ContentType(contentTypes.source).Query().where('title', 'source1');
+        var Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', true);
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
-            .and(Query1, Query2, Query3, Query4)
+            .and(Query1, Query2)
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -622,7 +541,7 @@ test('Find operations', function(TC) {
                 if(entries && entries.length && entries[0].length) {
                     var _entries = entries[0].every(function(entry) {
                         entry = entry.toJSON();
-                        return (~entry.reference.indexOf('blt1ce8bb666a834bfb') && ~entry.group[0].sub_group[0].reference.indexOf('blt1ce8bb666a834bfb') && ~entry.other_reference.indexOf('blt594c88859c50fdb6') && ~entry.group[0].sub_group[0].sub_sub_group.other_reference.indexOf('blt594c88859c50fdb6'));
+                        return (~(entry.title === 'source1' || entry.boolean === true));
                     });
                     assert.ok(_entries, '$AND condition satisfied');
                 }
@@ -637,10 +556,10 @@ test('Find operations', function(TC) {
 
     // Custom query
     TC.test('.query() - Raw query', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
-            .query({"$or": [{"reference": {"$in": ["blt1ce8bb666a834bfb"]}}, {"other_reference" : {"$in": ["blted2d2fa1f02c4981"]}}]})
+            .query({"$or": [{"title": "source1"}, {"boolean" : "true"}]})
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -648,7 +567,11 @@ test('Find operations', function(TC) {
                 if(entries && entries.length && entries[0].length) {
                     var _entries = entries[0].every(function(entry) {
                         entry = entry.toJSON();
-                        return (~entry.reference.indexOf('blt1ce8bb666a834bfb') || ~entry.other_reference.indexOf('blted2d2fa1f02c4981'));
+                        if(entry.title === 'source1' || entry.boolean === true){
+                            return true;
+                        } else {
+                            return false;
+                        }
                     });
                     assert.ok(_entries, '$OR condition satisfied');
                 }
@@ -663,7 +586,7 @@ test('Find operations', function(TC) {
 
     // tags
     TC.test('.tags()', function(assert) {
-        var Query = Stack.ContentType('source').Query(),
+        var Query = Stack.ContentType(contentTypes.source).Query(),
             field = 'tags',
             tags = ["tag1", "tag2"];
 
@@ -690,10 +613,10 @@ test('Find operations', function(TC) {
 
     // search
     TC.test('.search()', function(assert) {
-        var Query = Stack.ContentType('home').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
-            .search('Welcome Back')
+            .search('source1')
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -708,7 +631,7 @@ test('Find operations', function(TC) {
 
     // regex
     TC.test('.regex()', function(assert) {
-        var Query = Stack.ContentType('source').Query(),
+        var Query = Stack.ContentType(contentTypes.source).Query(),
             field = 'title',
             regex = {
                 pattern: '^source',
@@ -737,7 +660,7 @@ test('Find operations', function(TC) {
 
     // includeReference
     TC.test('.includeReference() - String', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .includeReference('reference')
@@ -757,7 +680,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.includeReference() - Array', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .includeReference(['reference', 'other_reference'])
@@ -778,7 +701,7 @@ test('Find operations', function(TC) {
 
     // includeCount
     TC.test('.includeCount()', function(assert) {
-        var Query = Stack.ContentType('home').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .includeCount()
@@ -798,7 +721,7 @@ test('Find operations', function(TC) {
 
     // includeSchema
     TC.test('.includeSchema()', function(assert) {
-        var Query = Stack.ContentType('home').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .includeSchema()
@@ -818,7 +741,7 @@ test('Find operations', function(TC) {
 
     // includeCount && includeSchema
     TC.test('.includeCount() and .includeSchema()', function(assert) {
-        var Query = Stack.ContentType('home').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .includeCount()
@@ -839,7 +762,7 @@ test('Find operations', function(TC) {
 
     // only
     TC.test('.only() - Single String Parameter', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .only('title')
@@ -860,7 +783,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.only() - Multiple String Parameter', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .only('BASE', 'title')
@@ -881,7 +804,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.only() - Array Parameter', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .only(['title', 'url'])
@@ -902,7 +825,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.only() - For the reference - String', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .includeReference('reference')
@@ -934,7 +857,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.only() - For the reference - Array', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .includeReference('reference')
@@ -967,7 +890,7 @@ test('Find operations', function(TC) {
 
     // except
     TC.test('.except() - Single String Parameter', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .except('title')
@@ -988,7 +911,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.except() - Multiple String Parameter', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .except('BASE', 'title')
@@ -1009,7 +932,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.except() - Array of String Parameter', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .except(['title', 'file'])
@@ -1030,7 +953,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.except() - For the reference - String', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .includeReference('reference')
@@ -1062,7 +985,7 @@ test('Find operations', function(TC) {
     });
 
     TC.test('.except() - For the reference - Array', function(assert) {
-        var Query = Stack.ContentType('source').Query();
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .includeReference('reference')
