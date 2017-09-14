@@ -1,2 +1,1 @@
-export default XMLHttpRequest;
-
+export default fetch;

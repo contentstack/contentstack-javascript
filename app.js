@@ -12,16 +12,15 @@ var Contentstack = require('./dist/node/contentstack'),
 
 app.get('/', function (req, res, next) {
   var Stack = Contentstack.Stack({
-'api_key': 'blt8ca3003060a25f8a',
-'access_token': 'blt460b6594773905171c349a6c',
-'environment': "production"
+'api_key': 'blt950d694ee9fce907',
+'access_token': 'blt98a76e10ad802238',
+'environment': "development"
 });
 
-var Query = Stack.ContentType('property_events').Query().includeReference('retailer_reference').includeReference('property').includeReference('category_tag');
+var Query = Stack.ContentType('numbers_content_type').Query();
 Query
-.ascending('created_at')
+.limit(1)
 .toJSON()
-.where('job_fair', true)
 .find()
 .then(function success(result) {
   res.send(result);
