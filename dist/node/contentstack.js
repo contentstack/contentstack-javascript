@@ -838,8 +838,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-// import when from "runtime/when.js";
-
 
 exports.default = Request;
 
@@ -880,17 +878,6 @@ function Request(options) {
         // setting headers
         headers['Content-Type'] = 'application/json; charset=UTF-8';
         headers['X-User-Agent'] = 'contentstack-(JS-SDK)/' + Package.version;
-        // HTTPRequest
-        //     .get(url)
-        //     .set(headers)
-        //     .query(options.body)
-        //     .end(function (err, res) {
-        //         if(err) {
-        //             reject(err);
-        //         }
-        //         console.log("Resp form superagent: ", res.body);
-        //         resolve(res.body);
-        //     });
 
         if (options.body && _typeof(options.body) === 'object') {
             delete options.body._method;
@@ -908,77 +895,7 @@ function Request(options) {
                 resolve(data);
             }
         });
-
-        // http.get(url, {
-        //     headers: headers,
-        //     params: options.body
-        // }).then(function (response) {
-        //     console.log("response: ", response.status, "response: ", response.data.entries);
-        //     resolve(response.data);
-        // }).catch(function (err) {
-        //     reject(err);
-        // });
     });
-
-    // var deferred = when.defer();
-    // var xhr = new HTTPRequest(),
-
-
-    // if(options.body && typeof options.body === 'object'){
-    //     delete options.body._method;    
-    //     var queryParams = serialize(options.body);
-    // }
-
-    //make all calls as GET instead of POST
-    // xhr.open(method, url+'?'+queryParams, true);
-    // // set headers
-    // xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-    // xhr.setRequestHeader('X-User-Agent', 'contentstack-(JS-SDK)/' + Package.version);
-    // for (var header in headers) {
-    //     xhr.setRequestHeader(header, headers[header]);
-    // }
-
-    // console.log("queryParams: ", options.body, "\n\n", queryParams);
-    // axios.get(url, {
-    //   headers: headers,
-    //   params: options.body
-    // }).then(function (response) {
-    //     console.log("response: ", response.status, "response: ", response.data.entries);
-    //     deferred.resolve(response.data);
-
-    // }).catch(function (err) {
-    //     deferred.reject(err);
-    // });
-
-    // // send stringify data
-    // if (options.body && method == "POST" || method == "PUT") {
-    //     if (typeof options.body === 'object') {
-    //         // xhr.send(JSON.stringify(options.body));
-    //     } else {
-    //         // xhr.send(options.body);
-    //     }
-    // } else {
-    //     // xhr.send();
-    // }
-
-    // // collect response
-    // // xhr.onreadystatechange = function() {
-    // //     if (xhr.readyState === 4) {
-    // //         var data = xhr.responseText,
-    // //             error;
-    // //         try {
-    // //             data = JSON.parse(data);
-    // //         } catch (e) {
-    // //             error = {error_code: 141, message: 'Could not parse the response received from the server.'};
-    // //         }
-    // //         if (xhr.status >= 200 && xhr.status < 300) {
-    // //             deferred.resolve(data);
-    // //         } else {
-    // //             deferred.reject(data || error);
-    // //         }
-    // //     }
-    // // };
-    // return deferred.promise;
 }
 
 /***/ }),
@@ -7152,7 +7069,7 @@ module.exports = [["0","\u0000",128],["a1","｡",62],["8140","　、。，．・
 /* 51 */
 /***/ (function(module, exports) {
 
-module.exports = {"name":"contentstack","version":"3.1.1","description":"The Built.io Contentstack Javascript SDK","homepage":"https://www.built.io/products/contentstack/overview","author":{"name":"Built.io Contentstack","url":"https://www.built.io/"},"main":"dist/node/contentstack.js","browser":"dist/web/contentstack.js","_id":"contentstack@3.1.1","scripts":{"test":"node test.js","buildnode":"webpack --config webpack/webpack.node.js","buildweb":"webpack -p --config webpack/webpack.web.js","buildreactnative":"webpack --config webpack/webpack.react-native.js","generate-docs":"node_modules/.bin/jsdoc --configure docs-config.json --verbose"},"repository":{"type":"git","url":"https://github.com/builtio-contentstack/contentstack-javascript.git"},"_shasum":"a328ed07240476a26b31a23261355dc929e1da63","_from":"contentstack@latest","_npmVersion":"3.8.9","_nodeVersion":"6.2.0","_npmUser":{"name":"mynk","email":"mayank@raweng.com"},"maintainers":[{"name":"hiteshbal","email":"hitesh.baldaniya@raweng.com"},{"name":"mynk","email":"mayank@raweng.com"}],"dist":{"shasum":"a328ed07240476a26b31a23261355dc929e1da63","tarball":"https://registry.npmjs.org/contentstack/-/contentstack-3.0.0.tgz"},"license":"MIT","directories":{},"_resolved":"https://registry.npmjs.org/contentstack/-/contentstack-3.0.0.tgz","_npmOperationalInternal":{"host":"packages-18-east.internal.npmjs.com","tmp":"tmp/contentstack-3.0.0.tgz_1477830884275_0.9869455888401717"},"devDependencies":{"babel-core":"^6.24.0","babel-loader":"^6.4.1","babel-plugin-transform-runtime":"^6.23.0","babel-preset-env":"^1.3.2","babel-preset-es2015":"^6.16.0","babel-preset-es2016":"^6.22.0","babel-preset-stage-1":"^6.22.0","compression-webpack-plugin":"^0.3.1","es3ify-loader":"^0.2.0","jshint":"~2.6.3","string-replace-webpack-plugin":"0.0.3","tap-json":"^0.1.1","tape":"^4.4.0","jsdoc":"^3.4.0","uglify-js":"^2.6.2","webpack":"^2.2.1","webpack-md5-hash":"^0.0.5","webpack-merge":"^0.17.0"},"dependencies":{"babel-runtime":"^6.23.0","fs":"0.0.1-security","localStorage":"1.0.3","nodemailer":"4.0.1","path":"^0.12.7","q":"1.4.1","when":"3.7.8","xmlhttprequest":"1.8.0"}}
+module.exports = {"name":"contentstack","version":"3.1.2","description":"The Built.io Contentstack Javascript SDK","homepage":"https://www.built.io/products/contentstack/overview","author":{"name":"Built.io Contentstack","url":"https://www.built.io/"},"main":"dist/node/contentstack.js","browser":"dist/web/contentstack.js","_id":"contentstack@3.1.1","scripts":{"test":"node test.js","buildnode":"webpack --config webpack/webpack.node.js","buildweb":"webpack -p --config webpack/webpack.web.js","buildreactnative":"webpack --config webpack/webpack.react-native.js","generate-docs":"node_modules/.bin/jsdoc --configure docs-config.json --verbose"},"repository":{"type":"git","url":"https://github.com/builtio-contentstack/contentstack-javascript.git"},"_shasum":"a328ed07240476a26b31a23261355dc929e1da63","_from":"contentstack@latest","_npmVersion":"3.8.9","_nodeVersion":"6.2.0","_npmUser":{"name":"mynk","email":"mayank@raweng.com"},"maintainers":[{"name":"hiteshbal","email":"hitesh.baldaniya@raweng.com"},{"name":"mynk","email":"mayank@raweng.com"}],"dist":{"shasum":"a328ed07240476a26b31a23261355dc929e1da63","tarball":"https://registry.npmjs.org/contentstack/-/contentstack-3.0.0.tgz"},"license":"MIT","directories":{},"_resolved":"https://registry.npmjs.org/contentstack/-/contentstack-3.0.0.tgz","_npmOperationalInternal":{"host":"packages-18-east.internal.npmjs.com","tmp":"tmp/contentstack-3.0.0.tgz_1477830884275_0.9869455888401717"},"devDependencies":{"babel-core":"^6.24.0","babel-loader":"^6.4.1","babel-plugin-transform-runtime":"^6.23.0","babel-preset-env":"^1.3.2","babel-preset-es2015":"^6.16.0","babel-preset-es2016":"^6.22.0","babel-preset-stage-1":"^6.22.0","compression-webpack-plugin":"^0.3.1","es3ify-loader":"^0.2.0","jshint":"~2.6.3","string-replace-webpack-plugin":"0.0.3","tap-json":"^0.1.1","tape":"^4.4.0","jsdoc":"^3.4.0","uglify-js":"^2.6.2","webpack":"^2.2.1","webpack-md5-hash":"^0.0.5","webpack-merge":"^0.17.0"},"dependencies":{"babel-runtime":"^6.23.0","es6-promise":"^4.1.1","fs":"0.0.1-security","isomorphic-fetch":"^2.2.1","localStorage":"1.0.3","path":"^0.12.7"}}
 
 /***/ }),
 /* 52 */
