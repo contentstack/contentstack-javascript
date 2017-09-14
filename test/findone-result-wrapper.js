@@ -304,7 +304,7 @@ test('findOne:  .or() - Query Objects', function(assert) {
 
 test('findOne:  .and() - Query Objects', function(assert) {
     var Query1 = Stack.ContentType('source').Query().containedIn('title', ['source1']);
-    var Query2 = Stack.ContentType('source').Query().where('boolean', 'true');
+    var Query2 = Stack.ContentType('source').Query().where('boolean', true);
     var Query = Stack.ContentType('source').Query();
 
     Query
@@ -445,7 +445,7 @@ test('findOne:  .includeReference() - Array', function(assert) {
 
 // includeSchema
 test('findOne:  .includeSchema()', function(assert) {
-    var Query = Stack.ContentType('home').Query();
+    var Query = Stack.ContentType('source').Query();
 
     Query
         .includeSchema()
