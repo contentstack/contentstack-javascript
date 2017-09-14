@@ -308,7 +308,7 @@ test('findOne:  .and() - Query Objects', function(assert) {
     var Query = Stack.ContentType('source').Query();
 
     Query
-        .and(Query1, Query2, Query3, Query4)
+        .and(Query1, Query2)
         .findOne()
         .then(function success(entry) {
             entry = entry.toJSON();
