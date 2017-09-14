@@ -19,11 +19,7 @@ module.exports = function (options) {
 				'../src/runtimes/web',
 				'node_modules'
 			]
-		},
-		node: {
-		  fs: "empty",
-		  child_process: 'empty'
-		},
+		}
 	});
 }
 
