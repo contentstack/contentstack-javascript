@@ -250,8 +250,6 @@ function sendRequest(queryObject) {
     var isSingle = self.entry_uid || self.singleEntry ? true : false;
     var hashQuery = getHash(parseQueryFromParams(self, isSingle, tojson));
 
-    console.log("cachePolicy: ", cachePolicy);
-    //var spreadResult;
     /**
         for new api v3
     */
