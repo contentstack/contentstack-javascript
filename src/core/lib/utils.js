@@ -1,4 +1,4 @@
-import when from "runtime/when.js";
+// import when from "runtime/when.js";
 import Request from  './request';
 import Result from '../entry/result';
 
@@ -133,13 +133,16 @@ export function sendRequest (queryObject) {
     } else {
         queryObject._query.environment = queryObject.environment;
     }
-    var deferred = when.defer();
+
+    // var deferred = when.defer();
     var self = queryObject;
     var continueFlag = false;
     var cachePolicy = (typeof self.queryCachePolicy !== 'undefined') ? self.queryCachePolicy : self.cachePolicy;
     var tojson = (typeof self.tojson !== 'undefined') ? self.tojson : false;
     var isSingle = (self.entry_uid || self.singleEntry) ? true : false;
     var hashQuery = getHash(parseQueryFromParams(self, isSingle, tojson));
+
+    console.log("cachePolicy: ", cachePolicy);
     //var spreadResult;
     /**
         for new api v3
@@ -153,19 +156,22 @@ export function sendRequest (queryObject) {
         queryObject.requestParams.body =  merge(queryObject.requestParams.body,cloneQueryObj);
     }
 
+   
     var getCacheCallback = function () {
         return function (err, entries) {
-            try {
-                if (err) throw err;
-                if (!tojson) entries = resultWrapper(entries);
-                return deferred.resolve(spreadResult(entries));
-            } catch (e) {
-                return deferred.reject(e);
-            }
+            return new Promise(function (resolve, reject) {
+                try {
+                    if (err) throw err;
+                    if (!tojson) entries = resultWrapper(entries);
+                    resolve(spreadResult(entries));
+                } catch (e) {
+                    reject(e)
+                }
+            });
         }
     };
 
-    var callback = function (continueFlag) {
+    var callback = function (continueFlag, resolve, reject) {
         if(continueFlag) {
             Request(queryObject.requestParams)
                 .then(function (data) {
@@ -181,7 +187,7 @@ export function sendRequest (queryObject) {
                                 if(cachePolicy === 2) {
                                     self.provider.get(hashQuery, getCacheCallback());
                                 } else {
-                                    return deferred.reject({ error_code: 141, error_message: 'The requested entry doesn\'t exist.' });
+                                    return reject({ error_code: 141, error_message: 'The requested entry doesn\'t exist.' });
                                 }
                                 return;
                             }
@@ -193,17 +199,17 @@ export function sendRequest (queryObject) {
                                 try {
                                     if (err) throw err;
                                     if(!tojson) entries = resultWrapper(entries);
-                                    return deferred.resolve(spreadResult(entries));
+                                    return resolve(spreadResult(entries));
                                 } catch(e) {
-                                    return deferred.reject(e);
+                                    return reject(e);
                                 }
                             });
                         } else {
                             if(!tojson) entries = resultWrapper(entries);
-                            return deferred.resolve(spreadResult(entries));
+                            return resolve(spreadResult(entries));
                         }
                     } catch (e) {
-                        return deferred.reject({
+                        return reject({
                             message: e.message
                         });
                     }
@@ -212,7 +218,7 @@ export function sendRequest (queryObject) {
                     if(cachePolicy === 2) {
                         self.provider.get(hashQuery, getCacheCallback());
                     } else {
-                        return deferred.reject(error);
+                        return reject(error);
                     }
                 });
         }
@@ -221,47 +227,55 @@ export function sendRequest (queryObject) {
     switch (cachePolicy) {
         case 1:
             self.provider.get(hashQuery, function (err, _data) {
-                try {
-                    if(err || !_data) {
-                        callback(true);
-                    } else {
-                        if (!tojson) _data = resultWrapper(_data);
-                        return deferred.resolve(spreadResult(_data));
+                return new Promise(function (resolve, reject) {
+                    try {
+                        if(err || !_data) {
+                            callback(true, resolve, reject);
+                        } else {
+                            if (!tojson) _data = resultWrapper(_data);
+                            return resolve(spreadResult(_data));
+                        }
+                    } catch(e) {
+                        return reject(e);
                     }
-                } catch(e) {
-                    return deferred.reject(e);
-                }
+                })
             });
             break;
         case 2:
         case 0:
         case undefined:
         case -1:
-            callback(true);
+            return new Promise(function (resolve, reject) {
+                callback(true, resolve, reject);
+            })
     };
+
     if(cachePolicy !== 3) {
-        return deferred.promise;
+        return new Promise(function (resolve, reject) {
+            resolve();
+        });
     } else {
         return {
             cache: (function () {
-                var Defer = when.defer();
-                self.provider.get(hashQuery, function (err, _data) {
-                    try {
-                        if(err) {
-                            return Defer.reject(err);
-                        } else {
-                            if (!tojson) _data = resultWrapper(_data);
-                            return Defer.resolve(spreadResult(_data));
+                return new Promise( function (resolve, reject) {
+                    self.provider.get(hashQuery, function (err, _data) {
+                        try {
+                            if(err) {
+                                return reject(err);
+                            } else {
+                                if (!tojson) _data = resultWrapper(_data);
+                                return resolve(spreadResult(_data));
+                            }
+                        } catch(e) {
+                            return reject(e);
                         }
-                    } catch(e) {
-                        return Defer.reject(e);
-                    }
+                    });
                 });
-                return Defer.promise;
             }()),
             network: (function () {
-                callback(true);
-                return deferred.promise;
+                return new Promise(function (resolve, reject) {
+                    callback(true, resolve, reject);
+            });
             }()),
             both: function (_callback_) {
                 self.provider.get(hashQuery, function (err, entries) {

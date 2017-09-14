@@ -1,72 +1,46 @@
 import * as Utils from "./utils.js";
-import HTTPRequest from "runtime/http.js";
-import when from "runtime/when.js";
+import fetch from "runtime/http.js";
 import * as Package from '../../../package.json';
 
-
-
 export default function Request(options) {
-    var serialize = function(obj, prefix) {
-      var str = [], p;
-      for(p in obj) {
-        if (obj.hasOwnProperty(p)) {
-          var k = prefix ? prefix + "[" + p + "]" : p,
-              v = obj[p];
-          str.push((v !== null && typeof v === "object" && p !== 'query') ?
-            serialize(v, k) :
-            k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
-        }
-      }
-      return str.join("&");
-    }
-    
-    var deferred = when.defer();
-    var xhr = new HTTPRequest(),
-        method = "GET",
-        url = options.url,
-        headers = options.headers;
-
-    if(options.body && typeof options.body === 'object'){
-        delete options.body._method;    
-        var queryParams = serialize(options.body);
-    }
-    
-    //make all calls as GET instead of POST
-    xhr.open(method, url+'?'+queryParams, true);
-    // set headers
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-    xhr.setRequestHeader('X-User-Agent', 'contentstack-(JS-SDK)/' + Package.version);
-    for (var header in headers) {
-        xhr.setRequestHeader(header, headers[header]);
-    }
-
-    // send stringify data
-    if (options.body && method == "POST" || method == "PUT") {
-        if (typeof options.body === 'object') {
-            xhr.send(JSON.stringify(options.body));
-        } else {
-            xhr.send(options.body);
-        }
-    } else {
-        xhr.send();
-    }
-
-    // collect response
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            var data = xhr.responseText,
-                error;
-            try {
-                data = JSON.parse(data);
-            } catch (e) {
-                error = {error_code: 141, message: 'Could not parse the response received from the server.'};
+    return new Promise(function (resolve, reject) {
+        var serialize = function(obj, prefix) {
+            var str = [], p;
+            for (p in obj) {
+                if (obj.hasOwnProperty(p)) {
+                    var k = prefix ? prefix + "[" + p + "]" : p,
+                    v = obj[p];
+                    str.push((v !== null && typeof v === "object" && p !== 'query') ?
+                    serialize(v, k) :
+                    k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
+                }
             }
-            if (xhr.status >= 200 && xhr.status < 300) {
-                deferred.resolve(data);
+            return str.join("&");
+        }
+
+        var url = options.url, 
+            headers = options.headers;
+
+        // setting headers
+        headers['Content-Type'] = 'application/json; charset=UTF-8';
+        headers['X-User-Agent'] = 'contentstack-(JS-SDK)/' + Package.version
+
+        if (options.body && typeof options.body === 'object'){
+                delete options.body._method;    
+                var queryParams = serialize(options.body);
+        }
+
+        fetch(url + '?' + queryParams, {
+            method: 'GET',
+            headers: headers,
+        })
+        .then(function (response) {
+            if (response.status >= 400) {
+                reject("Bad response from server");
             } else {
-                deferred.reject(data || error);
+                var data = response.json();
+                resolve(data);
             }
-        }
-    };
-    return deferred.promise;
+        })
+    });
 }

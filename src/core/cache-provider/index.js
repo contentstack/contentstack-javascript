@@ -3,7 +3,7 @@ var CacheProvider = {};
 
 
 CacheProvider.providers = function(provider) {
-    if(provider) {
+    if (provider) {
         return localstorage;
     } else {
         console.error("Kindly provide valid provider.");
