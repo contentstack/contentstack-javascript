@@ -1,6 +1,6 @@
 {
   "name": "contentstack",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "The Built.io Contentstack Javascript SDK",
   "homepage": "https://www.built.io/products/contentstack/overview",
   "author": {
@@ -8,6 +8,7 @@
     "url": "https://www.built.io/"
   },
   "main": "dist/node/contentstack.js",
+  "browser": "dist/web/contentstack.js",
   "_id": "contentstack@3.1.1",
   "scripts": {
     "test": "node test.js",
@@ -71,7 +72,9 @@
   },
   "dependencies": {
     "babel-runtime": "^6.23.0",
+    "es6-promise": "^4.1.1",
     "fs": "0.0.1-security",
+    "isomorphic-fetch": "^2.2.1",
     "localStorage": "1.0.3",
     "nodemailer": "4.0.1",
     "path": "^0.12.7",
