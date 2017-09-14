@@ -76,10 +76,6 @@
     "fs": "0.0.1-security",
     "isomorphic-fetch": "^2.2.1",
     "localStorage": "1.0.3",
-    "nodemailer": "4.0.1",
-    "path": "^0.12.7",
-    "q": "1.4.1",
-    "when": "3.7.8",
-    "xmlhttprequest": "1.8.0"
+    "path": "^0.12.7"
   }
 }
