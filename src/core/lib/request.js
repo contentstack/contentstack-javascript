@@ -23,7 +23,7 @@ export default function Request(options) {
 
         // setting headers
         headers['Content-Type'] = 'application/json; charset=UTF-8';
-        headers['X-User-Agent'] = 'contentstack-(JS-SDK)/' + Package.version
+        headers['X-User-Agent'] = 'contentstack-(JS-SDK)/' + Package.version;
 
         if (options.body && typeof options.body === 'object'){
                 delete options.body._method;    
@@ -35,12 +35,15 @@ export default function Request(options) {
             headers: headers,
         })
         .then(function (response) {
-            if (response.status >= 400) {
-                reject("Bad response from server");
-            } else {
+            if (response.ok && response.status === 200) {
                 var data = response.json();
                 resolve(data);
+            } else {
+                reject(response.statusText);
             }
+        }).catch(function (error) {
+            console.log("Error: ", error);
+            reject(error);
         })
     });
 }

@@ -1,1 +1,2 @@
-module.exports = require('./dist/react-native/contentstack');
+import * as contentstack from 'react-native/contentstack';
+module.exports = contentstack;
