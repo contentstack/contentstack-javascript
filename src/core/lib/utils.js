@@ -1,9 +1,8 @@
-// import when from "runtime/when.js";
 import Request from  './request';
 import Result from '../entry/result';
 
 export function _type(val) {
-    var _typeof,
+    let _typeof,
         __typeof = typeof val;
     switch (__typeof) {
         case 'object':
@@ -20,9 +19,9 @@ export function _type(val) {
 
 // merge two objects
 export function mergeDeep(target, source) {
-    var self = this;
-    var _merge_recursive = function(target, source) {
-        for (var key in source) {
+    let self = this;
+    let _merge_recursive = function(target, source) {
+        for (let key in source) {
             if (self._type(source[key]) == 'object' && self._type(target[key]) == self._type(source[key])) {
                 _merge_recursive(target[key], source[key])
             } else if (self._type(source[key]) == 'array' && self._type(target[key]) == self._type(source[key])) {
@@ -39,7 +38,7 @@ export function mergeDeep(target, source) {
 // merge two objects
 export function merge(target, source) {
     if (target && source) {
-        for (var key in source) {
+        for (let key in source) {
             target[key] = source[key];
         }
     }
@@ -55,7 +54,7 @@ export function isBrowser() {
 // return the query from the params
 export function parseQueryFromParams(queryObject, single, toJSON) {
     if(queryObject && queryObject.requestParams) {
-        var _query = merge({}, ((queryObject.requestParams.body) ? queryObject.requestParams.body.query || {} : {}));
+        let _query = merge({}, ((queryObject.requestParams.body) ? queryObject.requestParams.body.query || {} : {}));
         if(_query.environment_uid) {
             delete _query.environment_uid;
             _query.environment = queryObject.environment;
@@ -76,7 +75,7 @@ export function parseQueryFromParams(queryObject, single, toJSON) {
 // returrn the hash value of the query
 export function getHash(query) {
     try {
-        var hashValue = generateHash(JSON.stringify(query)),
+        let hashValue = generateHash(JSON.stringify(query)),
             keyArray = [];
         keyArray.push(query.content_type_uid);
         keyArray.push(query.locale);
@@ -88,7 +87,7 @@ export function getHash(query) {
 
 // return the hash value of the string
 export function generateHash(str) {
-    var hash = 0, i, chr, len;
+    let hash = 0, i, chr, len;
     if (str.length === 0) return hash;
     for (i = 0, len = str.length; i < len; i++) {
         chr   = str.charCodeAt(i);
@@ -102,7 +101,7 @@ export function generateHash(str) {
 export function resultWrapper(result) {
     if(result && result.entries && typeof result.entries !== 'undefined') {
         if(result.entries && result.entries.length) {
-            for(var i = 0, _i = result.entries.length; i < _i; i++) {
+            for(let i = 0, _i = result.entries.length; i < _i; i++) {
                 result.entries[i] = Result(result.entries[i]);
             }
         } else {
@@ -116,7 +115,7 @@ export function resultWrapper(result) {
 
 // spread the result object
 export function spreadResult(result) {
-    var _results = [];
+    let _results = [];
     if(result && Object.keys(result).length) {
         if(typeof result.entries !== 'undefined') _results.push(result.entries);
         if(typeof result.schema !== 'undefined') _results.push(result.schema);
@@ -127,26 +126,25 @@ export function spreadResult(result) {
 };
 
 export function sendRequest (queryObject) {
-    var env_uid = queryObject.environment_uid;
+    let env_uid = queryObject.environment_uid;
     if (env_uid) {
         queryObject._query.environment_uid = env_uid;
     } else {
         queryObject._query.environment = queryObject.environment;
     }
 
-    // var deferred = when.defer();
-    var self = queryObject;
-    var continueFlag = false;
-    var cachePolicy = (typeof self.queryCachePolicy !== 'undefined') ? self.queryCachePolicy : self.cachePolicy;
-    var tojson = (typeof self.tojson !== 'undefined') ? self.tojson : false;
-    var isSingle = (self.entry_uid || self.singleEntry) ? true : false;
-    var hashQuery = getHash(parseQueryFromParams(self, isSingle, tojson));
+    let self = queryObject;
+    let continueFlag = false;
+    let cachePolicy = (typeof self.queryCachePolicy !== 'undefined') ? self.queryCachePolicy : self.cachePolicy;
+    let tojson = (typeof self.tojson !== 'undefined') ? self.tojson : false;
+    let isSingle = (self.entry_uid || self.singleEntry) ? true : false;
+    let hashQuery = getHash(parseQueryFromParams(self, isSingle, tojson));
 
     /**
         for new api v3
     */
     if(queryObject && queryObject.requestParams && queryObject.requestParams.body && queryObject.requestParams.body.query){
-        var cloneQueryObj = JSON.parse(JSON.stringify(queryObject.requestParams.body.query));
+        let cloneQueryObj = JSON.parse(JSON.stringify(queryObject.requestParams.body.query));
         if(typeof cloneQueryObj !== 'object') {
             cloneQueryObj = JSON.parse(cloneQueryObj);
         }
@@ -155,7 +153,7 @@ export function sendRequest (queryObject) {
     }
 
    
-    var getCacheCallback = function () {
+    let getCacheCallback = function () {
         return function (err, entries) {
             return new Promise(function (resolve, reject) {
                 try {
@@ -169,13 +167,13 @@ export function sendRequest (queryObject) {
         }
     };
 
-    var callback = function (continueFlag, resolve, reject) {
+    let callback = function (continueFlag, resolve, reject) {
         if(continueFlag) {
             Request(queryObject.requestParams)
                 .then(function (data) {
                     try {
                         self.entry_uid = self.tojson = self.queryCachePolicy = undefined;
-                        var entries = {};
+                        let entries = {};
                         if (queryObject.singleEntry) {
                             queryObject.singleEntry = false;
                             if(data.schema) entries.schema = data.schema;
@@ -284,7 +282,7 @@ export function sendRequest (queryObject) {
                     .then(function (data) {
                         try {
                             self.entry_uid = self.tojson = self.queryCachePolicy = undefined;
-                            var entries = {}, error = null;
+                            let entries = {}, error = null;
                             if (queryObject.singleEntry) {
                                 queryObject.singleEntry = false;
                                 if(data.schema) entries.schema = data.schema;
