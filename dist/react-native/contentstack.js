@@ -7,9 +7,9 @@ module.exports =
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
+/******/ 		if(installedModules[moduleId])
 /******/ 			return installedModules[moduleId].exports;
-/******/ 		}
+/******/
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -64,7 +64,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 9);
+/******/ 	return __webpack_require__(__webpack_require__.s = 15);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -72,14 +72,13 @@ module.exports =
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(process) {
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; // import when from "runtime/when.js";
-
+var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports._type = _type;
 exports.mergeDeep = mergeDeep;
@@ -96,14 +95,14 @@ var _request = __webpack_require__(1);
 
 var _request2 = _interopRequireDefault(_request);
 
-var _result = __webpack_require__(11);
+var _result = __webpack_require__(12);
 
 var _result2 = _interopRequireDefault(_result);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _type(val) {
-    var _typeof,
+    var _typeof = void 0,
         __typeof = typeof val === 'undefined' ? 'undefined' : _typeof2(val);
     switch (__typeof) {
         case 'object':
@@ -188,9 +187,9 @@ function getHash(query) {
 // return the hash value of the string
 function generateHash(str) {
     var hash = 0,
-        i,
-        chr,
-        len;
+        i = void 0,
+        chr = void 0,
+        len = void 0;
     if (str.length === 0) return hash;
     for (i = 0, len = str.length; i < len; i++) {
         chr = str.charCodeAt(i);
@@ -236,7 +235,6 @@ function sendRequest(queryObject) {
         queryObject._query.environment = queryObject.environment;
     }
 
-    // var deferred = when.defer();
     var self = queryObject;
     var continueFlag = false;
     var cachePolicy = typeof self.queryCachePolicy !== 'undefined' ? self.queryCachePolicy : self.cachePolicy;
@@ -408,6 +406,7 @@ function sendRequest(queryObject) {
         };
     }
 };
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
 
 /***/ }),
 /* 1 */
@@ -428,23 +427,23 @@ var _utils = __webpack_require__(0);
 
 var Utils = _interopRequireWildcard(_utils);
 
-var _http = __webpack_require__(12);
+var _http = __webpack_require__(13);
 
 var _http2 = _interopRequireDefault(_http);
-
-var _package = __webpack_require__(14);
-
-var Package = _interopRequireWildcard(_package);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+//JS SDK version
+var version = '3.1.2';
+
 function Request(options) {
     return new Promise(function (resolve, reject) {
+        var queryParams = void 0;
         var serialize = function serialize(obj, prefix) {
             var str = [],
-                p;
+                p = void 0;
             for (p in obj) {
                 if (obj.hasOwnProperty(p)) {
                     var k = prefix ? prefix + "[" + p + "]" : p,
@@ -460,11 +459,11 @@ function Request(options) {
 
         // setting headers
         headers['Content-Type'] = 'application/json; charset=UTF-8';
-        headers['X-User-Agent'] = 'contentstack-(JS-SDK)/' + Package.version;
+        headers['X-User-Agent'] = 'contentstack-(JS-SDK)/' + version;
 
         if (options.body && _typeof(options.body) === 'object') {
             delete options.body._method;
-            var queryParams = serialize(options.body);
+            queryParams = serialize(options.body);
         }
 
         (0, _http2.default)(url + '?' + queryParams, {
@@ -495,7 +494,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _localstorage = __webpack_require__(8);
+var _localstorage = __webpack_require__(10);
 
 var _localstorage2 = _interopRequireDefault(_localstorage);
 
@@ -548,7 +547,7 @@ var _entry = __webpack_require__(5);
 
 var _entry2 = _interopRequireDefault(_entry);
 
-var _query = __webpack_require__(10);
+var _query = __webpack_require__(11);
 
 var _query2 = _interopRequireDefault(_query);
 
@@ -872,7 +871,7 @@ var _utils = __webpack_require__(0);
 
 var Utils = _interopRequireWildcard(_utils);
 
-var _localstorage = __webpack_require__(13);
+var _localstorage = __webpack_require__(14);
 
 var _localstorage2 = _interopRequireDefault(_localstorage);
 
@@ -951,9 +950,9 @@ var _extend = function _extend(type) {
 																break;
 												case 2:
 																if (typeof arguments[0] === "string" && (Array.isArray(arguments[1]) || typeof arguments[1] === "string")) {
-																				var query = this._query[type][arguments[0]] || [];
-																				query = query.concat(arguments[1]);
-																				this._query[type][arguments[0]] = query;
+																				var _query = this._query[type][arguments[0]] || [];
+																				_query = _query.concat(arguments[1]);
+																				this._query[type][arguments[0]] = _query;
 																				return this;
 																} else {
 																				console.error("Kindly provide valid parameters");
@@ -970,7 +969,7 @@ var _extend = function _extend(type) {
  * @description An initializer is responsible for creating Entry object.
  * @param {String} uid - uid of the entry
  * @example
- * var Entry = Contentstack.Stack().ContentType('example).Entry();
+ * let Entry = Contentstack.Stack().ContentType('example).Entry();
  * @returns {Entry}
  * @ignore
  */
@@ -1157,7 +1156,7 @@ var Entry = function () {
          * blogEntry
          *      .toJSON()
          *      .then(function (result) {
-         *          var value = result.get(field_uid)
+         *          let value = result.get(field_uid)
         *       },function (error) {
          *          // error function
          *      })
@@ -1232,7 +1231,7 @@ exports.default = config;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
+/* WEBPACK VAR INJECTION */(function(global) {
 
 // http://www.rajdeepd.com/articles/chrome/localstrg/LocalStorageSample.htm
 
@@ -1287,9 +1286,233 @@ exports.default = config;
     module.exports = new LocalStorage();
   }
 })();
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
 
 /***/ }),
 /* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout() {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+})();
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch (e) {
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch (e) {
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e) {
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e) {
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while (len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) {
+    return [];
+};
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () {
+    return '/';
+};
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function () {
+    return 0;
+};
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var g;
+
+// This works in non-strict mode
+g = function () {
+	return this;
+}();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1, eval)("this");
+} catch (e) {
+	// This works if the window reference is available
+	if ((typeof window === "undefined" ? "undefined" : _typeof(window)) === "object") g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1326,7 +1549,7 @@ localStorage.set = function (key, value, callback) {
 
 function clearValuesForKey(keyArray, append) {
     if (!append && keyArray && keyArray.length) keyArray.push('');
-    var _key,
+    var _key = void 0,
         keys = cache.getKeys(),
         storage = cache.getStorage();
     if (!keyArray || !keyArray.length) {
@@ -1335,8 +1558,8 @@ function clearValuesForKey(keyArray, append) {
         }
     } else {
         _key = keyArray.join('.');
-        for (var i = 0, _i = keys.length; i < _i; i++) {
-            if (keys[i] && keys[i].indexOf(_key) === 0) delete storage[keys[i]];
+        for (var _i2 = 0, _i3 = keys.length; _i2 < _i3; _i2++) {
+            if (keys[_i2] && keys[_i2].indexOf(_key) === 0) delete storage[keys[_i2]];
         }
     }
 }
@@ -1345,11 +1568,11 @@ localStorage.clearByContentType = function () {
     try {
         if (arguments.length === 2 || arguments.length === 3) {
             var args = Array.prototype.slice.call(arguments);
-            var callback = args.splice(-1, 1).pop();
+            var _callback = args.splice(-1, 1).pop();
             var valueArray = [];
             valueArray.push.apply(valueArray, args);
             clearValuesForKey(valueArray);
-            callback();
+            _callback();
         }
     } catch (e) {
         callback(e);
@@ -1381,83 +1604,7 @@ localStorage.clearAll = function (callback) {
 exports.default = localStorage;
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _stack = __webpack_require__(3);
-
-var _stack2 = _interopRequireDefault(_stack);
-
-var _index = __webpack_require__(2);
-
-var _index2 = _interopRequireDefault(_index);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @method Contentstack
- * @description Creates an instance of `Contentstack`.
- * @api public
- */
-var Contentstack = function () {
-	function Contentstack() {
-		_classCallCheck(this, Contentstack);
-
-		/**
-   * @constant CachePolicy
-   * @description CachePolicy contains different cache policies constants.
-   * @example
-   * Contentstack.CachePolicy.IGNORE_CACHE
-   * Contentstack.CachePolicy.ONLY_NETWORK
-   * Contentstack.CachePolicy.CACHE_ELSE_NETWORK
-   * Contentstack.CachePolicy.NETWORK_ELSE_CACHE
-   * Contentstack.CachePolicy.CACHE_THEN_NETWORK
-   */
-		this.CachePolicy = _index2.default.policies;
-	}
-
-	/**
-  * @method Stack
-  * @description Initialize "Built.io Contentstack" Stack javascript-SDK instance
-  * @api public
-  * @example
-  * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment');
-  *                  OR
-  * var Stack = Contentstack.Stack({
-  *      'api_key':'bltsomethingapikey',
-  *      'access_token':'bltsomethongtoken',
-  *      'environment':'environment_name'
-  *   });
-  *
-  * @returns {Stack}
-  */
-
-
-	_createClass(Contentstack, [{
-		key: "Stack",
-		value: function Stack() {
-			for (var _len = arguments.length, stack_arguments = Array(_len), _key = 0; _key < _len; _key++) {
-				stack_arguments[_key] = arguments[_key];
-			}
-
-			return new (Function.prototype.bind.apply(_stack2.default, [null].concat(stack_arguments)))();
-		}
-	}]);
-
-	return Contentstack;
-}();
-
-module.exports = new Contentstack();
-
-/***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1993,7 +2140,7 @@ var Query = function (_Entry) {
 exports.default = Query;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2058,7 +2205,7 @@ var Result = function () {
          * @param field_uid
          * @example
          * blogEntry.then(function (result) {
-         *      var value = result.get(field_uid)
+         *      let value = result.get(field_uid)
          * },function (error) {
          *      // error function
          * })
@@ -2087,7 +2234,7 @@ module.exports = function (object) {
 };
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2099,7 +2246,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = fetch;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2118,10 +2265,80 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = _localStorage2.default;
 
 /***/ }),
-/* 14 */
-/***/ (function(module, exports) {
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = {"name":"contentstack","version":"3.1.2","description":"The Built.io Contentstack Javascript SDK","homepage":"https://www.built.io/products/contentstack/overview","author":{"name":"Built.io Contentstack","url":"https://www.built.io/"},"main":"dist/node/contentstack.js","browser":"dist/web/contentstack.js","_id":"contentstack@3.1.1","scripts":{"test":"node test.js","buildnode":"webpack --config webpack/webpack.node.js","buildweb":"webpack -p --config webpack/webpack.web.js","buildreactnative":"webpack --config webpack/webpack.react-native.js","buildall":"npm run buildnode;npm run buildweb;npm run buildreactnative","generate-docs":"node_modules/.bin/jsdoc --configure docs-config.json --verbose"},"repository":{"type":"git","url":"https://github.com/builtio-contentstack/contentstack-javascript.git"},"_shasum":"a328ed07240476a26b31a23261355dc929e1da63","_from":"contentstack@latest","_npmVersion":"3.8.9","_nodeVersion":"6.2.0","_npmUser":{"name":"mynk","email":"mayank@raweng.com"},"maintainers":[{"name":"hiteshbal","email":"hitesh.baldaniya@raweng.com"},{"name":"mynk","email":"mayank@raweng.com"}],"dist":{"shasum":"a328ed07240476a26b31a23261355dc929e1da63","tarball":"https://registry.npmjs.org/contentstack/-/contentstack-3.0.0.tgz"},"license":"MIT","directories":{},"_resolved":"https://registry.npmjs.org/contentstack/-/contentstack-3.0.0.tgz","_npmOperationalInternal":{"host":"packages-18-east.internal.npmjs.com","tmp":"tmp/contentstack-3.0.0.tgz_1477830884275_0.9869455888401717"},"devDependencies":{"babel-core":"6.24.0","babel-loader":"6.4.1","babel-plugin-transform-runtime":"6.23.0","babel-preset-env":"1.3.2","babel-preset-es2015":"6.16.0","babel-preset-es2016":"6.22.0","babel-preset-stage-1":"6.22.0","compression-webpack-plugin":"0.3.1","es3ify-loader":"0.2.0","jshint":"2.6.3","string-replace-webpack-plugin":"0.0.3","tap-json":"0.1.1","tape":"4.4.0","jsdoc":"3.4.0","uglify-js":"2.6.2","webpack":"2.2.1","webpack-md5-hash":"0.0.5","webpack-merge":"0.17.0","babel-runtime":"6.23.0"},"dependencies":{"isomorphic-fetch":"2.2.1","localStorage":"1.0.3"}}
+"use strict";
+
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _stack = __webpack_require__(3);
+
+var _stack2 = _interopRequireDefault(_stack);
+
+var _index = __webpack_require__(2);
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @method Contentstack
+ * @description Creates an instance of `Contentstack`.
+ * @api public
+ */
+var Contentstack = function () {
+	function Contentstack() {
+		_classCallCheck(this, Contentstack);
+
+		/**
+   * @constant CachePolicy
+   * @description CachePolicy contains different cache policies constants.
+   * @example
+   * Contentstack.CachePolicy.IGNORE_CACHE
+   * Contentstack.CachePolicy.ONLY_NETWORK
+   * Contentstack.CachePolicy.CACHE_ELSE_NETWORK
+   * Contentstack.CachePolicy.NETWORK_ELSE_CACHE
+   * Contentstack.CachePolicy.CACHE_THEN_NETWORK
+   */
+		this.CachePolicy = _index2.default.policies;
+	}
+
+	/**
+  * @method Stack
+  * @description Initialize "Built.io Contentstack" Stack javascript-SDK instance
+  * @api public
+  * @example
+  * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment');
+  *                  OR
+  * var Stack = Contentstack.Stack({
+  *      'api_key':'bltsomethingapikey',
+  *      'access_token':'bltsomethongtoken',
+  *      'environment':'environment_name'
+  *   });
+  *
+  * @returns {Stack}
+  */
+
+
+	_createClass(Contentstack, [{
+		key: "Stack",
+		value: function Stack() {
+			for (var _len = arguments.length, stack_arguments = Array(_len), _key = 0; _key < _len; _key++) {
+				stack_arguments[_key] = arguments[_key];
+			}
+
+			return new (Function.prototype.bind.apply(_stack2.default, [null].concat(stack_arguments)))();
+		}
+	}]);
+
+	return Contentstack;
+}();
+
+module.exports = new Contentstack();
 
 /***/ })
 /******/ ]);
