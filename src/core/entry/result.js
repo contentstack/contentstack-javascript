@@ -44,7 +44,7 @@ class Result {
      * @param field_uid
      * @example
      * blogEntry.then(function (result) {
-     *      var value = result.get(field_uid)
+     *      let value = result.get(field_uid)
      * },function (error) {
      *      // error function
      * })
@@ -52,8 +52,8 @@ class Result {
      */
     get(key){
         if(this.object() && key) {
-            var fields = key.split('.');
-            var value = fields.reduce(function(prev, field) {
+            let fields = key.split('.');
+            let value = fields.reduce(function(prev, field) {
                 return prev[field];
             }, this.object());
             return value;
