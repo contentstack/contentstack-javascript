@@ -15,7 +15,7 @@
     "buildnode": "webpack --config webpack/webpack.node.js",
     "buildweb": "webpack -p --config webpack/webpack.web.js",
     "buildreactnative": "webpack --config webpack/webpack.react-native.js",
-    "buildall": "npm run buildnode;npm run buildweb;npm run buildreactnative",
+    "buildall": "npm run buildnode&npm run buildweb&npm run buildreactnative",
     "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose"
   },
   "repository": {
@@ -70,7 +70,8 @@
     "webpack": "2.2.1",
     "webpack-md5-hash": "0.0.5",
     "webpack-merge": "0.17.0",
-    "babel-runtime": "6.23.0"
+    "babel-runtime": "6.23.0",
+    "string-replace-loader": "1.3.0"
   },
   "dependencies": {
     "isomorphic-fetch": "2.2.1",
