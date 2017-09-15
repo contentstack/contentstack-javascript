@@ -8,7 +8,7 @@ const _extend = function (type) {
         switch (arguments.length) {
             case 1:
                 if (Array.isArray(arguments[0]) || typeof arguments[0] === "string") {
-                    var query = this._query[type]['BASE'] || [];
+                    let query = this._query[type]['BASE'] || [];
                     query = query.concat(arguments[0]);
                     this._query[type]['BASE'] = query;
                     return this;
@@ -18,7 +18,7 @@ const _extend = function (type) {
                 break;
             case 2:
                 if (typeof arguments[0] === "string" && (Array.isArray(arguments[1]) || typeof arguments[1] === "string")) {
-                    var query = this._query[type][arguments[0]] || [];
+                    let query = this._query[type][arguments[0]] || [];
                     query = query.concat(arguments[1]);
                     this._query[type][arguments[0]] = query;
                     return this;
@@ -37,7 +37,7 @@ const _extend = function (type) {
  * @description An initializer is responsible for creating Entry object.
  * @param {String} uid - uid of the entry
  * @example
- * var Entry = Contentstack.Stack().ContentType('example).Entry();
+ * let Entry = Contentstack.Stack().ContentType('example).Entry();
  * @returns {Entry}
  * @ignore
  */
@@ -127,7 +127,7 @@ export default class Entry{
 	includeReference(...val){
 		if (Array.isArray(val) || typeof val === "string") {
 	        if(arguments.length){
-	            for (var i = 0; i < arguments.length; i++) {
+	            for (let i = 0; i < arguments.length; i++) {
 	                this._query['include'] = this._query['include'] || [];
 	                this._query['include'] = this._query['include'].concat(arguments[i]);
 	            }
@@ -200,7 +200,7 @@ export default class Entry{
 	 * blogEntry
 	 *      .toJSON()
 	 *      .then(function (result) {
-	 *          var value = result.get(field_uid)
+	 *          let value = result.get(field_uid)
 	*       },function (error) {
 	 *          // error function
 	 *      })
