@@ -10,7 +10,7 @@ const Contentstack = require('../../dist/node/contentstack.js');
 
 class ContentstackDemo {
     constructor(config) {
-        config = config || {'api_key': 'blt950d694ee9fce907', 'access_token': 'blt98a76e10ad802238', 'environment': 'development'}
+        config = config || {'api_key': 'blt123something', 'access_token': 'blt123something', 'environment': 'development'}
         // Initialize the Contentstackstack
         this.Stack = Contentstack.Stack(config);
     }
@@ -35,7 +35,7 @@ class ContentstackDemo {
      */
     getEntry(contentTypeUid, entryUid) {
         contentTypeUid = contentTypeUid || 'source'
-        entryUid = entryUid || 'blte9cab9a80ba36d22'
+        entryUid = entryUid || 'blt123something'
         return this.Stack.ContentType(contentTypeUid).Entry(entryUid).fetch()
     }
 }

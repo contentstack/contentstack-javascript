@@ -2,11 +2,11 @@
 
 const ContentstackDemo = require('./contentstack-demo.js')
 
-const Demo = new ContentstackDemo({'api_key': 'blt950d694ee9fce907', 'access_token': 'blt98a76e10ad802238', 'environment': 'development'})
+const Demo = new ContentstackDemo({'api_key': 'blt123something', 'access_token': 'blt123something', 'environment': 'development'})
 
 // get all the entries
 Demo
-    .getEntries('sourcess')
+    .getEntries('source')
     .then(function (result) {
         console.info("Result1 : ", result)
         // result object with entries
@@ -18,7 +18,7 @@ Demo
 
 // get single entry
 Demo
-    .getEntry('source', 'blte9cab9a80ba36d22')
+    .getEntry('source', 'blt123something')
     .then(function (result) {
         // console.info("Result2 : ", JSON.stringify(result))
         // result object with entry
