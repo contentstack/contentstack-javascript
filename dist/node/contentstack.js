@@ -6917,13 +6917,18 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _es6Promise = __webpack_require__(19);
+
+var _es6Promise2 = _interopRequireDefault(_es6Promise);
+
 var _isomorphicFetch = __webpack_require__(34);
 
 var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-__webpack_require__(19).polyfill();
+_es6Promise2.default.polyfill();
+
 exports.default = _isomorphicFetch2.default;
 
 /***/ }),
