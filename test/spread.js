@@ -31,6 +31,7 @@ test('spread:  .find()', function(TC) {
             field = 'updated_at';
 
         Query
+            .limit(1)
             .find()
             .spread(function success(entries) {
                 assert.ok(entries.length, 'Entries exists as first parameter');
