@@ -1,8 +1,8 @@
 'use strict';
 module.exports = {
     stack : {
-        "api_key": "blt950d694ee9fce907",
-        "access_token": "blt98a76e10ad802238",
+        "api_key": "api_key",
+        "access_token": "access_token",
         "environment": "development"
     },
     host: "cdn.contentstack.io",

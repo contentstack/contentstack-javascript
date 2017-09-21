@@ -6931,7 +6931,7 @@ _es6Promise2.default.polyfill();
 
 /**
  * @method spread
- * @description Will provides all the entries in spread promise.
+ * @description return the promise with the arguments.
  * @example
  * blogQuery.find().spread()
  */
