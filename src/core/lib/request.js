@@ -35,7 +35,7 @@ export default function Request(options) {
 
         fetch(url + '?' + queryParams, {
             method: 'GET',
-            headers: headers,
+            headers: headers
         })
         .then(function (response) {
             if (response.ok && response.status === 200) {
