@@ -7,8 +7,8 @@ const Demo = new ContentstackDemo({'api_key': 'blt123something', 'access_token':
 // get all the entries
 Demo
     .getEntries('source')
-    .then(function (result) {
-        console.info("Result1 : ", result)
+    .spread(function (result) {
+        console.info("Result: ", result)
         // result object with entries
     })
     .catch(function (err) {

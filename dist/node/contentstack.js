@@ -6313,6 +6313,25 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * @method spread
+ * @description return the promise with the arguments.
+ * @example
+ * blogQuery.find().spread()
+ */
+function spread() {
+    if (Promise.prototype.spread) return;
+    Promise.prototype.spread = function (fn) {
+        return this.then(function (args) {
+            return fn.apply(fn, args);
+        });
+    };
+}
+
+if (typeof Promise !== 'undefined') {
+    spread();
+}
+
 var _extend = {
     compare: function compare(type) {
         return function (key, value) {
@@ -6914,7 +6933,7 @@ module.exports = function (object) {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _es6Promise = __webpack_require__(19);
@@ -6928,24 +6947,6 @@ var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 _es6Promise2.default.polyfill();
-
-/**
- * @method spread
- * @description return the promise with the arguments.
- * @example
- * blogQuery.find().spread()
- */
-function spread() {
-    if (Promise.prototype.spread) return;
-    Promise.prototype.spread = function (fn) {
-        return this.then(function (args) {
-            return fn.apply(fn, args);
-        });
-    };
-}
-if (typeof Promise !== 'undefined') {
-    spread();
-}
 
 exports.default = _isomorphicFetch2.default;
 
