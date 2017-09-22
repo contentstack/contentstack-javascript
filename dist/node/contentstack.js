@@ -107,6 +107,22 @@ var _result2 = _interopRequireDefault(_result);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+/**
+ * @method addSpread
+ * @description method to add the spread.
+ */
+(function addSpread() {
+    if (Promise.prototype.spread) return;
+    Promise.prototype.spread = function (fn, errFunc) {
+        errFunc = errFunc || function (err) {};
+        return this.then(function (args) {
+            return fn.apply(fn, args);
+        }).catch(function (err) {
+            errFunc(err);
+        });
+    };
+})();
+
 function _type(val) {
     var _typeof = void 0,
         __typeof = typeof val === 'undefined' ? 'undefined' : _typeof2(val);
@@ -6312,25 +6328,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-/**
- * @method spread
- * @description return the promise with the arguments.
- * @example
- * blogQuery.find().spread()
- */
-function spread() {
-    if (Promise.prototype.spread) return;
-    Promise.prototype.spread = function (fn) {
-        return this.then(function (args) {
-            return fn.apply(fn, args);
-        });
-    };
-}
-
-if (typeof Promise !== 'undefined') {
-    spread();
-}
 
 var _extend = {
     compare: function compare(type) {

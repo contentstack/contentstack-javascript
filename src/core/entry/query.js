@@ -2,26 +2,7 @@ import Request from  '../lib/request';
 import * as Utils from '../lib/utils.js';
 import Entry from './entry';
 
-/**
- * @method spread
- * @description return the promise with the arguments.
- * @example
- * blogQuery.find().spread()
- */
-function spread() {
-    if (Promise.prototype.spread) return;
-    Promise.prototype.spread = function (fn) {
-         return this.then(function (args) {
-             return fn.apply(fn, args);
-         });
-     };
- }
- 
- if (typeof Promise !== 'undefined') {
-     spread();
- }
-
-var _extend = {
+let _extend = {
     compare: function(type) {
         return function(key, value) {
             if (key && value && typeof key === 'string' && typeof value !== 'undefined') {
