@@ -1640,6 +1640,25 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+/**
+ * @method spread
+ * @description return the promise with the arguments.
+ * @example
+ * blogQuery.find().spread()
+ */
+function spread() {
+    if (Promise.prototype.spread) return;
+    Promise.prototype.spread = function (fn) {
+        return this.then(function (args) {
+            return fn.apply(fn, args);
+        });
+    };
+}
+
+if (typeof Promise !== 'undefined') {
+    spread();
+}
+
 var _extend = {
     compare: function compare(type) {
         return function (key, value) {
@@ -2241,29 +2260,8 @@ module.exports = function (object) {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
-//import ES6Promise from 'es6-promise';
-//import fetch from 'isomorphic-fetch';
-//
-//ES6Promise.polyfill();
-/**
- * @method spread
- * @description return the promise with the arguments.
- * @example
- * blogQuery.find().spread()
- */
-function spread() {
-    if (Promise.prototype.spread) return;
-    Promise.prototype.spread = function (fn) {
-        return this.then(function (args) {
-            return fn.apply(fn, args);
-        });
-    };
-}
-if (typeof Promise !== 'undefined') {
-    spread();
-}
 exports.default = fetch;
 
 /***/ }),
