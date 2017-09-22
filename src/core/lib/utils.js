@@ -1,5 +1,20 @@
 import Request from  './request';
 import Result from '../entry/result';
+/**
+ * @method addSpread
+ * @description method to add the spread.
+ */
+(function addSpread() {
+    if (Promise.prototype.spread) return;
+    Promise.prototype.spread = function (fn, errFunc) {
+        errFunc = errFunc || function (err) {};
+        return this.then(function (args) {
+             return fn.apply(fn, args);
+         }).catch(function (err) {
+            errFunc(err);
+         });
+     };
+ }());
 
 export function _type(val) {
     let _typeof,
