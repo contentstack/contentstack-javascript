@@ -266,7 +266,7 @@ function sendRequest(queryObject) {
 
     /**
         for new api v3
-    */
+            */
     if (queryObject && queryObject.requestParams && queryObject.requestParams.body && queryObject.requestParams.body.query) {
         var cloneQueryObj = JSON.parse(JSON.stringify(queryObject.requestParams.body.query));
         if ((typeof cloneQueryObj === 'undefined' ? 'undefined' : _typeof2(cloneQueryObj)) !== 'object') {
@@ -322,6 +322,7 @@ function sendRequest(queryObject) {
                                 return reject(e);
                             }
                         });
+                        return resolve(spreadResult(entries));
                     } else {
                         if (!tojson) entries = resultWrapper(entries);
                         return resolve(spreadResult(entries));
@@ -343,8 +344,8 @@ function sendRequest(queryObject) {
 
     switch (cachePolicy) {
         case 1:
-            self.provider.get(hashQuery, function (err, _data) {
-                return new Promise(function (resolve, reject) {
+            return new Promise(function (resolve, reject) {
+                self.provider.get(hashQuery, function (err, _data) {
                     try {
                         if (err || !_data) {
                             callback(true, resolve, reject);
@@ -367,24 +368,20 @@ function sendRequest(queryObject) {
             });
     };
 
-    if (cachePolicy !== 3) {
-        return new Promise(function (resolve, reject) {
-            resolve();
-        });
-    } else {
+    if (cachePolicy === 3) {
         return {
             cache: function () {
                 return new Promise(function (resolve, reject) {
                     self.provider.get(hashQuery, function (err, _data) {
                         try {
                             if (err) {
-                                return reject(err);
+                                reject(err);
                             } else {
                                 if (!tojson) _data = resultWrapper(_data);
-                                return resolve(spreadResult(_data));
+                                resolve(spreadResult(_data));
                             }
                         } catch (e) {
-                            return reject(e);
+                            reject(e);
                         }
                     });
                 });
