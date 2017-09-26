@@ -4,30 +4,30 @@ import Result from '../entry/result';
  * @method addSpread
  * @description method to add the spread.
  */
-(function addSpread() {
+ (function addSpread() {
     if (Promise.prototype.spread) return;
     Promise.prototype.spread = function (fn, errFunc) {
         errFunc = errFunc || function (err) {};
         return this.then(function (args) {
-             return fn.apply(fn, args);
-         }).catch(function (err) {
-            errFunc(err);
-         });
-     };
- }());
+         return fn.apply(fn, args);
+     }).catch(function (err) {
+        errFunc(err);
+    });
+ };
+}());
 
-export function _type(val) {
+ export function _type(val) {
     let _typeof,
-        __typeof = typeof val;
+    __typeof = typeof val;
     switch (__typeof) {
         case 'object':
-            _typeof = __typeof;
-            if (Array.isArray(val)) {
-                __typeof = 'array';
-            }
-            break;
+        _typeof = __typeof;
+        if (Array.isArray(val)) {
+            __typeof = 'array';
+        }
+        break;
         default:
-            _typeof = __typeof;
+        _typeof = __typeof;
     }
     return __typeof;
 };
@@ -91,7 +91,7 @@ export function parseQueryFromParams(queryObject, single, toJSON) {
 export function getHash(query) {
     try {
         let hashValue = generateHash(JSON.stringify(query)),
-            keyArray = [];
+        keyArray = [];
         keyArray.push(query.content_type_uid);
         keyArray.push(query.locale);
         if(query.entry_uid) keyArray.push(query.entry_uid);
@@ -157,34 +157,34 @@ export function sendRequest (queryObject) {
 
     /**
         for new api v3
-    */
-    if(queryObject && queryObject.requestParams && queryObject.requestParams.body && queryObject.requestParams.body.query){
-        let cloneQueryObj = JSON.parse(JSON.stringify(queryObject.requestParams.body.query));
-        if(typeof cloneQueryObj !== 'object') {
-            cloneQueryObj = JSON.parse(cloneQueryObj);
+            */
+        if(queryObject && queryObject.requestParams && queryObject.requestParams.body && queryObject.requestParams.body.query){
+            let cloneQueryObj = JSON.parse(JSON.stringify(queryObject.requestParams.body.query));
+            if(typeof cloneQueryObj !== 'object') {
+                cloneQueryObj = JSON.parse(cloneQueryObj);
+            }
+            delete queryObject.requestParams.body.query;
+            queryObject.requestParams.body =  merge(queryObject.requestParams.body,cloneQueryObj);
         }
-        delete queryObject.requestParams.body.query;
-        queryObject.requestParams.body =  merge(queryObject.requestParams.body,cloneQueryObj);
-    }
 
-   
-    let getCacheCallback = function () {
-        return function (err, entries) {
-            return new Promise(function (resolve, reject) {
-                try {
-                    if (err) throw err;
-                    if (!tojson) entries = resultWrapper(entries);
-                    resolve(spreadResult(entries));
-                } catch (e) {
-                    reject(e)
-                }
-            });
-        }
-    };
 
-    let callback = function (continueFlag, resolve, reject) {
-        if(continueFlag) {
-            Request(queryObject.requestParams)
+        let getCacheCallback = function () {
+            return function (err, entries) {
+                return new Promise(function (resolve, reject) {
+                    try {
+                        if (err) throw err;
+                        if (!tojson) entries = resultWrapper(entries);
+                        resolve(spreadResult(entries));
+                    } catch (e) {
+                        reject(e)
+                    }
+                });
+            }
+        };
+
+        let callback = function (continueFlag, resolve, reject) {
+            if(continueFlag) {
+                Request(queryObject.requestParams)
                 .then(function (data) {
                     try {
                         self.entry_uid = self.tojson = self.queryCachePolicy = undefined;
@@ -210,14 +210,15 @@ export function sendRequest (queryObject) {
                                 try {
                                     if (err) throw err;
                                     if(!tojson) entries = resultWrapper(entries);
-                                    return resolve(spreadResult(entries));
+                                    return resolve(spreadResult(entries)); 
                                 } catch(e) {
                                     return reject(e);
                                 }
                             });
+                            return resolve(spreadResult(entries)); 
                         } else {
                             if(!tojson) entries = resultWrapper(entries);
-                            return resolve(spreadResult(entries));
+                            return resolve(spreadResult(entries)); 
                         }
                     } catch (e) {
                         return reject({
@@ -232,13 +233,13 @@ export function sendRequest (queryObject) {
                         return reject(error);
                     }
                 });
-        }
-    };
+            }
+        };
 
-    switch (cachePolicy) {
-        case 1:
-            self.provider.get(hashQuery, function (err, _data) {
-                return new Promise(function (resolve, reject) {
+        switch (cachePolicy) {
+            case 1:
+            return new Promise(function (resolve, reject) {
+                self.provider.get(hashQuery, function (err, _data) {
                     try {
                         if(err || !_data) {
                             callback(true, resolve, reject);
@@ -248,52 +249,48 @@ export function sendRequest (queryObject) {
                         }
                     } catch(e) {
                         return reject(e);
-                    }
-                })
+                    }             
+                });
             });
             break;
-        case 2:
-        case 0:
-        case undefined:
-        case -1:
+            case 2:
+            case 0:
+            case undefined:
+            case -1:
             return new Promise(function (resolve, reject) {
                 callback(true, resolve, reject);
             })
-    };
+        };
 
-    if(cachePolicy !== 3) {
-        return new Promise(function (resolve, reject) {
-            resolve();
-        });
-    } else {
-        return {
-            cache: (function () {
-                return new Promise( function (resolve, reject) {
-                    self.provider.get(hashQuery, function (err, _data) {
-                        try {
-                            if(err) {
-                                return reject(err);
-                            } else {
-                                if (!tojson) _data = resultWrapper(_data);
-                                return resolve(spreadResult(_data));
+        if(cachePolicy === 3) {
+            return {
+                cache: (function () {
+                    return new Promise( function (resolve, reject) {
+                        self.provider.get(hashQuery, function (err, _data) {
+                            try {
+                                if(err) {
+                                    reject(err);
+                                } else {
+                                    if (!tojson) _data = resultWrapper(_data);
+                                    resolve(spreadResult(_data));
+                                }
+                            } catch(e) {
+                                reject(e);
                             }
-                        } catch(e) {
-                            return reject(e);
-                        }
+                        });
                     });
-                });
-            }()),
-            network: (function () {
-                return new Promise(function (resolve, reject) {
-                    callback(true, resolve, reject);
-            });
-            }()),
-            both: function (_callback_) {
-                self.provider.get(hashQuery, function (err, entries) {
-                    if (!tojson) entries = resultWrapper(entries);
-                    _callback_(err, spreadResult(entries))
-                });
-                Request(queryObject.requestParams)
+                }()),
+                network: (function () {
+                    return new Promise(function (resolve, reject) {
+                        callback(true, resolve, reject);
+                    });
+                }()),
+                both: function (_callback_) {
+                    self.provider.get(hashQuery, function (err, entries) {
+                        if (!tojson) entries = resultWrapper(entries);
+                        _callback_(err, spreadResult(entries))
+                    });
+                    Request(queryObject.requestParams)
                     .then(function (data) {
                         try {
                             self.entry_uid = self.tojson = self.queryCachePolicy = undefined;
@@ -318,8 +315,8 @@ export function sendRequest (queryObject) {
                     .catch(function (error) {
                         _callback_(error);
                     });
-            }
+                }
 
-        };
-    }
-};
+            };
+        }
+    };
