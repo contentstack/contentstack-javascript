@@ -2,8 +2,7 @@ import Request from  '../lib/request';
 import * as Utils from '../lib/utils.js';
 import Entry from './entry';
 
-
-var _extend = {
+let _extend = {
     compare: function(type) {
         return function(key, value) {
             if (key && value && typeof key === 'string' && typeof value !== 'undefined') {
