@@ -38,6 +38,18 @@ class ContentstackDemo {
         entryUid = entryUid || 'blt123something'
         return this.Stack.ContentType(contentTypeUid).Entry(entryUid).fetch()
     }
+
+    /**
+     * fetchAsset
+     * @description  : fetchAsset is used to get the specified uid asset
+     * @params       : assetUid       {string} - Specified Asset uid to be fetched                 
+     * @return       : Result {Promise}
+     */
+    getAsset(assetUid) {
+        assetUid = assetUid || 'blt123something'
+        return this.Stack.Assets(assetUid).fetch()
+    }
+
 }
 
 module.exports = ContentstackDemo
