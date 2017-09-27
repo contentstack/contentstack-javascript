@@ -1,14 +1,14 @@
 'use strict'
 
-var ContentstackDemo = require('./contentstack-demo.js')
+const ContentstackDemo = require('./contentstack-demo.js')
 
-var Demo = new ContentstackDemo({'api_key': 'bltsomething1234', 'access_token': 'bltsomething1234asdf', 'environment': 'development'})
+const Demo = new ContentstackDemo({'api_key': 'blt123something', 'access_token': 'blt123something', 'environment': 'development'})
 
 // get all the entries
 Demo
-    .getEntries('blog')
-    .then(function (result) {
-        console.info("Result1 : ", result)
+    .getEntries('source')
+    .spread(function (result) {
+        console.info("Result: ", result)
         // result object with entries
     })
     .catch(function (err) {
@@ -18,9 +18,9 @@ Demo
 
 // get single entry
 Demo
-    .getEntry('home', 'blt1234567890')
+    .getEntry('source', 'blt123something')
     .then(function (result) {
-        console.info("Result2 : ", result)
+        // console.info("Result2 : ", JSON.stringify(result))
         // result object with entry
     })
     .catch(function (err) {
