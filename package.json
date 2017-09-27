@@ -1,6 +1,6 @@
 {
   "name": "contentstack",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "The Built.io Contentstack Javascript SDK",
   "homepage": "https://www.built.io/products/contentstack/overview",
   "author": {
@@ -8,12 +8,14 @@
     "url": "https://www.built.io/"
   },
   "main": "dist/node/contentstack.js",
+  "browser": "dist/web/contentstack.js",
   "_id": "contentstack@3.1.1",
   "scripts": {
     "test": "node test.js",
     "buildnode": "webpack --config webpack/webpack.node.js",
     "buildweb": "webpack -p --config webpack/webpack.web.js",
     "buildreactnative": "webpack --config webpack/webpack.react-native.js",
+    "buildall": "npm run buildnode&npm run buildweb&npm run buildreactnative",
     "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose"
   },
   "repository": {
@@ -50,33 +52,30 @@
     "tmp": "tmp/contentstack-3.0.0.tgz_1477830884275_0.9869455888401717"
   },
   "devDependencies": {
-    "babel-core": "^6.24.0",
-    "babel-loader": "^6.4.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.3.2",
-    "babel-preset-es2015": "^6.16.0",
-    "babel-preset-es2016": "^6.22.0",
-    "babel-preset-stage-1": "^6.22.0",
-    "compression-webpack-plugin": "^0.3.1",
-    "es3ify-loader": "^0.2.0",
-    "jshint": "~2.6.3",
+    "babel-core": "6.24.0",
+    "babel-loader": "6.4.1",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-preset-env": "1.3.2",
+    "babel-preset-es2015": "6.16.0",
+    "babel-preset-es2016": "6.22.0",
+    "babel-preset-stage-1": "6.22.0",
+    "compression-webpack-plugin": "0.3.1",
+    "es3ify-loader": "0.2.0",
+    "jshint": "2.6.3",
     "string-replace-webpack-plugin": "0.0.3",
-    "tap-json": "^0.1.1",
-    "tape": "^4.4.0",
-    "jsdoc": "^3.4.0",
-    "uglify-js": "^2.6.2",
-    "webpack": "^2.2.1",
-    "webpack-md5-hash": "^0.0.5",
-    "webpack-merge": "^0.17.0"
+    "tap-json": "0.1.1",
+    "tape": "4.4.0",
+    "jsdoc": "3.4.0",
+    "uglify-js": "2.6.2",
+    "webpack": "2.2.1",
+    "webpack-md5-hash": "0.0.5",
+    "webpack-merge": "0.17.0",
+    "babel-runtime": "6.23.0",
+    "string-replace-loader": "1.3.0"
   },
   "dependencies": {
-    "babel-runtime": "^6.23.0",
-    "fs": "0.0.1-security",
-    "localStorage": "1.0.3",
-    "nodemailer": "4.0.1",
-    "path": "^0.12.7",
-    "q": "1.4.1",
-    "when": "3.7.8",
-    "xmlhttprequest": "1.8.0"
+    "es6-promise": "4.1.1",
+    "isomorphic-fetch": "2.2.1",
+    "localStorage": "1.0.3"
   }
 }
