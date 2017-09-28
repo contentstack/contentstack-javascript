@@ -2,7 +2,7 @@ import Request from  '../lib/request';
 import * as Utils from '../lib/utils.js';
 import Entry from './entry';
 
-let _extend = {
+const _extend = {
     compare: function(type) {
         return function(key, value) {
             if (key && value && typeof key === 'string' && typeof value !== 'undefined') {
@@ -15,7 +15,7 @@ let _extend = {
         };
     },
     contained: function(bool) {
-        var type = (bool) ? '$in' : '$nin';
+        let type = (bool) ? '$in' : '$nin';
         return function(key, value) {
             if (key && value && typeof key === 'string' && Array.isArray(value)) {
                 this._query['query'][key] = this._query['query'][key] || {};
@@ -40,8 +40,8 @@ let _extend = {
     },
     logical: function(type) {
         return function() {
-            var _query = [];
-            for (var i = 0, _i = arguments.length; i < _i; i++) {
+            let _query = [];
+            for (let i = 0, _i = arguments.length; i < _i; i++) {
                 if (arguments[i] instanceof Query && arguments[i]._query.query) {
                     _query.push(arguments[i]._query.query);
                 } else if (typeof arguments[i] === "object") {
@@ -85,7 +85,7 @@ let _extend = {
  * An initializer is responsible for creating Query object.
  * @example
  * <caption>Query instance creation.</caption>
- * var Query = Contentstack.Stack().ContentType('example).Query();
+ * let Query = Contentstack.Stack().ContentType('example).Query();
  * @ignore
  */
 export default class Query extends Entry{
@@ -244,13 +244,13 @@ export default class Query extends Entry{
          * @param {object} queries - array of Query objects/raw queries to be taken into consideration
          * @example
          * <caption> .or with Query instances</caption>
-         * var Query1 = Stack.ContentType('blog').Query().where('title', 'Demo')
-         * var Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10)
+         * let Query1 = Stack.ContentType('blog').Query().where('title', 'Demo')
+         * let Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10)
          * blogQuery.or(Query1, Query2)
          * @example
          * <caption> .or with raw queries</caption>
-         * var Query1 = Stack.ContentType('blog').Query().where('title', 'Demo').getQuery()
-         * var Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10).getQuery()
+         * let Query1 = Stack.ContentType('blog').Query().where('title', 'Demo').getQuery()
+         * let Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10).getQuery()
          * blogQuery.or(Query1, Query2)
          * @returns {Query}
          */
@@ -262,13 +262,13 @@ export default class Query extends Entry{
          * @param {object} queries - array of Query objects/raw queries to be taken into consideration
          * @example
          * <caption> .and with Query instances</caption>
-         * var Query1 = Stack.ContentType('blog').Query().where('title', 'Demo')
-         * var Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10)
+         * let Query1 = Stack.ContentType('blog').Query().where('title', 'Demo')
+         * let Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10)
          * blogQuery.and(Query1, Query2)
          * @example
          * <caption> .and with raw queries</caption>
-         * var Query1 = Stack.ContentType('blog').Query().where('title', 'Demo').getQuery()
-         * var Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10).getQuery()
+         * let Query1 = Stack.ContentType('blog').Query().where('title', 'Demo').getQuery()
+         * let Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10).getQuery()
          * blogQuery.and(Query1, Query2)
          * @returns {Query}
          */

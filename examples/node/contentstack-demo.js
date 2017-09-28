@@ -38,6 +38,14 @@ class ContentstackDemo {
         entryUid = entryUid || 'blt123something'
         return this.Stack.ContentType(contentTypeUid).Entry(entryUid).fetch()
     }
+    /**
+     * getAssets
+     * @description  : getAssets is used to get the assets
+     * @return       : Result {Promise}
+     */
+    getAssets() {
+        return this.Stack.Assets().find()
+    }
 
     /**
      * fetchAsset
