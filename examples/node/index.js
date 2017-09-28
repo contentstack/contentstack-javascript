@@ -39,3 +39,14 @@ Demo
         // error of get entry
         console.error("Fetch Error :", err)
     })
+
+// Demo
+//     .getAssets()
+//     .then(function (result) {
+//         console.info("Result2 : ", result)
+//         // result object with entry
+//     })
+//     .catch(function (err) {
+//         // error of get entry
+//         console.error("Fetch Error :", err)
+// })

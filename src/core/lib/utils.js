@@ -80,6 +80,7 @@ export function parseQueryFromParams(queryObject, single, toJSON) {
             locale: _query.locale || 'en-us',
             query: _query,
             entry_uid: queryObject.entry_uid,
+            asset_uid: queryObject.asset_uid,
             single:  single || "false",
             toJSON: toJSON || "false",
             api_key: (queryObject.requestParams.headers) ? queryObject.requestParams.headers.api_key : ""
@@ -95,6 +96,7 @@ export function getHash(query) {
         keyArray.push(query.content_type_uid);
         keyArray.push(query.locale);
         if(query.entry_uid) keyArray.push(query.entry_uid);
+        if(query.asset_uid) keyArray.push(query.asset_uid);
         keyArray.push(hashValue);
         return keyArray.join('.');
     } catch(e) {}
@@ -114,17 +116,29 @@ export function generateHash(str) {
 
 // generate the Result object
 export function resultWrapper(result) {
-    if(result && result.entries && typeof result.entries !== 'undefined') {
-        if(result.entries && result.entries.length) {
+    if (result && result.entries && typeof result.entries !== 'undefined') {
+        if (result.entries && result.entries.length) {
             for(let i = 0, _i = result.entries.length; i < _i; i++) {
                 result.entries[i] = Result(result.entries[i]);
             }
         } else {
             result.entries = [];
         }
+    } else if (result && result.assets && typeof result.assets !== 'undefined') {
+        if (result.assets && result.assets.length) {
+            for(let j = 0, _j = result.assets.length; j < _j; j++) {
+                result.assets[j] = Result(result.assets[j]);
+            }
+        } else {
+            result.assets = [];
+        }
     } else if(result && typeof result.entry !== 'undefined') {
         result.entry = Result(result.entry);
+    } else if (result && result.asset) {
+        result.asset = Result(result.asset);
     }
+
+    console.log(result.asset);
     return result;
 };
 
@@ -133,9 +147,11 @@ export function spreadResult(result) {
     let _results = [];
     if(result && Object.keys(result).length) {
         if(typeof result.entries !== 'undefined') _results.push(result.entries);
+        if(typeof result.assets !== 'undefined') _results.push(result.assets);
         if(typeof result.schema !== 'undefined') _results.push(result.schema);
         if(typeof result.count !== 'undefined') _results.push(result.count);
         if(typeof result.entry !== 'undefined') _results = result.entry;
+        if(typeof result.asset !== 'undefined') _results = result.asset;
     }
     return _results;
 };
@@ -152,7 +168,7 @@ export function sendRequest (queryObject) {
     let continueFlag = false;
     let cachePolicy = (typeof self.queryCachePolicy !== 'undefined') ? self.queryCachePolicy : self.cachePolicy;
     let tojson = (typeof self.tojson !== 'undefined') ? self.tojson : false;
-    let isSingle = (self.entry_uid || self.singleEntry) ? true : false;
+    let isSingle = (self.entry_uid || self.singleEntry || self.asset_uid) ? true : false;
     let hashQuery = getHash(parseQueryFromParams(self, isSingle, tojson));
 
     /**
@@ -187,13 +203,15 @@ export function sendRequest (queryObject) {
                 Request(queryObject.requestParams)
                 .then(function (data) {
                     try {
-                        self.entry_uid = self.tojson = self.queryCachePolicy = undefined;
+                        self.entry_uid = self.asset_uid = self.tojson = self.queryCachePolicy = undefined;
                         let entries = {};
                         if (queryObject.singleEntry) {
                             queryObject.singleEntry = false;
                             if(data.schema) entries.schema = data.schema;
                             if (data.entries && data.entries.length) {
                                 entries.entry = data.entries[0];
+                            } else if (data.assets && data.assets.length) {
+                                entries.assets = data.assets[0];
                             } else {
                                 if(cachePolicy === 2) {
                                     self.provider.get(hashQuery, getCacheCallback());
@@ -217,6 +235,8 @@ export function sendRequest (queryObject) {
                             });
                             return resolve(spreadResult(entries)); 
                         } else {
+                            entries['entries'] = data.assets;
+                            console.log("entries: ", entries);
                             if(!tojson) entries = resultWrapper(entries);
                             return resolve(spreadResult(entries)); 
                         }
@@ -300,6 +320,8 @@ export function sendRequest (queryObject) {
                                 if(data.schema) entries.schema = data.schema;
                                 if (data.entries && data.entries.length) {
                                     entries.entry = data.entries[0];
+                                } else if (data.assets && data.assets.length) {
+                                    entries.assets = data.assets[0];
                                 } else {
                                     error = { error_code: 141, error_message: 'The requested entry doesn\'t exist.' };
                                 }

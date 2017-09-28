@@ -1,7 +1,6 @@
 import * as Utils from "../lib/utils";
 import Stack from "../stack";
 
-
 const _extend = function (type) {
     return function () {
         this._query[type] = this._query[type] || {};
