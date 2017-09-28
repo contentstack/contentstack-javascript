@@ -1,6 +1,6 @@
 import * as Utils from '../lib/utils';
 import Stack from '../stack';
-import Query from '../entry/query';
+import Query from './query';
 /**
  * @summary Creates an instance of `Asset`.
  * @description An initializer is responsible for creating Asset object.
@@ -44,8 +44,26 @@ export default class Asset {
      * @returns {Query}
      */
     Query(){
-        let query = new AssetQuery();
+        let query = new Query();
         return Utils.merge(query, this);
+    }
+
+    /**
+     * @method toJSON
+     * @description This method is used to convert the result in to plain javascript object.
+     * @example
+     * blogEntry
+     *      .toJSON()
+     *      .then(function (result) {
+     *          let value = result.get(field_uid)
+    *       },function (error) {
+     *          // error function
+     *      })
+     * @returns {Object}
+     */
+    toJSON(){
+        this.tojson = true;
+        return this;
     }
 
     /**

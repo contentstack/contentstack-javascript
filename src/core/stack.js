@@ -1,7 +1,7 @@
 import config from '../../config';
 import * as Utils from './lib/utils';
 import Entry from './entry/entry';
-import Asset from './asset/asset';
+import Asset from './entry/asset';
 import Query from './entry/query';
 import Request from  './lib/request';
 import * as cache from './cache';
@@ -209,13 +209,14 @@ export default class Stack{
      * @method Asset
      * @description Set the Asset Uid which you want to retrive the Asset.
      * @param {String} uid - asset_uid
-     * @example .Asset('blt1234567890abcef')
+     * @example Stack.Asset('blt1234567890abcef')
      * @returns {Asset}
      */
     Assets(uid){
         let asset = new Asset();
+        this.isAsset = true;
         if (uid && typeof uid === "string") {
-            asset.asset_uid = uid;
+            asset.asset_uid =  uid;
         }
         return Utils.merge(asset, this);
     }
