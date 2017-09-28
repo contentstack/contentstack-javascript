@@ -1,6 +1,6 @@
 {
   "name": "contentstack",
-  "version": "3.1.2",
+  "version": "3.2.0",
   "description": "The Built.io Contentstack Javascript SDK",
   "homepage": "https://www.built.io/products/contentstack/overview",
   "author": {
@@ -15,7 +15,8 @@
     "buildnode": "webpack --config webpack/webpack.node.js",
     "buildweb": "webpack -p --config webpack/webpack.web.js",
     "buildreactnative": "webpack --config webpack/webpack.react-native.js",
-    "buildall": "npm run buildnode&npm run buildweb&npm run buildreactnative",
+    "buildnativescript": "webpack --config webpack/webpack.nativescript.js",
+    "buildall": "npm run buildnode&npm run buildweb&npm run buildreactnative&npm run buildnativescript",
     "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose"
   },
   "repository": {

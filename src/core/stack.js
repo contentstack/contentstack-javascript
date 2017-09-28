@@ -1,6 +1,7 @@
 import config from '../../config';
 import * as Utils from './lib/utils';
 import Entry from './entry/entry';
+import Asset from './asset/asset';
 import Query from './entry/query';
 import Request from  './lib/request';
 import * as cache from './cache';
@@ -197,11 +198,26 @@ export default class Stack{
      * @returns {Entry}
      */
     Entry(uid){
-        var entry = new Entry();
+        let entry = new Entry();
         if (uid && typeof uid === "string") {
             entry.entry_uid = uid;
         }
         return Utils.merge(entry, this);
+    }
+
+    /**
+     * @method Asset
+     * @description Set the Asset Uid which you want to retrive the Asset.
+     * @param {String} uid - asset_uid
+     * @example .Asset('blt1234567890abcef')
+     * @returns {Asset}
+     */
+    Assets(uid){
+        let asset = new Asset();
+        if (uid && typeof uid === "string") {
+            asset.asset_uid = uid;
+        }
+        return Utils.merge(asset, this);
     }
 
     /**
@@ -211,7 +227,7 @@ export default class Stack{
      * @returns {Query}
      */
     Query(){
-        var query = new Query();
+        let query = new Query();
         return Utils.merge(query, this);
     }
 
@@ -223,7 +239,7 @@ export default class Stack{
      * @ignore
      */
     getLastActivities(){
-        var query = {
+        let query = {
                 method: 'POST',
                 headers: this.headers,
                 url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
