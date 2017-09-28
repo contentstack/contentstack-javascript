@@ -85,7 +85,7 @@ const _extend = {
  * An initializer is responsible for creating Query object.
  * @example
  * <caption>Query instance creation.</caption>
- * let Query = Contentstack.Stack().ContentType('example).Query();
+ * let Query = Contentstack.Stack().ContentType('example').Query();
  * @ignore
  */
  export default class Query extends Entry{
