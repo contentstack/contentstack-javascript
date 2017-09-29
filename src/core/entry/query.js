@@ -308,11 +308,13 @@ const _extend = {
      * @returns {Query}
      */
      count(){
+        const host =  this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
+              url = (!this.isAsset) ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
         this._query['count'] = true;
         this.requestParams = {
             method: 'POST',
             headers: this.headers,
-            url: this.config.protocol + "://" + this.config.host + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries,
+            url: url,
             body: {
                 _method: 'GET',
                 query: this._query
