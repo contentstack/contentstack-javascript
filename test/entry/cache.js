@@ -4,10 +4,10 @@
  */
 var test = require('tape');
 //var Contentstack = require('contentstack');
-var Contentstack = require('../dist/node/contentstack.js');
-var init = require('./config');
-var Utils = require('../src/core/lib/utils.js');
-var localStorage = require('./../node_modules/contentstack/src/cache.js');
+var Contentstack = require('../../dist/node/contentstack.js');
+var init = require('../config.js');
+var Utils = require('../../src/core/lib/utils.js');
+var localStorage = require('./../../node_modules/contentstack/src/cache.js');
 
 var Stack;
 
