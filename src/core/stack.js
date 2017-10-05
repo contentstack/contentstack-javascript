@@ -1,8 +1,8 @@
 import config from '../../config';
 import * as Utils from './lib/utils';
-import Entry from './entry/entry';
-import Asset from './entry/asset';
-import Query from './entry/query';
+import Entry from './modules/entry';
+import Asset from './modules/asset';
+import Query from './modules/query';
 import Request from  './lib/request';
 import * as cache from './cache';
 import CacheProvider from './cache-provider/index';
@@ -209,12 +209,12 @@ export default class Stack{
      * @method Asset
      * @description Set the Asset Uid which you want to retrive the Asset.
      * @param {String} uid - asset_uid
-     * @example Stack.Asset('blt1234567890abcef')
+     * @example Stack.Assets('blt1234567890abcef')
      * @returns {Asset}
      */
     Assets(uid){
         let asset = new Asset();
-        this.isAsset = true;
+        this.type = 'asset';
         if (uid && typeof uid === "string") {
             asset.asset_uid =  uid;
         }

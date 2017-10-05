@@ -6,7 +6,7 @@ const _extend = {
     compare: function(type) {
         return function(key, value) {
             if (key && value && typeof key === 'string' && typeof value !== 'undefined') {
-                this._query['query'][key] = this._query['query'][key] || {};
+                this._query['query'][key] = this._query['query']['file_size'] || {};
                 this._query['query'][key][type] = value;
                 return this;
             } else {
@@ -86,14 +86,15 @@ const _extend = {
  * @example
  * <caption>Query instance creation.</caption>
  * let Query = Contentstack.Stack().ContentType('example').Query();
+ * let assetQuery =  Contentstack.Stack().Assets().Query();
  * @ignore
  */
- export default class Query extends Entry{
-    constructor(){
+ export default class Query extends Entry {
+    constructor() {
         super();
         this._query = this._query || {};
         this._query['query'] = this._query['query'] || {};
-        
+
         /**
          * @method lessThan
          * @description This method provides only the entries with values less than the specified value for a field.
@@ -113,7 +114,6 @@ const _extend = {
          * @returns {Query}
          */
          this.lessThanOrEqualTo = _extend.compare('$lte');
-
         /**
          * @method greaterThan
          * @description This method provides only the entries with values greater than the specified value for a field.
@@ -286,6 +286,7 @@ const _extend = {
      equalTo(key, value){
         if (key && typeof key === 'string') {
             this._query['query'][key] = value;
+
             return this;
         } else {
             console.error("Kindly provide valid parameters.");
@@ -309,7 +310,7 @@ const _extend = {
      */
      count(){
         const host =  this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-              url = (!this.isAsset) ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
+              url = (this.type && this.type !== 'asset') ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
         this._query['count'] = true;
         this.requestParams = {
             method: 'POST',
@@ -426,7 +427,7 @@ const _extend = {
      */
      find() {
         const host =  this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-              url = (!this.isAsset) ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
+              url = (this.type && this.type !== 'asset') ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
         this.requestParams = {
             method: 'POST',
             headers: this.headers,
@@ -447,7 +448,7 @@ const _extend = {
      */
      findOne() {
         const host =  this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-              url = (!this.isAsset) ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
+              url = (this.type && this.type !== 'asset') ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
         this.singleEntry = true;
         this._query.limit = 1;
         this.requestParams = {

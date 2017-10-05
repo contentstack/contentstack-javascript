@@ -1,5 +1,5 @@
 import Request from  './request';
-import Result from '../entry/result';
+import Result from '../modules/result';
 /**
  * @method addSpread
  * @description method to add the spread.
