@@ -36,13 +36,12 @@ const _extend = function (type) {
  * @description An initializer is responsible for creating Asset object.
  * @param {String} uid - uid of the asset
  * @example
- * let Entry = Contentstack.Stack().Asset('bltsomething123');
+ * let Entry = Contentstack.Stack().Assets('bltsomething123');
  * @returns {Asset}
  * @ignore
  */
  export default class Asset {
-   constructor(){
-        this._query = {};
+     constructor(){
        /**
          * @method only
          * @description This method is use to show the selected fields of the assets in resultset.
@@ -50,39 +49,18 @@ const _extend = function (type) {
          * @param {Array} values - array of fields to be show in resultset
          * @example
          * <caption> .only with field uid </caption>
-         * Asset().only('title')
+         * Assets().only('title')
          * @example
          * <caption> .only with field uid </caption>
-         * Asset().only('BASE','title')
+         * Assets().only('BASE','title')
          * @example
          * <caption> .only with field uids(array) </caption>
-         * Asset().only(['title','description'])
+         * Assets().only(['title','description'])
          * @returns {Asset}
          */
-        this.only = _extend('only');
-        return this;
-  }
-
-  setCacheProvider(provider){
-    if(provider && typeof provider === 'object') {  
-        this.provider = provider;
-
-    }
-    return this;
-}
-
-setCachePolicy(policy){
-    if(typeof policy === 'number' && policy >= -1 && policy < 4) {
-        if(!this._query) {
-            this.cachePolicy = policy;
-        } else {
-            this.queryCachePolicy = policy;
-        }
-    } else {
-        console.error("Kindly provide the valid policy");
-    }
-    return this;
-}
+         this.only = _extend('only');
+         return this;
+     }
 
     /**
      * @method Query
@@ -92,7 +70,6 @@ setCachePolicy(policy){
      */
      Query(){
         let query = new Query();
-        console.log("this Query:::::::::::::::", this);
         return Utils.merge(query, this);
     }
 
@@ -117,11 +94,11 @@ setCachePolicy(policy){
      * @method toJSON
      * @description This method is used to convert the result in to plain javascript object.
      * @example
-     * blogEntry
+     * assetQuery
      *      .toJSON()
      *      .then(function (result) {
      *          let value = result.get(field_uid)
-    *       },function (error) {
+     *       },function (error) {
      *          // error function
      *      })
      * @returns {Object}
@@ -136,22 +113,22 @@ setCachePolicy(policy){
 	 * @method fetch
 	 * @description fetch asset obhect of requested Asset uid of defined query if present.
 	 * @example
-	 * Stack.Asset('bltsomething123').fetch()
+	 * Stack.Assets('bltsomething123').fetch()
 	 */
-    fetch() {
-      if (this.asset_uid) {
-         this.requestParams = {
-           method: 'POST',
-           headers: this.headers,
-           url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.assets + this.asset_uid,
-           body: {
-               _method: 'GET',
-               query: this._query
-           }
-       }
-       return Utils.sendRequest(this); 
-   } else {
-     console.error("Kindly provide an asset uid. e.g. .Asset('bltsomething123')");
- }
-}
+     fetch() {
+          if (this.asset_uid) {
+               this.requestParams = {
+                     method: 'POST',
+                     headers: this.headers,
+                     url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.assets + this.asset_uid,
+                     body: {
+                         _method: 'GET',
+                         query: this._query
+                     }
+                }
+                return Utils.sendRequest(this); 
+        } else {
+            console.error("Kindly provide an asset uid. e.g. .Assets('bltsomething123')");
+        }
+    }
 }
