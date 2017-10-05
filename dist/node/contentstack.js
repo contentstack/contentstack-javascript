@@ -744,7 +744,7 @@ var Stack = function () {
          * @method Asset
          * @description Set the Asset Uid which you want to retrive the Asset.
          * @param {String} uid - asset_uid
-         * @example Stack.Asset('blt1234567890abcef')
+         * @example Stack.Assets('blt1234567890abcef')
          * @returns {Asset}
          */
 
@@ -752,7 +752,7 @@ var Stack = function () {
         key: 'Assets',
         value: function Assets(uid) {
             var asset = new _asset2.default();
-            this.isAsset = true;
+            this.type = 'asset';
             if (uid && typeof uid === "string") {
                 asset.asset_uid = uid;
             }
@@ -1764,7 +1764,7 @@ var _extend = {
     compare: function compare(type) {
         return function (key, value) {
             if (key && value && typeof key === 'string' && typeof value !== 'undefined') {
-                this._query['query'][key] = this._query['query'][key] || {};
+                this._query['query'][key] = this._query['query']['file_size'] || {};
                 this._query['query'][key][type] = value;
                 return this;
             } else {
@@ -1843,7 +1843,8 @@ var _extend = {
  * An initializer is responsible for creating Query object.
  * @example
  * <caption>Query instance creation.</caption>
- * let Query = Contentstack.Stack().ContentType('example).Query();
+ * let Query = Contentstack.Stack().ContentType('example').Query();
+ * let assetQuery =  Contentstack.Stack().Assets().Query();
  * @ignore
  */
 
@@ -1877,7 +1878,6 @@ var Query = function (_Entry) {
          * @returns {Query}
          */
         _this.lessThanOrEqualTo = _extend.compare('$lte');
-
         /**
          * @method greaterThan
          * @description This method provides only the entries with values greater than the specified value for a field.
@@ -2055,6 +2055,7 @@ var Query = function (_Entry) {
         value: function equalTo(key, value) {
             if (key && typeof key === 'string') {
                 this._query['query'][key] = value;
+
                 return this;
             } else {
                 console.error("Kindly provide valid parameters.");
@@ -2081,11 +2082,13 @@ var Query = function (_Entry) {
     }, {
         key: 'count',
         value: function count() {
+            var host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
+                url = this.type && this.type !== 'asset' ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
             this._query['count'] = true;
             this.requestParams = {
                 method: 'POST',
                 headers: this.headers,
-                url: this.config.protocol + "://" + this.config.host + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries,
+                url: url,
                 body: {
                     _method: 'GET',
                     query: this._query
@@ -2218,7 +2221,7 @@ var Query = function (_Entry) {
         key: 'find',
         value: function find() {
             var host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-                url = !this.isAsset ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
+                url = this.type && this.type !== 'asset' ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
             this.requestParams = {
                 method: 'POST',
                 headers: this.headers,
@@ -2242,7 +2245,7 @@ var Query = function (_Entry) {
         key: 'findOne',
         value: function findOne() {
             var host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-                url = !this.isAsset ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
+                url = this.type && this.type !== 'asset' ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
             this.singleEntry = true;
             this._query.limit = 1;
             this.requestParams = {
@@ -6883,8 +6886,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _utils = __webpack_require__(1);
@@ -6895,9 +6896,9 @@ var _stack = __webpack_require__(3);
 
 var _stack2 = _interopRequireDefault(_stack);
 
-var _query = __webpack_require__(13);
+var _query2 = __webpack_require__(13);
 
-var _query2 = _interopRequireDefault(_query);
+var _query3 = _interopRequireDefault(_query2);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6905,69 +6906,113 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var _extend = function _extend(type) {
+    return function () {
+        this._query[type] = this._query[type] || {};
+        switch (arguments.length) {
+            case 1:
+                if (Array.isArray(arguments[0]) || typeof arguments[0] === "string") {
+                    var query = this._query[type]['BASE'] || [];
+                    query = query.concat(arguments[0]);
+                    this._query[type]['BASE'] = query;
+                    return this;
+                } else {
+                    console.error("Kindly provide valid parameters");
+                }
+                break;
+            case 2:
+                if (typeof arguments[0] === "string" && (Array.isArray(arguments[1]) || typeof arguments[1] === "string")) {
+                    var _query = this._query[type][arguments[0]] || [];
+                    _query = _query.concat(arguments[1]);
+                    this._query[type][arguments[0]] = _query;
+                    return this;
+                } else {
+                    console.error("Kindly provide valid parameters");
+                }
+                break;
+            default:
+                console.error("Kindly provide valid parameters");
+        }
+    };
+};
 /**
  * @summary Creates an instance of `Asset`.
  * @description An initializer is responsible for creating Asset object.
  * @param {String} uid - uid of the asset
  * @example
- * let Entry = Contentstack.Stack().Asset('bltsomething123');
+ * let Entry = Contentstack.Stack().Assets('bltsomething123');
  * @returns {Asset}
  * @ignore
  */
+
 var Asset = function () {
     function Asset() {
         _classCallCheck(this, Asset);
 
-        this._query = {};
+        /**
+          * @method only
+          * @description This method is use to show the selected fields of the assets in resultset.
+          * @param {String} [key=BASE] - single field in asset
+          * @param {Array} values - array of fields to be show in resultset
+          * @example
+          * <caption> .only with field uid </caption>
+          * Assets().only('title')
+          * @example
+          * <caption> .only with field uid </caption>
+          * Assets().only('BASE','title')
+          * @example
+          * <caption> .only with field uids(array) </caption>
+          * Assets().only(['title','description'])
+          * @returns {Asset}
+          */
+        this.only = _extend('only');
         return this;
     }
 
+    /**
+     * @method Query
+     * @description Query instance to provide support for all search queries.
+     * @example Assets().Query()
+     * @returns {Query}
+     */
+
+
     _createClass(Asset, [{
-        key: 'setCacheProvider',
-        value: function setCacheProvider(provider) {
-            if (provider && (typeof provider === 'undefined' ? 'undefined' : _typeof(provider)) === 'object') {
-                this.provider = provider;
-            }
-            return this;
-        }
-    }, {
-        key: 'setCachePolicy',
-        value: function setCachePolicy(policy) {
-            if (typeof policy === 'number' && policy >= -1 && policy < 4) {
-                if (!this._query) {
-                    this.cachePolicy = policy;
-                } else {
-                    this.queryCachePolicy = policy;
-                }
-            } else {
-                console.error("Kindly provide the valid policy");
-            }
-            return this;
+        key: 'Query',
+        value: function Query() {
+            var query = new _query3.default();
+            return Utils.merge(query, this);
         }
 
         /**
-         * @method Query
-         * @description Query instance to provide support for all search queries.
-         * @example Assets().Query()
-         * @returns {Query}
+         * @method addQuery
+         * @description This method is used to add query to Entry object.
+         * @param {String} key - key of the query
+         * @param {String} value - value of the query
+         * @example Assets().addQuery('include_schema',true)
+         * @returns {Entry}
          */
 
     }, {
-        key: 'Query',
-        value: function Query() {
-            var query = new _query2.default();
-            return Utils.merge(query, this);
+        key: 'addQuery',
+        value: function addQuery(key, value) {
+            if (key && value && typeof key === 'string') {
+                this._query[key] = value;
+                return this;
+            } else {
+                console.error("First argument should be a String.");
+            }
         }
 
         /**
          * @method toJSON
          * @description This method is used to convert the result in to plain javascript object.
          * @example
-         * blogEntry
+         * assetQuery
          *      .toJSON()
          *      .then(function (result) {
          *          let value = result.get(field_uid)
-        *       },function (error) {
+         *       },function (error) {
          *          // error function
          *      })
          * @returns {Object}
@@ -6984,7 +7029,7 @@ var Asset = function () {
         * @method fetch
         * @description fetch asset obhect of requested Asset uid of defined query if present.
         * @example
-        * Stack.Asset('bltsomething123').fetch()
+        * Stack.Assets('bltsomething123').fetch()
         */
 
     }, {
@@ -7002,7 +7047,7 @@ var Asset = function () {
                 };
                 return Utils.sendRequest(this);
             } else {
-                console.error("Kindly provide an asset uid. e.g. .Asset('bltsomething123')");
+                console.error("Kindly provide an asset uid. e.g. .Assets('bltsomething123')");
             }
         }
     }]);
@@ -7039,6 +7084,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * },function (error) {
  *      // error function
  * })
+ * @example
+ * assetQuery.then(function (result) {
+ *      // sucess function
+ * },function (error) {
+ *      // error function
+ * })
  * @returns {Result}
  */
 var Result = function () {
@@ -7058,6 +7109,12 @@ var Result = function () {
      * @description Converts `Result` to plain javascript object.
      * @example
      * blogEntry.then(function (result) {
+     *      result = result.toJSON()
+     * },function (error) {
+     *      // error function
+     * })
+     * @example
+     * assetQuery.then(function (result) {
      *      result = result.toJSON()
      * },function (error) {
      *      // error function
@@ -7082,6 +7139,12 @@ var Result = function () {
          * },function (error) {
          *      // error function
          * })
+         * @example
+         * assetQuery.then(function (result) {
+         *      let value = result.get(field_uid)
+         * },function (error) {
+         *      // error function
+         * })
          * @returns {Object}
          */
 
@@ -7096,6 +7159,29 @@ var Result = function () {
                 return value;
             }
             return;
+        }
+
+        /**
+         * @method getDownloadUrl
+         * @description `getDownloadUrl` to get the download url.
+         * @param {String} string - Disposition value
+         * @example
+         * assetQuery.then(function (result) {
+         *      let value = result.getDownloadUrl(disposition_value)
+         * },function (error) {
+         *      // error function
+         * })
+         * @returns {Object}
+         */
+
+    }, {
+        key: 'getDownloadUrl',
+        value: function getDownloadUrl(disposition) {
+            if (this.object()) {
+                var url = this.object().url ? this.object().url : null,
+                    _disposition = disposition && typeof disposition === 'string' ? disposition : 'attachment';
+                return url ? url + '?disposition=' + _disposition : null;
+            }
         }
     }]);
 

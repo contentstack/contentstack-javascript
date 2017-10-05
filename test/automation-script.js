@@ -3,8 +3,8 @@ var request = require('request'),
     fs = require('fs'),
     exec = require('child_process').exec,
     nodemailer = require('nodemailer'),
-    config = require('./config.js'),
-    smtpConfig = require('./smtpconfig.js')
+    config = require('./config/config.js'),
+    smtpConfig = require('./config/smtpconfig.js')
     reportFileName = "report.json";
 
 //configure the smtp 
