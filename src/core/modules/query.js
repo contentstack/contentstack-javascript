@@ -310,7 +310,7 @@ const _extend = {
      */
      count(){
         const host =  this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-              url = (this.type && this.type !== 'asset') ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
+             url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this._query['count'] = true;
         this.requestParams = {
             method: 'POST',
@@ -427,7 +427,7 @@ const _extend = {
      */
      find() {
         const host =  this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-              url = (this.type && this.type !== 'asset') ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
+              url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this.requestParams = {
             method: 'POST',
             headers: this.headers,
@@ -448,7 +448,7 @@ const _extend = {
      */
      findOne() {
         const host =  this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-              url = (this.type && this.type !== 'asset') ? host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries : host + this.config.urls.assets;
+             url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this.singleEntry = true;
         this._query.limit = 1;
         this.requestParams = {
