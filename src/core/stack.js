@@ -186,6 +186,7 @@ export default class Stack{
     ContentType(uid){
         if (uid && typeof uid === 'string') {
             this.content_type_uid = uid;
+            this.type = "contentType";
         }
         return this;
     }
