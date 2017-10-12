@@ -5,7 +5,6 @@
  */
 var test = require('tape');
 var Contentstack = require('../../dist/node/contentstack.js');
-var _ = require('lodash');
 var init = require('../config.js');
 var Utils = require('../entry/utils.js');
 
@@ -454,7 +453,6 @@ test('Find operations', function(TC) {
             .count()
             .find()
             .then(function success(assets) {
-                // assert.ok("assets" in result, 'assets key present in the resultset');
                 assert.ok(assets[0], 'assets count present in the resultset');
                 assert.end();
             }, function error(err) {
