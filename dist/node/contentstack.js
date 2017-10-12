@@ -269,7 +269,12 @@ function sendRequest(queryObject) {
     if (env_uid) {
         queryObject._query.environment_uid = env_uid;
     } else {
-        queryObject._query.environment = queryObject.environment;
+        if (queryObject._query) {
+            queryObject._query.environment = queryObject.environment;
+        } else {
+            queryObject['_query'] = {};
+            queryObject._query['environment'] = queryObject.environment;
+        }
     }
 
     var self = queryObject;
