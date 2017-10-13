@@ -6,8 +6,8 @@
  * Module Dependencies.
  */
 var test = require('tape');
-var Contentstack = require('../dist/node/contentstack.js');
-var init = require('./config');
+var Contentstack = require('../../dist/node/contentstack.js');
+var init = require('../config.js');
 var contentTypes = {
     source: "source",
     numbers_content_type: "numbers_content_type"

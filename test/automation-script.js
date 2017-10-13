@@ -1,17 +1,16 @@
-var request = require('request'),
+let request = require('request'),
     path = require('path'),
     fs = require('fs'),
     exec = require('child_process').exec,
     nodemailer = require('nodemailer'),
     config = require('./config.js'),
-    smtpConfig = require('./smtpconfig.js')
     reportFileName = "report.json";
 
 //configure the smtp 
-let transporter = nodemailer.createTransport(smtpConfig);
+let transporter = nodemailer.createTransport(config.smtp);
 
-var automation = function () {
-    var self = this;
+let automation = function () {
+    let self = this;
     console.log("-----automation started ------")
     self.init();
 }
