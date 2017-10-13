@@ -10,6 +10,12 @@ import * as Utils  from '../lib/utils'
  * },function (error) {
  *      // error function
  * })
+ * @example
+ * assetQuery.then(function (result) {
+ *      // sucess function
+ * },function (error) {
+ *      // error function
+ * })
  * @returns {Result}
  */
 class Result {
@@ -32,6 +38,12 @@ class Result {
      * },function (error) {
      *      // error function
      * })
+     * @example
+     * assetQuery.then(function (result) {
+     *      result = result.toJSON()
+     * },function (error) {
+     *      // error function
+     * })
      * @returns {object}
      */
     toJSON() {
@@ -48,6 +60,12 @@ class Result {
      * },function (error) {
      *      // error function
      * })
+     * @example
+     * assetQuery.then(function (result) {
+     *      let value = result.get(field_uid)
+     * },function (error) {
+     *      // error function
+     * })
      * @returns {Object}
      */
     get(key){
@@ -59,7 +77,27 @@ class Result {
             return value;
         }
         return ;
-    }    
+    }
+
+    /**
+     * @method getDownloadUrl
+     * @description `getDownloadUrl` to get the download url.
+     * @param {String} string - Disposition value
+     * @example
+     * assetQuery.then(function (result) {
+     *      let value = result.getDownloadUrl(disposition_value)
+     * },function (error) {
+     *      // error function
+     * })
+     * @returns {Object}
+     */
+     getDownloadUrl(disposition) {
+        if (this.object()) {
+            let url = (this.object().url) ? this.object().url : null,
+                _disposition = (disposition && typeof disposition === 'string') ? disposition: 'attachment';
+            return (url) ? url + '?disposition=' + _disposition : null;    
+        }
+     }    
 
 }
 

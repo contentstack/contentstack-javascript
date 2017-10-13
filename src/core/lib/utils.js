@@ -1,5 +1,5 @@
 import Request from  './request';
-import Result from '../entry/result';
+import Result from '../modules/result';
 /**
  * @method addSpread
  * @description method to add the spread.
@@ -160,7 +160,12 @@ export function sendRequest (queryObject) {
     if (env_uid) {
         queryObject._query.environment_uid = env_uid;
     } else {
-        queryObject._query.environment = queryObject.environment;
+        if(queryObject._query) {
+            queryObject._query.environment = queryObject.environment;
+        } else {
+            queryObject['_query'] = {};
+             queryObject._query['environment'] = queryObject.environment;
+        }
     }
 
     let self = queryObject;
