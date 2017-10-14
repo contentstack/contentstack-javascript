@@ -1,5 +1,6 @@
-import * as http from 'xmlhttprequest';
+import ES6Promise from 'es6-promise';
+import fetch from 'isomorphic-fetch';
 
-var HTTPRequest = http.XMLHttpRequest;
+ES6Promise.polyfill();
 
-export default HTTPRequest;
+export default fetch;

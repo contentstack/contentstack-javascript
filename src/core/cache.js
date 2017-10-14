@@ -2,7 +2,7 @@ import * as Utils from "./lib/utils.js";
 import storage from 'runtime/localstorage.js';
 
 export function get(key) {
-    var data = storage.getItem(key);
+    let data = storage.getItem(key);
     try {
         data = JSON.parse(data);
     } catch (e) {
