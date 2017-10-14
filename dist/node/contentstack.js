@@ -483,9 +483,9 @@ var _entry = __webpack_require__(12);
 
 var _entry2 = _interopRequireDefault(_entry);
 
-var _asset = __webpack_require__(41);
+var _assets = __webpack_require__(41);
 
-var _asset2 = _interopRequireDefault(_asset);
+var _assets2 = _interopRequireDefault(_assets);
 
 var _query = __webpack_require__(13);
 
@@ -747,17 +747,17 @@ var Stack = function () {
         }
 
         /**
-         * @method Asset
+         * @method Assets
          * @description Set the Asset Uid which you want to retrive the Asset.
          * @param {String} uid - asset_uid
          * @example Stack.Assets('blt1234567890abcef')
-         * @returns {Asset}
+         * @returns {Assets}
          */
 
     }, {
         key: 'Assets',
         value: function Assets(uid) {
-            var asset = new _asset2.default();
+            var asset = new _assets2.default();
             this.type = 'asset';
             if (uid && typeof uid === "string") {
                 asset.asset_uid = uid;
@@ -6942,35 +6942,35 @@ var _extend = function _extend(type) {
     };
 };
 /**
- * @summary Creates an instance of `Asset`.
+ * @summary Creates an instance of `Assets`.
  * @description An initializer is responsible for creating Asset object.
  * @param {String} uid - uid of the asset
  * @example
- * let Entry = Contentstack.Stack().Assets('bltsomething123');
- * @returns {Asset}
+ * let Assets = Contentstack.Stack().Assets('bltsomething123');
+ * @returns {Assets}
  * @ignore
  */
 
-var Asset = function () {
-    function Asset() {
-        _classCallCheck(this, Asset);
+var Assets = function () {
+    function Assets() {
+        _classCallCheck(this, Assets);
 
         /**
-          * @method only
-          * @description This method is use to show the selected fields of the assets in resultset.
-          * @param {String} [key=BASE] - single field in asset
-          * @param {Array} values - array of fields to be show in resultset
-          * @example
-          * <caption> .only with field uid </caption>
-          * Assets().only('title')
-          * @example
-          * <caption> .only with field uid </caption>
-          * Assets().only('BASE','title')
-          * @example
-          * <caption> .only with field uids(array) </caption>
-          * Assets().only(['title','description'])
-          * @returns {Asset}
-          */
+         * @method only
+         * @description This method is use to show the selected fields of the assets in resultset.
+         * @param {String} [key=BASE] - single field in asset
+         * @param {Array} values - array of fields to be show in resultset
+         * @example
+         * <caption> .only with field uid </caption>
+         * Assets().only('title')
+         * @example
+         * <caption> .only with field uid </caption>
+         * Assets().only('BASE','title')
+         * @example
+         * <caption> .only with field uids(array) </caption>
+         * Assets().only(['title','description'])
+         * @returns {Asset}
+         */
         this.only = _extend('only');
         return this;
     }
@@ -6983,7 +6983,7 @@ var Asset = function () {
      */
 
 
-    _createClass(Asset, [{
+    _createClass(Assets, [{
         key: 'Query',
         value: function Query() {
             var query = new _query3.default();
@@ -7058,10 +7058,10 @@ var Asset = function () {
         }
     }]);
 
-    return Asset;
+    return Assets;
 }();
 
-exports.default = Asset;
+exports.default = Assets;
 
 /***/ }),
 /* 42 */
