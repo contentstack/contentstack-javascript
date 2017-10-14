@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>contentstack.js - Documentation</title>
+    <title>modules/result.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">contentstack.js</h1>
+    <h1 class="page-title">modules/result.js</h1>
     
     
 
@@ -37,52 +37,112 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Stack from "./stack";
-import CacheProvider from './cache-provider/index';
+            <pre class="prettyprint source linenums"><code>import * as Utils  from '../lib/utils'
 
 /**
- * @method Contentstack
- * @description Creates an instance of `Contentstack`.
- * @api public
+ * @summary Creates an instance of `Result`.
+ * @description An initializer is responsible for creating Result object.
+ * @param {Object} object - API result object
+ * @example
+ * blogEntry.then(function (result) {
+ *      // sucess function
+ * },function (error) {
+ *      // error function
+ * })
+ * @example
+ * assetQuery.then(function (result) {
+ *      // sucess function
+ * },function (error) {
+ *      // error function
+ * })
+ * @returns {Result}
  */
-class Contentstack {
+class Result {
+    constructor(object){
+        if(object) {
+            this.object = function() {
+                return object;
+            }
+        }
+        return this;
+    }
 
-	constructor(){
-		/**
-		 * @constant CachePolicy
-		 * @description CachePolicy contains different cache policies constants.
-		 * @example
-		 * Contentstack.CachePolicy.IGNORE_CACHE
-		 * Contentstack.CachePolicy.ONLY_NETWORK
-		 * Contentstack.CachePolicy.CACHE_ELSE_NETWORK
-		 * Contentstack.CachePolicy.NETWORK_ELSE_CACHE
-		 * Contentstack.CachePolicy.CACHE_THEN_NETWORK
-		 */
-		this.CachePolicy = CacheProvider.policies;
-	}
 
-	/**
-	 * @method Stack
-	 * @description Initialize "Built.io Contentstack" Stack javascript-SDK instance
-	 * @api public
-	 * @example
-	 * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment');
-	 *                  OR
-	 * var Stack = Contentstack.Stack({
-	 *      'api_key':'bltsomethingapikey',
-	 *      'access_token':'bltsomethongtoken',
-	 *      'environment':'environment_name'
-	 *   });
-	 *
-	 * @returns {Stack}
-	 */	
-	Stack(...stack_arguments){
-		return new Stack(...stack_arguments);
-	}
+    /**
+     * @method toJSON
+     * @description Converts `Result` to plain javascript object.
+     * @example
+     * blogEntry.then(function (result) {
+     *      result = result.toJSON()
+     * },function (error) {
+     *      // error function
+     * })
+     * @example
+     * assetQuery.then(function (result) {
+     *      result = result.toJSON()
+     * },function (error) {
+     *      // error function
+     * })
+     * @returns {object}
+     */
+    toJSON() {
+        return (this.object()) ? Utils.mergeDeep(JSON.parse(JSON.stringify({})), this.object()) : null;
+    }
+
+    /**
+     * @method get
+     * @description `get` to access the key value.
+     * @param field_uid
+     * @example
+     * blogEntry.then(function (result) {
+     *      let value = result.get(field_uid)
+     * },function (error) {
+     *      // error function
+     * })
+     * @example
+     * assetQuery.then(function (result) {
+     *      let value = result.get(field_uid)
+     * },function (error) {
+     *      // error function
+     * })
+     * @returns {Object}
+     */
+    get(key){
+        if(this.object() &amp;&amp; key) {
+            let fields = key.split('.');
+            let value = fields.reduce(function(prev, field) {
+                return prev[field];
+            }, this.object());
+            return value;
+        }
+        return ;
+    }
+
+    /**
+     * @method getDownloadUrl
+     * @description `getDownloadUrl` to get the download url.
+     * @param {String} string - Disposition value
+     * @example
+     * assetQuery.then(function (result) {
+     *      let value = result.getDownloadUrl(disposition_value)
+     * },function (error) {
+     *      // error function
+     * })
+     * @returns {Object}
+     */
+     getDownloadUrl(disposition) {
+        if (this.object()) {
+            let url = (this.object().url) ? this.object().url : null,
+                _disposition = (disposition &amp;&amp; typeof disposition === 'string') ? disposition: 'attachment';
+            return (url) ? url + '?disposition=' + _disposition : null;    
+        }
+     }    
+
 }
 
-module.exports = new Contentstack();
-</code></pre>
+module.exports = function(object) {
+    return new Result(object);
+};</code></pre>
         </article>
     </section>
 

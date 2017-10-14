@@ -2359,11 +2359,11 @@ var Asset = function () {
         }
 
         /**
-        * @method fetch
-        * @description fetch asset obhect of requested Asset uid of defined query if present.
-        * @example
-        * Stack.Assets('bltsomething123').fetch()
-        */
+         * @method fetch
+         * @description fetch asset obhect of requested Asset uid of defined query if present.
+         * @example
+         * Stack.Assets('bltsomething123').fetch()
+         */
 
     }, {
         key: 'fetch',
