@@ -2,12 +2,11 @@ import Request from  '../lib/request';
 import * as Utils from '../lib/utils.js';
 import Entry from './entry';
 
-
-var _extend = {
+const _extend = {
     compare: function(type) {
         return function(key, value) {
             if (key && value && typeof key === 'string' && typeof value !== 'undefined') {
-                this._query['query'][key] = this._query['query'][key] || {};
+                this._query['query'][key] = this._query['query']['file_size'] || {};
                 this._query['query'][key][type] = value;
                 return this;
             } else {
@@ -16,7 +15,7 @@ var _extend = {
         };
     },
     contained: function(bool) {
-        var type = (bool) ? '$in' : '$nin';
+        let type = (bool) ? '$in' : '$nin';
         return function(key, value) {
             if (key && value && typeof key === 'string' && Array.isArray(value)) {
                 this._query['query'][key] = this._query['query'][key] || {};
@@ -41,8 +40,8 @@ var _extend = {
     },
     logical: function(type) {
         return function() {
-            var _query = [];
-            for (var i = 0, _i = arguments.length; i < _i; i++) {
+            let _query = [];
+            for (let i = 0, _i = arguments.length; i < _i; i++) {
                 if (arguments[i] instanceof Query && arguments[i]._query.query) {
                     _query.push(arguments[i]._query.query);
                 } else if (typeof arguments[i] === "object") {
@@ -86,15 +85,16 @@ var _extend = {
  * An initializer is responsible for creating Query object.
  * @example
  * <caption>Query instance creation.</caption>
- * var Query = Contentstack.Stack().ContentType('example).Query();
+ * let Query = Contentstack.Stack().ContentType('example').Query();
+ * let assetQuery =  Contentstack.Stack().Assets().Query();
  * @ignore
  */
-export default class Query extends Entry{
-    constructor(){
+ export default class Query extends Entry {
+    constructor() {
         super();
         this._query = this._query || {};
         this._query['query'] = this._query['query'] || {};
-        
+
         /**
          * @method lessThan
          * @description This method provides only the entries with values less than the specified value for a field.
@@ -103,8 +103,8 @@ export default class Query extends Entry{
          * @example blogQuery.lessThan('created_at','2015-06-22')
          * @returns {Query}
          */
-        this.lessThan = _extend.compare('$lt');
-        
+         this.lessThan = _extend.compare('$lt');
+
         /**
          * @method lessThanOrEqualTo
          * @description This method provides only the entries with values less than or equal to the specified value for a field.
@@ -113,8 +113,7 @@ export default class Query extends Entry{
          * @example blogQuery.lessThanOrEqualTo('created_at','2015-03-12')
          * @returns {Query}
          */
-        this.lessThanOrEqualTo = _extend.compare('$lte');
-        
+         this.lessThanOrEqualTo = _extend.compare('$lte');
         /**
          * @method greaterThan
          * @description This method provides only the entries with values greater than the specified value for a field.
@@ -123,8 +122,8 @@ export default class Query extends Entry{
          * @example blogQuery.greaterThan('created_at','2015-03-12')
          * @returns {Query}
          */
-        this.greaterThan = _extend.compare('$gt');
-        
+         this.greaterThan = _extend.compare('$gt');
+
         /**
          * @method greaterThanOrEqualTo
          * @description This method provides only the entries with values greater than or equal to the specified value for a field.
@@ -133,8 +132,8 @@ export default class Query extends Entry{
          * @example blogQuery.greaterThanOrEqualTo('created_at', '2015-06-22')
          * @returns {Query}
          */
-        this.greaterThanOrEqualTo = _extend.compare('$gte');
-        
+         this.greaterThanOrEqualTo = _extend.compare('$gte');
+
         /**
          * @method notEqualTo
          * @description This method provides only the entries with values not equal to the specified value for a field.
@@ -143,8 +142,8 @@ export default class Query extends Entry{
          * @example blogQuery.notEqualTo('title','Demo')
          * @returns {Query}
          */
-        this.notEqualTo = _extend.compare('$ne');
-        
+         this.notEqualTo = _extend.compare('$ne');
+
         /**
          * @method containedIn
          * @description This method provides only the entries with values matching the specified values for a field.
@@ -153,8 +152,8 @@ export default class Query extends Entry{
          * @example blogQuery.containedIn('title', ['Demo', 'Welcome'])
          * @returns {Query}
          */
-        this.containedIn =  _extend.contained(true);
-        
+         this.containedIn =  _extend.contained(true);
+
         /**
          * @method notContainedIn
          * @description This method provides only the entries that do not contain values matching the specified values for a field.
@@ -163,8 +162,8 @@ export default class Query extends Entry{
          * @example blogQuery.notContainedIn('title', ['Demo', 'Welcome'])
          * @returns {Query}
          */
-        this.notContainedIn = _extend.contained(false);
-        
+         this.notContainedIn = _extend.contained(false);
+
         /**
          * @method exists
          * @description This method provides only the entries that contains the field matching the specified field uid.
@@ -172,8 +171,8 @@ export default class Query extends Entry{
          * @example blogQuery.exists('featured')
          * @returns {Query}
          */
-        this.exists =  _extend.exists(true);
-        
+         this.exists =  _extend.exists(true);
+
         /**
          * @method notExists
          * @description This method provides only the entries that do not contain the field matching the specified field uid.
@@ -181,8 +180,8 @@ export default class Query extends Entry{
          * @example blogQuery.notExists('featured')
          * @returns {Query}
          */
-        this.notExists =  _extend.exists(false);
-        
+         this.notExists =  _extend.exists(false);
+
         /**
          * @method ascending
          * @description This parameter sorts the provided entries in the ascending order on the basis of the specified field.
@@ -190,8 +189,8 @@ export default class Query extends Entry{
          * @example blogQuery.ascending('created_at')
          * @returns {Query}
          */
-        this.ascending = _extend.sort('asc');
-        
+         this.ascending = _extend.sort('asc');
+
         /**
          * @method descending
          * @description This method sorts the provided entries in the descending order on the basis of the specified field.
@@ -199,8 +198,8 @@ export default class Query extends Entry{
          * @example blogQuery.descending('created_at')
          * @returns {Query}
          */
-        this.descending =  _extend.sort('desc');
-        
+         this.descending =  _extend.sort('desc');
+
         /**
          * @method beforeUid
          * @description This method provides only the entries before the specified entry id.
@@ -209,8 +208,8 @@ export default class Query extends Entry{
          * @returns {Query}
          * @ignore
          */
-        this.beforeUid =   _extend.sort('before_uid');
-        
+         this.beforeUid =   _extend.sort('before_uid');
+
         /**
          * @method afterUid
          * @description This method provides only the entries after the specified entry id.
@@ -219,8 +218,8 @@ export default class Query extends Entry{
          * @returns {Query}
          * @ignore
          */
-        this.afterUid = _extend.sort('after_uid'); 
-        
+         this.afterUid = _extend.sort('after_uid'); 
+
         /**
          * @method skip
          * @description This method skips the specified number of entries.
@@ -228,8 +227,8 @@ export default class Query extends Entry{
          * @example blogQuery.skip(5)
          * @returns {Query}
          */
-        this.skip =  _extend.pagination('skip');
-        
+         this.skip =  _extend.pagination('skip');
+
         /**
          * @method limit
          * @description This method limits the response by providing only the specified number of entries.
@@ -237,44 +236,44 @@ export default class Query extends Entry{
          * @example blogQuery.limit(10)
          * @returns {Query}
          */
-        this.limit =  _extend.pagination('limit');
-        
+         this.limit =  _extend.pagination('limit');
+
         /**
          * @method or
          * @description This method performs the OR operation on the specified query objects and provides only the matching entries.
          * @param {object} queries - array of Query objects/raw queries to be taken into consideration
          * @example
          * <caption> .or with Query instances</caption>
-         * var Query1 = Stack.ContentType('blog').Query().where('title', 'Demo')
-         * var Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10)
+         * let Query1 = Stack.ContentType('blog').Query().where('title', 'Demo')
+         * let Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10)
          * blogQuery.or(Query1, Query2)
          * @example
          * <caption> .or with raw queries</caption>
-         * var Query1 = Stack.ContentType('blog').Query().where('title', 'Demo').getQuery()
-         * var Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10).getQuery()
+         * let Query1 = Stack.ContentType('blog').Query().where('title', 'Demo').getQuery()
+         * let Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10).getQuery()
          * blogQuery.or(Query1, Query2)
          * @returns {Query}
          */
-        this.or =  _extend.logical('$or');
-        
+         this.or =  _extend.logical('$or');
+
         /**
          * @method and
          * @description This method performs the AND operation on the specified query objects and provides only the matching entries.
          * @param {object} queries - array of Query objects/raw queries to be taken into consideration
          * @example
          * <caption> .and with Query instances</caption>
-         * var Query1 = Stack.ContentType('blog').Query().where('title', 'Demo')
-         * var Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10)
+         * let Query1 = Stack.ContentType('blog').Query().where('title', 'Demo')
+         * let Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10)
          * blogQuery.and(Query1, Query2)
          * @example
          * <caption> .and with raw queries</caption>
-         * var Query1 = Stack.ContentType('blog').Query().where('title', 'Demo').getQuery()
-         * var Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10).getQuery()
+         * let Query1 = Stack.ContentType('blog').Query().where('title', 'Demo').getQuery()
+         * let Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10).getQuery()
          * blogQuery.and(Query1, Query2)
          * @returns {Query}
          */
-        this.and =  _extend.logical('$and');
-    }
+         this.and =  _extend.logical('$and');
+     }
 
     /**
      * @method where(equalTo)
@@ -284,9 +283,10 @@ export default class Query extends Entry{
      * @example blogQuery.where('title','Demo')
      * @returns {Query}
      */
-    equalTo(key, value){
+     equalTo(key, value){
         if (key && typeof key === 'string') {
             this._query['query'][key] = value;
+
             return this;
         } else {
             console.error("Kindly provide valid parameters.");
@@ -308,12 +308,14 @@ export default class Query extends Entry{
      * @example blogQuery.count()
      * @returns {Query}
      */
-    count(){
+     count(){
+        const host =  this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
+             url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this._query['count'] = true;
         this.requestParams = {
             method: 'POST',
             headers: this.headers,
-            url: this.config.protocol + "://" + this.config.host + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries,
+            url: url,
             body: {
                 _method: 'GET',
                 query: this._query
@@ -328,7 +330,7 @@ export default class Query extends Entry{
      * @param {object} query - raw{json} queries to filter the entries in result set.
      * @returns {Query}
      */
-    query(query){
+     query(query){
         if (typeof query === "object") {
             this._query['query'] = Utils.mergeDeep(this._query['query'], query);
             return this;
@@ -344,7 +346,7 @@ export default class Query extends Entry{
      * @example blogQuery.tags(['technology', 'business'])
      * @returns {Query}
      */
-    tags(values) {
+     tags(values) {
         if (Array.isArray(values)) {
             this._query['tags'] = values;
             return this;
@@ -359,7 +361,7 @@ export default class Query extends Entry{
      * @example blogQuery.includeCount()
      * @returns {Query}
      */
-    includeCount() {
+     includeCount() {
         this._query['include_count'] = true;
         return this;
     }
@@ -371,7 +373,7 @@ export default class Query extends Entry{
      * @example blogQuery.where('title','Demo').getQuery()
      * @returns {Query}
      */
-    getQuery() {
+     getQuery() {
         return this._query.query || {};
     }
 
@@ -389,7 +391,7 @@ export default class Query extends Entry{
      * blogQuery.regex('title','^Demo', 'i')
      * @returns {Query}
      */
-    regex(key, value, options) {
+     regex(key, value, options) {
         if (key && value && typeof key === 'string' && typeof value === 'string') {
             this._query['query'][key] = {
                 $regex: value
@@ -408,7 +410,7 @@ export default class Query extends Entry{
      * @example blogQuery.search('Welcome to demo')
      * @returns {Query}
      */
-    search(value) {
+     search(value) {
         if (value && typeof value === 'string') {
             this._query['typeahead'] = value;
             return this;
@@ -423,18 +425,20 @@ export default class Query extends Entry{
      * @example
      * blogQuery.find()
      */
-    find() {
+     find() {
+        const host =  this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
+              url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this.requestParams = {
             method: 'POST',
             headers: this.headers,
-            url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries,
+            url: url,
             body: {
                 _method: 'GET',
                 query: this._query
             }
         };
         return Utils.sendRequest(this);
-    }
+    }   
 
     /**
      * @method findOne
@@ -442,13 +446,15 @@ export default class Query extends Entry{
      * @example
      * blogQuery.findOne()
      */
-    findOne() {
+     findOne() {
+        const host =  this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
+             url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this.singleEntry = true;
         this._query.limit = 1;
         this.requestParams = {
             method: 'POST',
             headers: this.headers,
-            url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries,
+            url: url,
             body: {
                 _method: 'GET',
                 query: this._query
