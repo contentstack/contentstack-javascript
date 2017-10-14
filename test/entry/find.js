@@ -1,19 +1,16 @@
-
 'use strict';
 /*
  * Module Dependencies.
  */
 var test = require('tape');
-var Contentstack = require('../dist/node/contentstack.js');
-var _ = require('lodash');
-var init = require('./config');
+var Contentstack = require('../../dist/node/contentstack.js');
+var init = require('../config.js');
 var Utils = require('./utils.js');
+var Stack;
 var contentTypes = {
     source: "source",
     numbers_content_type: "numbers_content_type"
 };
-
-var Stack;
 /*
  * Initalise the Contentstack Instance
  * */
@@ -26,22 +23,23 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
 });
 
 test('Find operations', function(TC) {
+
     TC.test('default .find()', function(assert) {
         var Query = Stack.ContentType(contentTypes.source).Query(),
             field = 'updated_at';
         Query
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, 'Entries present in the resultset');
-                assert.ok(!entries[1], 'Count should not present in the result');
+                assert.notok(entries[1], 'Count should not be present');
                 if(entries && entries.length && entries[0].length) {
-                    var prev = entries[0][0].get(field);
+                    var prev = entries[0][0][field];
                     var _entries = entries[0].every(function(entry) {
-                        entry = entry.toJSON();
-                        var flag = (entry[field] <= prev);
                         prev = entry[field];
-                        return (entry.updated_at <= prev);
+                        return (entry[field] <= prev);
                     });
                     assert.equal(_entries, true, "default sorting of descending 'updated_at'");
                 }
@@ -62,14 +60,15 @@ test('Find operations', function(TC) {
 
         Query
             .ascending(field)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, 'Entries present in the resultset');
                 if(entries && entries.length && entries[0].length) {
-                    var prev = entries[0][0].get(field);
+                    var prev = entries[0][0][field];
                     var _entries = entries[0].every(function(entry) {
-                        entry = entry.toJSON();
                         var flag = (entry[field] <= prev);
                         prev = entry[field];
                         return (entry[field] >= prev);
@@ -90,17 +89,18 @@ test('Find operations', function(TC) {
 
         Query
             .descending(field)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, 'Entries present in the resultset');
                 if(entries && entries.length && entries[0].length) {
-                    var prev = entries[0][0].get(field);
+                    var prev = entries[0][0][field];
                     var _entries = entries[0].every(function(entry) {
-                        entry = entry.toJSON();
                         var flag = (entry[field] <= prev);
                         prev = entry[field];
-                        return (entry[field] >= prev);
+                        return flag;
                     });
                     assert.equal(_entries, true, "entries sorted descending on '"+field+"' field");
                 }
@@ -118,19 +118,19 @@ test('Find operations', function(TC) {
      * !*/
     TC.test('.lessThan()', function(assert) {
         var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
-            value = 11,
-            field = 'updated_at';
+            field = 'num_field',
+            value = 11;
         Query
             .lessThan('num_field', value)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, '1 Entry present in the resultset');
                 if(entries && entries.length && entries[0].length) {
-                    var prev = entries[0][0].get(field);
-                    var _entries = true;
-                    _entries = entries[0].slice(1).every(function(entry) {
-                        entry = entry.toJSON();
+                    var prev = entries[0][0][field];
+                    var _entries = entries[0].slice(1).every(function(entry) {
                         var flag = (entry[field] < value);
                         prev = entry[field];
                         return flag;
@@ -139,7 +139,7 @@ test('Find operations', function(TC) {
                 }
                 assert.end();
             }, function error(err) {
-                console.error("error :", err);
+                console.error('Error : ', err);
                 assert.fail(".lessThan()");
                 assert.end();
             });
@@ -149,16 +149,18 @@ test('Find operations', function(TC) {
         var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
             field = 'updated_at',
             value = 11;
+
         Query
             .lessThanOrEqualTo('num_field', value)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, 'Entries present in the resultset');
                 if(entries && entries.length && entries[0].length) {
-                    var prev = entries[0][0].get(field);
+                    var prev = entries[0][0][field];
                     var _entries = entries[0].every(function(entry) {
-                        entry = entry.toJSON();
                         var flag = (entry[field] <= prev);
                         prev = entry[field];
                         return flag;
@@ -181,14 +183,15 @@ test('Find operations', function(TC) {
         Query
             .greaterThan('num_field', value)
             .ascending(field)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, 'Entries present in the resultset');
                 if(entries && entries.length && entries[0].length) {
-                    var prev = entries[0][0].get(field);
+                    var prev = entries[0][0][field];
                     var _entries = entries[0].slice(1).every(function(entry) {
-                        entry = entry.toJSON();
                         var flag = (entry[field] > value);
                         prev = entry[field];
                         return flag;
@@ -197,7 +200,6 @@ test('Find operations', function(TC) {
                 }
                 assert.end();
             }, function error(err) {
-                console.error("error :", err);
                 assert.fail(".greaterThan()");
                 assert.end();
             });
@@ -211,14 +213,15 @@ test('Find operations', function(TC) {
         Query
             .greaterThanOrEqualTo('num_field', value)
             .descending(field)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, 'Entries present in the resultset');
                 if(entries && entries.length && entries[0].length) {
-                    var prev = entries[0][0].get(field);
+                    var prev = entries[0][0][field];
                     var _entries = entries[0].every(function(entry) {
-                        entry = entry.toJSON();
                         var flag = (entry[field] >= value);
                         prev = entry[field];
                         return flag;
@@ -241,14 +244,15 @@ test('Find operations', function(TC) {
         Query
             .notEqualTo('num_field', value)
             .descending(field)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, 'Entries present in the resultset');
                 if(entries && entries.length && entries[0].length) {
-                    var prev = entries[0][0].get(field);
+                    var prev = entries[0][0][field];
                     var _entries = entries[0].every(function(entry) {
-                        entry = entry.toJSON();
                         var flag = (entry[field] != value);
                         prev = entry[field];
                         return flag;
@@ -259,6 +263,93 @@ test('Find operations', function(TC) {
             }, function error(err) {
                 console.error("error :", err);
                 assert.fail(".notEqualTo()");
+                assert.end();
+            });
+    });
+
+    TC.test('.where() compare boolean value (true)', function(assert) {
+        var Query = Stack.ContentType(contentTypes.source).Query();
+
+        Query
+            .where('boolean', true)
+            .toJSON()
+            .find()
+            .then(function success(entries) {
+                assert.ok(entries[0].length, 'Entries present in the resultset');
+                assert.equal(entries[0].length, 2, 'two entries present in the resultset');
+                assert.end();
+            }, function error(err) {
+                console.error("error :", err);
+                assert.fail(".where()");
+                assert.end();
+            });
+    });
+
+    TC.test('.where() compare boolean value (false)', function(assert) {
+        var Query = Stack.ContentType(contentTypes.source).Query();
+        Query
+            .where('boolean', false)
+            .toJSON()
+            .find()
+            .then(function success(entries) {
+                assert.ok(entries[0].length, 'Entries present in the resultset');
+                assert.equal(entries[0].length, 3, ' three entries present in the resultset');
+                assert.end();
+            }, function error(err) {
+                console.error("error :", err);
+                assert.fail(".where() boolean value having false");
+                assert.end();
+            });
+    });
+
+    TC.test('.where()', function(assert) {
+        var Query = Stack.ContentType(contentTypes.source).Query();
+
+        Query
+            .where('title', '')
+            .toJSON()
+            .find()
+            .then(function success(entries) {
+                assert.equal(entries[0].length, 0, ' zero entry present in the resultset');
+                assert.end();
+            }, function error(err) {
+                console.error("error :", err);
+                assert.fail(".equalTo compare boolean value (true)");
+                assert.end();
+            });
+    });
+
+    TC.test('.equalTo() compare boolean value (true)', function(assert) {
+        var Query = Stack.ContentType(contentTypes.source).Query();
+
+        Query
+            .equalTo('boolean', true)
+            .toJSON()
+            .find()
+            .then(function success(entries) {
+                assert.ok(entries[0].length, 'Entries present in the resultset');
+                assert.equal(entries[0].length, 2, ' three entries present in the resultset');
+                assert.end();
+            }, function error(err) {
+                console.error("error :", err);
+                assert.fail(".where()");
+                assert.end();
+            });
+    });
+
+    TC.test('.equalTo() compare boolean value (false)', function(assert) {
+        var Query = Stack.ContentType(contentTypes.source).Query();
+        Query
+            .equalTo('boolean', false)
+            .toJSON()
+            .find()
+            .then(function success(entries) {
+                assert.ok(entries[0].length, 'Entries present in the resultset');
+                assert.equal(entries[0].length, 3, ' three entries present in the resultset');
+                assert.end();
+            }, function error(err) {
+                console.error("error :", err);
+                assert.fail(".where() boolean value having false");
                 assert.end();
             });
     });
@@ -274,13 +365,16 @@ test('Find operations', function(TC) {
 
         Query
             .containedIn('title', _in)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, 'Entries present in the resultset');
+                assert.ok(entries[0].length, 2,  'two entries present in the resultset');
                 if(entries && entries.length && entries[0].length) {
                     var _entries = entries[0].every(function(entry) {
-                        return (_in.indexOf(entry.get('title')) != -1);
+                        return (_in.indexOf(entry['title']) != -1);
                     });
                     assert.equal(_entries, true, "entries sorted descending on '"+field+"' field");
                 }
@@ -294,14 +388,16 @@ test('Find operations', function(TC) {
 
     TC.test('.notContainedIn()', function(assert) {
         var Query = Stack.ContentType(contentTypes.source).Query(),
-            _in = ["sourceddd1", "sourceddddd2"];
+            _in = ["source1", "source2"];
 
         Query
             .notContainedIn('title', _in)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
                 assert.ok(entries[0].length, 'No Entry present in the resultset');
+                assert.ok(entries[0].length, 3, 'three Entries present in the resultset');
                 assert.end();
             }, function error(err) {
                 console.error("error :", err);
@@ -322,15 +418,17 @@ test('Find operations', function(TC) {
 
         Query
             .exists(queryField)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
-                assert.ok(entries[0].length, 'Entries should not be present in the resultset');
+                // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
+                assert.ok(entries[0].length, 'Entries present in the resultset');
                 if(entries && entries.length && entries[0].length) {
-                    var prev = entries[0][0].get(field);
+                    var prev = entries[0][0][field];
                     var _entries = entries[0].every(function(entry) {
-                        var flag = (entry.get(field) <= prev);
-                        prev = entry.get(field);
+                        var flag = (entry[field] <= prev);
+                        prev = entry[field];
                         return flag;
                     });
                     assert.equal(_entries, true, "entries sorted descending on '"+field+"' field");
@@ -350,14 +448,15 @@ test('Find operations', function(TC) {
 
         Query
             .notExists(queryField)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 assert.ok("entries" in entries, 'Entries key present in the resultset');
                 //assert.notok(entries[0].length, 'No entry present in the resultset');
                 if(entries && entries.length && entries[0].length) {
-                    var prev = entries[0][0].get(field);
+                    var prev = entries[0][0][field];
                     var _entries = entries[0].every(function(entry) {
-                        return (entry.get(field) <= prev);
+                        return (entry[field] <= prev);
                     });
                     assert.equal(_entries, true, "entries sorted descending on '"+field+"' field");
                 }
@@ -379,6 +478,7 @@ test('Find operations', function(TC) {
             .toJSON()
             .find()
             .then(function success(allEntries) {
+                //assert.equal(Utils.isEntriesPublished(allEntries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 // assert.ok("entries" in allEntries, 'Entries key present in the resultset');
                 Stack
                     .ContentType(contentTypes.source)
@@ -388,13 +488,12 @@ test('Find operations', function(TC) {
                     .find()
                     .then(function success(entries) {
                         // assert.ok("entries" in result, 'Entries key present in the resultset');
+                        //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                         assert.ok((entries[0].length >= 2), '2 or more Entries present in the resultset');
                         assert.deepEqual(allEntries[0].slice(1), entries[0], 'All elements matched.');
                         if(entries && entries.length && entries[0].length) {
-                            allEntries[0] = allEntries[0].slice(1);
-                            //var prev = entries[0][0].get(field);
                             var prev = entries[0][0][field];
-                            var _entries = entries[0].every(function(entry, idx) {
+                            var _entries = entries[0].every(function(entry) {
                                 var flag = (entry[field] <= prev);
                                 prev = entry[field];
                                 return flag;
@@ -404,12 +503,12 @@ test('Find operations', function(TC) {
                         assert.end();
                     }, function error(err) {
                         console.error("error :", err);
-                        assert.fail("");
+                        assert.fail(".skip()");
                         assert.end();
                     });
             }, function error(err) {
                 console.error("error :", err);
-                assert.fail("skip()");
+                assert.fail(".skip()");
                 assert.end();
             });
     });
@@ -422,6 +521,7 @@ test('Find operations', function(TC) {
             .toJSON()
             .find()
             .then(function success(allEntries) {
+                //assert.equal(Utils.isEntriesPublished(allEntries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 // assert.ok("entries" in allEntries, 'Entries key present in the resultset');
                 Stack
                     .ContentType(contentTypes.source)
@@ -431,9 +531,10 @@ test('Find operations', function(TC) {
                     .find()
                     .then(function success(entries) {
                         // assert.ok("entries" in result, 'Entries key present in the resultset');
+                        //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                         assert.ok(entries[0].length, 'Entries present in the resultset');
                         assert.deepEqual(allEntries[0].slice(0, 2), entries[0], 'All elements matched.');
-                        if(entries && entries.length && entries[0].length) {
+                        if(entries && entries.length && entries[0] && entries[0].length) {
                             var prev = entries[0][0][field];
                             var _entries = entries[0].every(function(entry) {
                                 var flag = (entry[field] <= prev);
@@ -460,10 +561,11 @@ test('Find operations', function(TC) {
 
         Query
             .count()
+            .toJSON()
             .find()
-            .then(function success(entries) {
+            .then(function success(count) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
-                assert.ok(entries[0], 'Entries present in the resultset');
+                assert.ok(count, 'Entries present in the resultset');
                 assert.end();
             }, function error(err) {
                 console.error("error :", err);
@@ -473,20 +575,21 @@ test('Find operations', function(TC) {
     });
 
 
-
     // Logical
     TC.test('.or() - Query Objects', function(assert) {
-        var Query1 = Stack.ContentType(contentTypes.source).Query().containedIn('title', ['source1', 'source2']);
+        var Query1 = Stack.ContentType(contentTypes.source).Query().where('title', 'source2');
         var Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', true);
-        var Query = Stack.ContentType(contentTypes.source).Query(),
-            field = 'updated_at';
+        var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
             .or(Query1, Query2)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, 'Entries present in the resultset');
+                assert.ok(entries[0].length, 2, 'two entries present in the resultset');
                 if(entries && entries.length && entries[0].length) {
                     var _entries = entries[0].every(function(entry) {
                         return (~(entry.title === 'source1' || entry.boolean === true));
@@ -508,13 +611,15 @@ test('Find operations', function(TC) {
 
         Query
             .and(Query1, Query2)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, '1 Entry present in the resultset');
                 if(entries && entries.length && entries[0].length) {
+                    // console.log("\n\n\n\n",JSON.stringify(entries));
                     var _entries = entries[0].every(function(entry) {
-                        entry = entry.toJSON();
                         return (~(entry.title === 'source1' || entry.boolean === true));
                     });
                     assert.ok(_entries, '$AND condition satisfied');
@@ -526,52 +631,26 @@ test('Find operations', function(TC) {
                 assert.end();
             });
     });
-
-    TC.test('.and() - Raw queries', function(assert) {
-        var Query1 = Stack.ContentType(contentTypes.source).Query().where('title', 'source1');
-        var Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', true);
-        var Query = Stack.ContentType(contentTypes.source).Query();
-
-        Query
-            .and(Query1, Query2)
-            .find()
-            .then(function success(entries) {
-                // assert.ok("entries" in result, 'Entries key present in the resultset');
-                assert.ok(entries[0].length, '1 Entry present in the resultset');
-                if(entries && entries.length && entries[0].length) {
-                    var _entries = entries[0].every(function(entry) {
-                        entry = entry.toJSON();
-                        return (~(entry.title === 'source1' || entry.boolean === true));
-                    });
-                    assert.ok(_entries, '$AND condition satisfied');
-                }
-                assert.end();
-            }, function error(err) {
-                console.error("error :", err);
-                assert.fail(".and() - Raw queries");
-                assert.end();
-            });
-    });
-
-
+    
     // Custom query
     TC.test('.query() - Raw query', function(assert) {
         var Query = Stack.ContentType(contentTypes.source).Query();
 
         Query
-            .query({"$or": [{"title": "source1"}, {"boolean" : "true"}]})
+            .query({"$or": [{"title": "source2" }, {"boolean" : "true"}]})
+            .toJSON()
             .find()
             .then(function success(entries) {
-                // assert.ok("entries" in result, 'Entries key present in the resultset');
                 assert.ok(entries[0].length, 'Entries present in the resultset');
+                assert.ok(entries[0].length, 2, 'two entries present in the resultset');
                 if(entries && entries.length && entries[0].length) {
                     var _entries = entries[0].every(function(entry) {
-                        entry = entry.toJSON();
-                        if(entry.title === 'source1' || entry.boolean === true){
+                        if(entry.title === 'source2' || entry.boolean === false){
                             return true;
                         } else {
                             return false;
                         }
+                        // return (entry.reference.indexOf('blt1ce8bb666a834bfb') || entry.other_reference.indexOf('blted2d2fa1f02c4981') ? true : false);
                     });
                     assert.ok(_entries, '$OR condition satisfied');
                 }
@@ -592,13 +671,15 @@ test('Find operations', function(TC) {
 
         Query
             .tags(tags)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok((entries.length >= 1), '1 or more Entry/Entries present in the resultset');
                 if(entries && entries.length && entries[0].length) {
                     var _entries = entries[0].every(function(entry) {
-                        return (Utils.arrayPresentInArray(tags, entry.get(field)));
+                        return (Utils.arrayPresentInArray(tags, entry[field]));
                     });
                     assert.equal(_entries, true, 'Tags specified are found in result set');
                 }
@@ -614,16 +695,17 @@ test('Find operations', function(TC) {
     // search
     TC.test('.search()', function(assert) {
         var Query = Stack.ContentType(contentTypes.source).Query();
-
         Query
-            .search('source1')
+            .toJSON()
+            .search('source2')
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
-                assert.ok(entries[0].length, '1 or more Entry present in the resultset');
+                //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
+                assert.ok(entries[0].length, '1 Entry present in the resultset');
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
                 assert.fail(".search()");
                 assert.end();
             });
@@ -641,17 +723,19 @@ test('Find operations', function(TC) {
 
         Query
             .regex(field, regex.pattern, regex.options)
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok((entries.length >= 1), '1 or more Entry/Entries present in the resultset');
                 var flag = entries[0].every(function(entry) {
-                    return regexpObj.test(entry.get(field));
+                    return regexpObj.test(entry[field]);
                 });
                 assert.ok(flag, "regexp satisfied for all the entries in the resultset");
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
                 assert.fail(".regex()");
                 assert.end();
             });
@@ -664,16 +748,18 @@ test('Find operations', function(TC) {
 
         Query
             .includeReference('reference')
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 var flag = entries[0].every(function(entry) {
-                    return (entry && entry.get('reference') && typeof entry.get('reference') === 'object');
+                    return (entry && entry.reference && typeof entry.reference === 'object');
                 });
                 assert.equal(flag, true, 'all the present reference are included');
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
                 assert.fail(".includeReference() - String");
                 assert.end();
             });
@@ -684,16 +770,18 @@ test('Find operations', function(TC) {
 
         Query
             .includeReference(['reference', 'other_reference'])
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 var flag = entries[0].every(function(entry) {
-                    return (entry && entry.get('reference') && typeof entry.get('reference') === 'object' && entry.get('other_reference') && typeof entry.get('other_reference') === 'object');
+                    return (entry && entry.reference && typeof entry.reference === 'object' && entry.other_reference && typeof entry.other_reference === 'object');
                 });
                 assert.equal(flag, true, 'all the present reference are included');
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
                 assert.fail(".includeReference() - Array");
                 assert.end();
             });
@@ -709,6 +797,7 @@ test('Find operations', function(TC) {
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, 'Entries present in the resultset');
                 assert.ok(entries[1], 'Count present in the resultset');
                 assert.end();
@@ -725,19 +814,20 @@ test('Find operations', function(TC) {
 
         Query
             .includeSchema()
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, 'Entries present in the resultset');
-                assert.ok(entries[1].length, 'Schema present in the resultset');
+                assert.ok(entries[1], 'Schema present in the resultset');
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
                 assert.fail(".includeSchema()");
                 assert.end();
             });
     });
-
 
     // includeCount && includeSchema
     TC.test('.includeCount() and .includeSchema()', function(assert) {
@@ -749,6 +839,7 @@ test('Find operations', function(TC) {
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
+                //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
                 assert.ok(entries[0].length, 'Entries present in the resultset');
                 assert.ok(entries[1].length, 'Schema present in the resultset');
                 assert.ok(entries[2], 'Count present in the resultset');
@@ -762,42 +853,44 @@ test('Find operations', function(TC) {
 
     // only
     TC.test('.only() - Single String Parameter', function(assert) {
-        var Query = Stack.ContentType(contentTypes.source).Query();
+        var Query = Stack.ContentType(contentTypes.source).Query(),
+            field = 'updated_at';
 
         Query
             .only('title')
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
                 var flag = entries[0].every(function(entry) {
-                    entry = entry.toJSON();
                     return (entry && Object.keys(entry).length === 3 && "title" in entry && "uid" in entry && "url" in entry);
                 });
                 assert.ok(flag, 'entries with the field title in the resultset');
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
                 assert.fail(".only() - Single String Parameter");
                 assert.end();
             });
     });
 
     TC.test('.only() - Multiple String Parameter', function(assert) {
-        var Query = Stack.ContentType(contentTypes.source).Query();
+        var Query = Stack.ContentType(contentTypes.source).Query(),
+            field = 'updated_at';
 
         Query
             .only('BASE', 'title')
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
                 var flag = entries[0].every(function(entry) {
-                    entry = entry.toJSON();
                     return (entry && Object.keys(entry).length === 3 && "title" in entry && "uid" in entry && "url" in entry);
                 });
                 assert.ok(flag, 'entries with the field title in the resultset');
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
                 assert.fail(".only() - Multiple String Parameter");
                 assert.end();
             });
@@ -808,17 +901,17 @@ test('Find operations', function(TC) {
 
         Query
             .only(['title', 'url'])
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
                 var flag = entries[0].every(function(entry) {
-                    entry = entry.toJSON();
                     return (entry && Object.keys(entry).length === 3 && "title" in entry && "url" in entry && "uid" in entry);
                 });
                 assert.ok(flag, 'entries with the field title,url in the resultset');
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
                 assert.fail(".only() - Array Parameter");
                 assert.end();
             });
@@ -831,58 +924,59 @@ test('Find operations', function(TC) {
             .includeReference('reference')
             .only('BASE', ['reference'])
             .only('reference', 'title')
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
                 var flag = entries[0].every(function(entry) {
-                    entry = entry.toJSON();
                     var _flag = true;
                     if(entry && entry['reference'] && typeof entry['reference'] === 'object') {
                         _flag = true;
                         _flag = entry.reference.every(function(reference) {
                             // console.log("==", reference && Object.keys(reference).length === 2 && "title" in reference && "url" in reference && "uid" in reference);
-                            return (reference && Object.keys(reference).length === 4 && "title" in reference && "uid" in reference && "url" in reference);
+                            return (reference && Object.keys(reference).length === 2 && "title" in reference && "uid" in reference);
                         });
                     } else {
                         _flag = false;
                     }
-                    return (_flag && entry && Object.keys(entry).length === 3 && "reference" in entry && "uid" in entry && "url" in entry );
+                    return (_flag && entry && Object.keys(entry).length === 2 && "reference" in entry && "uid" in entry);
                 });
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
                 assert.fail(".only() - For the reference - String");
                 assert.end();
             });
     });
 
     TC.test('.only() - For the reference - Array', function(assert) {
-        var Query = Stack.ContentType(contentTypes.source).Query();
+        var Query = Stack.ContentType(contentTypes.source).Query(),
+            field = 'updated_at';
 
         Query
             .includeReference('reference')
             .only('BASE', ['reference'])
             .only('reference', ['title'])
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
                 var flag = entries[0].every(function(entry) {
-                    entry = entry.toJSON();
                     var _flag = true;
                     if(entry && entry['reference'] && typeof entry['reference'] === 'object') {
                         _flag = true;
                         _flag = entry.reference.every(function(reference) {
-                            console.log("==", reference && Object.keys(reference).length === 2 && "title" in reference && "url" in reference && "uid" in reference);
+                            // console.log("==", reference && Object.keys(reference).length === 2 && "title" in reference && "url" in reference && "uid" in reference);
                             return (reference && Object.keys(reference).length === 2 && "title" in reference && "uid" in reference);
                         });
                     } else {
                         _flag = false;
                     }
-                    return (_flag && entry && Object.keys(entry).length === 3 && "reference" in entry && "uid" in entry && "url" in entry );
+                    return (_flag && entry && Object.keys(entry).length === 2 && "reference" in entry && "uid" in entry);
                 });
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
                 assert.fail(".only() - For the reference - Array");
                 assert.end();
             });
@@ -894,17 +988,17 @@ test('Find operations', function(TC) {
 
         Query
             .except('title')
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
                 var flag = entries[0].every(function(entry) {
-                    entry = entry.toJSON();
                     return (entry && !("title" in entry));
                 });
                 assert.ok(flag, 'entries without the field title in the resultset');
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
                 assert.fail(".except() - Single String Parameter");
                 assert.end();
             });
@@ -915,17 +1009,17 @@ test('Find operations', function(TC) {
 
         Query
             .except('BASE', 'title')
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
                 var flag = entries[0].every(function(entry) {
-                    entry = entry.toJSON();
                     return (entry && !("title" in entry));
                 });
                 assert.ok(flag, 'entries without the field title, url in the resultset');
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
                 assert.fail(".except() - Multiple String Parameter");
                 assert.end();
             });
@@ -936,17 +1030,17 @@ test('Find operations', function(TC) {
 
         Query
             .except(['title', 'file'])
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
                 var flag = entries[0].every(function(entry) {
-                    entry = entry.toJSON();
                     return (entry && !("title" in entry) && !("file" in entry));
                 });
                 assert.ok(flag, 'entries without the field title, file in the resultset');
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
                 assert.fail(".except() - Array of String Parameter");
                 assert.end();
             });
@@ -959,43 +1053,11 @@ test('Find operations', function(TC) {
             .includeReference('reference')
             .only('BASE', ['reference'])
             .except('reference', 'title')
+            .toJSON()
             .find()
             .then(function success(entries) {
                 // assert.ok("entries" in result, 'Entries key present in the resultset');
                 var flag = entries[0].every(function(entry) {
-                    entry = entry.toJSON();
-                    var _flag;
-                    if(entry && entry['reference'] && typeof entry['reference'] === 'object') {
-                        _flag = true;
-                        _flag = entry.reference.every(function(reference) {
-                            return (reference && !("title" in reference));
-                        });
-                    } else {
-                        _flag = false;
-                    }
-                    return (_flag && entry && Object.keys(entry).length === 3 && "reference" in entry && "uid" in entry && "url" in entry);
-                });
-                assert.ok(flag, 'entries withthe field reference without title field in the resultset');
-                assert.end();
-            }, function error(err) {
-                console.error("Error :", err);
-                assert.fail(".except() - For the reference - String");
-                assert.end();
-            });
-    });
-
-    TC.test('.except() - For the reference - Array', function(assert) {
-        var Query = Stack.ContentType(contentTypes.source).Query();
-
-        Query
-            .includeReference('reference')
-            .only('BASE', ['reference'])
-            .except('reference', ['title'])
-            .find()
-            .then(function success(entries) {
-                // assert.ok("entries" in result, 'Entries key present in the resultset');
-                var flag = entries[0].every(function(entry) {
-                    entry = entry.toJSON();
                     var _flag;
                     if(entry && entry['reference'] && typeof entry['reference'] === 'object') {
                         _flag = true;
@@ -1010,7 +1072,40 @@ test('Find operations', function(TC) {
                 assert.ok(flag, 'entries with the field reference without title field in the resultset');
                 assert.end();
             }, function error(err) {
-                console.error("Error :", err);
+                console.error("error :", err);
+                assert.fail(".except() - For the reference - String");
+                assert.end();
+            });
+    });
+
+    TC.test('.except() - For the reference - Array', function(assert) {
+        var Query = Stack.ContentType(contentTypes.source).Query(),
+            field = 'updated_at';
+
+        Query
+            .includeReference('reference')
+            .only('BASE', ['reference'])
+            .except('reference', ['title'])
+            .toJSON()
+            .find()
+            .then(function success(entries) {
+                // assert.ok("entries" in result, 'Entries key present in the resultset');
+                var flag = entries[0].every(function(entry) {
+                    var _flag;
+                    if(entry && entry['reference'] && typeof entry['reference'] === 'object') {
+                        _flag = true;
+                        _flag = entry.reference.every(function(reference) {
+                            return (reference && !("title" in reference));
+                        });
+                    } else {
+                        _flag = false;
+                    }
+                    return (_flag && entry && Object.keys(entry).length === 3 && "reference" in entry && "uid" in entry && "url" in entry);
+                });
+                assert.ok(flag, 'entries with the field reference without title field in the resultset');
+                assert.end();
+            }, function error(err) {
+                console.error("error :", err);
                 assert.fail(".except() - For the reference - Array");
                 assert.end();
             });

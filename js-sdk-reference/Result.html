@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>Result - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,63 +28,178 @@
 
 <div id="main">
     
-        <h1 class="page-title">Built.io Contentstack - Javascript SDK</h1>
-        <div id="installation" class="group">
-            <h2>Overview</h2>
-            <p>Built.io Contentstack is a content management system that facilitates the process of publication by separating the content from site-related programming and design.</p>
-            <h2 class="first-header ">Installation</h2>
-            <div id="install_and_configure" class="subgroup">
-                <h3>For Node.js</h3>
-                <p>You need to install <a href="http://nodejs.org/" target="_blank">node.js</a> v4.8.4 or later to use the Built.io Contentstack SDK.</p>
-                <ol>
-                    <li>
-                        Run this command in a Terminal or Command Prompt&nbsp;to&nbsp;obtain and install the latest&nbsp;version of the&nbsp;Javascript SDK on your system.
-                        <pre class=" hljs coffeescript">$ <span class="hljs-built_in">npm</span> install contentstack</pre>
-                        <span class="imp-note">Note:</span> You might need administrator privileges to perform this installation.
-                    </li>
-                    <li>
-                        To&nbsp;require the SDK module in your application use the following command.
-                        <pre class=" hljs coffeescript"><span class="hljs-reserved">var</span> contentstack = <span class="hljs-built_in">require</span>(<span class="hljs-string">'contentstack'</span>);</pre>
-                    </li>
-                </ol>
-                <h3>For web browsers</h3>
-                <ol>
-                    <li>Download the latest version of the Built.io Contentstack Javascript SDK from <a href="/sdk/js/contentstack.zip" target="_blank">here</a>.</li>
-                    <li>
-                        Extract the zip package to get the <strong>contentstack.min.js</strong> file, and include it in a script tag as shown below.
-                        <pre class=" hljs xml"><span class="hljs-tag">&lt;<span class="hljs-title">script</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text/javascript"</span> <span class="hljs-attribute">src</span>=<span class="hljs-value">"contentstack.min.js"</span>&gt;</span><span class="javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-title">script</span>&gt;</span></pre>
-                    </li>
-                </ol>
-                <h3>Initalize the Stack</h3>
-                <p>
-                    <strong>Built.io Contentstack</strong><strong>&nbsp;object</strong> would be available for use, as shown below.
-                    <pre class=" hljs coffeescript"><span class="hljs-reserved">var</span> Stack = Contentstack.Stack({
-                <span class="hljs-string">"api_key"</span>: <span class="hljs-string">"blt123456789000000"</span>,
-                <span class="hljs-string">"access_token"</span>: <span class="hljs-string">"bltqwertyuiop1234"</span>,
-                <span class="hljs-string">"environment"</span>: <span class="hljs-string">"development"</span>
-            });</pre>
-                </p>
-            </div>
-        </div>
+    <h1 class="page-title">Result</h1>
     
     
 
 
 
+
+<section>
+
+<header>
+    
+        <h2>
+        Result
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+
+    
+
+    <h4 class="name" id="Result"><span class="type-signature"></span>new Result<span class="signature">(object)</span><span class="type-signature"> &rarr; {<a href="Result.html">Result</a>}</span></h4>
+
+    
+    <p class="summary">Creates an instance of `Result`.</p>
     
 
 
 
+<div class="description">
+    An initializer is responsible for creating Result object.
+</div>
 
 
 
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>object</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">API result object</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>blogEntry.then(function (result) {
+     // sucess function
+},function (error) {
+     // error function
+})</code></pre>
+
+    <pre class="prettyprint"><code>assetQuery.then(function (result) {
+     // sucess function
+},function (error) {
+     // error function
+})</code></pre>
 
 
 
     
+    </div>
 
+    
 
+    
 
+    
+
+     
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
 
 
 

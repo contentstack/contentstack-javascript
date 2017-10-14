@@ -1,8 +1,9 @@
 import config from '../../config';
 import * as Utils from './lib/utils';
-import Entry from './entry/entry';
-import Query from './entry/query';
-import Request from  './lib/request';
+import Entry from './modules/entry';
+import Assets from './modules/assets';
+import Query from './modules/query';
+import Request from './lib/request';
 import * as cache from './cache';
 import CacheProvider from './cache-provider/index';
 
@@ -10,9 +11,9 @@ import CacheProvider from './cache-provider/index';
  * Expose `Stack`.
  * @ignore
  */
-export default class Stack{
+export default class Stack {
 
-    constructor(...stack_arguments){
+    constructor(...stack_arguments) {
         this.config = config;
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
         this.provider = CacheProvider.providers('localstorage');
@@ -51,8 +52,8 @@ export default class Stack{
      * @param {Number} port - Port Number
      * @return Stack
      * */
-    setPort(port){
-        if(typeof port === "number") this.config.port = port;
+    setPort(port) {
+        if (typeof port === "number") this.config.port = port;
         return this;
     }
 
@@ -62,8 +63,8 @@ export default class Stack{
      * @param {String} protocol - http/https protocol
      * @return Stack
      * */
-    setProtocol(protocol){
-        if(typeof protocol === "string" && ~["https", "http"].indexOf(protocol)) this.config.protocol = protocol;
+    setProtocol(protocol) {
+        if (typeof protocol === "string" && ~["https", "http"].indexOf(protocol)) this.config.protocol = protocol;
         return this;
     }
 
@@ -73,8 +74,8 @@ export default class Stack{
      * @param {String} host - valid ip or host
      * @return Stack
      * */
-    setHost(host){
-        if(typeof host === "string" && host) this.config.host = host;
+    setHost(host) {
+        if (typeof host === "string" && host) this.config.host = host;
         return this;
     }
 
@@ -90,9 +91,9 @@ export default class Stack{
      * Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)
      * @returns {Stack}
      */
-    setCachePolicy(policy){
-        if(typeof policy === 'number' && policy >= -1 && policy < 4) {
-            if(!this._query) {
+    setCachePolicy(policy) {
+        if (typeof policy === 'number' && policy >= -1 && policy < 4) {
+            if (!this._query) {
                 this.cachePolicy = policy;
             } else {
                 this.queryCachePolicy = policy;
@@ -118,8 +119,8 @@ export default class Stack{
      *      });
      * @returns {Stack}
      */
-    setCacheProvider(provider){
-        if(provider && typeof provider === 'object') {
+    setCacheProvider(provider) {
+        if (provider && typeof provider === 'object') {
             this.provider = provider;
 
         }
@@ -133,8 +134,8 @@ export default class Stack{
      * Stack.clearQuery(query, callback);
      * @ignore
      */
-    clearByQuery(){
-        if(this.provider && typeof this.provider.clearByQuery === 'function') {
+    clearByQuery() {
+        if (this.provider && typeof this.provider.clearByQuery === 'function') {
             return this.provider.clearByQuery.apply(this.provider, arguments);
         }
     }
@@ -147,8 +148,8 @@ export default class Stack{
      * Stack.clearByContentType(content_type_uid, language_uid, callback);
      * @ignore
      */
-    clearByContentType(){
-        if(this.provider && typeof this.provider.clearByContentType === 'function') {
+    clearByContentType() {
+        if (this.provider && typeof this.provider.clearByContentType === 'function') {
             return this.provider.clearByContentType.apply(this.provider, arguments);
         }
     }
@@ -160,8 +161,8 @@ export default class Stack{
      * Stack.clearAll(callback);
      * @ignore
      */
-    clearAll(){
-        if(this.provider && typeof this.provider.clearAll === 'function') {
+    clearAll() {
+        if (this.provider && typeof this.provider.clearAll === 'function') {
             return this.provider.clearAll.apply(this.provider, arguments);
         }
     }
@@ -172,7 +173,7 @@ export default class Stack{
      * @example Stack.getCacheProvider();
      * @returns {Object}
      */
-    getCacheProvider(){
+    getCacheProvider() {
         return this.provider;
     }
 
@@ -182,9 +183,10 @@ export default class Stack{
      * @param {String} [content_type_uid] - uid of the existing contenttype
      * @returns {Stack}
      */
-    ContentType(uid){
+    ContentType(uid) {
         if (uid && typeof uid === 'string') {
             this.content_type_uid = uid;
+            this.type = "contentType";
         }
         return this;
     }
@@ -196,12 +198,28 @@ export default class Stack{
      * @example ContentType('blog').Entry('blt1234567890abcef')
      * @returns {Entry}
      */
-    Entry(uid){
-        var entry = new Entry();
+    Entry(uid) {
+        let entry = new Entry();
         if (uid && typeof uid === "string") {
             entry.entry_uid = uid;
         }
         return Utils.merge(entry, this);
+    }
+
+    /**
+     * @method Assets
+     * @description Set the Asset Uid which you want to retrive the Asset.
+     * @param {String} uid - asset_uid
+     * @example Stack.Assets('blt1234567890abcef')
+     * @returns {Assets}
+     */
+    Assets(uid) {
+        let asset = new Assets();
+        this.type = 'asset';
+        if (uid && typeof uid === "string") {
+            asset.asset_uid = uid;
+        }
+        return Utils.merge(asset, this);
     }
 
     /**
@@ -210,8 +228,8 @@ export default class Stack{
      * @example ContentType('blog').Query()
      * @returns {Query}
      */
-    Query(){
-        var query = new Query();
+    Query() {
+        let query = new Query();
         return Utils.merge(query, this);
     }
 
@@ -222,19 +240,19 @@ export default class Stack{
      * @returns {Stack}
      * @ignore
      */
-    getLastActivities(){
-        var query = {
-                method: 'POST',
-                headers: this.headers,
-                url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
-                body: {
-                    _method: 'GET',
-                    only_last_activity: true,
-                    environment:this.environment
-                }
-            };
+    getLastActivities() {
+        let query = {
+            method: 'POST',
+            headers: this.headers,
+            url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
+            body: {
+                _method: 'GET',
+                only_last_activity: true,
+                environment: this.environment
+            }
+        };
         return Request(query);
     }
-    
-    
+
+
 }
