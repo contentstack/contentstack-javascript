@@ -6,6 +6,7 @@ const config = {
     urls: {
         content_types: "/content_types/",
         entries: "/entries/",
+        assets: "/assets/",
         environments: "/environments/"
     }
 }; 
