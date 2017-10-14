@@ -214,7 +214,7 @@ export default class Stack {
      * @returns {Assets}
      */
     Assets(uid) {
-        let asset = new Asset();
+        let asset = new Assets();
         this.type = 'asset';
         if (uid && typeof uid === "string") {
             asset.asset_uid = uid;
