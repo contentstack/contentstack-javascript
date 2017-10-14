@@ -9,9 +9,10 @@
     "include": [
       "src/core/contentstack.js",
       "src/core/stack.js",
-      "src/core/entry/entry.js",
-      "src/core/entry/query.js",
-      "src/core/entry/result.js"
+      "src/core/modules/asset.js",
+      "src/core/modules/entry.js",
+      "src/core/modules/query.js",
+      "src/core/modules/result.js"
     ],
     "exclude": [
       "src/core/cache.js"

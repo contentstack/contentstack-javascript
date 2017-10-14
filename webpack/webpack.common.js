@@ -1,6 +1,10 @@
-var webpack = require('webpack');
-var path = require('path');
+'use strict';
 
+const webpack = require('webpack');
+const path = require('path');
+
+const Package = require('./../package.json');
+  
 module.exports = function (options) {
   return {
 
@@ -14,17 +18,27 @@ module.exports = function (options) {
 
     module: {
       rules: [
-         {
-            test: /\.js?$/,
-            exclude: ['../node_modules'],
-            use: [{
+       {
+          test: /\.js?$/,
+          exclude: ['../node_modules'],
+          use: [
+            {
               loader:'babel-loader',
               options: {
                 presets: ['es2015'],
               }
-            }],
+            },
+            {
+              loader:'string-replace-loader',
+              query: {
+                search: '{{VERSION}}',
+                replace: Package.version
+              }
+            }
+          ],
         }
       ]
+
     },
 
     plugins: [
