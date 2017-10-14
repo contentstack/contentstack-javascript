@@ -1,11 +1,11 @@
 {
   "name": "contentstack",
   "version": "3.2.0",
-  "description": "The Built.io Contentstack Javascript SDK",
-  "homepage": "https://www.built.io/products/contentstack/overview",
+  "description": "Contentstack Javascript SDK",
+  "homepage": "https://www.contentstack.com/",
   "author": {
-    "name": "Built.io Contentstack",
-    "url": "https://www.built.io/"
+    "name": "Contentstack",
+    "url": "https://www.contentstack.com/"
   },
   "main": "dist/node/contentstack.js",
   "browser": "dist/web/contentstack.js",
