@@ -12,4 +12,4 @@ To install the latest version on npm locally and save it in your package's packa
 
 ## Generate documentation
 
-```jsdocs -c path/to/config/file```
+```jsdoc -c path/to/config/file```
