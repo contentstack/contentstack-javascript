@@ -1,16 +1,15 @@
-    'use strict';
+'use strict';
 /*
  * Module Dependencies.
  */
-var test = require('tape');
-var Contentstack = require('../../dist/node/contentstack.js');
-var Utils = require('./utils.js');
-var init = require('../config.js');
-var contentTypes = {
-    source: "source",
-    numbers_content_type: "numbers_content_type"
-};
-var Stack;
+const test = require('tape');
+const Contentstack = require('../../dist/node/contentstack.js');
+const Utils = require('./utils.js');
+const init = require('../config.js');
+
+const contentTypes = init.contentTypes;
+
+let Stack;
 /*
  * Initalise the Contentstack Instance
  * */
@@ -30,7 +29,7 @@ test('findOne:  default .toJSON().findOne()', function(assert) {
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  default .toJSON().findOne()");
             assert.end();
         });
@@ -50,7 +49,7 @@ test('findOne:  .ascending()', function(assert) {
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .ascending()");
             assert.end();
         });
@@ -67,7 +66,7 @@ test('findOne:  .descending()', function(assert) {
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .descending()");
             assert.end();
         });
@@ -84,11 +83,11 @@ test('findOne:  .lessThan()', function(assert) {
         .lessThan('num_field', value)
         .toJSON().findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.num_field < value), 'Entry num_field having value less than '+value+'.');
+            assert.ok((entry && entry.num_field < value), 'Entry num_field having value less than ' + value + '.');
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .lessThan()");
             assert.end();
         });
@@ -101,11 +100,11 @@ test('findOne:  .lessThanOrEqualTo()', function(assert) {
         .lessThanOrEqualTo('num_field', value)
         .toJSON().findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.num_field <= value), 'Entry num_field having value less than or equal to '+value+'.');
+            assert.ok((entry && entry.num_field <= value), 'Entry num_field having value less than or equal to ' + value + '.');
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .lessThanOrEqualTo()");
             assert.end();
         });
@@ -121,11 +120,11 @@ test('findOne:  .greaterThan()', function(assert) {
         .ascending(field)
         .toJSON().findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry[field] > value), 'Entry num_field having value greater than '+value+'.');
+            assert.ok((entry && entry[field] > value), 'Entry num_field having value greater than ' + value + '.');
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .greaterThan()");
             assert.end();
         });
@@ -141,7 +140,7 @@ test('findOne:  .greaterThanOrEqualTo()', function(assert) {
         .descending(field)
         .toJSON().findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry[field] >= value), 'Entry num_field having value greater than '+value+'.');
+            assert.ok((entry && entry[field] >= value), 'Entry num_field having value greater than ' + value + '.');
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
@@ -161,7 +160,7 @@ test('findOne:  .notEqualTo()', function(assert) {
         .descending(field)
         .toJSON().findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry[field] !== value), 'Entry num_field having value is not equal to '+value+'.');
+            assert.ok((entry && entry[field] !== value), 'Entry num_field having value is not equal to ' + value + '.');
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
@@ -184,11 +183,11 @@ test('findOne:  .containedIn()', function(assert) {
         .containedIn('title', _in)
         .toJSON().findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.title && ~_in.indexOf(entry.title)), 'Entry title exists from the available options '+_in.join(', ')+'.');
+            assert.ok((entry && entry.title && ~_in.indexOf(entry.title)), 'Entry title exists from the available options ' + _in.join(', ') + '.');
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .containedIn()");
             assert.end();
         });
@@ -202,12 +201,12 @@ test('findOne:  .notContainedIn()', function(assert) {
         .notContainedIn('title', _in)
         .toJSON().findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.title && _in.indexOf(entry.title) === -1), 'Entry title not exists from the available options '+_in.join(', ')+'.');
+            assert.ok((entry && entry.title && _in.indexOf(entry.title) === -1), 'Entry title not exists from the available options ' + _in.join(', ') + '.');
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
-            assert.deepEqual(err,  {error_code: 141, error_message: 'The requested entry doesn\'t exist.'}, "No entry found");
+            console.error("Error :", err);
+            assert.deepEqual(err, { error_code: 141, error_message: 'The requested entry doesn\'t exist.' }, "No entry found");
             assert.end();
         });
 });
@@ -225,11 +224,11 @@ test('findOne:  .exists()', function(assert) {
         .exists(queryField)
         .toJSON().findOne()
         .then(function success(entry) {
-            assert.ok((entry && typeof entry[queryField] !== 'undefined'), 'Entry having the '+queryField+'.');
+            assert.ok((entry && typeof entry[queryField] !== 'undefined'), 'Entry having the ' + queryField + '.');
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .exists()");
             assert.end();
         });
@@ -243,12 +242,12 @@ test('findOne:  .notExists()', function(assert) {
         .notExists(queryField)
         .toJSON().findOne()
         .then(function success(entry) {
-            assert.ok((entry && typeof entry[queryField] === 'undefined'), 'Entry having the '+queryField+'.');
+            assert.ok((entry && typeof entry[queryField] === 'undefined'), 'Entry having the ' + queryField + '.');
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
-            assert.deepEqual(err,  {error_code: 141, error_message: 'The requested entry doesn\'t exist.'}, "No entry found");
+            console.error("Error :", err);
+            assert.deepEqual(err, { error_code: 141, error_message: 'The requested entry doesn\'t exist.' }, "No entry found");
             assert.end();
         });
 });
@@ -271,12 +270,12 @@ test('findOne:  .skip()', function(assert) {
                     assert.deepEqual(allEntries[0][1], entry, 'Element matched.');
                     assert.end();
                 }, function error(err) {
-                    console.error("Error :",err);
+                    console.error("Error :", err);
                     assert.fail("findOne:  .skip()");
                     assert.end();
                 });
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .skip()");
             assert.end();
         });
@@ -296,7 +295,7 @@ test('findOne:  .or() - Query Objects', function(assert) {
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .or() - Query Objects");
             assert.end();
         });
@@ -315,7 +314,7 @@ test('findOne:  .and() - Query Objects', function(assert) {
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .and() - Query Objects");
             assert.end();
         });
@@ -326,14 +325,14 @@ test('findOne:  .query() - Raw query', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
-        .query({"$or": [{"title": "source1"}, {"boolean" : "false"}]})
+        .query({ "$or": [{ "title": "source1" }, { "boolean": "false" }] })
         .toJSON().findOne()
         .then(function success(entry) {
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.ok(~(entry.title === 'source1' || entry.boolean === true), '$OR condition satisfied');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .query() - Raw query");
             assert.end();
         });
@@ -371,7 +370,7 @@ test('findOne:  .search()', function(assert) {
             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .search()");
             assert.end();
         });
@@ -395,7 +394,7 @@ test('findOne:  .regex()', function(assert) {
             assert.ok((new RegExp(regex.pattern, regex.options).test(entry[field])), "regexp satisfied");
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .regex()");
             assert.end();
         });
@@ -413,7 +412,7 @@ test('findOne:  .includeReference() - String', function(assert) {
             assert.equal((entry && entry.reference && typeof entry.reference === 'object'), true, 'all the present reference are included');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .includeReference() - String");
             assert.end();
         });
@@ -429,7 +428,7 @@ test('findOne:  .includeReference() - Array', function(assert) {
             assert.equal((entry && entry.reference && typeof entry.reference === 'object' && entry.other_reference && typeof entry.other_reference === 'object'), true, 'all the present reference and other reference are included');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .includeReference() - Array");
             assert.end();
         });
@@ -442,19 +441,62 @@ test('findOne:  .includeSchema()', function(assert) {
 
     Query
         .includeSchema()
-        .toJSON().findOne()
+        .toJSON()
+        .findOne()
         .then(function success(entry) {
             // console.log("result : ", Object.keys(result || {}));
             assert.ok(entry, 'Entry present in the resultset');
             //assert.ok(entry.length, 'Schema key present in the resultset');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .includeSchema()");
             assert.end();
         });
 });
 
+// includeContentType
+test('findOne:  .includeContentType()', function(assert) {
+    var Query = Stack.ContentType(contentTypes.source).Query();
+
+    Query
+        .includeContentType()
+        .toJSON()
+        .findOne()
+        .then(function success(entry, contentType) {
+            // console.log("result : ", entry, contentType);
+            assert.ok(entry, 'entry present in the resultset');
+            assert.ok((typeof contentType === "undefined"), 'ContentType is not present.');
+            // assert.ok((contentType.uid === "source"), 'ContentType is title matched.');
+            assert.end();
+        }, function error(err) {
+            console.error("Error :", err);
+            assert.fail("findOne:  .includeContentType()");
+            assert.end();
+        });
+});
+
+// includeSchema & includeContentType
+test('findOne:  includeSchema & .includeContentType()', function(assert) {
+    var Query = Stack.ContentType(contentTypes.source).Query();
+
+    Query
+        .includeSchema()
+        .includeContentType()
+        .toJSON()
+        .findOne()
+        .then(function success(entry, contentType) {
+            // console.log("result : ", entry, contentType);
+            assert.ok(entry, 'entry present in the resultset');
+            assert.ok((typeof contentType === "undefined"), 'ContentType is not present.');
+            // assert.ok((contentType.uid === "source"), 'ContentType is title matched.');
+            assert.end();
+        }, function error(err) {
+            console.error("Error :", err);
+            assert.fail("findOne:  includeSchema & .includeContentType()");
+            assert.end();
+        });
+});
 
 // only
 test('findOne:  .only() - Single String Parameter', function(assert) {
@@ -468,7 +510,7 @@ test('findOne:  .only() - Single String Parameter', function(assert) {
             assert.ok(flag, 'entry with the field title in the resultset');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .only() - Single String Parameter");
             assert.end();
         });
@@ -485,7 +527,7 @@ test('findOne:  .only() - Multiple String Parameter', function(assert) {
             assert.ok(flag, 'entry with the field title in the resultset');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .only() - Multiple String Parameter");
             assert.end();
         });
@@ -498,11 +540,11 @@ test('findOne:  .only() - Array Parameter', function(assert) {
         .only(['title', 'url'])
         .toJSON().findOne()
         .then(function success(entry) {
-            var flag = (entry && Object.keys(entry).length === 3 && "title" in entry  && "url" in entry && "uid" in entry);
+            var flag = (entry && Object.keys(entry).length === 3 && "title" in entry && "url" in entry && "uid" in entry);
             assert.ok(flag, 'entry with the field title,url in the resultset');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .only() - Array Parameter");
             assert.end();
         });
@@ -518,7 +560,7 @@ test('findOne:  .only() - For the reference - String', function(assert) {
         .toJSON().findOne()
         .then(function success(entry) {
             var flag = false;
-            if(entry && entry['reference'] && typeof entry['reference'] === 'object') {
+            if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
                 flag = entry.reference.every(function(reference) {
                     return (reference && "title" in reference && "uid" in reference);
                 });
@@ -526,7 +568,7 @@ test('findOne:  .only() - For the reference - String', function(assert) {
             assert.equal(flag, true, 'Entry has the reference with only paramteres.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .only() - For the reference - String");
             assert.end();
         });
@@ -542,7 +584,7 @@ test('findOne:  .only() - For the reference - Array', function(assert) {
         .toJSON().findOne()
         .then(function success(entry) {
             var flag = false;
-            if(entry && entry['reference'] && entry['reference'].length) {
+            if (entry && entry['reference'] && entry['reference'].length) {
                 flag = entry.reference.every(function(reference) {
                     return (reference && "title" in reference && "uid" in reference);
                 });
@@ -550,7 +592,7 @@ test('findOne:  .only() - For the reference - Array', function(assert) {
             assert.equal(flag, true, 'Entry has the reference with only paramteres.');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .only() - For the reference - Array");
             assert.end();
         });
@@ -568,7 +610,7 @@ test('findOne:  .except() - Single String Parameter', function(assert) {
             assert.ok(flag, 'entry without the field title in the resultset');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .except() - Single String Parameter");
             assert.end();
         });
@@ -585,7 +627,7 @@ test('findOne:  .except() - Multiple String Parameter', function(assert) {
             assert.ok(flag, 'entry without the field title in the resultset');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .except() - Multiple String Parameter");
             assert.end();
         });
@@ -602,7 +644,7 @@ test('findOne:  .except() - Array of String Parameter', function(assert) {
             assert.ok(flag, 'entry without the field title, file in the resultset');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .except() - Array of String Parameter");
             assert.end();
         });
@@ -618,7 +660,7 @@ test('findOne:  .except() - For the reference - String', function(assert) {
         .toJSON().findOne()
         .then(function success(entry) {
             var flag = false;
-            if(entry && entry['reference'] && typeof entry['reference'] === 'object') {
+            if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
                 flag = entry.reference.every(function(reference) {
                     return (reference && !("title" in reference));
                 });
@@ -626,7 +668,7 @@ test('findOne:  .except() - For the reference - String', function(assert) {
             assert.ok(flag, 'entry with the field reference without title field in the resultset');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .except() - For the reference - String");
             assert.end();
         });
@@ -642,7 +684,7 @@ test('findOne:  .except() - For the reference - Array', function(assert) {
         .toJSON().findOne()
         .then(function success(entry) {
             var flag = false;
-            if(entry && entry['reference'] && typeof entry['reference'] === 'object') {
+            if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
                 flag = entry.reference.every(function(reference) {
                     return (reference && !("title" in reference));
                 });
@@ -650,7 +692,7 @@ test('findOne:  .except() - For the reference - Array', function(assert) {
             assert.ok(flag, 'entry with the field reference without title field in the resultset');
             assert.end();
         }, function error(err) {
-            console.error("Error :",err);
+            console.error("Error :", err);
             assert.fail("findOne:  .except() - For the reference - Array");
             assert.end();
         });
