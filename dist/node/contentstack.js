@@ -844,15 +844,15 @@ var Stack = function () {
 
         /**
          * @method imageTransform
-         * @description Transforms the provided image url with help of transformation parameters.  
-         * @param {String} [url] [Image URL to which needs to attach transformation parameters.]
-         * @param {String} [params] [Transformation Parameters]
+         * @description Transforms provided image url based on transformation parameters.  
+         * @param {String} url - Url on which transformations to be applied.
+         * @param {String} params - Transformation parameters
          * @example
-         * Stack.imageTransforamtion(imageURL, {height: 100, width: 200, disable: "upscale"});
+         * Stack.imageTransform(imageURL, {height: 100, width: 200, disable: "upscale"});
          * @example
-         * Stack.imageTransforamtion(imageURL, {crop: "150,100"});
+         * Stack.imageTransform(imageURL, {crop: "150,100"});
          * @example
-         * Stack.imageTransforamtion(imageURL, {format: "png", crop: "150,100"});
+         * Stack.imageTransform(imageURL, {format: "png", crop: "150,100"});
          * @returns {string} [Image url with transformation parameters.]
          */
 
