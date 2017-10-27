@@ -1,24 +1,24 @@
 {
-  "opts": {
-    "template": "csio-templates",
-    "encoding": "utf8",
-    "destination": "./js-sdk-reference/",
-    "recurse": true
-  },
-  "source": {
-    "include": [
-      "src/core/contentstack.js",
-      "src/core/stack.js",
-      "src/core/modules/asset.js",
-      "src/core/modules/entry.js",
-      "src/core/modules/query.js",
-      "src/core/modules/result.js"
-    ],
-    "exclude": [
-      "src/core/cache.js"
-    ]
-  },
-  "tags": {
-    "dictionaries": ["jsdoc","closure"]
-  }
+    "opts": {
+        "template": "csio-templates",
+        "encoding": "utf8",
+        "destination": "./js-sdk-reference/",
+        "recurse": true
+    },
+    "source": {
+        "include": [
+            "src/core/contentstack.js",
+            "src/core/stack.js",
+            "src/core/modules/assets.js",
+            "src/core/modules/entry.js",
+            "src/core/modules/query.js",
+            "src/core/modules/result.js"
+        ],
+        "exclude": [
+            "src/core/cache.js"
+        ]
+    },
+    "tags": {
+        "dictionaries": ["jsdoc", "closure"]
+    }
 }
