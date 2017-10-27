@@ -1420,14 +1420,14 @@ Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
 
     
 
-    <h4 class="name" id="imageTransform"><span class="type-signature"></span>imageTransform<span class="signature">(url<span class="signature-attributes">opt</span>, params<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span></h4>
+    <h4 class="name" id="imageTransform"><span class="type-signature"></span>imageTransform<span class="signature">(url, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
 
     
 
 
 
 <div class="description">
-    Transforms the provided image url with help of transformation parameters.
+    Transforms provided image url based on transformation parameters.
 </div>
 
 
@@ -1449,8 +1449,6 @@ Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
         
 
         
-        <th>Attributes</th>
-        
 
         
 
@@ -1467,20 +1465,10 @@ Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
             
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last">[Image URL to which needs to attach transformation parameters.]</td>
+            <td class="description last">Url on which transformations to be applied.</td>
         </tr>
 
     
@@ -1491,20 +1479,10 @@ Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
             
 
             
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
 
             
 
-            <td class="description last">[Transformation Parameters]</td>
+            <td class="description last">Transformation parameters</td>
         </tr>
 
     
@@ -1563,11 +1541,11 @@ Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>Stack.imageTransforamtion(imageURL, {height: 100, width: 200, disable: "upscale"});</code></pre>
+    <pre class="prettyprint"><code>Stack.imageTransform(imageURL, {height: 100, width: 200, disable: "upscale"});</code></pre>
 
-    <pre class="prettyprint"><code>Stack.imageTransforamtion(imageURL, {crop: "150,100"});</code></pre>
+    <pre class="prettyprint"><code>Stack.imageTransform(imageURL, {crop: "150,100"});</code></pre>
 
-    <pre class="prettyprint"><code>Stack.imageTransforamtion(imageURL, {format: "png", crop: "150,100"});</code></pre>
+    <pre class="prettyprint"><code>Stack.imageTransform(imageURL, {format: "png", crop: "150,100"});</code></pre>
 
 
 
