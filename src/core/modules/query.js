@@ -1,4 +1,4 @@
-import Request from  '../lib/request';
+import Request from '../lib/request';
 import * as Utils from '../lib/utils.js';
 import Entry from './entry';
 
@@ -89,7 +89,7 @@ const _extend = {
  * let assetQuery =  Contentstack.Stack().Assets().Query();
  * @ignore
  */
- export default class Query extends Entry {
+export default class Query extends Entry {
     constructor() {
         super();
         this._query = this._query || {};
@@ -103,7 +103,7 @@ const _extend = {
          * @example blogQuery.lessThan('created_at','2015-06-22')
          * @returns {Query}
          */
-         this.lessThan = _extend.compare('$lt');
+        this.lessThan = _extend.compare('$lt');
 
         /**
          * @method lessThanOrEqualTo
@@ -113,7 +113,7 @@ const _extend = {
          * @example blogQuery.lessThanOrEqualTo('created_at','2015-03-12')
          * @returns {Query}
          */
-         this.lessThanOrEqualTo = _extend.compare('$lte');
+        this.lessThanOrEqualTo = _extend.compare('$lte');
         /**
          * @method greaterThan
          * @description This method provides only the entries with values greater than the specified value for a field.
@@ -122,7 +122,7 @@ const _extend = {
          * @example blogQuery.greaterThan('created_at','2015-03-12')
          * @returns {Query}
          */
-         this.greaterThan = _extend.compare('$gt');
+        this.greaterThan = _extend.compare('$gt');
 
         /**
          * @method greaterThanOrEqualTo
@@ -132,7 +132,7 @@ const _extend = {
          * @example blogQuery.greaterThanOrEqualTo('created_at', '2015-06-22')
          * @returns {Query}
          */
-         this.greaterThanOrEqualTo = _extend.compare('$gte');
+        this.greaterThanOrEqualTo = _extend.compare('$gte');
 
         /**
          * @method notEqualTo
@@ -142,7 +142,7 @@ const _extend = {
          * @example blogQuery.notEqualTo('title','Demo')
          * @returns {Query}
          */
-         this.notEqualTo = _extend.compare('$ne');
+        this.notEqualTo = _extend.compare('$ne');
 
         /**
          * @method containedIn
@@ -152,7 +152,7 @@ const _extend = {
          * @example blogQuery.containedIn('title', ['Demo', 'Welcome'])
          * @returns {Query}
          */
-         this.containedIn =  _extend.contained(true);
+        this.containedIn = _extend.contained(true);
 
         /**
          * @method notContainedIn
@@ -162,7 +162,7 @@ const _extend = {
          * @example blogQuery.notContainedIn('title', ['Demo', 'Welcome'])
          * @returns {Query}
          */
-         this.notContainedIn = _extend.contained(false);
+        this.notContainedIn = _extend.contained(false);
 
         /**
          * @method exists
@@ -171,7 +171,7 @@ const _extend = {
          * @example blogQuery.exists('featured')
          * @returns {Query}
          */
-         this.exists =  _extend.exists(true);
+        this.exists = _extend.exists(true);
 
         /**
          * @method notExists
@@ -180,7 +180,7 @@ const _extend = {
          * @example blogQuery.notExists('featured')
          * @returns {Query}
          */
-         this.notExists =  _extend.exists(false);
+        this.notExists = _extend.exists(false);
 
         /**
          * @method ascending
@@ -189,7 +189,7 @@ const _extend = {
          * @example blogQuery.ascending('created_at')
          * @returns {Query}
          */
-         this.ascending = _extend.sort('asc');
+        this.ascending = _extend.sort('asc');
 
         /**
          * @method descending
@@ -198,7 +198,7 @@ const _extend = {
          * @example blogQuery.descending('created_at')
          * @returns {Query}
          */
-         this.descending =  _extend.sort('desc');
+        this.descending = _extend.sort('desc');
 
         /**
          * @method beforeUid
@@ -208,7 +208,7 @@ const _extend = {
          * @returns {Query}
          * @ignore
          */
-         this.beforeUid =   _extend.sort('before_uid');
+        this.beforeUid = _extend.sort('before_uid');
 
         /**
          * @method afterUid
@@ -218,7 +218,7 @@ const _extend = {
          * @returns {Query}
          * @ignore
          */
-         this.afterUid = _extend.sort('after_uid'); 
+        this.afterUid = _extend.sort('after_uid');
 
         /**
          * @method skip
@@ -227,7 +227,7 @@ const _extend = {
          * @example blogQuery.skip(5)
          * @returns {Query}
          */
-         this.skip =  _extend.pagination('skip');
+        this.skip = _extend.pagination('skip');
 
         /**
          * @method limit
@@ -236,7 +236,7 @@ const _extend = {
          * @example blogQuery.limit(10)
          * @returns {Query}
          */
-         this.limit =  _extend.pagination('limit');
+        this.limit = _extend.pagination('limit');
 
         /**
          * @method or
@@ -254,7 +254,7 @@ const _extend = {
          * blogQuery.or(Query1, Query2)
          * @returns {Query}
          */
-         this.or =  _extend.logical('$or');
+        this.or = _extend.logical('$or');
 
         /**
          * @method and
@@ -272,8 +272,8 @@ const _extend = {
          * blogQuery.and(Query1, Query2)
          * @returns {Query}
          */
-         this.and =  _extend.logical('$and');
-     }
+        this.and = _extend.logical('$and');
+    }
 
     /**
      * @method where(equalTo)
@@ -283,7 +283,7 @@ const _extend = {
      * @example blogQuery.where('title','Demo')
      * @returns {Query}
      */
-     equalTo(key, value){
+    equalTo(key, value) {
         if (key && typeof key === 'string') {
             this._query['query'][key] = value;
 
@@ -293,7 +293,7 @@ const _extend = {
         }
     }
 
-    where(key, value){
+    where(key, value) {
         if (key && typeof key === 'string') {
             this._query['query'][key] = value;
             return this;
@@ -308,9 +308,9 @@ const _extend = {
      * @example blogQuery.count()
      * @returns {Query}
      */
-     count(){
-        const host =  this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-             url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
+    count() {
+        const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
+            url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this._query['count'] = true;
         this.requestParams = {
             method: 'POST',
@@ -330,7 +330,7 @@ const _extend = {
      * @param {object} query - raw{json} queries to filter the entries in result set.
      * @returns {Query}
      */
-     query(query){
+    query(query) {
         if (typeof query === "object") {
             this._query['query'] = Utils.mergeDeep(this._query['query'], query);
             return this;
@@ -346,7 +346,7 @@ const _extend = {
      * @example blogQuery.tags(['technology', 'business'])
      * @returns {Query}
      */
-     tags(values) {
+    tags(values) {
         if (Array.isArray(values)) {
             this._query['tags'] = values;
             return this;
@@ -361,7 +361,7 @@ const _extend = {
      * @example blogQuery.includeCount()
      * @returns {Query}
      */
-     includeCount() {
+    includeCount() {
         this._query['include_count'] = true;
         return this;
     }
@@ -373,7 +373,7 @@ const _extend = {
      * @example blogQuery.where('title','Demo').getQuery()
      * @returns {Query}
      */
-     getQuery() {
+    getQuery() {
         return this._query.query || {};
     }
 
@@ -391,7 +391,7 @@ const _extend = {
      * blogQuery.regex('title','^Demo', 'i')
      * @returns {Query}
      */
-     regex(key, value, options) {
+    regex(key, value, options) {
         if (key && value && typeof key === 'string' && typeof value === 'string') {
             this._query['query'][key] = {
                 $regex: value
@@ -410,7 +410,7 @@ const _extend = {
      * @example blogQuery.search('Welcome to demo')
      * @returns {Query}
      */
-     search(value) {
+    search(value) {
         if (value && typeof value === 'string') {
             this._query['typeahead'] = value;
             return this;
@@ -425,9 +425,9 @@ const _extend = {
      * @example
      * blogQuery.find()
      */
-     find() {
-        const host =  this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-              url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
+    find() {
+        const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
+            url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this.requestParams = {
             method: 'POST',
             headers: this.headers,
@@ -438,17 +438,18 @@ const _extend = {
             }
         };
         return Utils.sendRequest(this);
-    }   
+    }
 
     /**
      * @method findOne
+     * @deprecated since verion 3.3.0
      * @description Provides the single entry from the resultset.
      * @example
      * blogQuery.findOne()
      */
-     findOne() {
-        const host =  this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-             url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
+    findOne() {
+        const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
+            url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this.singleEntry = true;
         this._query.limit = 1;
         this.requestParams = {
@@ -464,5 +465,3 @@ const _extend = {
     }
 
 }
-
-
