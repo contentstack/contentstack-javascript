@@ -7,9 +7,9 @@ module.exports =
 /******/ 	function __webpack_require__(moduleId) {
 /******/
 /******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId])
+/******/ 		if(installedModules[moduleId]) {
 /******/ 			return installedModules[moduleId].exports;
-/******/
+/******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = installedModules[moduleId] = {
 /******/ 			i: moduleId,
@@ -64,7 +64,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 16);
+/******/ 	return __webpack_require__(__webpack_require__.s = 12);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -80,6 +80,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
+exports.transform = transform;
 exports._type = _type;
 exports.mergeDeep = mergeDeep;
 exports.merge = merge;
@@ -95,7 +96,7 @@ var _request = __webpack_require__(2);
 
 var _request2 = _interopRequireDefault(_request);
 
-var _result = __webpack_require__(13);
+var _result = __webpack_require__(14);
 
 var _result2 = _interopRequireDefault(_result);
 
@@ -116,6 +117,36 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         });
     };
 })();
+
+function transform(type) {
+    return function () {
+        this._query[type] = this._query[type] || {};
+        switch (arguments.length) {
+            case 1:
+                if (Array.isArray(arguments[0]) || typeof arguments[0] === "string") {
+                    var query = this._query[type]['BASE'] || [];
+                    query = query.concat(arguments[0]);
+                    this._query[type]['BASE'] = query;
+                    return this;
+                } else {
+                    console.error("Kindly provide valid parameters");
+                }
+                break;
+            case 2:
+                if (typeof arguments[0] === "string" && (Array.isArray(arguments[1]) || typeof arguments[1] === "string")) {
+                    var _query2 = this._query[type][arguments[0]] || [];
+                    _query2 = _query2.concat(arguments[1]);
+                    this._query[type][arguments[0]] = _query2;
+                    return this;
+                } else {
+                    console.error("Kindly provide valid parameters");
+                }
+                break;
+            default:
+                console.error("Kindly provide valid parameters");
+        }
+    };
+}
 
 function _type(val) {
     var _typeof = void 0,
@@ -250,7 +281,7 @@ function spreadResult(result) {
     if (result && Object.keys(result).length) {
         if (typeof result.entries !== 'undefined') _results.push(result.entries);
         if (typeof result.assets !== 'undefined') _results.push(result.assets);
-        if (typeof result.schema !== 'undefined') _results.push(result.schema);
+        if (typeof result.content_type !== 'undefined' || typeof result.schema !== 'undefined') _results.push(result.content_type || result.schema);
         if (typeof result.count !== 'undefined') _results.push(result.count);
         if (typeof result.entry !== 'undefined') _results = result.entry;
         if (typeof result.asset !== 'undefined') _results = result.asset;
@@ -313,6 +344,10 @@ function sendRequest(queryObject) {
                     if (queryObject.singleEntry) {
                         queryObject.singleEntry = false;
                         if (data.schema) entries.schema = data.schema;
+                        if (data.content_type) {
+                            entries.content_type = data.content_type;
+                            delete entries.schema;
+                        }
                         if (data.entries && data.entries.length) {
                             entries.entry = data.entries[0];
                         } else if (data.assets && data.assets.length) {
@@ -420,6 +455,10 @@ function sendRequest(queryObject) {
                         if (queryObject.singleEntry) {
                             queryObject.singleEntry = false;
                             if (data.schema) entries.schema = data.schema;
+                            if (data.content_type) {
+                                entries.content_type = data.content_type;
+                                delete entries.schema;
+                            }
                             if (data.entries && data.entries.length) {
                                 entries.entry = data.entries[0];
                             } else if (data.assets && data.assets.length) {
@@ -472,7 +511,7 @@ var _entry = __webpack_require__(5);
 
 var _entry2 = _interopRequireDefault(_entry);
 
-var _assets = __webpack_require__(12);
+var _assets = __webpack_require__(13);
 
 var _assets2 = _interopRequireDefault(_assets);
 
@@ -791,6 +830,34 @@ var Stack = function () {
             };
             return (0, _request2.default)(query);
         }
+
+        /**
+         * @method imageTransform
+         * @description Transforms the provided image url with help of transformation parameters.  
+         * @param {String} [url] [Image URL to which needs to attach transformation parameters.]
+         * @param {String} [params] [Transformation Parameters]
+         * @example
+         * Stack.imageTransforamtion(imageURL, {height: 100, width: 200, disable: "upscale"});
+         * @example
+         * Stack.imageTransforamtion(imageURL, {crop: "150,100"});
+         * @example
+         * Stack.imageTransforamtion(imageURL, {format: "png", crop: "150,100"});
+         * @returns {string} [Image url with transformation parameters.]
+         */
+
+    }, {
+        key: 'imageTransform',
+        value: function imageTransform(url, params) {
+            if (url && typeof url === "string" && (typeof params === 'undefined' ? 'undefined' : _typeof(params)) === "object" && params.length === undefined) {
+                var queryParams = [];
+                for (var operation in params) {
+                    queryParams.push(operation + '=' + params[operation]);
+                }
+                url += url.indexOf("?") <= -1 ? "?" + queryParams.join('&') : "&" + queryParams.join('&');
+            }
+
+            return url;
+        }
     }]);
 
     return Stack;
@@ -817,7 +884,7 @@ var _utils = __webpack_require__(0);
 
 var Utils = _interopRequireWildcard(_utils);
 
-var _http = __webpack_require__(14);
+var _http = __webpack_require__(15);
 
 var _http2 = _interopRequireDefault(_http);
 
@@ -826,7 +893,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //JS SDK version
-var version = '3.2.0';
+var version = '3.3.0';
 
 function Request(options) {
     return new Promise(function (resolve, reject) {
@@ -932,7 +999,7 @@ var _utils = __webpack_require__(0);
 
 var Utils = _interopRequireWildcard(_utils);
 
-var _localstorage = __webpack_require__(15);
+var _localstorage = __webpack_require__(16);
 
 var _localstorage2 = _interopRequireDefault(_localstorage);
 
@@ -974,7 +1041,7 @@ function getKeys() {
 
 
 Object.defineProperty(exports, "__esModule", {
-				value: true
+    value: true
 });
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
@@ -995,36 +1062,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _extend = function _extend(type) {
-				return function () {
-								this._query[type] = this._query[type] || {};
-								switch (arguments.length) {
-												case 1:
-																if (Array.isArray(arguments[0]) || typeof arguments[0] === "string") {
-																				var query = this._query[type]['BASE'] || [];
-																				query = query.concat(arguments[0]);
-																				this._query[type]['BASE'] = query;
-																				return this;
-																} else {
-																				console.error("Kindly provide valid parameters");
-																}
-																break;
-												case 2:
-																if (typeof arguments[0] === "string" && (Array.isArray(arguments[1]) || typeof arguments[1] === "string")) {
-																				var _query = this._query[type][arguments[0]] || [];
-																				_query = _query.concat(arguments[1]);
-																				this._query[type][arguments[0]] = _query;
-																				return this;
-																} else {
-																				console.error("Kindly provide valid parameters");
-																}
-																break;
-												default:
-																console.error("Kindly provide valid parameters");
-								}
-				};
-};
-
 /**
  * @summary Creates an instance of `Entry`.
  * @description An initializer is responsible for creating Entry object.
@@ -1034,13 +1071,12 @@ var _extend = function _extend(type) {
  * @returns {Entry}
  * @ignore
  */
-
 var Entry = function () {
-				function Entry() {
-								_classCallCheck(this, Entry);
+    function Entry() {
+        _classCallCheck(this, Entry);
 
-								this._query = {};
-								/**
+        this._query = {};
+        /**
          * @method only
          * @description This method is use to show the selected fields of the entries in resultset.
          * @param {String} [key=BASE] - reference field in the entry/single field in entry
@@ -1062,8 +1098,8 @@ var Entry = function () {
          * blogEntry.includeReference('category').only('category', ['title', 'description'])
          * @returns {Entry}
          */
-								this.only = _extend('only');
-								/**
+        this.only = Utils.transform('only');
+        /**
          * @method except
          * @description This method is use to hide the selected fields of the entries in resultset.
          * @param {String} [key=BASE] - reference field in the entry/single field in entry
@@ -1084,66 +1120,66 @@ var Entry = function () {
          * <caption> .except with reference_field_uid and field uids(array) </caption>
          * blogEntry.includeReference('category').except('category', ['title', 'description'])
          * @returns {Entry} */
-								this.except = _extend('except');
-								return this;
-				}
+        this.except = Utils.transform('except');
+        return this;
+    }
 
-				_createClass(Entry, [{
-								key: "setCacheProvider",
-								value: function setCacheProvider(provider) {
-												if (provider && (typeof provider === "undefined" ? "undefined" : _typeof(provider)) === 'object') {
-																this.provider = provider;
-												}
-												return this;
-								}
-				}, {
-								key: "setCachePolicy",
-								value: function setCachePolicy(policy) {
-												if (typeof policy === 'number' && policy >= -1 && policy < 4) {
-																if (!this._query) {
-																				this.cachePolicy = policy;
-																} else {
-																				this.queryCachePolicy = policy;
-																}
-												} else {
-																console.error("Kindly provide the valid policy");
-												}
-												return this;
-								}
+    _createClass(Entry, [{
+        key: "setCacheProvider",
+        value: function setCacheProvider(provider) {
+            if (provider && (typeof provider === "undefined" ? "undefined" : _typeof(provider)) === 'object') {
+                this.provider = provider;
+            }
+            return this;
+        }
+    }, {
+        key: "setCachePolicy",
+        value: function setCachePolicy(policy) {
+            if (typeof policy === 'number' && policy >= -1 && policy < 4) {
+                if (!this._query) {
+                    this.cachePolicy = policy;
+                } else {
+                    this.queryCachePolicy = policy;
+                }
+            } else {
+                console.error("Kindly provide the valid policy");
+            }
+            return this;
+        }
 
-								/**
-        * @method includeReference
-        * @description This method is use to include referenced entries from the other Contenttype.
-        * @example
-        * <caption> .includeReference with reference_field_uids as array </caption>
-        * blogEntry.includeReference(['category', 'author'])
-        * @example
-        * <caption> .includeReference with reference_field_uids </caption>
-        * blogEntry.includeReference('category', 'author')
-        * @returns {Entry}
-        */
+        /**
+         * @method includeReference
+         * @description This method is use to include referenced entries from the other Contenttype.
+         * @example
+         * <caption> .includeReference with reference_field_uids as array </caption>
+         * blogEntry.includeReference(['category', 'author'])
+         * @example
+         * <caption> .includeReference with reference_field_uids </caption>
+         * blogEntry.includeReference('category', 'author')
+         * @returns {Entry}
+         */
 
-				}, {
-								key: "includeReference",
-								value: function includeReference() {
-												for (var _len = arguments.length, val = Array(_len), _key = 0; _key < _len; _key++) {
-																val[_key] = arguments[_key];
-												}
+    }, {
+        key: "includeReference",
+        value: function includeReference() {
+            for (var _len = arguments.length, val = Array(_len), _key = 0; _key < _len; _key++) {
+                val[_key] = arguments[_key];
+            }
 
-												if (Array.isArray(val) || typeof val === "string") {
-																if (arguments.length) {
-																				for (var i = 0; i < arguments.length; i++) {
-																								this._query['include'] = this._query['include'] || [];
-																								this._query['include'] = this._query['include'].concat(arguments[i]);
-																				}
-																}
-																return this;
-												} else {
-																console.error("Argument should be a String or an Array.");
-												}
-								}
+            if (Array.isArray(val) || typeof val === "string") {
+                if (arguments.length) {
+                    for (var i = 0; i < arguments.length; i++) {
+                        this._query['include'] = this._query['include'] || [];
+                        this._query['include'] = this._query['include'].concat(arguments[i]);
+                    }
+                }
+                return this;
+            } else {
+                console.error("Argument should be a String or an Array.");
+            }
+        }
 
-								/**
+        /**
          * @method language
          * @description This method is used set language code, which language's data to be retrieve.
          * @param {String} language_code - language code. e.g. 'en-us', 'ja-jp', etc.
@@ -1151,18 +1187,18 @@ var Entry = function () {
          * @returns {Entry}
          */
 
-				}, {
-								key: "language",
-								value: function language(language_code) {
-												if (language_code && typeof language_code === 'string') {
-																this._query['locale'] = language_code;
-																return this;
-												} else {
-																console.error("Argument should be a String.");
-												}
-								}
+    }, {
+        key: "language",
+        value: function language(language_code) {
+            if (language_code && typeof language_code === 'string') {
+                this._query['locale'] = language_code;
+                return this;
+            } else {
+                console.error("Argument should be a String.");
+            }
+        }
 
-								/**
+        /**
          * @method addQuery
          * @description This method is used to add query to Entry object.
          * @param {String} key - key of the query
@@ -1171,46 +1207,61 @@ var Entry = function () {
          * @returns {Entry}
          */
 
-				}, {
-								key: "addQuery",
-								value: function addQuery(key, value) {
-												if (key && value && typeof key === 'string') {
-																this._query[key] = value;
-																return this;
-												} else {
-																console.error("First argument should be a String.");
-												}
-								}
+    }, {
+        key: "addQuery",
+        value: function addQuery(key, value) {
+            if (key && value && typeof key === 'string') {
+                this._query[key] = value;
+                return this;
+            } else {
+                console.error("First argument should be a String.");
+            }
+        }
 
-								/**
+        /**
          * @method includeSchema
+         * @deprecated since verion 3.3.0
          * @description This method is used to include the schema of the current contenttype in result set along with the entry/entries.
          * @example blogEntry.includeSchema()
          * @returns {Entry}
          */
 
-				}, {
-								key: "includeSchema",
-								value: function includeSchema() {
-												this._query['include_schema'] = true;
-												return this;
-								}
+    }, {
+        key: "includeSchema",
+        value: function includeSchema() {
+            this._query['include_schema'] = true;
+            return this;
+        }
 
-								/**
+        /**
+         * @method includeContentType
+         * @description This method is used to include the current contenttype in result set along with the entry/entries.
+         * @example blogEntry.includeContentType()
+         * @returns {Entry}
+         */
+
+    }, {
+        key: "includeContentType",
+        value: function includeContentType() {
+            this._query['include_content_type'] = true;
+            return this;
+        }
+
+        /**
          * @method includeOwner
          * @description This method is used to include the owner of the entry/entries in resultset.
          * @example blogEntry.includeOwner()
          * @returns {Entry}
          */
 
-				}, {
-								key: "includeOwner",
-								value: function includeOwner() {
-												this._query['include_owner'] = true;
-												return this;
-								}
+    }, {
+        key: "includeOwner",
+        value: function includeOwner() {
+            this._query['include_owner'] = true;
+            return this;
+        }
 
-								/**
+        /**
          * @method toJSON
          * @description This method is used to convert the result in to plain javascript object.
          * @example
@@ -1218,47 +1269,47 @@ var Entry = function () {
          *      .toJSON()
          *      .then(function (result) {
          *          let value = result.get(field_uid)
-        *       },function (error) {
+         *       },function (error) {
          *          // error function
          *      })
          * @returns {Object}
          */
 
-				}, {
-								key: "toJSON",
-								value: function toJSON() {
-												this.tojson = true;
-												return this;
-								}
+    }, {
+        key: "toJSON",
+        value: function toJSON() {
+            this.tojson = true;
+            return this;
+        }
 
-								/**
+        /**
          * @method fetch
          * @description fetch entry of requested content_type of defined query if present.
          * @example
          * blogEntry.fetch()
          */
 
-				}, {
-								key: "fetch",
-								value: function fetch() {
-												if (this.entry_uid) {
-																this.requestParams = {
-																				method: 'POST',
-																				headers: this.headers,
-																				url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries + this.entry_uid,
-																				body: {
-																								_method: 'GET',
-																								query: this._query
-																				}
-																};
-																return Utils.sendRequest(this);
-												} else {
-																console.error("Kindly provide an entry uid. e.g. .Entry('bltsomething123')");
-												}
-								}
-				}]);
+    }, {
+        key: "fetch",
+        value: function fetch() {
+            if (this.entry_uid) {
+                this.requestParams = {
+                    method: 'POST',
+                    headers: this.headers,
+                    url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries + this.entry_uid,
+                    body: {
+                        _method: 'GET',
+                        query: this._query
+                    }
+                };
+                return Utils.sendRequest(this);
+            } else {
+                console.error("Kindly provide an entry uid. e.g. .Entry('bltsomething123')");
+            }
+        }
+    }]);
 
-				return Entry;
+    return Entry;
 }();
 
 exports.default = Entry;
@@ -1776,6 +1827,7 @@ var Query = function (_Entry) {
 
         /**
          * @method findOne
+         * @deprecated since verion 3.3.0
          * @description Provides the single entry from the resultset.
          * @example
          * blogQuery.findOne()
@@ -2215,6 +2267,82 @@ exports.default = localStorage;
 "use strict";
 
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _stack = __webpack_require__(1);
+
+var _stack2 = _interopRequireDefault(_stack);
+
+var _index = __webpack_require__(3);
+
+var _index2 = _interopRequireDefault(_index);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @method Contentstack
+ * @description Creates an instance of `Contentstack`.
+ * @api public
+ */
+var Contentstack = function () {
+	function Contentstack() {
+		_classCallCheck(this, Contentstack);
+
+		/**
+   * @constant CachePolicy
+   * @description CachePolicy contains different cache policies constants.
+   * @example
+   * Contentstack.CachePolicy.IGNORE_CACHE
+   * Contentstack.CachePolicy.ONLY_NETWORK
+   * Contentstack.CachePolicy.CACHE_ELSE_NETWORK
+   * Contentstack.CachePolicy.NETWORK_ELSE_CACHE
+   * Contentstack.CachePolicy.CACHE_THEN_NETWORK
+   */
+		this.CachePolicy = _index2.default.policies;
+	}
+
+	/**
+  * @method Stack
+  * @description Initialize "Built.io Contentstack" Stack javascript-SDK instance
+  * @api public
+  * @example
+  * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment');
+  *                  OR
+  * var Stack = Contentstack.Stack({
+  *      'api_key':'bltsomethingapikey',
+  *      'access_token':'bltsomethongtoken',
+  *      'environment':'environment_name'
+  *   });
+  *
+  * @returns {Stack}
+  */
+
+
+	_createClass(Contentstack, [{
+		key: "Stack",
+		value: function Stack() {
+			for (var _len = arguments.length, stack_arguments = Array(_len), _key = 0; _key < _len; _key++) {
+				stack_arguments[_key] = arguments[_key];
+			}
+
+			return new (Function.prototype.bind.apply(_stack2.default, [null].concat(stack_arguments)))();
+		}
+	}]);
+
+	return Contentstack;
+}();
+
+module.exports = new Contentstack();
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -2229,9 +2357,9 @@ var _stack = __webpack_require__(1);
 
 var _stack2 = _interopRequireDefault(_stack);
 
-var _query2 = __webpack_require__(6);
+var _query = __webpack_require__(6);
 
-var _query3 = _interopRequireDefault(_query2);
+var _query2 = _interopRequireDefault(_query);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2239,35 +2367,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _extend = function _extend(type) {
-    return function () {
-        this._query[type] = this._query[type] || {};
-        switch (arguments.length) {
-            case 1:
-                if (Array.isArray(arguments[0]) || typeof arguments[0] === "string") {
-                    var query = this._query[type]['BASE'] || [];
-                    query = query.concat(arguments[0]);
-                    this._query[type]['BASE'] = query;
-                    return this;
-                } else {
-                    console.error("Kindly provide valid parameters");
-                }
-                break;
-            case 2:
-                if (typeof arguments[0] === "string" && (Array.isArray(arguments[1]) || typeof arguments[1] === "string")) {
-                    var _query = this._query[type][arguments[0]] || [];
-                    _query = _query.concat(arguments[1]);
-                    this._query[type][arguments[0]] = _query;
-                    return this;
-                } else {
-                    console.error("Kindly provide valid parameters");
-                }
-                break;
-            default:
-                console.error("Kindly provide valid parameters");
-        }
-    };
-};
 /**
  * @summary Creates an instance of `Assets`.
  * @description An initializer is responsible for creating Asset object.
@@ -2277,7 +2376,6 @@ var _extend = function _extend(type) {
  * @returns {Assets}
  * @ignore
  */
-
 var Assets = function () {
     function Assets() {
         _classCallCheck(this, Assets);
@@ -2298,7 +2396,7 @@ var Assets = function () {
          * Assets().only(['title','description'])
          * @returns {Asset}
          */
-        this.only = _extend('only');
+        this.only = Utils.transform('only');
         return this;
     }
 
@@ -2313,28 +2411,8 @@ var Assets = function () {
     _createClass(Assets, [{
         key: 'Query',
         value: function Query() {
-            var query = new _query3.default();
+            var query = new _query2.default();
             return Utils.merge(query, this);
-        }
-
-        /**
-         * @method addQuery
-         * @description This method is used to add query to Entry object.
-         * @param {String} key - key of the query
-         * @param {String} value - value of the query
-         * @example Assets().addQuery('include_schema',true)
-         * @returns {Entry}
-         */
-
-    }, {
-        key: 'addQuery',
-        value: function addQuery(key, value) {
-            if (key && value && typeof key === 'string') {
-                this._query[key] = value;
-                return this;
-            } else {
-                console.error("First argument should be a String.");
-            }
         }
 
         /**
@@ -2391,7 +2469,7 @@ var Assets = function () {
 exports.default = Assets;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2526,7 +2604,7 @@ module.exports = function (object) {
 };
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2538,7 +2616,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = fetch;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2555,82 +2633,6 @@ var _localStorage2 = _interopRequireDefault(_localStorage);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _localStorage2.default;
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _stack = __webpack_require__(1);
-
-var _stack2 = _interopRequireDefault(_stack);
-
-var _index = __webpack_require__(3);
-
-var _index2 = _interopRequireDefault(_index);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-/**
- * @method Contentstack
- * @description Creates an instance of `Contentstack`.
- * @api public
- */
-var Contentstack = function () {
-	function Contentstack() {
-		_classCallCheck(this, Contentstack);
-
-		/**
-   * @constant CachePolicy
-   * @description CachePolicy contains different cache policies constants.
-   * @example
-   * Contentstack.CachePolicy.IGNORE_CACHE
-   * Contentstack.CachePolicy.ONLY_NETWORK
-   * Contentstack.CachePolicy.CACHE_ELSE_NETWORK
-   * Contentstack.CachePolicy.NETWORK_ELSE_CACHE
-   * Contentstack.CachePolicy.CACHE_THEN_NETWORK
-   */
-		this.CachePolicy = _index2.default.policies;
-	}
-
-	/**
-  * @method Stack
-  * @description Initialize "Built.io Contentstack" Stack javascript-SDK instance
-  * @api public
-  * @example
-  * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment');
-  *                  OR
-  * var Stack = Contentstack.Stack({
-  *      'api_key':'bltsomethingapikey',
-  *      'access_token':'bltsomethongtoken',
-  *      'environment':'environment_name'
-  *   });
-  *
-  * @returns {Stack}
-  */
-
-
-	_createClass(Contentstack, [{
-		key: "Stack",
-		value: function Stack() {
-			for (var _len = arguments.length, stack_arguments = Array(_len), _key = 0; _key < _len; _key++) {
-				stack_arguments[_key] = arguments[_key];
-			}
-
-			return new (Function.prototype.bind.apply(_stack2.default, [null].concat(stack_arguments)))();
-		}
-	}]);
-
-	return Contentstack;
-}();
-
-module.exports = new Contentstack();
 
 /***/ })
 /******/ ]);

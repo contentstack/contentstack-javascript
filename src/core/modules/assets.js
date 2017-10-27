@@ -2,35 +2,6 @@ import * as Utils from '../lib/utils';
 import Stack from '../stack';
 import Query from './query';
 
-const _extend = function(type) {
-    return function() {
-        this._query[type] = this._query[type] || {};
-        switch (arguments.length) {
-            case 1:
-                if (Array.isArray(arguments[0]) || typeof arguments[0] === "string") {
-                    let query = this._query[type]['BASE'] || [];
-                    query = query.concat(arguments[0]);
-                    this._query[type]['BASE'] = query;
-                    return this;
-                } else {
-                    console.error("Kindly provide valid parameters");
-                }
-                break;
-            case 2:
-                if (typeof arguments[0] === "string" && (Array.isArray(arguments[1]) || typeof arguments[1] === "string")) {
-                    let query = this._query[type][arguments[0]] || [];
-                    query = query.concat(arguments[1]);
-                    this._query[type][arguments[0]] = query;
-                    return this;
-                } else {
-                    console.error("Kindly provide valid parameters");
-                }
-                break;
-            default:
-                console.error("Kindly provide valid parameters");
-        }
-    };
-};
 /**
  * @summary Creates an instance of `Assets`.
  * @description An initializer is responsible for creating Asset object.
@@ -58,7 +29,7 @@ export default class Assets {
          * Assets().only(['title','description'])
          * @returns {Asset}
          */
-        this.only = _extend('only');
+        this.only = Utils.transform('only');
         return this;
     }
 
@@ -71,23 +42,6 @@ export default class Assets {
     Query() {
         let query = new Query();
         return Utils.merge(query, this);
-    }
-
-    /**
-     * @method addQuery
-     * @description This method is used to add query to Entry object.
-     * @param {String} key - key of the query
-     * @param {String} value - value of the query
-     * @example Assets().addQuery('include_schema',true)
-     * @returns {Entry}
-     */
-    addQuery(key, value) {
-        if (key && value && typeof key === 'string') {
-            this._query[key] = value;
-            return this;
-        } else {
-            console.error("First argument should be a String.");
-        }
     }
 
     /**
