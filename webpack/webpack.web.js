@@ -22,6 +22,19 @@ module.exports = function(options) {
                 '../src/runtimes/web',
                 'node_modules'
             ]
+        },
+        module: {
+            rules: [{
+                test: /\.js?$/,
+                exclude: ['../node_modules'],
+                use: [{
+                    loader: 'string-replace-loader',
+                    query: {
+                        search: '{{PLATFORM}}',
+                        replace: 'web'
+                    }
+                }],
+            }]
         }
     });
 }

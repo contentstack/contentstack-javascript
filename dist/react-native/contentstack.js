@@ -916,7 +916,7 @@ function Request(options) {
 
         // setting headers
         headers['Content-Type'] = 'application/json; charset=UTF-8';
-        headers['X-User-Agent'] = 'contentstack-(JS-SDK)/' + version;
+        headers['X-User-Agent'] = 'contentstack-react-native/' + version;
 
         if (options.body && _typeof(options.body) === 'object') {
             delete options.body._method;
