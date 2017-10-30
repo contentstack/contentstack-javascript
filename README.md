@@ -153,7 +153,15 @@ For example, if you want to crop an image (with width as 300 and height as 400),
 
 [Read Image Delivery API documentation](https://www.contentstack.com/docs/apis/image-delivery-api/). 
 
-SDK functions for Image Delivery API coming soon. 
+SDK function for Image Delivery API.
+
+    // apply optimization parameters  
+    imageUrl = Stack.imageTransform(imageUrl, {
+        'quality': 100,
+        'auto': 'webp',
+        'width': '100',
+        'height': '100'
+    }) 
 
 ### Helpful Links
 
