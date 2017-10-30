@@ -1,8 +1,8 @@
-examples/
+.DS_Store
+examples/*
 node_modules/*
 .idea/*
 reports/*
 apidocs-templates/*
 test/smtpconfig.js
 test/config.js
-
