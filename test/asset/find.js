@@ -2,15 +2,15 @@
 /*
  * Module Dependencies.
  */
- var test = require('tape');
- var Contentstack = require('../../dist/node/contentstack.js');
- var init = require('../config.js');
- var Utils = require('../entry/utils.js')
- var Stack;
+var test = require('tape');
+var Contentstack = require('../../dist/node/contentstack.js');
+var init = require('../config.js');
+var Utils = require('../entry/utils.js')
+var Stack;
 /*
  * Initalise the Contentstack Instance
  * */
- test('Initalise the Contentstack Stack Instance', function(TC) {
+test('Initalise the Contentstack Stack Instance', function(TC) {
     setTimeout(function() {
         Stack = Contentstack.Stack(init.stack);
         Stack.setHost(init.host);
@@ -18,18 +18,16 @@
     }, 1000);
 });
 
- test('Asset Find operations', function(TC) {
-
-    TC.test('default .find()', function(assert) {
-        var Query = Stack.Assets().Query(),
+test('default .find()', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'updated_at';
-        Query
+    Query
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'Assets present in the resultset');
             assert.notok(assets[1], 'Count should not be present');
-            if(assets && assets.length && assets[0].length) {
+            if (assets && assets.length && assets[0].length) {
                 var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
                     prev = asset[field];
@@ -43,58 +41,58 @@
             assert.fail("asset default .find()");
             assert.end();
         });
-    });
+});
 
-    /*!
-     * SORTING
-     * !*/
-     TC.test('.ascending()', function(assert) {
-        var Query = Stack.Assets().Query(),
+/*!
+ * SORTING
+ * !*/
+test('.ascending()', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'updated_at';
 
-        Query
+    Query
         .ascending(field)
         .toJSON()
         .find()
         .then(function success(assets) {
-                // assert.ok("assets" in result, 'assets key present in the resultset');
-                // assert.equal(Utils.isassetsPublished(assets[0], Stack.environment_uid, 'en-us'), true, "assets present in the resultset are published.");
-                assert.ok(assets[0].length, 'assets present in the resultset');
-                if(assets && assets.length && assets[0].length) {
-                    var prev = assets[0][0][field];
-                    var _assets = assets[0].every(function(asset) {
-                        var flag = (asset[field] <= prev);
-                        prev = asset[field];
-                        return (asset[field] >= prev);
-                    });
-                    assert.equal(_assets, true, "assets sorted ascending on '"+field+"' field");
-                }
-                assert.end();
-            }, function error(err) {
-                console.error("error :", err);
-                assert.fail(".ascending()");
-                assert.end();
-            });
-    });
+            // assert.ok("assets" in result, 'assets key present in the resultset');
+            // assert.equal(Utils.isassetsPublished(assets[0], Stack.environment_uid, 'en-us'), true, "assets present in the resultset are published.");
+            assert.ok(assets[0].length, 'assets present in the resultset');
+            if (assets && assets.length && assets[0].length) {
+                var prev = assets[0][0][field];
+                var _assets = assets[0].every(function(asset) {
+                    var flag = (asset[field] <= prev);
+                    prev = asset[field];
+                    return (asset[field] >= prev);
+                });
+                assert.equal(_assets, true, "assets sorted ascending on '" + field + "' field");
+            }
+            assert.end();
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".ascending()");
+            assert.end();
+        });
+});
 
-     TC.test('.descending()', function(assert) {
-        var Query = Stack.Assets().Query(),
+test('.descending()', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'created_at';
 
-        Query
+    Query
         .descending(field)
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
-            if(assets && assets.length && assets[0].length) {
+            if (assets && assets.length && assets[0].length) {
                 var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
                     var flag = (asset[field] <= prev);
                     prev = asset[field];
                     return flag;
                 });
-                assert.equal(_assets, true, "assets sorted descending on '"+field+"' field");
+                assert.equal(_assets, true, "assets sorted descending on '" + field + "' field");
             }
             assert.end();
         }, function error(err) {
@@ -102,30 +100,30 @@
             assert.fail(".descending()");
             assert.end();
         });
-    });
+});
 
 
-    /*!
-     * COMPARISION
-     * !*/
-     TC.test('.lessThan()', function(assert) {
-        var Query = Stack.Assets().Query(),
+/*!
+ * COMPARISION
+ * !*/
+test('.lessThan()', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'file_size',
         value = 5122;
-        Query
+    Query
         .lessThan('file_size', value)
         .toJSON()
         .find()
         .then(function success(assets) {
-            assert.ok(assets[0].length, 1,  '1 asset present in the resultset');
-            if(assets && assets.length && assets[0].length) {
+            assert.ok(assets[0].length, 1, '1 asset present in the resultset');
+            if (assets && assets.length && assets[0].length) {
                 var prev = assets[0][0][field];
                 var _assets = assets[0].slice(1).every(function(asset) {
                     var flag = (asset[field] < value);
                     prev = asset[field];
                     return flag;
                 });
-                assert.equal(_assets, true, "assets sorted descending on '"+field+"' field");
+                assert.equal(_assets, true, "assets sorted descending on '" + field + "' field");
             }
             assert.end();
         }, function error(err) {
@@ -133,85 +131,85 @@
             assert.fail(".lessThan()");
             assert.end();
         });
-    });
+});
 
-     TC.test('.lessThanOrEqualTo()', function(assert) {
-        var Query = Stack.Assets().Query(),
+test('.lessThanOrEqualTo()', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'updated_at',
         value = 5122;
-        Query
+    Query
         .lessThanOrEqualTo('file_size', 5122)
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 2, 'two assets present in the resultset');
-            if(assets && assets.length && assets[0].length) {
+            if (assets && assets.length && assets[0].length) {
                 var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
                     var flag = (asset[field] <= prev);
                     prev = asset[field];
                     return flag;
                 });
-                assert.equal(_assets, true, "assets sorted descending on '"+field+"' field");
+                assert.equal(_assets, true, "assets sorted descending on '" + field + "' field");
             }
             assert.end();
         }, function error(err) {
             console.error("error :", err);
             assert.fail(".lessThanOrEqualTo()");
             assert.end();
-        }).catch(function (err) {
+        }).catch(function(err) {
             console.log("error is this: ", err);
         });
-    });
+});
 
-     TC.test('.greaterThan()', function(assert) {
-        var Query = Stack.Assets().Query(),
+test('.greaterThan()', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'file_size',
         value = 5122;
 
-        Query
+    Query
         .greaterThan('file_size', value)
         .ascending(field)
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 3, 'three assets present in the resultset');
-            if(assets && assets.length && assets[0].length) {
+            if (assets && assets.length && assets[0].length) {
                 var prev = assets[0][0][field];
                 var _assets = assets[0].slice(1).every(function(asset) {
                     var flag = (asset[field] > value);
                     prev = asset[field];
                     return flag;
                 });
-                assert.equal(_assets, true, "assets sorted ascending on '"+field+"' field");
+                assert.equal(_assets, true, "assets sorted ascending on '" + field + "' field");
             }
             assert.end();
         }, function error(err) {
             assert.fail(".greaterThan()");
             assert.end();
         });
-    });
+});
 
-     TC.test('.greaterThanOrEqualTo()', function(assert) {
-        var Query = Stack.Assets().Query(),
+test('.greaterThanOrEqualTo()', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'file_size',
         value = 5122;
 
-        Query
+    Query
         .greaterThanOrEqualTo('file_size', 5122)
         .descending(field)
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 4, 'four assets present in the resultset');
-            if(assets && assets.length && assets[0].length) {
+            if (assets && assets.length && assets[0].length) {
                 var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
                     var flag = (asset[field] >= value);
                     prev = asset[field];
                     return flag;
                 });
-                assert.equal(_assets, true, "assets sorted descending on '"+field+"' field");
+                assert.equal(_assets, true, "assets sorted descending on '" + field + "' field");
             }
             assert.end();
         }, function error(err) {
@@ -219,28 +217,28 @@
             assert.fail(".greaterThanOrEqualTo()");
             assert.end();
         });
-    });
+});
 
-     TC.test('.notEqualTo()', function(assert) {
-        var Query = Stack.Assets().Query(),
+test('.notEqualTo()', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'file_size',
         value = 5122;
 
-        Query
+    Query
         .notEqualTo('file_size', value)
         .descending(field)
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
-            if(assets && assets.length && assets[0].length) {
+            if (assets && assets.length && assets[0].length) {
                 var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
                     var flag = (asset[field] != value);
                     prev = asset[field];
                     return flag;
                 });
-                assert.equal(_assets, true, "assets sorted descending on '"+field+"' field");
+                assert.equal(_assets, true, "assets sorted descending on '" + field + "' field");
             }
             assert.end();
         }, function error(err) {
@@ -248,12 +246,12 @@
             assert.fail(".notEqualTo()");
             assert.end();
         });
-    });
+});
 
-     TC.test('.where()', function(assert) {
-        var Query = Stack.Assets().Query();
+test('.where()', function(assert) {
+    var Query = Stack.Assets().Query();
 
-        Query
+    Query
         .where('title', "image1")
         .toJSON()
         .find()
@@ -266,13 +264,13 @@
             assert.fail(".where()");
             assert.end();
         });
-    });
+});
 
 
-     TC.test('.equalTo() compare boolean value (true)', function(assert) {
-        var Query = Stack.Assets().Query();
+test('.equalTo() compare boolean value (true)', function(assert) {
+    var Query = Stack.Assets().Query();
 
-        Query
+    Query
         .equalTo('is_dir', false)
         .toJSON()
         .find()
@@ -285,11 +283,11 @@
             assert.fail(".where()");
             assert.end();
         });
-    });
+});
 
-     TC.test('.equalTo() compare boolean value (false)', function(assert) {
-        var Query = Stack.Assets().Query();
-        Query
+test('.equalTo() compare boolean value (false)', function(assert) {
+    var Query = Stack.Assets().Query();
+    Query
         .equalTo('is_dir', true)
         .toJSON()
         .find()
@@ -302,29 +300,29 @@
             assert.fail(".where() boolean value having false");
             assert.end();
         });
-    });
+});
 
-    /*!
-     * Array/Subset
-     * !*/
+/*!
+ * Array/Subset
+ * !*/
 
-     TC.test('.containedIn()', function(assert) {
-        var Query = Stack.Assets().Query(),
+test('.containedIn()', function(assert) {
+    var Query = Stack.Assets().Query(),
         _in = ["image1", "image2"],
         field = 'updated_at';
 
-        Query
+    Query
         .containedIn('title', _in)
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
-            assert.ok(assets[0].length, 2,  'two assets present in the resultset');
-            if(assets && assets.length && assets[0].length) {
+            assert.ok(assets[0].length, 2, 'two assets present in the resultset');
+            if (assets && assets.length && assets[0].length) {
                 var _assets = assets[0].every(function(asset) {
                     return (_in.indexOf(asset['title']) != -1);
                 });
-                assert.equal(_assets, true, "assets sorted descending on '"+field+"' field");
+                assert.equal(_assets, true, "assets sorted descending on '" + field + "' field");
             }
             assert.end();
         }, function error(err) {
@@ -332,13 +330,13 @@
             assert.fail(".containedIn()");
             assert.end();
         });
-    });
+});
 
-     TC.test('.notContainedIn()', function(assert) {
-        var Query = Stack.Assets().Query(),
+test('.notContainedIn()', function(assert) {
+    var Query = Stack.Assets().Query(),
         _in = ["image1", "image2"];
 
-        Query
+    Query
         .notContainedIn('title', _in)
         .toJSON()
         .find()
@@ -351,32 +349,32 @@
             assert.fail(".notContainedIn()");
             assert.end();
         });
-    });
+});
 
 
-    /*!
-     *Element(exists)
-     * !*/
+/*!
+ *Element(exists)
+ * !*/
 
-     TC.test('.exists()', function(assert) {
-        var Query = Stack.Assets().Query(),
+test('.exists()', function(assert) {
+    var Query = Stack.Assets().Query(),
         queryField = "is_dir",
         field = 'updated_at';
 
-        Query
+    Query
         .exists(queryField)
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
-            if(assets && assets.length && assets[0].length) {
+            if (assets && assets.length && assets[0].length) {
                 var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
                     var flag = (asset[field] <= prev);
                     prev = asset[field];
                     return flag;
                 });
-                assert.equal(_assets, true, "assets sorted descending on '"+field+"' field");
+                assert.equal(_assets, true, "assets sorted descending on '" + field + "' field");
             }
             assert.end();
         }, function error(err) {
@@ -384,25 +382,25 @@
             assert.fail(".exists()");
             assert.end();
         });
-    });
+});
 
-     TC.test('.notExists()', function(assert) {
-        var Query = Stack.Assets().Query(),
+test('.notExists()', function(assert) {
+    var Query = Stack.Assets().Query(),
         queryField = "is_dir",
         field = 'updated_at';
 
-        Query
+    Query
         .notExists(queryField)
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.notok(assets[0].length, 'No asset present in the resultset');
-            if(assets && assets.length && assets[0].length) {
+            if (assets && assets.length && assets[0].length) {
                 var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
                     return (asset[field] <= prev);
                 });
-                assert.equal(_assets, true, "assets sorted descending on '"+field+"' field");
+                assert.equal(_assets, true, "assets sorted descending on '" + field + "' field");
             }
             assert.end();
         }, function error(err) {
@@ -410,121 +408,121 @@
             assert.fail(".notExists()");
             assert.end();
         });
-    });
+});
 
 
-     // Pagination
-     TC.test('.skip()', function(assert) {
-        var Query = Stack.Assets().Query(),
+// Pagination
+test('.skip()', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'updated_at';
 
-        Query
+    Query
         .toJSON()
         .find()
         .then(function success(allassets) {
             Stack
-            .Assets()
-            .Query()
-            .skip(1)
-            .toJSON()
-            .find()
-            .then(function success(assets) {
-                assert.ok((assets[0].length >= 2), '2 or more assets present in the resultset');
-                assert.deepEqual(allassets[0].slice(1), assets[0], 'All elements matched.');
-                if(assets && assets.length && assets[0].length) {
-                    var prev = assets[0][0][field];
-                    var _assets = assets[0].every(function(asset) {
-                        var flag = (asset[field] <= prev);
-                        prev = asset[field];
-                        return flag;
-                    });
-                    assert.equal(_assets, true, "assets sorted descending on '"+field+"' field");
-                }
-                assert.end();
-            }, function error(err) {
-                console.error("error :", err);
-                assert.fail(".skip()");
-                assert.end();
-            });
+                .Assets()
+                .Query()
+                .skip(1)
+                .toJSON()
+                .find()
+                .then(function success(assets) {
+                    assert.ok((assets[0].length >= 2), '2 or more assets present in the resultset');
+                    assert.deepEqual(allassets[0].slice(1), assets[0], 'All elements matched.');
+                    if (assets && assets.length && assets[0].length) {
+                        var prev = assets[0][0][field];
+                        var _assets = assets[0].every(function(asset) {
+                            var flag = (asset[field] <= prev);
+                            prev = asset[field];
+                            return flag;
+                        });
+                        assert.equal(_assets, true, "assets sorted descending on '" + field + "' field");
+                    }
+                    assert.end();
+                }, function error(err) {
+                    console.error("error :", err);
+                    assert.fail(".skip()");
+                    assert.end();
+                });
         }, function error(err) {
             console.error("error :", err);
             assert.fail(".skip()");
             assert.end();
         });
-    });
+});
 
-     TC.test('.limit()', function(assert) {
-        var Query = Stack.Assets().Query(),
+test('.limit()', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'updated_at';
 
-        Query
+    Query
         .toJSON()
         .find()
         .then(function success(allassets) {
             Stack
-            .Assets()
-            .Query()
-            .limit(2)
-            .toJSON()
-            .find()
-            .then(function success(assets) {
-                assert.ok(assets[0].length, 'assets present in the resultset');
-                assert.deepEqual(allassets[0].slice(0, 2), assets[0], 'All elements matched.');
-                if(assets && assets.length && assets[0] && assets[0].length) {
-                    var prev = assets[0][0][field];
-                    var _assets = assets[0].every(function(asset) {
-                        var flag = (asset[field] <= prev);
-                        prev = asset[field];
-                        return flag;
-                    });
-                    assert.equal(_assets, true, "assets sorted descending on '"+field+"' field");
-                }
-                assert.end();
-            }, function error(err) {
-                console.error("error :", err);
-                assert.fail(".limit()");
-                assert.end();
-            });
+                .Assets()
+                .Query()
+                .limit(2)
+                .toJSON()
+                .find()
+                .then(function success(assets) {
+                    assert.ok(assets[0].length, 'assets present in the resultset');
+                    assert.deepEqual(allassets[0].slice(0, 2), assets[0], 'All elements matched.');
+                    if (assets && assets.length && assets[0] && assets[0].length) {
+                        var prev = assets[0][0][field];
+                        var _assets = assets[0].every(function(asset) {
+                            var flag = (asset[field] <= prev);
+                            prev = asset[field];
+                            return flag;
+                        });
+                        assert.equal(_assets, true, "assets sorted descending on '" + field + "' field");
+                    }
+                    assert.end();
+                }, function error(err) {
+                    console.error("error :", err);
+                    assert.fail(".limit()");
+                    assert.end();
+                });
         }, function error(err) {
             console.error("error :", err);
             assert.fail(".limit()");
             assert.end();
         });
-    });
+});
 
-     TC.test('.count()', function(assert) {
-        var Query = Stack.Assets().Query();
+test('.count()', function(assert) {
+    var Query = Stack.Assets().Query();
 
-        Query
+    Query
         .count()
         .toJSON()
         .find()
         .then(function success(count) {
-                // assert.ok("assets" in result, 'assets key present in the resultset');
-                assert.ok(count, 'assets present in the resultset');
-                assert.end();
-            }, function error(err) {
-                console.error("error :", err);
-                assert.fail(".count()");
-                assert.end();
-            });
-    });
+            // assert.ok("assets" in result, 'assets key present in the resultset');
+            assert.ok(count, 'assets present in the resultset');
+            assert.end();
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".count()");
+            assert.end();
+        });
+});
 
 
-    // Logical
-    TC.test('.or() - Query Objects', function(assert) {
-        var Query1 = Stack.Assets().Query().where('title', 'image1');
-        var Query2 = Stack.Assets().Query().where('is_dir', true);
-        var Query = Stack.Assets().Query();
+// Logical
+test('.or() - Query Objects', function(assert) {
+    var Query1 = Stack.Assets().Query().where('title', 'image1');
+    var Query2 = Stack.Assets().Query().where('is_dir', true);
+    var Query = Stack.Assets().Query();
 
-        Query
+    Query
         .or(Query1, Query2)
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             assert.ok(assets[0].length, 1, 'one asset present in the resultset');
-            if(assets && assets.length && assets[0].length) {
+            if (assets && assets.length && assets[0].length) {
                 var _assets = assets[0].every(function(asset) {
                     return (~(asset.title === 'source1' || asset.is_dir === true));
                 });
@@ -536,54 +534,54 @@
             assert.fail(".or() - Query Objects");
             assert.end();
         });
-    });
+});
 
-    TC.test('.and() - Query Objects', function(assert) {
-        var Query1 = Stack.Assets().Query().where('title', 'image1');
-        var Query2 = Stack.Assets().Query().where('is_dir', true);
-        var Query = Stack.Assets().Query();
+test('.and() - Query Objects', function(assert) {
+    var Query1 = Stack.Assets().Query().where('title', 'image1');
+    var Query2 = Stack.Assets().Query().where('is_dir', true);
+    var Query = Stack.Assets().Query();
 
-        Query
+    Query
         .and(Query1, Query2)
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.notok(assets[0].length, ' asset not  present in the resultset');
-            if(assets && assets.length && assets[0].length) {
-                    // console.log("\n\n\n\n",JSON.stringify(assets));
-                    var _assets = assets[0].every(function(asset) {
-                        return (~(asset.title === 'image1' && asset.is_dir === true));
-                    });
-                    assert.ok(_assets, '$AND condition satisfied');
-                }
-                assert.end();
-            }, function error(err) {
-                console.error("error :", err);
-                assert.fail(".and() - Query Objects");
-                assert.end();
-            });
-    });
+            if (assets && assets.length && assets[0].length) {
+                // console.log("\n\n\n\n",JSON.stringify(assets));
+                var _assets = assets[0].every(function(asset) {
+                    return (~(asset.title === 'image1' && asset.is_dir === true));
+                });
+                assert.ok(_assets, '$AND condition satisfied');
+            }
+            assert.end();
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".and() - Query Objects");
+            assert.end();
+        });
+});
 
-    // Custom query
-    TC.test('.query() - Raw query', function(assert) {
-        var Query = Stack.Assets().Query();
+// Custom query
+test('.query() - Raw query', function(assert) {
+    var Query = Stack.Assets().Query();
 
-        Query
-        .query({"$or": [{"title": "image2" }, {"is_dir" : "true"}]})
+    Query
+        .query({ "$or": [{ "title": "image2" }, { "is_dir": "true" }] })
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             assert.ok(assets[0].length, 1, 'one asset present in the resultset');
-            if(assets && assets.length && assets[0].length) {
+            if (assets && assets.length && assets[0].length) {
                 var _assets = assets[0].every(function(asset) {
-                    if(asset.title === 'image2' || asset.is_dir === false){
+                    if (asset.title === 'image2' || asset.is_dir === false) {
                         return true;
                     } else {
                         return false;
                     }
-                        // return (asset.reference.indexOf('blt1ce8bb666a834bfb') || asset.other_reference.indexOf('blted2d2fa1f02c4981') ? true : false);
-                    });
+                    // return (asset.reference.indexOf('blt1ce8bb666a834bfb') || asset.other_reference.indexOf('blted2d2fa1f02c4981') ? true : false);
+                });
                 assert.ok(_assets, '$OR condition satisfied');
             }
             assert.end();
@@ -592,22 +590,22 @@
             assert.fail(".query() - Raw query");
             assert.end();
         });
-    });
+});
 
 
-    // tags
-    TC.test('.tags()', function(assert) {
-        var Query = Stack.Assets().Query(),
+// tags
+test('.tags()', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'tags',
         tags = ["asset1", "asset2"];
 
-        Query
+    Query
         .tags(tags)
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok((assets.length >= 1), '1 or more asset/assets present in the resultset');
-            if(assets && assets.length && assets[0].length) {
+            if (assets && assets.length && assets[0].length) {
                 var _assets = assets[0].every(function(asset) {
                     return (Utils.arrayPresentInArray(tags, asset[field]));
                 });
@@ -619,29 +617,29 @@
             assert.fail(".tags()");
             assert.end();
         });
-    });
+});
 
 
-    // search
-    TC.test('.search()', function(assert) {
-        var Query = Stack.Assets().Query();
-        Query
+// search
+test('.search()', function(assert) {
+    var Query = Stack.Assets().Query();
+    Query
         .toJSON()
         .search('image1')
         .find()
         .then(function success(assets) {
-                assert.ok(assets[0].length, '1 asset present in the resultset');
-                assert.end();
-            }, function error(err) {
-                console.error("error :", err);
-                assert.fail(".search()");
-                assert.end();
-            });
-    });
+            assert.ok(assets[0].length, '1 asset present in the resultset');
+            assert.end();
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".search()");
+            assert.end();
+        });
+});
 
-    // regex
-    TC.test('.regex()', function(assert) {
-        var Query = Stack.Assets().Query(),
+// regex
+test('.regex()', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'title',
         regex = {
             pattern: '^image',
@@ -649,7 +647,7 @@
         },
         regexpObj = new RegExp(regex.pattern, regex.options);
 
-        Query
+    Query
         .regex(field, regex.pattern, regex.options)
         .toJSON()
         .find()
@@ -665,14 +663,14 @@
             assert.fail(".regex()");
             assert.end();
         });
-    });
+});
 
 
-    // includeCount
-    TC.test('.includeCount()', function(assert) {
-        var Query = Stack.Assets().Query();
+// includeCount
+test('.includeCount()', function(assert) {
+    var Query = Stack.Assets().Query();
 
-        Query
+    Query
         .includeCount()
         .toJSON()
         .find()
@@ -685,36 +683,36 @@
             assert.fail(".includeCount()");
             assert.end();
         });
-    });
+});
 
-    // only
-    TC.test('.only() - Single String Parameter', function(assert) {
-        var Query = Stack.Assets().Query(),
+// only
+test('.only() - Single String Parameter', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'updated_at';
 
-        Query
+    Query
         .only('title')
         .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
-                var flag = assets[0].every(function(asset) {
-                    return (asset && Object.keys(asset).length === 3 && "title" in asset && "uid" in asset && "url" in asset);
-                });
-                assert.ok(flag, 'assets with the field title in the resultset');
-                assert.end();
-            }, function error(err) {
-                console.error("error :", err);
-                assert.fail(".only() - Single String Parameter");
-                assert.end();
+            var flag = assets[0].every(function(asset) {
+                return (asset && Object.keys(asset).length === 3 && "title" in asset && "uid" in asset && "url" in asset);
             });
-    });
+            assert.ok(flag, 'assets with the field title in the resultset');
+            assert.end();
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".only() - Single String Parameter");
+            assert.end();
+        });
+});
 
-    TC.test('.only() - Multiple String Parameter', function(assert) {
-        var Query = Stack.Assets().Query(),
+test('.only() - Multiple String Parameter', function(assert) {
+    var Query = Stack.Assets().Query(),
         field = 'updated_at';
 
-        Query
+    Query
         .only('BASE', 'title')
         .toJSON()
         .find()
@@ -730,17 +728,17 @@
             assert.fail(".only() - Multiple String Parameter");
             assert.end();
         });
-    });
+});
 
-    TC.test('.only() - Array Parameter', function(assert) {
-        var Query = Stack.Assets().Query();
+test('.only() - Array Parameter', function(assert) {
+    var Query = Stack.Assets().Query();
 
-        Query
+    Query
         .only(['title', 'filename'])
         .toJSON()
         .find()
         .then(function success(assets) {
-              assert.ok(assets[0].length, 'assets present in the resultset');
+            assert.ok(assets[0].length, 'assets present in the resultset');
             var flag = assets[0].every(function(asset) {
                 return (asset && Object.keys(asset).length === 4 && "title" in asset && "filename" in asset && "uid" in asset && "url" in asset);
             });
@@ -751,6 +749,4 @@
             assert.fail(".only() - Array Parameter");
             assert.end();
         });
-    });
-
 });

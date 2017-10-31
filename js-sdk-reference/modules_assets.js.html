@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>contentstack.js - Documentation</title>
+    <title>modules/assets.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -28,7 +28,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">contentstack.js</h1>
+    <h1 class="page-title">modules/assets.js</h1>
     
     
 
@@ -37,52 +37,94 @@
     
     <section>
         <article>
-            <pre class="prettyprint source linenums"><code>import Stack from "./stack";
-import CacheProvider from './cache-provider/index';
+            <pre class="prettyprint source linenums"><code>import * as Utils from '../lib/utils';
+import Stack from '../stack';
+import Query from './query';
 
 /**
- * @method Contentstack
- * @description Creates an instance of `Contentstack`.
- * @api public
+ * @summary Creates an instance of `Assets`.
+ * @description An initializer is responsible for creating Asset object.
+ * @param {String} uid - uid of the asset
+ * @example
+ * let Assets = Contentstack.Stack().Assets('bltsomething123');
+ * @returns {Assets}
+ * @ignore
  */
-class Contentstack {
+export default class Assets {
+    constructor() {
+        /**
+         * @method only
+         * @description This method is use to show the selected fields of the assets in resultset.
+         * @param {String} [key=BASE] - single field in asset
+         * @param {Array} values - array of fields to be show in resultset
+         * @example
+         * &lt;caption> .only with field uid &lt;/caption>
+         * Assets().only('title')
+         * @example
+         * &lt;caption> .only with field uid &lt;/caption>
+         * Assets().only('BASE','title')
+         * @example
+         * &lt;caption> .only with field uids(array) &lt;/caption>
+         * Assets().only(['title','description'])
+         * @returns {Asset}
+         */
+        this.only = Utils.transform('only');
+        return this;
+    }
 
-	constructor(){
-		/**
-		 * @constant CachePolicy
-		 * @description CachePolicy contains different cache policies constants.
-		 * @example
-		 * Contentstack.CachePolicy.IGNORE_CACHE
-		 * Contentstack.CachePolicy.ONLY_NETWORK
-		 * Contentstack.CachePolicy.CACHE_ELSE_NETWORK
-		 * Contentstack.CachePolicy.NETWORK_ELSE_CACHE
-		 * Contentstack.CachePolicy.CACHE_THEN_NETWORK
-		 */
-		this.CachePolicy = CacheProvider.policies;
-	}
+    /**
+     * @method Query
+     * @description Query instance to provide support for all search queries.
+     * @example Assets().Query()
+     * @returns {Query}
+     */
+    Query() {
+        let query = new Query();
+        return Utils.merge(query, this);
+    }
 
-	/**
-	 * @method Stack
-	 * @description Initialize "Built.io Contentstack" Stack javascript-SDK instance
-	 * @api public
-	 * @example
-	 * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment');
-	 *                  OR
-	 * var Stack = Contentstack.Stack({
-	 *      'api_key':'bltsomethingapikey',
-	 *      'access_token':'bltsomethongtoken',
-	 *      'environment':'environment_name'
-	 *   });
-	 *
-	 * @returns {Stack}
-	 */	
-	Stack(...stack_arguments){
-		return new Stack(...stack_arguments);
-	}
-}
+    /**
+     * @method toJSON
+     * @description This method is used to convert the result in to plain javascript object.
+     * @example
+     * assetQuery
+     *      .toJSON()
+     *      .then(function (result) {
+     *          let value = result.get(field_uid)
+     *       },function (error) {
+     *          // error function
+     *      })
+     * @returns {Object}
+     */
+    toJSON() {
+        this.tojson = true;
+        return this;
+    }
 
-module.exports = new Contentstack();
-</code></pre>
+
+    /**
+     * @method fetch
+     * @description fetch asset obhect of requested Asset uid of defined query if present.
+     * @example
+     * Stack.Assets('bltsomething123').fetch()
+     */
+    fetch() {
+        if (this.asset_uid) {
+            this.requestParams = {
+                method: 'POST',
+                headers: this.headers,
+                url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.assets + this.asset_uid,
+                body: {
+                    _method: 'GET',
+                    query: this._query
+                }
+            }
+            return Utils.sendRequest(this);
+        } else {
+            console.error("Kindly provide an asset uid. e.g. .Assets('bltsomething123')");
+        }
+    }
+}</code></pre>
         </article>
     </section>
 

@@ -10,8 +10,8 @@ const Contentstack = require('../../dist/node/contentstack.js');
 
 class ContentstackDemo {
     constructor(config) {
-        config = config || {'api_key': 'blt123something', 'access_token': 'blt123something', 'environment': 'development'}
-        // Initialize the Contentstackstack
+        config = config || { 'api_key': 'blt123something', 'access_token': 'blt123something', 'environment': 'development' }
+            // Initialize the Contentstackstack
         this.Stack = Contentstack.Stack(config);
     }
 
@@ -34,15 +34,15 @@ class ContentstackDemo {
      * @return       : Result {Promise}
      */
     getEntry(contentTypeUid, entryUid) {
-        contentTypeUid = contentTypeUid || 'source'
-        entryUid = entryUid || 'blt123something'
-        return this.Stack.ContentType(contentTypeUid).Entry(entryUid).fetch()
-    }
-    /**
-     * getAssets
-     * @description  : getAssets is used to get the assets
-     * @return       : Result {Promise}
-     */
+            contentTypeUid = contentTypeUid || 'source'
+            entryUid = entryUid || 'blt123something'
+            return this.Stack.ContentType(contentTypeUid).Entry(entryUid).fetch()
+        }
+        /**
+         * getAssets
+         * @description  : getAssets is used to get the assets
+         * @return       : Result {Promise}
+         */
     getAssets() {
         return this.Stack.Assets().Query().skip(1).limit(1).toJSON().find()
     }

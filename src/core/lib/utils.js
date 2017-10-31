@@ -1,33 +1,63 @@
-import Request from  './request';
+import Request from './request';
 import Result from '../modules/result';
 /**
  * @method addSpread
  * @description method to add the spread.
  */
- (function addSpread() {
+(function addSpread() {
     if (Promise.prototype.spread) return;
-    Promise.prototype.spread = function (fn, errFunc) {
-        errFunc = errFunc || function (err) {};
-        return this.then(function (args) {
-         return fn.apply(fn, args);
-     }).catch(function (err) {
-        errFunc(err);
-    });
- };
+    Promise.prototype.spread = function(fn, errFunc) {
+        errFunc = errFunc || function(err) {};
+        return this.then(function(args) {
+            return fn.apply(fn, args);
+        }).catch(function(err) {
+            errFunc(err);
+        });
+    };
 }());
 
- export function _type(val) {
+export function transform(type) {
+    return function() {
+        this._query[type] = this._query[type] || {};
+        switch (arguments.length) {
+            case 1:
+                if (Array.isArray(arguments[0]) || typeof arguments[0] === "string") {
+                    let query = this._query[type]['BASE'] || [];
+                    query = query.concat(arguments[0]);
+                    this._query[type]['BASE'] = query;
+                    return this;
+                } else {
+                    console.error("Kindly provide valid parameters");
+                }
+                break;
+            case 2:
+                if (typeof arguments[0] === "string" && (Array.isArray(arguments[1]) || typeof arguments[1] === "string")) {
+                    let query = this._query[type][arguments[0]] || [];
+                    query = query.concat(arguments[1]);
+                    this._query[type][arguments[0]] = query;
+                    return this;
+                } else {
+                    console.error("Kindly provide valid parameters");
+                }
+                break;
+            default:
+                console.error("Kindly provide valid parameters");
+        }
+    };
+}
+
+export function _type(val) {
     let _typeof,
-    __typeof = typeof val;
+        __typeof = typeof val;
     switch (__typeof) {
         case 'object':
-        _typeof = __typeof;
-        if (Array.isArray(val)) {
-            __typeof = 'array';
-        }
-        break;
+            _typeof = __typeof;
+            if (Array.isArray(val)) {
+                __typeof = 'array';
+            }
+            break;
         default:
-        _typeof = __typeof;
+            _typeof = __typeof;
     }
     return __typeof;
 };
@@ -68,9 +98,9 @@ export function isBrowser() {
 
 // return the query from the params
 export function parseQueryFromParams(queryObject, single, toJSON) {
-    if(queryObject && queryObject.requestParams) {
+    if (queryObject && queryObject.requestParams) {
         let _query = merge({}, ((queryObject.requestParams.body) ? queryObject.requestParams.body.query || {} : {}));
-        if(_query.environment_uid) {
+        if (_query.environment_uid) {
             delete _query.environment_uid;
             _query.environment = queryObject.environment;
         }
@@ -81,7 +111,7 @@ export function parseQueryFromParams(queryObject, single, toJSON) {
             query: _query,
             entry_uid: queryObject.entry_uid,
             asset_uid: queryObject.asset_uid,
-            single:  single || "false",
+            single: single || "false",
             toJSON: toJSON || "false",
             api_key: (queryObject.requestParams.headers) ? queryObject.requestParams.headers.api_key : ""
         };
@@ -92,23 +122,24 @@ export function parseQueryFromParams(queryObject, single, toJSON) {
 export function getHash(query) {
     try {
         let hashValue = generateHash(JSON.stringify(query)),
-        keyArray = [];
+            keyArray = [];
         keyArray.push(query.content_type_uid);
         keyArray.push(query.locale);
-        if(query.entry_uid) keyArray.push(query.entry_uid);
-        if(query.asset_uid) keyArray.push(query.asset_uid);
+        if (query.entry_uid) keyArray.push(query.entry_uid);
+        if (query.asset_uid) keyArray.push(query.asset_uid);
         keyArray.push(hashValue);
         return keyArray.join('.');
-    } catch(e) {}
+    } catch (e) {}
 };
 
 // return the hash value of the string
 export function generateHash(str) {
-    let hash = 0, i, chr, len;
+    let hash = 0,
+        i, chr, len;
     if (str.length === 0) return hash;
     for (i = 0, len = str.length; i < len; i++) {
-        chr   = str.charCodeAt(i);
-        hash  = ((hash << 5) - hash) + chr;
+        chr = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
         hash |= 0; // Convert to 32bit integer
     }
     return ((hash < -1) ? hash * -1 : hash);
@@ -118,7 +149,7 @@ export function generateHash(str) {
 export function resultWrapper(result) {
     if (result && typeof result.entries !== 'undefined') {
         if (result.entries && result.entries.length) {
-            for(let i = 0, _i = result.entries.length; i < _i; i++) {
+            for (let i = 0, _i = result.entries.length; i < _i; i++) {
                 result.entries[i] = Result(result.entries[i]);
             }
         } else {
@@ -126,13 +157,13 @@ export function resultWrapper(result) {
         }
     } else if (result && result.assets && typeof result.assets !== 'undefined') {
         if (result.assets && result.assets.length) {
-            for(let j = 0, _j = result.assets.length; j < _j; j++) {
+            for (let j = 0, _j = result.assets.length; j < _j; j++) {
                 result.assets[j] = Result(result.assets[j]);
             }
         } else {
             result.assets = [];
         }
-    } else if(result && typeof result.entry !== 'undefined') {
+    } else if (result && typeof result.entry !== 'undefined') {
         result.entry = Result(result.entry);
     } else if (result && typeof result.asset !== 'undefined') {
         result.asset = Result(result.asset);
@@ -144,27 +175,27 @@ export function resultWrapper(result) {
 // spread the result object
 export function spreadResult(result) {
     let _results = [];
-    if(result && Object.keys(result).length) {
-        if(typeof result.entries !== 'undefined') _results.push(result.entries);
-        if(typeof result.assets !== 'undefined') _results.push(result.assets);
-        if(typeof result.schema !== 'undefined') _results.push(result.schema);
-        if(typeof result.count !== 'undefined') _results.push(result.count);
-        if(typeof result.entry !== 'undefined') _results = result.entry;
-        if(typeof result.asset !== 'undefined') _results = result.asset;
+    if (result && Object.keys(result).length) {
+        if (typeof result.entries !== 'undefined') _results.push(result.entries);
+        if (typeof result.assets !== 'undefined') _results.push(result.assets);
+        if (typeof result.content_type !== 'undefined' || typeof result.schema !== 'undefined') _results.push(result.content_type || result.schema);
+        if (typeof result.count !== 'undefined') _results.push(result.count);
+        if (typeof result.entry !== 'undefined') _results = result.entry;
+        if (typeof result.asset !== 'undefined') _results = result.asset;
     }
     return _results;
 };
 
-export function sendRequest (queryObject) {
+export function sendRequest(queryObject) {
     let env_uid = queryObject.environment_uid;
     if (env_uid) {
         queryObject._query.environment_uid = env_uid;
     } else {
-        if(queryObject._query) {
+        if (queryObject._query) {
             queryObject._query.environment = queryObject.environment;
         } else {
             queryObject['_query'] = {};
-             queryObject._query['environment'] = queryObject.environment;
+            queryObject._query['environment'] = queryObject.environment;
         }
     }
 
@@ -178,19 +209,19 @@ export function sendRequest (queryObject) {
     /**
     for new api v3
     */
-    if(queryObject && queryObject.requestParams && queryObject.requestParams.body && queryObject.requestParams.body.query){
+    if (queryObject && queryObject.requestParams && queryObject.requestParams.body && queryObject.requestParams.body.query) {
         let cloneQueryObj = JSON.parse(JSON.stringify(queryObject.requestParams.body.query));
-        if(typeof cloneQueryObj !== 'object') {
+        if (typeof cloneQueryObj !== 'object') {
             cloneQueryObj = JSON.parse(cloneQueryObj);
         }
         delete queryObject.requestParams.body.query;
-        queryObject.requestParams.body =  merge(queryObject.requestParams.body,cloneQueryObj);
+        queryObject.requestParams.body = merge(queryObject.requestParams.body, cloneQueryObj);
     }
 
 
-    let getCacheCallback = function () {
-        return function (err, entries) {
-            return new Promise(function (resolve, reject) {
+    let getCacheCallback = function() {
+        return function(err, entries) {
+            return new Promise(function(resolve, reject) {
                 try {
                     if (err) throw err;
                     if (!tojson) entries = resultWrapper(entries);
@@ -202,143 +233,152 @@ export function sendRequest (queryObject) {
         }
     };
 
-    let callback = function (continueFlag, resolve, reject) {
-        if(continueFlag) {
+    let callback = function(continueFlag, resolve, reject) {
+        if (continueFlag) {
             Request(queryObject.requestParams)
-            .then(function (data) {
-                try {
-                    self.entry_uid = self.asset_uid = self.tojson = self.queryCachePolicy = undefined;
-                    let entries = {};
-                    if (queryObject.singleEntry) {
-                        queryObject.singleEntry = false;
-                        if(data.schema) entries.schema = data.schema;
-                        if (data.entries && data.entries.length) {
-                            entries.entry = data.entries[0];
-                        } else if (data.assets && data.assets.length) {
-                            entries.assets = data.assets[0];
-                        } else {
-                            if(cachePolicy === 2) {
-                                self.provider.get(hashQuery, getCacheCallback());
-                            } else {
-                                return reject({ error_code: 141, error_message: 'The requested entry doesn\'t exist.' });
-                            }
-                            return;
-                        }
-                    } else {
-                        entries = data;
-                    }
-                    if(cachePolicy !== -1) {
-                        self.provider.set(hashQuery, entries, function (err) {
-                            try {
-                                if (err) throw err;
-                                if(!tojson) entries = resultWrapper(entries);
-                                return resolve(spreadResult(entries)); 
-                            } catch(e) {
-                                return reject(e);
-                            }
-                        });
-                        return resolve(spreadResult(entries)); 
-                    } else {
-                        if(!tojson) entries = resultWrapper(entries);
-                        return resolve(spreadResult(entries)); 
-                    }
-                } catch (e) {
-                    return reject({
-                        message: e.message
-                    });
-                }
-            }.bind(self))
-            .catch(function (error) {
-                if(cachePolicy === 2) {
-                    self.provider.get(hashQuery, getCacheCallback());
-                } else {
-                    return reject(error);
-                }
-            });
-        }
-    };
-
-    switch (cachePolicy) {
-        case 1:
-        return new Promise(function (resolve, reject) {
-            self.provider.get(hashQuery, function (err, _data) {
-                try {
-                    if(err || !_data) {
-                        callback(true, resolve, reject);
-                    } else {
-                        if (!tojson) _data = resultWrapper(_data);
-                        return resolve(spreadResult(_data));
-                    }
-                } catch(e) {
-                    return reject(e);
-                }             
-            });
-        });
-        break;
-        case 2:
-        case 0:
-        case undefined:
-        case -1:
-        return new Promise(function (resolve, reject) {
-            callback(true, resolve, reject);
-        })
-    };
-
-    if(cachePolicy === 3) {
-        return {
-            cache: (function () {
-                return new Promise( function (resolve, reject) {
-                    self.provider.get(hashQuery, function (err, _data) {
-                        try {
-                            if(err) {
-                                reject(err);
-                            } else {
-                                if (!tojson) _data = resultWrapper(_data);
-                                resolve(spreadResult(_data));
-                            }
-                        } catch(e) {
-                            reject(e);
-                        }
-                    });
-                });
-            }()),
-            network: (function () {
-                return new Promise(function (resolve, reject) {
-                    callback(true, resolve, reject);
-                });
-            }()),
-            both: function (_callback_) {
-                self.provider.get(hashQuery, function (err, entries) {
-                    if (!tojson) entries = resultWrapper(entries);
-                    _callback_(err, spreadResult(entries))
-                });
-                Request(queryObject.requestParams)
-                .then(function (data) {
+                .then(function(data) {
                     try {
-                        self.entry_uid = self.tojson = self.queryCachePolicy = undefined;
-                        let entries = {}, error = null;
+                        self.entry_uid = self.asset_uid = self.tojson = self.queryCachePolicy = undefined;
+                        let entries = {};
                         if (queryObject.singleEntry) {
                             queryObject.singleEntry = false;
-                            if(data.schema) entries.schema = data.schema;
+                            if (data.schema) entries.schema = data.schema;
+                            if (data.content_type) {
+                                entries.content_type = data.content_type;
+                                delete entries.schema
+                            }
                             if (data.entries && data.entries.length) {
                                 entries.entry = data.entries[0];
                             } else if (data.assets && data.assets.length) {
                                 entries.assets = data.assets[0];
                             } else {
-                                error = { error_code: 141, error_message: 'The requested entry doesn\'t exist.' };
+                                if (cachePolicy === 2) {
+                                    self.provider.get(hashQuery, getCacheCallback());
+                                } else {
+                                    return reject({ error_code: 141, error_message: 'The requested entry doesn\'t exist.' });
+                                }
+                                return;
                             }
                         } else {
                             entries = data;
                         }
-                        if(!tojson) entries = resultWrapper(entries);
-                        _callback_(error, spreadResult(entries));
+                        if (cachePolicy !== -1) {
+                            self.provider.set(hashQuery, entries, function(err) {
+                                try {
+                                    if (err) throw err;
+                                    if (!tojson) entries = resultWrapper(entries);
+                                    return resolve(spreadResult(entries));
+                                } catch (e) {
+                                    return reject(e);
+                                }
+                            });
+                            return resolve(spreadResult(entries));
+                        } else {
+                            if (!tojson) entries = resultWrapper(entries);
+                            return resolve(spreadResult(entries));
+                        }
                     } catch (e) {
-                        _callback_(e);
+                        return reject({
+                            message: e.message
+                        });
                     }
                 }.bind(self))
-                .catch(function (error) {
-                    _callback_(error);
+                .catch(function(error) {
+                    if (cachePolicy === 2) {
+                        self.provider.get(hashQuery, getCacheCallback());
+                    } else {
+                        return reject(error);
+                    }
                 });
+        }
+    };
+
+    switch (cachePolicy) {
+        case 1:
+            return new Promise(function(resolve, reject) {
+                self.provider.get(hashQuery, function(err, _data) {
+                    try {
+                        if (err || !_data) {
+                            callback(true, resolve, reject);
+                        } else {
+                            if (!tojson) _data = resultWrapper(_data);
+                            return resolve(spreadResult(_data));
+                        }
+                    } catch (e) {
+                        return reject(e);
+                    }
+                });
+            });
+            break;
+        case 2:
+        case 0:
+        case undefined:
+        case -1:
+            return new Promise(function(resolve, reject) {
+                callback(true, resolve, reject);
+            })
+    };
+
+    if (cachePolicy === 3) {
+        return {
+            cache: (function() {
+                return new Promise(function(resolve, reject) {
+                    self.provider.get(hashQuery, function(err, _data) {
+                        try {
+                            if (err) {
+                                reject(err);
+                            } else {
+                                if (!tojson) _data = resultWrapper(_data);
+                                resolve(spreadResult(_data));
+                            }
+                        } catch (e) {
+                            reject(e);
+                        }
+                    });
+                });
+            }()),
+            network: (function() {
+                return new Promise(function(resolve, reject) {
+                    callback(true, resolve, reject);
+                });
+            }()),
+            both: function(_callback_) {
+                self.provider.get(hashQuery, function(err, entries) {
+                    if (!tojson) entries = resultWrapper(entries);
+                    _callback_(err, spreadResult(entries))
+                });
+                Request(queryObject.requestParams)
+                    .then(function(data) {
+                        try {
+                            self.entry_uid = self.tojson = self.queryCachePolicy = undefined;
+                            let entries = {},
+                                error = null;
+                            if (queryObject.singleEntry) {
+                                queryObject.singleEntry = false;
+                                if (data.schema) entries.schema = data.schema;
+                                if (data.content_type) {
+                                    entries.content_type = data.content_type;
+                                    delete entries.schema
+                                }
+                                if (data.entries && data.entries.length) {
+                                    entries.entry = data.entries[0];
+                                } else if (data.assets && data.assets.length) {
+                                    entries.assets = data.assets[0];
+                                } else {
+                                    error = { error_code: 141, error_message: 'The requested entry doesn\'t exist.' };
+                                }
+                            } else {
+                                entries = data;
+                            }
+                            if (!tojson) entries = resultWrapper(entries);
+                            _callback_(error, spreadResult(entries));
+                        } catch (e) {
+                            _callback_(e);
+                        }
+                    }.bind(self))
+                    .catch(function(error) {
+                        _callback_(error);
+                    });
             }
 
         };
