@@ -108,7 +108,7 @@ To retrieve multiple entries of a content type, you need to specify the content 
 
     Query 
     .where("title", "welcome")
-    .includeSchema()
+    .includeContentType()
     .includeCount()
     .toJSON()
     .find()
@@ -116,7 +116,7 @@ To retrieve multiple entries of a content type, you need to specify the content 
         // result is array where -
         // result[0] =&gt; entry objects
         // result[result.length-1] =&gt; entry objects count included only when .includeCount() is queried.
-        // result[1] =&gt; schema of the content type is included when .includeSchema() is queried.
+        // result[1] =&gt; schema of the content type is included when .includeContentType() is queried.
     }, function error(err) {
     // err object
     });
@@ -153,14 +153,19 @@ For example, if you want to crop an image (with width as 300 and height as 400),
 
 [Read Image Delivery API documentation](https://www.contentstack.com/docs/apis/image-delivery-api/). 
 
-SDK function for Image Delivery API.
+Following are Image Delivery API examples.
 
-    // apply optimization parameters  
+    // set the quality 100 
+    imageUrl = Stack.imageTransform(imageUrl, {
+        'quality': 100
+    }) 
+
+    // set the quality to 100, auto optimization, width and height
     imageUrl = Stack.imageTransform(imageUrl, {
         'quality': 100,
         'auto': 'webp',
-        'width': '100',
-        'height': '100'
+        'width': 100,
+        'height': 100
     }) 
 
 ### Helpful Links
