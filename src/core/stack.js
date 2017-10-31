@@ -12,7 +12,6 @@ import CacheProvider from './cache-provider/index';
  * @ignore
  */
 export default class Stack {
-
     constructor(...stack_arguments) {
         this.config = config;
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
@@ -254,5 +253,28 @@ export default class Stack {
         return Request(query);
     }
 
+    /**
+     * @method imageTransform
+     * @description Transforms provided image url based on transformation parameters.  
+     * @param {String} url - Url on which transformations to be applied.
+     * @param {String} params - Transformation parameters
+     * @example
+     * Stack.imageTransform(imageURL, {height: 100, width: 200, disable: "upscale"});
+     * @example
+     * Stack.imageTransform(imageURL, {crop: "150,100"});
+     * @example
+     * Stack.imageTransform(imageURL, {format: "png", crop: "150,100"});
+     * @returns {string} [Image url with transformation parameters.]
+     */
+    imageTransform(url, params) {
+        if (url && typeof url === "string" && typeof params === "object" && params.length === undefined) {
+            let queryParams = [];
+            for (const operation in params) {
+                queryParams.push(operation + '=' + params[operation]);
+            }
+            url += (url.indexOf("?") <= -1) ? "?" + queryParams.join('&') : "&" + queryParams.join('&');
+        }
 
+        return url;
+    }
 }

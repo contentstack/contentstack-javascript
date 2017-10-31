@@ -1,5 +1,5 @@
 const config = {
-	protocol: "https",
+    protocol: "https",
     host: "cdn.contentstack.io",
     port: 443,
     version: "v3",
@@ -9,6 +9,6 @@ const config = {
         assets: "/assets/",
         environments: "/environments/"
     }
-}; 
+};
 
-export default config; 
+export default config;
