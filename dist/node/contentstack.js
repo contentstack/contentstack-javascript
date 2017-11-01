@@ -1315,8 +1315,12 @@ function Request(options) {
         var serialize = function serialize(obj, prefix) {
             var str = [],
                 p = void 0;
-            for (p in obj) {
-                if (obj.hasOwnProperty(p)) {
+            if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) === "object" && obj.length !== undefined) {
+                for (var i = 0, _i = obj.length; i < _i; i++) {
+                    str.push(prefix + '[]=' + obj[i]);
+                }
+            } else {
+                for (p in obj) {
                     var k = prefix ? prefix + "[" + p + "]" : p,
                         v = obj[p];
                     str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
@@ -1334,6 +1338,7 @@ function Request(options) {
 
         if (options.body && _typeof(options.body) === 'object') {
             delete options.body._method;
+            if (_typeof(options.body.query) === "object" && Object.keys(options.body.query).length === 0) delete options.body.query;
             queryParams = serialize(options.body);
         }
 
