@@ -10,8 +10,12 @@ export default function Request(options) {
         let serialize = function(obj, prefix) {
             let str = [],
                 p;
-            for (p in obj) {
-                if (obj.hasOwnProperty(p)) {
+            if (typeof obj === "object" && obj.length !== undefined) {
+                for (var i = 0, _i = obj.length; i < _i; i++) {
+                    str.push(prefix + '[]=' + obj[i]);
+                }
+            } else {
+                for (p in obj) {
                     let k = prefix ? prefix + "[" + p + "]" : p,
                         v = obj[p];
                     str.push((v !== null && typeof v === "object" && p !== 'query') ?
@@ -31,6 +35,7 @@ export default function Request(options) {
 
         if (options.body && typeof options.body === 'object') {
             delete options.body._method;
+            if (typeof options.body.query === "object" && Object.keys(options.body.query).length === 0) delete options.body.query;
             queryParams = serialize(options.body);
         }
 
