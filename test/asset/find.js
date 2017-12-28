@@ -102,6 +102,23 @@ test('.descending()', function(assert) {
         });
 });
 
+// addparam
+test('.addParam()', function(assert) {
+    var Query = Stack.Assets().Query();
+    Query
+        .addParam('include_dimension', 'true')
+        .toJSON()
+        .find()
+        .then(function success(assets) {
+            assert.ok(assets[0][0].hasOwnProperty('dimension'), 'dimension present in the resultset');
+            assert.end();
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".addParam()");
+            assert.end();
+        });
+});
+
 
 /*!
  * COMPARISION
@@ -684,6 +701,7 @@ test('.includeCount()', function(assert) {
             assert.end();
         });
 });
+
 
 // only
 test('.only() - Single String Parameter', function(assert) {
