@@ -367,6 +367,21 @@ export default class Query extends Entry {
     }
 
     /**
+     * @method Addparam
+     * @description This method includes query parameter in query.
+     * @example blogQuery.addParam(key, value)
+     * @returns {Query}
+     */
+    addParam(key, value) {
+        if (key && value && typeof key === 'string' && typeof value === 'string') {
+                this._query[key] = value;
+                return this;
+        } else {
+            console.error("Kindly provide valid parameters.");
+        }
+    }
+
+    /**
      * @method getQuery
      * @summary returns the raw query which can be used for futher calls(.and/.or).
      * @description This method provides raw{json} queries based on the filters applied on Query objet.
