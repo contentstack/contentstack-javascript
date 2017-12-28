@@ -1754,6 +1754,24 @@ var Entry = function () {
         }
 
         /**
+         * @method Addparam
+         * @description This method includes query parameter in query.
+         * @example blogQuery.addParam('include_count', 'true')
+         * @returns {Query}
+         */
+
+    }, {
+        key: "addParam",
+        value: function addParam(key, value) {
+            if (key && value && typeof key === 'string' && typeof value === 'string') {
+                this._query[key] = value;
+                return this;
+            } else {
+                console.error("Kindly provide valid parameters.");
+            }
+        }
+
+        /**
          * @method fetch
          * @description fetch entry of requested content_type of defined query if present.
          * @example
@@ -2208,6 +2226,24 @@ var Query = function (_Entry) {
         value: function includeCount() {
             this._query['include_count'] = true;
             return this;
+        }
+
+        /**
+         * @method Addparam
+         * @description This method includes query parameter in query.
+         * @example blogQuery.addParam(key, value)
+         * @returns {Query}
+         */
+
+    }, {
+        key: 'addParam',
+        value: function addParam(key, value) {
+            if (key && value && typeof key === 'string' && typeof value === 'string') {
+                this._query[key] = value;
+                return this;
+            } else {
+                console.error("Kindly provide valid parameters.");
+            }
         }
 
         /**
@@ -7058,6 +7094,7 @@ var Assets = function () {
     function Assets() {
         _classCallCheck(this, Assets);
 
+        this._query = {};
         /**
          * @method only
          * @description This method is use to show the selected fields of the assets in resultset.
@@ -7115,6 +7152,24 @@ var Assets = function () {
         }
 
         /**
+        * @method Addparam
+        * @description This method includes query parameter in query.
+        * @example blogQuery.addParam(key, value)
+        * @returns {Query}
+        */
+
+    }, {
+        key: 'addParam',
+        value: function addParam(key, value) {
+            if (key && typeof key === 'string' && value && typeof value === 'string') {
+                this._query[key] = value;
+                return this;
+            } else {
+                console.error("Kindly provide a valid parameters.");
+            }
+        }
+
+        /**
          * @method fetch
          * @description fetch asset obhect of requested Asset uid of defined query if present.
          * @example
@@ -7134,6 +7189,7 @@ var Assets = function () {
                         query: this._query
                     }
                 };
+
                 return Utils.sendRequest(this);
             } else {
                 console.error("Kindly provide an asset uid. e.g. .Assets('bltsomething123')");

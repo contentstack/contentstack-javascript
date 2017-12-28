@@ -44,7 +44,7 @@ class ContentstackDemo {
          * @return       : Result {Promise}
          */
     getAssets() {
-        return this.Stack.Assets().Query().skip(1).limit(1).toJSON().find()
+        return this.Stack.Assets().Query().addParam('include_dimension', 'true').toJSON().find()
     }
 
     /**
