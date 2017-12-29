@@ -369,7 +369,7 @@ export default class Query extends Entry {
     /**
      * @method Addparam
      * @description This method includes query parameter in query.
-     * @example blogQuery.addParam(key, value)
+     * @example blogQuery.addParam('include_count', 'true')
      * @returns {Query}
      */
     addParam(key, value) {
