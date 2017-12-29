@@ -64,10 +64,9 @@ export default class Assets {
     }
 
      /**
-     * @method Addparam
+     * @method AddParam
      * @description This method includes query parameter in query.
-     * @example Assets().Query().addParam('include_dimension', 'true')
-     * @returns {Query}
+     * @example Stack.Assets('bltsomething123').addParam('include_dimension', 'true').fetch()
      */
     addParam(key, value) {
         if (key && typeof key === 'string' && value && typeof value === 'string') {        
