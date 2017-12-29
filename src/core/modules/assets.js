@@ -66,7 +66,7 @@ export default class Assets {
      /**
      * @method Addparam
      * @description This method includes query parameter in query.
-     * @example blogQuery.addParam(key, value)
+     * @example Assets().Query().addParam('include_dimension', 'true')
      * @returns {Query}
      */
     addParam(key, value) {
