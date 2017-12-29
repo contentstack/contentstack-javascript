@@ -22,7 +22,7 @@ module.exports = {
         port: 465,
         secure: true,
         auth: {
-            user: '<EMAIL-ID>',
+            user: '<USERNAME>',
             pass: '<PASSWORD>'
         }
     }
