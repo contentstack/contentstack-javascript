@@ -8,6 +8,7 @@ export default function Request(options) {
     return new Promise(function(resolve, reject) {
         let queryParams;
         let serialize = function(obj, prefix) {
+
             let str = [],
                 p;
             if (typeof obj === "object" && obj.length !== undefined) {
@@ -20,7 +21,7 @@ export default function Request(options) {
                         v = obj[p];
                     str.push((v !== null && typeof v === "object" && p !== 'query') ?
                         serialize(v, k) :
-                        k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
+                        k + "=" + encodeURIComponent(p !== 'query' ? v : JSON.stringify(v)));
                 }
             }
             return str.join("&");
