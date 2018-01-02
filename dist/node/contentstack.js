@@ -1313,6 +1313,7 @@ function Request(options) {
     return new Promise(function (resolve, reject) {
         var queryParams = void 0;
         var serialize = function serialize(obj, prefix) {
+
             var str = [],
                 p = void 0;
             if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) === "object" && obj.length !== undefined) {
@@ -1323,7 +1324,7 @@ function Request(options) {
                 for (p in obj) {
                     var k = prefix ? prefix + "[" + p + "]" : p,
                         v = obj[p];
-                    str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
+                    str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : k + "=" + encodeURIComponent(p !== 'query' ? v : JSON.stringify(v)));
                 }
             }
             return str.join("&");
@@ -1754,10 +1755,9 @@ var Entry = function () {
         }
 
         /**
-         * @method Addparam
+         * @method AddParam
          * @description This method includes query parameter in query.
-         * @example blogQuery.addParam('include_count', 'true')
-         * @returns {Query}
+         * @example blogQuery.addParam('include_count', 'true').fetch()
          */
 
     }, {
@@ -2229,9 +2229,9 @@ var Query = function (_Entry) {
         }
 
         /**
-         * @method Addparam
+         * @method AddParam
          * @description This method includes query parameter in query.
-         * @example blogQuery.addParam(key, value)
+         * @example blogQuery.addParam('include_count', 'true')
          * @returns {Query}
          */
 
@@ -7152,10 +7152,9 @@ var Assets = function () {
         }
 
         /**
-        * @method Addparam
+        * @method AddParam
         * @description This method includes query parameter in query.
-        * @example blogQuery.addParam(key, value)
-        * @returns {Query}
+        * @example Stack.Assets('bltsomething123').addParam('include_dimension', 'true').fetch()
         */
 
     }, {
