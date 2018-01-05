@@ -13,6 +13,7 @@ import Query from './query';
  */
 export default class Assets {
     constructor() {
+         this._query = {};
         /**
          * @method only
          * @description This method is use to show the selected fields of the assets in resultset.
@@ -62,6 +63,19 @@ export default class Assets {
         return this;
     }
 
+     /**
+     * @method AddParam
+     * @description This method includes query parameter in query.
+     * @example Stack.Assets('bltsomething123').addParam('include_dimension', 'true').fetch()
+     */
+    addParam(key, value) {
+        if (key && typeof key === 'string' && value && typeof value === 'string') {        
+            this._query[key] = value;
+            return this;
+        } else {
+            console.error("Kindly provide a valid parameters.");
+        }
+    }
 
     /**
      * @method fetch
@@ -80,6 +94,7 @@ export default class Assets {
                     query: this._query
                 }
             }
+
             return Utils.sendRequest(this);
         } else {
             console.error("Kindly provide an asset uid. e.g. .Assets('bltsomething123')");

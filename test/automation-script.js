@@ -4,7 +4,7 @@ let request = require('request'),
     path = require('path'),
     fs = require('fs'),
     exec = require('child_process').exec,
-    // nodemailer = require('nodemailer'),
+    nodemailer = require('nodemailer'),
     config = require('./config.js'),
     reportFileName = "report.json";
 
@@ -21,7 +21,7 @@ automation.prototype.init = function() {
     try {
         let self = this;
 
-        initalise the runscope config
+       // initalise the runscope config
         let options = {
             method: "POST",
             url: config.runscope.url,

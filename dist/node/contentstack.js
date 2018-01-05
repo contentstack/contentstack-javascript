@@ -1313,6 +1313,7 @@ function Request(options) {
     return new Promise(function (resolve, reject) {
         var queryParams = void 0;
         var serialize = function serialize(obj, prefix) {
+
             var str = [],
                 p = void 0;
             if ((typeof obj === "undefined" ? "undefined" : _typeof(obj)) === "object" && obj.length !== undefined) {
@@ -1323,7 +1324,7 @@ function Request(options) {
                 for (p in obj) {
                     var k = prefix ? prefix + "[" + p + "]" : p,
                         v = obj[p];
-                    str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : k + "=" + (p !== 'query' ? encodeURIComponent(v) : JSON.stringify(v)));
+                    str.push(v !== null && (typeof v === "undefined" ? "undefined" : _typeof(v)) === "object" && p !== 'query' ? serialize(v, k) : k + "=" + encodeURIComponent(p !== 'query' ? v : JSON.stringify(v)));
                 }
             }
             return str.join("&");
@@ -1751,6 +1752,23 @@ var Entry = function () {
         value: function toJSON() {
             this.tojson = true;
             return this;
+        }
+
+        /**
+         * @method AddParam
+         * @description This method includes query parameter in query.
+         * @example blogQuery.addParam('include_count', 'true').fetch()
+         */
+
+    }, {
+        key: "addParam",
+        value: function addParam(key, value) {
+            if (key && value && typeof key === 'string' && typeof value === 'string') {
+                this._query[key] = value;
+                return this;
+            } else {
+                console.error("Kindly provide valid parameters.");
+            }
         }
 
         /**
@@ -2208,6 +2226,24 @@ var Query = function (_Entry) {
         value: function includeCount() {
             this._query['include_count'] = true;
             return this;
+        }
+
+        /**
+         * @method AddParam
+         * @description This method includes query parameter in query.
+         * @example blogQuery.addParam('include_count', 'true')
+         * @returns {Query}
+         */
+
+    }, {
+        key: 'addParam',
+        value: function addParam(key, value) {
+            if (key && value && typeof key === 'string' && typeof value === 'string') {
+                this._query[key] = value;
+                return this;
+            } else {
+                console.error("Kindly provide valid parameters.");
+            }
         }
 
         /**
@@ -7058,6 +7094,7 @@ var Assets = function () {
     function Assets() {
         _classCallCheck(this, Assets);
 
+        this._query = {};
         /**
          * @method only
          * @description This method is use to show the selected fields of the assets in resultset.
@@ -7115,6 +7152,23 @@ var Assets = function () {
         }
 
         /**
+        * @method AddParam
+        * @description This method includes query parameter in query.
+        * @example Stack.Assets('bltsomething123').addParam('include_dimension', 'true').fetch()
+        */
+
+    }, {
+        key: 'addParam',
+        value: function addParam(key, value) {
+            if (key && typeof key === 'string' && value && typeof value === 'string') {
+                this._query[key] = value;
+                return this;
+            } else {
+                console.error("Kindly provide a valid parameters.");
+            }
+        }
+
+        /**
          * @method fetch
          * @description fetch asset obhect of requested Asset uid of defined query if present.
          * @example
@@ -7134,6 +7188,7 @@ var Assets = function () {
                         query: this._query
                     }
                 };
+
                 return Utils.sendRequest(this);
             } else {
                 console.error("Kindly provide an asset uid. e.g. .Assets('bltsomething123')");
