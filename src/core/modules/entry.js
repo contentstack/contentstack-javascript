@@ -192,6 +192,21 @@ export default class Entry {
     }
 
     /**
+     * @method AddParam
+     * @description This method includes query parameter in query.
+     * @example blogQuery.addParam('include_count', 'true').fetch()
+     */
+    addParam(key, value) {
+        if (key && value && typeof key === 'string' && typeof value === 'string') { 
+                this._query[key] = value;
+                return this;
+        } else {
+            console.error("Kindly provide valid parameters.");
+        }
+    }
+
+
+    /**
      * @method fetch
      * @description fetch entry of requested content_type of defined query if present.
      * @example
