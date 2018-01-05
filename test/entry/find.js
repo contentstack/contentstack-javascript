@@ -111,6 +111,26 @@ test('.descending()', function(assert) {
 });
 
 
+// addparam
+test('.addParam()', function(assert) {
+    var Query = Stack.ContentType(contentTypes.source).Query();
+
+    Query
+        .addParam('include_count', 'true')
+        .toJSON()
+        .find()
+        .then(function success(entries) {
+            assert.ok(entries[0].length, 'Entries length present in the resultset');
+            assert.ok(entries[1], 'count present in the resultset');
+            assert.end();
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".addParam()");
+            assert.end();
+        });
+});
+
+
 /*!
  * COMPARISION
  * !*/

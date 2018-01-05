@@ -40,31 +40,31 @@
             <p>You need Node.js version 4.4.7 or later installed to use the Contentstack JavaScript SDK.</p>
             <h3><a id="Setup_and_Installation_13"></a>Setup and Installation</h3>
             <h4><a id="For_JavaScript_Browser_15"></a>For JavaScript (Browser)</h4>
-            <p>To use the JavaScript SDK, download it from <a href="https://contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest">here</a> and include it in the &lt;script&gt; tag:</p>
-            <pre><code>&lt;script type="text/javascript" src="/path/to/contentstack.min.js"&gt;&lt;/script&gt;;
+            <p>To use the JavaScript SDK, download it from <a href="https://www.contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest">here</a> and include it in the &lt;script&gt; tag:</p>
+            <pre class="prettyprint"><code>&lt;script type="text/javascript" src="/path/to/contentstack.min.js"&gt;&lt;/script&gt;;
             </code></pre>
             <p>To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.</p>
-            <pre><code>const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
             </code></pre>
             <h4><a id="For_Nodejs_25"></a>For Node.js</h4>
-            <p>Node.js uses the Javascript SDK to create apps. To use the JavaScript SDK, download it from <a href="https://contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest">here</a>, OR install it via npm:</p>
-            <pre><code>npm -i contentstack
+            <p>Node.js uses the Javascript SDK to create apps. To use the JavaScript SDK, download it from <a href="https://www.contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest">here</a>, OR install it via npm:</p>
+            <pre class="prettyprint"><code>npm -i contentstack
             </code></pre>
             <p>To import the SDK in your project, use the following command:</p>
-            <pre><code>import contentstack from ‘contentstack’
+            <pre class="prettyprint"><code>import contentstack from ‘contentstack’
             </code></pre>
             <p>To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.</p>
-            <pre><code>const Stack = Contentstack.Stack("api_key","access_token","environment_name");
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key","access_token","environment_name");
             </code></pre>
             <h4><a id="For_React_Native_39"></a>For React Native</h4>
-            <p>React Native uses the Javascript SDK to create apps. To use the JavaScript SDK, download it from <a href="https://contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest">here</a>, OR install ist via npm:</p>
-            <pre><code>npm -i contentstack
+            <p>React Native uses the Javascript SDK to create apps. To use the JavaScript SDK, download it from <a href="https://www.contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest">here</a>, OR install ist via npm:</p>
+            <pre class="prettyprint"><code>npm -i contentstack
             </code></pre>
             <p>To import the SDK in your project, use the following command:</p>
-            <pre><code>import contentstack from `contentstack/react-native`
+            <pre class="prettyprint" class="prettyprint"><code>import contentstack from `contentstack/react-native`
             </code></pre>
             <p>To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.</p>
-            <pre><code>const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
             </code></pre>
             <h3><a id="Key_Concepts_for_using_Contentstack_54"></a>Key Concepts for using Contentstack</h3>
             <h4><a id="Stack_56"></a>Stack</h4>
@@ -80,12 +80,12 @@
             <h3><a id="Contentstack_JavaScript_SDK_5minute_Quickstart_78"></a>Contentstack JavaScript SDK: 5-minute Quickstart</h3>
             <h4><a id="Initializing_your_SDK_80"></a>Initializing your SDK</h4>
             <p>You will need to specify the API key, Access token, and Environment Name of your stack to initialize the SDK:</p>
-            <pre><code>const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
             </code></pre>
             <p>Once you have initialized the SDK, you can start getting content in your app.</p>
             <h4><a id="Querying_content_from_your_stack_90"></a>Querying content from your stack</h4>
             <p>To get a single entry, you need to specify the content type as well as the ID of the entry.</p>
-            <pre><code>const Query = Stack.ContentType('blog').Entry("blt123something");
+            <pre class="prettyprint"><code>const Query = Stack.ContentType('blog').Entry("blt123something");
 
             Query.fetch()
             .then(function success(entry) {
@@ -96,7 +96,7 @@
             });
             </code></pre>
             <p>To retrieve multiple entries of a content type, you need to specify the content type uid. You can also specify search parameters to filter results.</p>
-            <pre><code>const Query = Stack.ContentType('blog').Query();
+            <pre class="prettyprint"><code>const Query = Stack.ContentType('blog').Query();
 
             Query 
             .where("title", "welcome")
@@ -117,17 +117,17 @@
             <p>You can set a cache policy on a stack and/or query object.</p>
             <h5><a id="Setting_a_cache_policy_on_a_stack_127"></a>Setting a cache policy on a stack</h5>
             <p>This option allows you to globalize a cache policy. This means the cache policy you set will be applied to all the query objects of the stack.</p>
-            <pre><code>//Setting a cache policy on a stack    
+            <pre class="prettyprint"><code>//Setting a cache policy on a stack    
             Stack.setCachePolicy(Contentstack.CachePolicy.NETWORK_ELSE_CACHE)
             </code></pre>
             <h5><a id="Setting_a_cache_policy_on_a_query_object_134"></a>Setting a cache policy on a query object</h5>
             <p>This option allows you to set/override a cache policy on a specific query object.</p>
-            <pre><code>// setting a cache policy on a queryobject
+            <pre class="prettyprint"><code>// setting a cache policy on a queryobject
             Query.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)
             </code></pre>
             <h3><a id="Advanced_Queries_141"></a>Advanced Queries</h3>
             <p>You can query for content types, entries, assets and more using our JavaScript API Reference.</p>
-            <p><a href="https://contentstack.com/docs/platforms/javascript-browser/api-reference">JavaScript API Reference Doc</a></p>
+            <p><a href="https://www.contentstack.com/docs/platforms/javascript-browser/api-reference/">JavaScript API Reference Doc</a></p>
             <h3><a id="Working_with_Images_147"></a>Working with Images</h3>
             <p>We have introduced Image Delivery APIs that let you retrieve images and then manipulate and optimize them for your digital properties. It lets you perform a host of other actions such as crop, trim, resize, rotate, overlay, and so on.</p>
             <p>For example, if you want to crop an image (with width as 300 and height as 400), you simply need to append query parameters at the end of the image URL, such as, <a href="https://images.contentstack.io/v3/assets/blteae40eb499811073/bltc5064f36b5855343/59e0c41ac0eddd140d5a8e3e/download?crop=300,400">https://images.contentstack.io/v3/assets/blteae40eb499811073/bltc5064f36b5855343/59e0c41ac0eddd140d5a8e3e/download?crop=300,400</a>. There are several more parameters that you can use for your images.</p>
@@ -136,8 +136,8 @@
             <h3><a id="Helpful_Links_157"></a>Helpful Links</h3>
             <ul>
             <li><a href="https://www.contentstack.com">Contentstack Website</a></li>
-            <li><a href="https://contentstack.com/docs">Official Documentation</a></li>
-            <li><a href="https://contentstack.com/docs/apis/content-delivery-api/">Content Delivery API Docs</a></li>
+            <li><a href="https://www.contentstack.com/docs">Official Documentation</a></li>
+            <li><a href="https://www.contentstack.com/docs/apis/content-delivery-api/">Content Delivery API Docs</a></li>
             </ul>
             <h3><a id="The_MIT_License_MIT_163"></a>The MIT License (MIT)</h3>
             <p>Copyright © 2012-2017 <a href="https://www.built.io/">Built.io</a>. All Rights Reserved</p>
