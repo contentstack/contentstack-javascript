@@ -35,17 +35,6 @@ export default class Assets {
     }
 
     /**
-     * @method Query
-     * @description Query instance to provide support for all search queries.
-     * @example Assets().Query()
-     * @returns {Query}
-     */
-    // Query() {
-    //     let query = new Query();
-    //     return Utils.merge(query, this);
-    // }
-
-    /**
      * @method toJSON
      * @description This method is used to convert the result in to plain javascript object.
      * @example
