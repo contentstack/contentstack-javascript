@@ -209,16 +209,17 @@ export default class Stack {
      * @method Assets
      * @description Set the Asset Uid which you want to retrive the Asset.
      * @param {String} uid - asset_uid
-     * @example Stack.Assets('blt1234567890abcef')
+     * @example Stack.Assets('blt1234567890abcef').fetch
      * @returns {Assets}
      */
     Assets(uid) {
-        let asset = new Assets();
         this.type = 'asset';
         if (uid && typeof uid === "string") {
+            let asset = new Assets();
             asset.asset_uid = uid;
+            return Utils.merge(asset, this);
         }
-        return Utils.merge(asset, this);
+        return this;
     }
 
     /**
