@@ -55,8 +55,6 @@ test('.ascending()', function(assert) {
         .toJSON()
         .find()
         .then(function success(assets) {
-            // assert.ok("assets" in result, 'assets key present in the resultset');
-            // assert.equal(Utils.isassetsPublished(assets[0], Stack.environment_uid, 'en-us'), true, "assets present in the resultset are published.");
             assert.ok(assets[0].length, 'assets present in the resultset');
             if (assets && assets.length && assets[0].length) {
                 var prev = assets[0][0][field];
@@ -78,7 +76,6 @@ test('.ascending()', function(assert) {
 test('.descending()', function(assert) {
     var Query = Stack.Assets().Query(),
         field = 'created_at';
-
     Query
         .descending(field)
         .toJSON()
@@ -267,7 +264,6 @@ test('.notEqualTo()', function(assert) {
 
 test('.where()', function(assert) {
     var Query = Stack.Assets().Query();
-
     Query
         .where('title', "image1")
         .toJSON()
