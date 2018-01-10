@@ -785,12 +785,13 @@ var Stack = function () {
     }, {
         key: 'Assets',
         value: function Assets(uid) {
-            var asset = new _assets2.default();
             this.type = 'asset';
             if (uid && typeof uid === "string") {
+                var asset = new _assets2.default();
                 asset.asset_uid = uid;
+                return Utils.merge(asset, this);
             }
-            return Utils.merge(asset, this);
+            return this;
         }
 
         /**
@@ -1472,7 +1473,6 @@ var Query = function (_Entry) {
 
         _this._query = _this._query || {};
         _this._query['query'] = _this._query['query'] || {};
-
         /**
          * @method lessThan
          * @description This method provides only the entries with values less than the specified value for a field.
@@ -2448,30 +2448,27 @@ var Assets = function () {
      * @example Assets().Query()
      * @returns {Query}
      */
+    // Query() {
+    //     let query = new Query();
+    //     return Utils.merge(query, this);
+    // }
+
+    /**
+     * @method toJSON
+     * @description This method is used to convert the result in to plain javascript object.
+     * @example
+     * assetQuery
+     *      .toJSON()
+     *      .then(function (result) {
+     *          let value = result.get(field_uid)
+     *       },function (error) {
+     *          // error function
+     *      })
+     * @returns {Object}
+     */
 
 
     _createClass(Assets, [{
-        key: 'Query',
-        value: function Query() {
-            var query = new _query2.default();
-            return Utils.merge(query, this);
-        }
-
-        /**
-         * @method toJSON
-         * @description This method is used to convert the result in to plain javascript object.
-         * @example
-         * assetQuery
-         *      .toJSON()
-         *      .then(function (result) {
-         *          let value = result.get(field_uid)
-         *       },function (error) {
-         *          // error function
-         *      })
-         * @returns {Object}
-         */
-
-    }, {
         key: 'toJSON',
         value: function toJSON() {
             this.tojson = true;

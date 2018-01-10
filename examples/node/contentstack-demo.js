@@ -23,7 +23,7 @@ class ContentstackDemo {
      */
     getEntries(contentTypeUid) {
         contentTypeUid = contentTypeUid || 'source'
-        return this.Stack.ContentType(contentTypeUid).Query().toJSON().find()
+        return this.Stack.ContentType(contentTypeUid).Query().where('title', "hometestfinal").toJSON().find()
     }
 
     /**
@@ -55,7 +55,7 @@ class ContentstackDemo {
      */
     getAsset(assetUid) {
         assetUid = assetUid || 'blt123something'
-        return this.Stack.Assets(assetUid).fetch()
+        return this.Stack.Assets(assetUid).addParam('include_dimension', 'true').fetch()
     }
 
 }

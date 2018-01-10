@@ -233,8 +233,7 @@ export default class Entry {
     /**
      * @method AddParam
      * @description This method includes query parameter in query.
-     * @example blogQuery.addParam('include_count', 'true')
-     * @returns {Query}
+     * @example blogQuery.addParam('include_count', 'true').fetch()
      */
     addParam(key, value) {
         if (key &amp;&amp; value &amp;&amp; typeof key === 'string' &amp;&amp; typeof value === 'string') { 

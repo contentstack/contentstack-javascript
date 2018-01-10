@@ -1331,7 +1331,7 @@ Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>Stack.Assets('blt1234567890abcef')</code></pre>
+    <pre class="prettyprint"><code>Stack.Assets('blt1234567890abcef').fetch</code></pre>
 
 
 
@@ -1719,85 +1719,6 @@ Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
         <p class="code-caption"> .only with field uids(array) </p>
     
     <pre class="prettyprint"><code>Assets().only(['title','description'])</code></pre>
-
-
-
-        
-            
-
-
-    
-
-    <h4 class="name" id="Query"><span class="type-signature"></span>Query<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#Query">Query</a>}</span></h4>
-
-    
-
-
-
-<div class="description">
-    Query instance to provide support for all search queries.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <h5>Example</h5>
-    
-    <pre class="prettyprint"><code>Assets().Query()</code></pre>
 
 
 
@@ -3069,7 +2990,7 @@ Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
 
     
 
-    <h4 class="name" id="AddParam"><span class="type-signature"></span>AddParam<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#Query">Query</a>}</span></h4>
+    <h4 class="name" id="AddParam"><span class="type-signature"></span>AddParam<span class="signature">()</span><span class="type-signature"></span></h4>
 
     
 
@@ -3138,7 +3059,7 @@ Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>blogQuery.addParam('include_count', 'true')</code></pre>
+    <pre class="prettyprint"><code>blogQuery.addParam('include_count', 'true').fetch()</code></pre>
 
 
 
