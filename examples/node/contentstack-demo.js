@@ -23,7 +23,7 @@ class ContentstackDemo {
      */
     getEntries(contentTypeUid) {
         contentTypeUid = contentTypeUid || 'source'
-        return this.Stack.ContentType(contentTypeUid).Query().where('title', "hometestfinal").toJSON().find()
+        return this.Stack.ContentType(contentTypeUid).Query().toJSON().find()
     }
 
     /**
@@ -46,6 +46,16 @@ class ContentstackDemo {
     getAssets() {
         return this.Stack.Assets().Query().addParam('include_dimension', 'true').toJSON().find()
     }
+
+    /**
+         * getAssets
+         * @description  : getAssets is used to get the assets
+         * @return       : Result {Promise}
+         */
+    getSyncApi() {
+        return this.Stack.SyncApi()
+    }
+
 
     /**
      * fetchAsset
