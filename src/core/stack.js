@@ -2,6 +2,7 @@ import config from '../../config';
 import * as Utils from './lib/utils';
 import Entry from './modules/entry';
 import Assets from './modules/assets';
+import SyncApi from './modules/syncapi';
 import Query from './modules/query';
 import Request from './lib/request';
 import * as cache from './cache';
@@ -252,6 +253,11 @@ export default class Stack {
             }
         };
         return Request(query);
+    }
+
+    Sync_Api(key, value) {
+         let syncapi = new SyncApi(key, value, this);
+         return Utils.merge(syncapi, this);
     }
 
     /**
