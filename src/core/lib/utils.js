@@ -187,6 +187,7 @@ export function spreadResult(result) {
 };
 
 export function sendRequest(queryObject) {
+    //console.log("asnkjdhsckjhsjhdjc",queryObject)
     let env_uid = queryObject.environment_uid;
     if (env_uid) {
         queryObject._query.environment_uid = env_uid;

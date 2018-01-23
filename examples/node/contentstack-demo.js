@@ -44,7 +44,7 @@ class ContentstackDemo {
          * @return       : Result {Promise}
          */
     getAssets() {
-        return this.Stack.Assets().Query().addParam('include_dimension', 'true').toJSON().find()
+        return this.Stack.Assets().Query().toJSON().find()
     }
 
     /**
@@ -53,7 +53,7 @@ class ContentstackDemo {
          * @return       : Result {Promise}
          */
     getSyncApi() {
-        return this.Stack.SyncApi()
+        return this.Stack.SyncApi('pagination', '100').fetch()
     }
 
 
@@ -66,6 +66,17 @@ class ContentstackDemo {
     getAsset(assetUid) {
         assetUid = assetUid || 'blt123something'
         return this.Stack.Assets(assetUid).addParam('include_dimension', 'true').fetch()
+    }
+
+
+     /**
+     * fetchAsset
+     * @description  : fetchAsset is used to get the specified uid asset
+     * @params       : assetUid       {string} - Specified Asset uid to be fetched                 
+     * @return       : Result {Promise}
+     */
+    getSyncApi(key, value) {
+        return this.Stack.Sync_Api(key, value);
     }
 
 }
