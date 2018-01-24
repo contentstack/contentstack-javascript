@@ -851,8 +851,6 @@ var Stack = function () {
         key: 'Sync_Api',
         value: function Sync_Api(key, value) {
             var syncapi = new _syncapi2.default(key, value, this);
-            syncapi.sync_key = key;
-            syncapi.sync_value = value;
             return Utils.merge(syncapi, this);
         }
 
@@ -1356,7 +1354,7 @@ function Request(options) {
             if (_typeof(options.body.query) === "object" && Object.keys(options.body.query).length === 0) delete options.body.query;
             queryParams = serialize(options.body);
         }
-        console.log("final hai bhai ab>>>>>>>>>", url + '?' + queryParams);
+
         (0, _http2.default)(url + '?' + queryParams, {
             method: 'GET',
             headers: headers
@@ -2022,7 +2020,7 @@ function FetchError(message, type, systemError) {
   Error.captureStackTrace(this, this.constructor);
 }
 
-__webpack_require__(55).inherits(FetchError, Error);
+__webpack_require__(56).inherits(FetchError, Error);
 
 /***/ }),
 /* 12 */
@@ -4522,7 +4520,7 @@ InternalCodec.prototype.decoder = InternalDecoder;
 //------------------------------------------------------------------------------
 
 // We use node.js internal decoder. Its signature is the same as ours.
-var StringDecoder = __webpack_require__(54).StringDecoder;
+var StringDecoder = __webpack_require__(55).StringDecoder;
 
 if (!StringDecoder.prototype.end) // Node v0.8 doesn't have this method.
     StringDecoder.prototype.end = function () {};
@@ -6504,8 +6502,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 var parse_url = __webpack_require__(9).parse;
 var resolve_url = __webpack_require__(9).resolve;
 var http = __webpack_require__(16);
-var https = __webpack_require__(53);
-var zlib = __webpack_require__(56);
+var https = __webpack_require__(54);
+var zlib = __webpack_require__(57);
 var stream = __webpack_require__(2);
 
 var Body = __webpack_require__(4);
@@ -7347,8 +7345,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _utils = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_utils);
@@ -7367,80 +7363,39 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var fs = __webpack_require__(53);
 /**
- * @summary Creates an instance of `Assets`.
- * @description An initializer is responsible for creating Asset object.
- * @param {String} uid - uid of the asset
+ * @summary Creates an instance of `SyncApi`.
+ * @description An initializer is responsible for creating Sync object.
+ * @param {String} uid - uid of the Sync
  * @example
- * let Assets = Contentstack.Stack().Assets('bltsomething123');
+ * let syncApi = Stack().SyncApi('init', 'true');
  * @returns {Assets}
  * @ignore
  */
-var SyncApi = function () {
-    function SyncApi(key, value, Stack_config) {
-        _classCallCheck(this, SyncApi);
 
-        Stack_config._query = {};
-        //let this = config;
-        //console.log("i m here man ", Stack_config)
-        Stack_config._query[key] = value;
-        Stack_config.requestParams = {
-            method: 'POST',
-            headers: Stack_config.headers,
-            url: Stack_config.config.protocol + "://" + Stack_config.config.host + ':' + Stack_config.config.port + '/' + Stack_config.config.version + Stack_config.config.urls.sync,
-            body: {
-                _method: 'GET',
-                query: Stack_config._query
-            }
-        };
-        return Utils.sendRequest(Stack_config);
+var SyncApi = function SyncApi(key, value, Stack_config) {
+    _classCallCheck(this, SyncApi);
 
-        /**
-         * @method only
-         * @description This method is use to show the selected fields of the assets in resultset.
-         * @param {String} [key=BASE] - single field in asset
-         * @param {Array} values - array of fields to be show in resultset
-         * @example
-         * <caption> .only with field uid </caption>
-         * Assets().only('title')
-         * @example
-         * <caption> .only with field uid </caption>
-         * Assets().only('BASE','title')
-         * @example
-         * <caption> .only with field uids(array) </caption>
-         * Assets().only(['title','description'])
-         * @returns {Asset}
-         */
-        this.only = Utils.transform('only');
-        return this;
-    }
-    /**
-     * @method fetch
-     * @description fetch asset obhect of requested Asset uid of defined query if present.
-     * @example
-     * Stack.Assets('bltsomething123').fetch()
-     */
-
-
-    _createClass(SyncApi, [{
-        key: 'fetch',
-        value: function fetch() {
-            this._query[this.sync_key] = this.sync_value;
-            this.requestParams = {
-                method: 'POST',
-                headers: this.headers,
-                url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.stack,
-                body: {
-                    _method: 'GET',
-                    query: this._query
-                }
-            };
-            return Utils.sendRequest(this);
+    Stack_config._query = {};
+    //let this = config;
+    //console.log("i m here man ", Stack_config)
+    Stack_config._query[key] = value;
+    Stack_config.requestParams = {
+        method: 'POST',
+        headers: Stack_config.headers,
+        url: Stack_config.config.protocol + "://" + Stack_config.config.host + ':' + Stack_config.config.port + '/' + Stack_config.config.version + Stack_config.config.urls.sync,
+        body: {
+            _method: 'GET',
+            query: Stack_config._query
         }
-    }]);
+    };
+    fs.readFile('../../../mocktest.json', function (err, data) {
+        console.log("dtattatata>>>", data);
+    });
 
-    return SyncApi;
-}();
+    //return Utils.sendRequest(Stack_config);
+};
 
 exports.default = SyncApi;
 
@@ -7534,22 +7489,28 @@ module.exports = [["0","\u0000",128],["a1","｡",62],["8140","　、。，．・
 /* 53 */
 /***/ (function(module, exports) {
 
-module.exports = require("https");
+module.exports = require("fs");
 
 /***/ }),
 /* 54 */
 /***/ (function(module, exports) {
 
-module.exports = require("string_decoder");
+module.exports = require("https");
 
 /***/ }),
 /* 55 */
 /***/ (function(module, exports) {
 
-module.exports = require("util");
+module.exports = require("string_decoder");
 
 /***/ }),
 /* 56 */
+/***/ (function(module, exports) {
+
+module.exports = require("util");
+
+/***/ }),
+/* 57 */
 /***/ (function(module, exports) {
 
 module.exports = require("zlib");
