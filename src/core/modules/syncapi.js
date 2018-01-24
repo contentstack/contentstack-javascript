@@ -1,7 +1,6 @@
 import * as Utils from '../lib/utils';
 import Stack from '../stack';
 import Query from './query';
-
 /**
  * @summary Creates an instance of `SyncApi`.
  * @description An initializer is responsible for creating Sync object.
@@ -26,6 +25,7 @@ export default class SyncApi {
                     query: Stack_config._query
                 }
             }
+
         return Utils.sendRequest(Stack_config);
     }
 
