@@ -39,7 +39,7 @@ export default function Request(options) {
             if (typeof options.body.query === "object" && Object.keys(options.body.query).length === 0) delete options.body.query;
             queryParams = serialize(options.body);
         }
-        console.log("final hai bhai ab>>>>>>>>>", url + '?' + queryParams)
+
         fetch(url + '?' + queryParams, {
                 method: 'GET',
                 headers: headers
