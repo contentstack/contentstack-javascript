@@ -10,12 +10,12 @@ module.exports = function(options) {
         output: {
             library: "Contentstack",
             libraryTarget: "commonjs2",
-            path: path.join(__dirname, "../dist/native-script"),
+            path: path.join(__dirname, "../dist/nativescript"),
             filename: "contentstack.js"
         },
         resolve: {
             alias: {
-                runtime: path.resolve(__dirname, '../src/runtime/native-script')
+                runtime: path.resolve(__dirname, '../src/runtime/nativescript')
             },
             modules: [
                 '../src',

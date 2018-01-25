@@ -778,7 +778,7 @@ var Stack = function () {
          * @method Assets
          * @description Set the Asset Uid which you want to retrive the Asset.
          * @param {String} uid - asset_uid
-         * @example Stack.Assets('blt1234567890abcef')
+         * @example Stack.Assets('blt1234567890abcef').fetch
          * @returns {Assets}
          */
 
@@ -894,7 +894,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //JS SDK version
-var version = '3.3.0';
+var version = '3.4.0';
 
 function Request(options) {
     return new Promise(function (resolve, reject) {
@@ -2441,17 +2441,6 @@ var Assets = function () {
         this.only = Utils.transform('only');
         return this;
     }
-
-    /**
-     * @method Query
-     * @description Query instance to provide support for all search queries.
-     * @example Assets().Query()
-     * @returns {Query}
-     */
-    // Query() {
-    //     let query = new Query();
-    //     return Utils.merge(query, this);
-    // }
 
     /**
      * @method toJSON
