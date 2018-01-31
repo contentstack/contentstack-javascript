@@ -143,7 +143,7 @@ This option allows you to set/override a cache policy on a specific query object
 
 You can query for content types, entries, assets and more using our JavaScript API Reference. 
 
-[JavaScript API Reference Doc](https://contentstack.com/docs/platforms/javascript-browser#api-reference)
+[JavaScript API Reference Doc](https://contentstack.com/docs/platforms/javascript-browser/api-reference/)
 
 ### Working with Images
 
