@@ -52,9 +52,9 @@ class ContentstackDemo {
          * @description  : getAssets is used to get the assets
          * @return       : Result {Promise}
          */
-    getSyncApi() {
-        return this.Stack.SyncApi('pagination', '100').fetch()
-    }
+    // getSyncApi() {
+    //     return this.Stack.SyncApi('pagination', '100').fetch()
+    // }
 
 
     /**

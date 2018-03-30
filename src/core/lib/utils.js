@@ -167,6 +167,8 @@ export function resultWrapper(result) {
         result.entry = Result(result.entry);
     } else if (result && typeof result.asset !== 'undefined') {
         result.asset = Result(result.asset);
+    } else if (result && typeof result.items !== 'undefined') {
+        result.items = Result(result.items).toJSON();
     }
 
     return result;
@@ -182,12 +184,12 @@ export function spreadResult(result) {
         if (typeof result.count !== 'undefined') _results.push(result.count);
         if (typeof result.entry !== 'undefined') _results = result.entry;
         if (typeof result.asset !== 'undefined') _results = result.asset;
+        if (typeof result.items !== 'undefined') _results.push(result.items);
     }
     return _results;
 };
 
 export function sendRequest(queryObject) {
-    //console.log("asnkjdhsckjhsjhdjc",queryObject)
     let env_uid = queryObject.environment_uid;
     if (env_uid) {
         queryObject._query.environment_uid = env_uid;
@@ -275,7 +277,9 @@ export function sendRequest(queryObject) {
                             });
                             return resolve(spreadResult(entries));
                         } else {
-                            if (!tojson) entries = resultWrapper(entries);
+                            if (!tojson) 
+                                entries = resultWrapper(entries);
+                            console.log("sdvcbndfvnfbdvbdfv",entries);
                             return resolve(spreadResult(entries));
                         }
                     } catch (e) {

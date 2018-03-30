@@ -17,6 +17,7 @@ export default class Stack {
         this.config = config;
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
         this.provider = CacheProvider.providers('localstorage');
+        this.web_ui_api_key = '607a456d7f3afc20cd9fcb1f';
         switch (stack_arguments.length) {
             case 1:
                 if (typeof stack_arguments[0] === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].access_token === "string" && typeof stack_arguments[0].environment === "string") {
@@ -255,11 +256,19 @@ export default class Stack {
         return Request(query);
     }
 
-    Sync_Api(key, value) {
-         let syncapi = new SyncApi(key, value, this);
-         return Utils.merge(syncapi, this);
+    syncApi(key) {
+        let syncapi = new SyncApi();
+        if (key.init) {
+            syncapi['init'] = key.init;
+        } else if (key.start_from) {
+            syncapi['start_from'] = key.start_from;
+        } else if (key.pagination_token) {
+            syncapi['pagination_token'] = key.pagination_token;
+        } else {
+            console.log("Please provide valid parameters");
+        }
+        return Utils.merge(syncapi, this);
     }
-
     /**
      * @method imageTransform
      * @description Transforms provided image url based on transformation parameters.  

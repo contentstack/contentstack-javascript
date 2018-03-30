@@ -276,6 +276,8 @@ function resultWrapper(result) {
         result.entry = (0, _result2.default)(result.entry);
     } else if (result && typeof result.asset !== 'undefined') {
         result.asset = (0, _result2.default)(result.asset);
+    } else if (result && typeof result.items !== 'undefined') {
+        result.items = (0, _result2.default)(result.items);
     }
 
     return result;
@@ -291,12 +293,12 @@ function spreadResult(result) {
         if (typeof result.count !== 'undefined') _results.push(result.count);
         if (typeof result.entry !== 'undefined') _results = result.entry;
         if (typeof result.asset !== 'undefined') _results = result.asset;
+        if (typeof result.items !== 'undefined') _results.push(result.items);
     }
     return _results;
 };
 
 function sendRequest(queryObject) {
-    //console.log("asnkjdhsckjhsjhdjc",queryObject)
     var env_uid = queryObject.environment_uid;
     if (env_uid) {
         queryObject._query.environment_uid = env_uid;
@@ -348,6 +350,7 @@ function sendRequest(queryObject) {
                 try {
                     self.entry_uid = self.asset_uid = self.tojson = self.queryCachePolicy = undefined;
                     var entries = {};
+                    console.log("dyatatattat>>>>>>", queryObject);
                     if (queryObject.singleEntry) {
                         queryObject.singleEntry = false;
                         if (data.schema) entries.schema = data.schema;
@@ -564,6 +567,7 @@ var Stack = function () {
         this.config = _config2.default;
         this.cachePolicy = _index2.default.policies.IGNORE_CACHE;
         this.provider = _index2.default.providers('localstorage');
+        this.web_ui_api_key = '607a456d7f3afc20cd9fcb1f';
 
         for (var _len = arguments.length, stack_arguments = Array(_len), _key = 0; _key < _len; _key++) {
             stack_arguments[_key] = arguments[_key];
@@ -1359,8 +1363,10 @@ function Request(options) {
             method: 'GET',
             headers: headers
         }).then(function (response) {
+            console.log("datatatatatatat", response);
             if (response.ok && response.status === 200) {
                 var data = response.json();
+                console.log("response yaha pe hai", response);
                 resolve(data);
             } else {
                 reject(response.statusText);
@@ -1897,6 +1903,7 @@ var Query = function (_Entry) {
                     query: this._query
                 }
             };
+            console;
             return Utils.sendRequest(this);
         }
 
@@ -2020,7 +2027,7 @@ function FetchError(message, type, systemError) {
   Error.captureStackTrace(this, this.constructor);
 }
 
-__webpack_require__(56).inherits(FetchError, Error);
+__webpack_require__(55).inherits(FetchError, Error);
 
 /***/ }),
 /* 12 */
@@ -2364,6 +2371,8 @@ var Entry = function () {
                         query: this._query
                     }
                 };
+
+                console.log(JSON.stringify(this.requestParams));
                 return Utils.sendRequest(this);
             } else {
                 console.error("Kindly provide an entry uid. e.g. .Entry('bltsomething123')");
@@ -2406,11 +2415,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 var config = {
     protocol: "https",
-    host: "stag-new-api.contentstack.io",
+    host: "dev-cdn.contentstack.io",
     port: 443,
     version: "v3",
     urls: {
         sync: "/stacks/sync",
+        web_ui_api_key: "607a456d7f3afc20cd9fcb1f",
         content_types: "/content_types/",
         entries: "/entries/",
         assets: "/assets/",
@@ -4520,7 +4530,7 @@ InternalCodec.prototype.decoder = InternalDecoder;
 //------------------------------------------------------------------------------
 
 // We use node.js internal decoder. Its signature is the same as ours.
-var StringDecoder = __webpack_require__(55).StringDecoder;
+var StringDecoder = __webpack_require__(54).StringDecoder;
 
 if (!StringDecoder.prototype.end) // Node v0.8 doesn't have this method.
     StringDecoder.prototype.end = function () {};
@@ -6502,8 +6512,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 var parse_url = __webpack_require__(9).parse;
 var resolve_url = __webpack_require__(9).resolve;
 var http = __webpack_require__(16);
-var https = __webpack_require__(54);
-var zlib = __webpack_require__(57);
+var https = __webpack_require__(53);
+var zlib = __webpack_require__(56);
 var stream = __webpack_require__(2);
 
 var Body = __webpack_require__(4);
@@ -7363,7 +7373,6 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var fs = __webpack_require__(53);
 /**
  * @summary Creates an instance of `SyncApi`.
  * @description An initializer is responsible for creating Sync object.
@@ -7373,28 +7382,22 @@ var fs = __webpack_require__(53);
  * @returns {Assets}
  * @ignore
  */
-
-var SyncApi = function SyncApi(key, value, Stack_config) {
+var SyncApi = function SyncApi(key, value, stack_config) {
     _classCallCheck(this, SyncApi);
 
-    Stack_config._query = {};
-    //let this = config;
-    //console.log("i m here man ", Stack_config)
-    Stack_config._query[key] = value;
-    Stack_config.requestParams = {
+    stack_config._query = {};
+    stack_config._query[key] = value;
+    stack_config._query['web_ui_api_key'] = stack_config.web_ui_api_key;
+    stack_config.requestParams = {
         method: 'POST',
-        headers: Stack_config.headers,
-        url: Stack_config.config.protocol + "://" + Stack_config.config.host + ':' + Stack_config.config.port + '/' + Stack_config.config.version + Stack_config.config.urls.sync,
+        headers: stack_config.headers,
+        url: stack_config.config.protocol + "://" + stack_config.config.host + ':' + stack_config.config.port + '/' + stack_config.config.version + stack_config.config.urls.sync,
         body: {
             _method: 'GET',
-            query: Stack_config._query
+            query: stack_config._query
         }
     };
-    fs.readFile('../../../mocktest.json', function (err, data) {
-        console.log("dtattatata>>>", data);
-    });
-
-    //return Utils.sendRequest(Stack_config);
+    return Utils.sendRequest(stack_config);
 };
 
 exports.default = SyncApi;
@@ -7489,28 +7492,22 @@ module.exports = [["0","\u0000",128],["a1","｡",62],["8140","　、。，．・
 /* 53 */
 /***/ (function(module, exports) {
 
-module.exports = require("fs");
+module.exports = require("https");
 
 /***/ }),
 /* 54 */
 /***/ (function(module, exports) {
 
-module.exports = require("https");
+module.exports = require("string_decoder");
 
 /***/ }),
 /* 55 */
 /***/ (function(module, exports) {
 
-module.exports = require("string_decoder");
-
-/***/ }),
-/* 56 */
-/***/ (function(module, exports) {
-
 module.exports = require("util");
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports) {
 
 module.exports = require("zlib");
