@@ -11,22 +11,59 @@ import Query from './query';
  * @ignore
  */
 export default class SyncApi {
-    constructor(key, value, Stack_config) {
-        Stack_config._query = {};
-        //let this = config;
-        //console.log("i m here man ", Stack_config)
-         Stack_config._query[key] = value
-            Stack_config.requestParams = {
+    constructor() {
+
+        this._query = {};
+    }
+
+     /**
+     * @method toJSON
+     * @description This method is used to convert the result in to plain javascript object.
+     * @example
+     * blogEntry
+     *      .toJSON()
+     *      .then(function (result) {
+     *          let value = result.get(field_uid)
+     *       },function (error) {
+     *          // error function
+     *      })
+     * @returns {Object}
+     */
+    toJSON() {
+        this.tojson = true;
+        return this;
+    }
+
+
+
+    /**
+     * @method fetch
+     * @description fetch entry of requested content_type of defined query if present.
+     * @example
+     * blogEntry.fetch()
+     */
+    fetch() {     
+        this._query['web_ui_api_key'] = this.config.urls.web_ui_api_key;
+            if (this.init) {
+                console.log("in side first")
+                this._query['init'] = this.init;    
+            } else if(this.pagination_token) {
+                console.log("in side second")
+                this._query['pagination_token'] = this.pagination_token;
+            } else if(this.start_from) {
+                //console.log("in side third")
+                this._query['start_from'] = this.start_from;            
+            }
+            this.requestParams = {
                 method: 'POST',
-                headers: Stack_config.headers,
-                url: Stack_config.config.protocol + "://" + Stack_config.config.host + ':' + Stack_config.config.port + '/' + Stack_config.config.version + Stack_config.config.urls.sync,
+                headers: this.headers,
+                url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.sync,
                 body: {
                     _method: 'GET',
-                    query: Stack_config._query
+                    query: this._query
                 }
             }
-
-        return Utils.sendRequest(Stack_config);
+        return Utils.sendRequest(this);
     }
 
 }
