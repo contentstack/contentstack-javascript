@@ -223,6 +223,7 @@ export default class Entry {
                     query: this._query
                 }
             };
+
             return Utils.sendRequest(this);
         } else {
             console.error("Kindly provide an entry uid. e.g. .Entry('bltsomething123')");

@@ -40,13 +40,17 @@ export default function Request(options) {
             queryParams = serialize(options.body);
         }
 
+    console.log("urllllll", url)
+    console.log("urllllll", queryParams)
         fetch(url + '?' + queryParams, {
                 method: 'GET',
                 headers: headers
             })
             .then(function(response) {
+               // console.log("datatatatatatat", response)
                 if (response.ok && response.status === 200) {
                     let data = response.json();
+                    console.log("response yaha pe hai", data);
                     resolve(data);
                 } else {
                     reject(response.statusText);
