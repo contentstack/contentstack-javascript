@@ -256,6 +256,7 @@ function generateHash(str) {
 
 // generate the Result object
 function resultWrapper(result) {
+    console.log(result, "result");
     if (result && typeof result.entries !== 'undefined') {
         if (result.entries && result.entries.length) {
             for (var i = 0, _i = result.entries.length; i < _i; i++) {
@@ -277,7 +278,7 @@ function resultWrapper(result) {
     } else if (result && typeof result.asset !== 'undefined') {
         result.asset = (0, _result2.default)(result.asset);
     } else if (result && typeof result.items !== 'undefined') {
-        result.items = (0, _result2.default)(result.items);
+        result.items = (0, _result2.default)(result.items).toJSON();
     }
 
     return result;
@@ -293,7 +294,7 @@ function spreadResult(result) {
         if (typeof result.count !== 'undefined') _results.push(result.count);
         if (typeof result.entry !== 'undefined') _results = result.entry;
         if (typeof result.asset !== 'undefined') _results = result.asset;
-        if (typeof result.items !== 'undefined') _results.push(result.items);
+        if (typeof result.items !== 'undefined') _results.push(result);
     }
     return _results;
 };
@@ -350,7 +351,6 @@ function sendRequest(queryObject) {
                 try {
                     self.entry_uid = self.asset_uid = self.tojson = self.queryCachePolicy = undefined;
                     var entries = {};
-                    console.log("dyatatattat>>>>>>", queryObject);
                     if (queryObject.singleEntry) {
                         queryObject.singleEntry = false;
                         if (data.schema) entries.schema = data.schema;
@@ -852,12 +852,22 @@ var Stack = function () {
             return (0, _request2.default)(query);
         }
     }, {
-        key: 'Sync_Api',
-        value: function Sync_Api(key, value) {
-            var syncapi = new _syncapi2.default(key, value, this);
+        key: 'sync',
+        value: function sync(params) {
+            var syncapi = new _syncapi2.default();
+            if (params.init) {
+                syncapi['init'] = params.init;
+            } else if (params.start_from) {
+                syncapi['start_from'] = params.start_from;
+            } else if (params.pagination_token) {
+                syncapi['pagination_token'] = params.pagination_token;
+            } else if (params.sync_token) {
+                syncapi['sync_token'] = params.sync_token;
+            } else {
+                console.log("Please provide valid parameters");
+            }
             return Utils.merge(syncapi, this);
         }
-
         /**
          * @method imageTransform
          * @description Transforms provided image url based on transformation parameters.  
@@ -1363,10 +1373,12 @@ function Request(options) {
             method: 'GET',
             headers: headers
         }).then(function (response) {
-            console.log("datatatatatatat", response);
+
             if (response.ok && response.status === 200) {
+                //console.log("response>>>>>", response)
                 var data = response.json();
-                console.log("response yaha pe hai", response);
+                //data.then((response) => {console.log("then =====>", response)})
+                //console.log("response yaha pe hai", data, typeof response.json())
                 resolve(data);
             } else {
                 reject(response.statusText);
@@ -2372,7 +2384,6 @@ var Entry = function () {
                     }
                 };
 
-                console.log(JSON.stringify(this.requestParams));
                 return Utils.sendRequest(this);
             } else {
                 console.error("Kindly provide an entry uid. e.g. .Entry('bltsomething123')");
@@ -7355,6 +7366,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _utils = __webpack_require__(1);
 
 var Utils = _interopRequireWildcard(_utils);
@@ -7382,23 +7395,71 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @returns {Assets}
  * @ignore
  */
-var SyncApi = function SyncApi(key, value, stack_config) {
-    _classCallCheck(this, SyncApi);
+var SyncApi = function () {
+    function SyncApi() {
+        _classCallCheck(this, SyncApi);
 
-    stack_config._query = {};
-    stack_config._query[key] = value;
-    stack_config._query['web_ui_api_key'] = stack_config.web_ui_api_key;
-    stack_config.requestParams = {
-        method: 'POST',
-        headers: stack_config.headers,
-        url: stack_config.config.protocol + "://" + stack_config.config.host + ':' + stack_config.config.port + '/' + stack_config.config.version + stack_config.config.urls.sync,
-        body: {
-            _method: 'GET',
-            query: stack_config._query
+        this._query = {};
+    }
+
+    /**
+    * @method toJSON
+    * @description This method is used to convert the result in to plain javascript object.
+    * @example
+    * blogEntry
+    *      .toJSON()
+    *      .then(function (result) {
+    *          let value = result.get(field_uid)
+    *       },function (error) {
+    *          // error function
+    *      })
+    * @returns {Object}
+    */
+
+
+    _createClass(SyncApi, [{
+        key: 'toJSON',
+        value: function toJSON() {
+            this.tojson = true;
+            return this;
         }
-    };
-    return Utils.sendRequest(stack_config);
-};
+
+        /**
+         * @method fetch
+         * @description fetch entry of requested content_type of defined query if present.
+         * @example
+         * blogEntry.fetch()
+         */
+
+    }, {
+        key: 'fetch',
+        value: function fetch() {
+            this._query['web_ui_api_key'] = this.config.urls.web_ui_api_key;
+            if (this.init) {
+                this._query['init'] = this.init;
+            } else if (this.pagination_token) {
+                console.log("in side second");
+                this._query['pagination_token'] = this.pagination_token;
+            } else if (this.sync_token) {
+                this._query['sync_token'] = this.sync_token;
+            } else if (this.start_from) {
+                this._query['start_from'] = this.start_from;
+            }
+            this.requestParams = {
+                method: 'POST',
+                headers: this.headers,
+                url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.sync,
+                body: {
+                    _method: 'GET',
+                    query: this._query
+                }
+            };
+            return Utils.sendRequest(this);
+        }
+    }]);
+
+    return SyncApi;
+}();
 
 exports.default = SyncApi;
 
