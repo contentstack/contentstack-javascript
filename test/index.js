@@ -4,6 +4,7 @@ require('./entry/find-result-wrapper');
 require('./entry/findone');
 require('./entry/findone-result-wrapper');
 require('./entry/spread');
+require('./entry/sync-testcases');
 
 // Assets 
 require('./asset/find');

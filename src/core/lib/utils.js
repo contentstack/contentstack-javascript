@@ -147,6 +147,7 @@ export function generateHash(str) {
 
 // generate the Result object
 export function resultWrapper(result) {
+    console.log(result, "result");
     if (result && typeof result.entries !== 'undefined') {
         if (result.entries && result.entries.length) {
             for (let i = 0, _i = result.entries.length; i < _i; i++) {
@@ -184,7 +185,7 @@ export function spreadResult(result) {
         if (typeof result.count !== 'undefined') _results.push(result.count);
         if (typeof result.entry !== 'undefined') _results = result.entry;
         if (typeof result.asset !== 'undefined') _results = result.asset;
-        if (typeof result.items !== 'undefined') _results.push(result.items);
+        if (typeof result.items !== 'undefined') _results.push(result);
     }
     return _results;
 };
@@ -279,7 +280,6 @@ export function sendRequest(queryObject) {
                         } else {
                             if (!tojson) 
                                 entries = resultWrapper(entries);
-                            console.log("sdvcbndfvnfbdvbdfv",entries);
                             return resolve(spreadResult(entries));
                         }
                     } catch (e) {
