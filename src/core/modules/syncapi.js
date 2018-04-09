@@ -45,13 +45,12 @@ export default class SyncApi {
     fetch() {     
         this._query['web_ui_api_key'] = this.config.urls.web_ui_api_key;
             if (this.init) {
-                console.log("in side first")
                 this._query['init'] = this.init;    
             } else if(this.pagination_token) {
-                console.log("in side second")
                 this._query['pagination_token'] = this.pagination_token;
+            } else if(this.sync_token) {
+                this._query['sync_token'] = this.sync_token;
             } else if(this.start_from) {
-                //console.log("in side third")
                 this._query['start_from'] = this.start_from;            
             }
             this.requestParams = {
