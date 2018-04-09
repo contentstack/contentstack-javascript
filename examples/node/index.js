@@ -2,11 +2,11 @@
 
 const ContentstackDemo = require('./contentstack-demo.js')
 
-const Demo = new ContentstackDemo({ 'api_key': 'blt8d737a44501db1d2', 'access_token': 'blt0283a8c8824ca5bb', 'environment': 'mobile' })
+const Demo = new ContentstackDemo({ 'api_key': 'blta9acacf9a6d0813f', 'access_token': 'blt14773da40e15cddf', 'environment': 'development' })
 
 
  // Demo
- //    .getEntries('content_type_2')
+ //    .getEntries('session')
  //    .spread(function(result) {
  //        // result object with entry
  //        console.info("Result2 : ", JSON.stringify(result))
@@ -69,21 +69,13 @@ const Demo = new ContentstackDemo({ 'api_key': 'blt8d737a44501db1d2', 'access_to
 
 
 
-//  get all assets
+// get all assets
 Demo
-    .getSyncApi('init', 'true')
+    .getSyncApi({"init": "true"})
     .then(function(result) {
-        // result object with entry
-        // console.log("Result2 : ", JSON.stringify(result))
-        console.log("Result2 : ", result[0])
-        for (let i = 0, _i = result.length; i < _i; i++) {
-            // Image optimization
-            const imgUrl = Demo.Stack.imageTransform(result[i]['url'], {
-                quality: 50,
-                format: 'jpg'
-            })
-            console.log("Image URL : ", imgUrl)
-        }
+
+        console.log("result", result)
+       
     })
     .catch(function(err) {
         // error of get entry
