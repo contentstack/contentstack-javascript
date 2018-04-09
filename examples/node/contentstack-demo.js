@@ -75,8 +75,11 @@ class ContentstackDemo {
      * @params       : assetUid       {string} - Specified Asset uid to be fetched                 
      * @return       : Result {Promise}
      */
-    getSyncApi(key, value) {
-        return this.Stack.Sync_Api(key, value);
+    getSyncApi(params) {
+        //let data = this.Stack.sync(params).toJSON().fetch();
+         //data.then((response) => {console.log("then =====>", response)})
+        //console.log("result>>>>>>>>...",this.Stack.sync(params).toJSON().fetch())
+        return this.Stack.sync(params).toJSON().fetch();
     }
 
 }
