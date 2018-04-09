@@ -14,7 +14,8 @@ let transporter = nodemailer.createTransport(config.smtp);
 let automation = function() {
     let self = this;
     console.log("-----automation started ------")
-    self.init();
+    //self.init();
+    self.run();
 }
 
 automation.prototype.init = function() {
