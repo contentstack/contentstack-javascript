@@ -256,14 +256,16 @@ export default class Stack {
         return Request(query);
     }
 
-    syncApi(key) {
+    sync(params) {
         let syncapi = new SyncApi();
-        if (key.init) {
-            syncapi['init'] = key.init;
-        } else if (key.start_from) {
-            syncapi['start_from'] = key.start_from;
-        } else if (key.pagination_token) {
-            syncapi['pagination_token'] = key.pagination_token;
+        if (params.init) {
+            syncapi['init'] = params.init;
+        } else if (params.start_from) {
+            syncapi['start_from'] = params.start_from;
+        } else if (params.pagination_token) {
+            syncapi['pagination_token'] = params.pagination_token;
+        } else if (params.sync_token) {
+            syncapi['sync_token'] = params.sync_token;
         } else {
             console.log("Please provide valid parameters");
         }
