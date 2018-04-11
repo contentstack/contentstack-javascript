@@ -41,26 +41,19 @@ export default class Sync {
      * @example
      * blogEntry.fetch()
      */
-    fetch() {     
+    fetch() {   
+        
         this._query['web_ui_api_key'] = this.config.web_ui_api_key;
-            if (this.init) {
-                this._query['init'] = this.init;    
-            } else if(this.pagination_token) {
-                this._query['pagination_token'] = this.pagination_token;
-            } else if(this.sync_token) {
-                this._query['sync_token'] = this.sync_token;
-            } else if(this.start_from) {
-                this._query['start_from'] = this.start_from;            
+        this._query = Object.assign(this._query, this.params);
+        this.requestParams = {
+            method: 'POST',
+            headers: this.headers,
+            url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.sync,
+            body: {
+                _method: 'GET',
+                query: this._query
             }
-            this.requestParams = {
-                method: 'POST',
-                headers: this.headers,
-                url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.sync,
-                body: {
-                    _method: 'GET',
-                    query: this._query
-                }
-            }
+        }
         return Utils.sendRequest(this);
     }
 

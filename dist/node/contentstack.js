@@ -300,6 +300,7 @@ function spreadResult(result) {
 };
 
 function sendRequest(queryObject) {
+    console.log("detailsssss", queryObject.requestParams);
     var env_uid = queryObject.environment_uid;
     if (env_uid) {
         queryObject._query.environment_uid = env_uid;
@@ -862,19 +863,22 @@ var Stack = function () {
     }, {
         key: 'sync',
         value: function sync(params) {
+
             var sync = new _sync2.default();
-            if (params.init) {
-                sync['init'] = params.init;
-            } else if (params.start_from) {
-                sync['init'] = 'true';
-                sync['start_from'] = params.start_from;
-            } else if (params.pagination_token) {
-                sync['pagination_token'] = params.pagination_token;
-            } else if (params.sync_token) {
-                sync['sync_token'] = params.sync_token;
-            } else {
-                console.log("Please provide valid parameters");
-            }
+            sync["data"] = params;
+            console.log("sdcvjdsvcjdfsvjf");
+            // if (params.init) {
+            //     sync['init'] = params.init;
+            // } else if (params.start_from) {
+            //     sync['init'] = 'true';
+            //     sync['start_from'] = params.start_from;
+            // } else if (params.pagination_token) {
+            //     sync['pagination_token'] = params.pagination_token;
+            // } else if (params.sync_token) {
+            //     sync['sync_token'] = params.sync_token;
+            // } else {
+            //     console.log("Please provide valid parameters");
+            // }
             return Utils.merge(sync, this);
         }
 
@@ -1458,6 +1462,8 @@ function Request(options) {
             queryParams = serialize(options.body);
         }
 
+        console.log("url>>>>>>>>.", url);
+        console.log("url>>>>>>>>.", queryParams);
         (0, _http2.default)(url + '?' + queryParams, {
             method: 'GET',
             headers: headers
@@ -2521,7 +2527,8 @@ var config = {
         entries: "/entries/",
         assets: "/assets/",
         environments: "/environments/"
-    }
+    },
+    web_ui_api_key: "607a456d7f3afc20cd9fcb1f"
 };
 
 exports.default = config;
@@ -7515,16 +7522,20 @@ var Sync = function () {
     }, {
         key: 'fetch',
         value: function fetch() {
+            //this._query['data'] = this.init;    
+            //console.log("inside fetch>????",  this._query['data'])  
             this._query['web_ui_api_key'] = this.config.web_ui_api_key;
-            if (this.init) {
-                this._query['init'] = this.init;
-            } else if (this.pagination_token) {
-                this._query['pagination_token'] = this.pagination_token;
-            } else if (this.sync_token) {
-                this._query['sync_token'] = this.sync_token;
-            } else if (this.start_from) {
-                this._query['start_from'] = this.start_from;
-            }
+            this._query = Object.assign(this._query, this.data);
+            console.log('+====================', this._query);
+            // if (this.init) {
+            //     this._query['init'] = this.init;            
+            // } else if(this.pagination_token) {
+            //     this._query['pagination_token'] = this.pagination_token;
+            // } else if(this.sync_token) {
+            //     this._query['sync_token'] = this.sync_token;
+            // } else if(this.start_from) {
+            //     this._query['start_from'] = this.start_from;            
+            // }
             this.requestParams = {
                 method: 'POST',
                 headers: this.headers,

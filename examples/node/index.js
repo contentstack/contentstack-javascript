@@ -71,7 +71,7 @@ const Demo = new ContentstackDemo({ 'api_key': 'blta9acacf9a6d0813f', 'access_to
 
 // get all assets
 Demo
-    .getSyncApi({"init": "true"})
+    .getSyncApi({"sync_token": "blt123something"})
     .then(function(result) {
 
         console.log("result", JSON.stringify(result))
@@ -79,7 +79,7 @@ Demo
     })
     .catch(function(err) {
         // error of get entry
-        console.error("getAssets Fetch Error :", err)
+        console.error("getSync Fetch Error :", err)
     })    
 
 
