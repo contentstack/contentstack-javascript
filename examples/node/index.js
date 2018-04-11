@@ -74,7 +74,7 @@ Demo
     .getSyncApi({"init": "true"})
     .then(function(result) {
 
-        console.log("result", result)
+        console.log("result", JSON.stringify(result))
        
     })
     .catch(function(err) {
