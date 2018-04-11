@@ -255,7 +255,7 @@ export default class Stack {
         return Request(query);
     }
 
-      /**
+    /**
      * @method sync
      * @description sync get all the sync data.
      * @example Stack.sync({'init': 'true'})
@@ -264,91 +264,11 @@ export default class Stack {
      */
     sync(params) {
         let sync = new Sync();
-        if (params.init) {
-            sync['init'] = params.init;
-        } else if (params.start_from) {
-            sync['init'] = 'true';
-            sync['start_from'] = params.start_from;
-        } else if (params.pagination_token) {
-            sync['pagination_token'] = params.pagination_token;
-        } else if (params.sync_token) {
-            sync['sync_token'] = params.sync_token;
-        } else {
-            console.log("Please provide valid parameters");
-        }
+        sync["params"] = params;
         return Utils.merge(sync, this);
     }
 
-     /**
-     * @method initialSync
-     * @description initialSync get all the sync data with init = true .
-     * @example Stack.sync({'init': 'true'})
-     * @returns {object}
-     * @ignore
-     */
-    initialSync () {
-        let sync = new Sync();
-             sync['init'] = 'true';
-             return Utils.merge(sync, this);
-    }
-
-    /**
-     * @method initialSyncWithStartFrom
-     * @description initialSyncWithStartFrom get all the sync data date wise.
-     * @example Stack.sync({'start_from': '18/06/2016'})
-     * @returns {object}
-     * @ignore
-     */
-    initialSyncWithStartFrom (params) {
-        let sync = new Sync();
-            if(params.start_from) {
-                sync['init'] = params.init
-                sync['start_from'] = params.start_from;
-            } else {
-                console.log("please provide valid arguments");
-            }
-         return Utils.merge(sync, this);
-    }
-
-
-      /**
-     * @method syncWithPagination
-     * @description syncWithPagination get all the sync data with pagination_token.
-     * @example Stack.sync({'pagination_token': 'blt1223444455657'})
-     * @returns {object}
-     * @ignore
-     */
-
-    syncWithPagination(params) {
-          let sync = new Sync();
-            if(params.pagination_token) {
-                sync['pagination_token'] = params.pagination_token;
-            } else {
-                console.log("please provide valid arguments");
-            }
-        return Utils.merge(sync, this);    
-
-    }
-
-      /**
-     * @method syncWithSyncToken
-     * @description syncWithSyncToken get all the sync data using sync_token.
-     * @example Stack.sync({'sync_token': 'blt1223444455657'})
-     * @returns {object}
-     * @ignore
-     */
-
-    syncWithSyncToken(params) {
-        let sync = new Sync();
-            if(params.sync_token) {
-                sync['sync_token'] = params.sync_token;
-            } else {
-                console.log("please provide valid arguments");
-            }
-        return Utils.merge(sync, this);    
-    }
-
-
+  
     /**
      * @method imageTransform
      * @description Transforms provided image url based on transformation parameters.  
