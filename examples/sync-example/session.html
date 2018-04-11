@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style ="text/css">
+  .container ul.session-sec2               { margin-bottom: 15px;  clear: both; overflow: hidden; }
+    .container ul.session-sec2 li            { border-left:3px solid #85bb42; clear: both; overflow: hidden; padding-left: 15px; margin-bottom: 5px;  }
+    .container ul.session-sec2 li .image     { width: 20%; border-radius: 50%; float: left; height: 196px;  }
+    .container ul.session-sec2 li .image img { width: 100%; height: auto; border-radius: 50%; }
+    .container ul.session-sec2 li .article   { width: auto; border-bottom: 1px solid #ccc; padding-bottom: 25px; color: #858585; font-family: 'Open Sans', sans-serif; } 
+    .container ul.session-sec2 li .title     { display: block; font-size: 16px; margin-bottom: 5px; color: #000; font-weight: 700;  font-family: 'Open Sans', sans-serif;   }
+    .container ul.session-sec2 li .speaker   { display: block; font-size: 14px; margin-bottom: 5px; color: #858585;  font-family:'Open Sans', sans-serif;}
+ </style>
+</head>
+<body>
+<div class="container">
+
+<script>
+            var session = localStorage.getItem("blta9acacf9a6d0813f.development.session");
+            var speaker = localStorage.getItem("blta9acacf9a6d0813f.development.speaker");
+            var speaker_data = JSON.parse(speaker);
+            var session_data = JSON.parse(session);
+
+      document.write("<ul class= session-sec2>")      
+            for(i=0; i < session_data.length; i++) {
+            document.write("<li>")
+                document.write("<div class=article>")
+                  document.write("<span class=title>" + session_data[i].title  +"</span>")                 
+                    for(j=0; j < speaker_data.length; j++) {
+                        if(session_data[i].speaker_details[0] === speaker_data[j].uid) {
+                          document.write("<span class=speaker>" + speaker_data[j].title  +"</span>")
+                        }
+                     } 
+                    document.write("<p>" + session_data[i].date +"</p>")                                     
+                  document.write("</div>")
+            document.write("</li>")             
+               }
+      document.write("</ul>")         
+        </script>
+        </div>
+</body>
+</html>
