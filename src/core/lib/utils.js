@@ -147,7 +147,6 @@ export function generateHash(str) {
 
 // generate the Result object
 export function resultWrapper(result) {
-    console.log(result, "result");
     if (result && typeof result.entries !== 'undefined') {
         if (result.entries && result.entries.length) {
             for (let i = 0, _i = result.entries.length; i < _i; i++) {

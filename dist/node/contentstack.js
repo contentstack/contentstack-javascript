@@ -256,7 +256,6 @@ function generateHash(str) {
 
 // generate the Result object
 function resultWrapper(result) {
-    console.log(result, "result");
     if (result && typeof result.entries !== 'undefined') {
         if (result.entries && result.entries.length) {
             for (var i = 0, _i = result.entries.length; i < _i; i++) {
@@ -300,7 +299,6 @@ function spreadResult(result) {
 };
 
 function sendRequest(queryObject) {
-    console.log("detailsssss", queryObject.requestParams);
     var env_uid = queryObject.environment_uid;
     if (env_uid) {
         queryObject._query.environment_uid = env_uid;
@@ -853,109 +851,18 @@ var Stack = function () {
         }
 
         /**
-        * @method sync
-        * @description sync get all the sync data.
-        * @example Stack.sync({'init': 'true'})
-        * @returns {object}
-        * @ignore
-        */
-
-    }, {
-        key: 'sync',
-        value: function sync(params) {
-
-            var sync = new _sync2.default();
-            sync["data"] = params;
-            console.log("sdcvjdsvcjdfsvjf");
-            // if (params.init) {
-            //     sync['init'] = params.init;
-            // } else if (params.start_from) {
-            //     sync['init'] = 'true';
-            //     sync['start_from'] = params.start_from;
-            // } else if (params.pagination_token) {
-            //     sync['pagination_token'] = params.pagination_token;
-            // } else if (params.sync_token) {
-            //     sync['sync_token'] = params.sync_token;
-            // } else {
-            //     console.log("Please provide valid parameters");
-            // }
-            return Utils.merge(sync, this);
-        }
-
-        /**
-        * @method initialSync
-        * @description initialSync get all the sync data with init = true .
-        * @example Stack.sync({'init': 'true'})
-        * @returns {object}
-        * @ignore
-        */
-
-    }, {
-        key: 'initialSync',
-        value: function initialSync() {
-            var sync = new _sync2.default();
-            sync['init'] = 'true';
-            return Utils.merge(sync, this);
-        }
-
-        /**
-         * @method initialSyncWithStartFrom
-         * @description initialSyncWithStartFrom get all the sync data date wise.
-         * @example Stack.sync({'start_from': '18/06/2016'})
+         * @method sync
+         * @description sync get all the sync data.
+         * @example Stack.sync({'init': 'true'})
          * @returns {object}
          * @ignore
          */
 
     }, {
-        key: 'initialSyncWithStartFrom',
-        value: function initialSyncWithStartFrom(params) {
+        key: 'sync',
+        value: function sync(params) {
             var sync = new _sync2.default();
-            if (params.start_from) {
-                sync['init'] = params.init;
-                sync['start_from'] = params.start_from;
-            } else {
-                console.log("please provide valid arguments");
-            }
-            return Utils.merge(sync, this);
-        }
-
-        /**
-        * @method syncWithPagination
-        * @description syncWithPagination get all the sync data with pagination_token.
-        * @example Stack.sync({'pagination_token': 'blt1223444455657'})
-        * @returns {object}
-        * @ignore
-        */
-
-    }, {
-        key: 'syncWithPagination',
-        value: function syncWithPagination(params) {
-            var sync = new _sync2.default();
-            if (params.pagination_token) {
-                sync['pagination_token'] = params.pagination_token;
-            } else {
-                console.log("please provide valid arguments");
-            }
-            return Utils.merge(sync, this);
-        }
-
-        /**
-        * @method syncWithSyncToken
-        * @description syncWithSyncToken get all the sync data using sync_token.
-        * @example Stack.sync({'sync_token': 'blt1223444455657'})
-        * @returns {object}
-        * @ignore
-        */
-
-    }, {
-        key: 'syncWithSyncToken',
-        value: function syncWithSyncToken(params) {
-            var sync = new _sync2.default();
-            if (params.sync_token) {
-                sync['sync_token'] = params.sync_token;
-            } else {
-                console.log("please provide valid arguments");
-            }
+            sync["params"] = params;
             return Utils.merge(sync, this);
         }
 
@@ -1462,8 +1369,6 @@ function Request(options) {
             queryParams = serialize(options.body);
         }
 
-        console.log("url>>>>>>>>.", url);
-        console.log("url>>>>>>>>.", queryParams);
         (0, _http2.default)(url + '?' + queryParams, {
             method: 'GET',
             headers: headers
@@ -2451,7 +2356,6 @@ var Query = function (_Entry) {
                     query: this._query
                 }
             };
-            console;
             return Utils.sendRequest(this);
         }
 
@@ -2518,7 +2422,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var config = {
     protocol: "https",
-    host: "dev-cdn.contentstack.io",
+    host: "cdn.contentstack.io",
     port: 443,
     version: "v3",
     urls: {
@@ -7522,20 +7426,9 @@ var Sync = function () {
     }, {
         key: 'fetch',
         value: function fetch() {
-            //this._query['data'] = this.init;    
-            //console.log("inside fetch>????",  this._query['data'])  
+
             this._query['web_ui_api_key'] = this.config.web_ui_api_key;
-            this._query = Object.assign(this._query, this.data);
-            console.log('+====================', this._query);
-            // if (this.init) {
-            //     this._query['init'] = this.init;            
-            // } else if(this.pagination_token) {
-            //     this._query['pagination_token'] = this.pagination_token;
-            // } else if(this.sync_token) {
-            //     this._query['sync_token'] = this.sync_token;
-            // } else if(this.start_from) {
-            //     this._query['start_from'] = this.start_from;            
-            // }
+            this._query = Object.assign(this._query, this.params);
             this.requestParams = {
                 method: 'POST',
                 headers: this.headers,
