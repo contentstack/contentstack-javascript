@@ -40,53 +40,36 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
 //          });
 // });
 
-// test('default .initialSyncWithStartFrom()', function(assert) {
-//     Stack
-//          .initialSyncWithStartFrom({"init" : "true", "start_from" : "2018-04-03"})
-//          .toJSON()
-//          .fetch()
-//          .then(function success(data) {
-//           if(data[0].items.length === data[0].total_count) {
-//               assert.ok(data[0].items.length, 'Present Data and Totalcount is equal');
-//             }
 
-//             var _entries = data[0].items.every(function(entry) {
-//               var _time  = entry.data.publish_details.time;
-//               var result = _time.split('T')
+test('default .pagination_token()', function(assert) {
 
-//                     var flag = (result >= data.start_from);
-//                     return flag;
-//                 });
+    Stack
+         .sync({"init" : "true"})
+         .toJSON()
+         .fetch()
+         .then(function success(data) {
+            if(data.pagination_token) {
 
-//             assert.equal(_entries, true, "entries has sorted with start_from date");
-//             assert.end();
-//          });
-// });
-
-
-// test('default .pagination_token()', function(assert) {
-
-//     Stack
-//          .sync({"init" : "true"})
-//          .toJSON()
-//          .fetch()
-//          .then(function success(data) {
-//             let pagination_token = data.pagination_token 
-//     Stack
-//            .sync({"pagination_token" : pagination_token})
-//            .toJSON()
-//            .fetch()
-//            .then(function success(result) {
-//              let flag = false; 
-//              if(result.skip === 100) {
-//                 flag = true;
-//              }
-//              assert.equal(flag, true, "Next 100 entries has been displayed");  
-//              assert.end();
-//            });   
-//          });   
-//       assert.end();
-// });
+                let pagination_token = data.pagination_token 
+    Stack
+           .sync({"pagination_token" : pagination_token})
+           .toJSON()
+           .fetch()
+           .then(function success(result) {
+             let flag = false; 
+             if(result.skip === 100) {
+                flag = true;
+             }
+                assert.equal(flag, true, "pagination_token testcase executed successfully");  
+                assert.end();
+           }); 
+            } else {
+                  assert.ok("pagination_token is not present");
+                  assert.end();  
+            }  
+         });   
+      assert.end();
+});
 
 
 test('default .sync_token()', function(assert) {
