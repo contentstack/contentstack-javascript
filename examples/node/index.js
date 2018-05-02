@@ -2,14 +2,17 @@
 
 const ContentstackDemo = require('./contentstack-demo.js')
 
-const Demo = new ContentstackDemo({ 'api_key': 'blta9acacf9a6d0813f', 'access_token': 'blt14773da40e15cddf', 'environment': 'development' })
+const Demo = new ContentstackDemo({ 'api_key': 'blt7226fe8124ef0a4a', 'access_token': 'blt6e288386d4a8e18a', 'environment': 'development' })
 
 
  // Demo
- //    .getEntries('session')
- //    .spread(function(result) {
+ //    .getEntries('home_reference')
+ //    .then(function(result) {
  //        // result object with entry
- //        console.info("Result2 : ", JSON.stringify(result))
+ //        console.info("Result2 : ", typeof result)
+        
+ //        //console.info("Result2 : ", JSON.stringify(result))
+
  //    })
  //    .catch(function(err) {
  //        // error of get entry
@@ -19,17 +22,16 @@ const Demo = new ContentstackDemo({ 'api_key': 'blta9acacf9a6d0813f', 'access_to
 
 
     //get all the entries
-// Demo
-//     .getEntries('homepage')
-//     .spread(function(result) {
-//         // result object with entries
-//         console.info("Result: ", result)
+Demo.getEntries('test')
+    // .spread(function(result) {
+    //     // result object with entries
+    //     console.info("Result: ", result)
 
-//     })
-//     .catch(function(err) {
-//         // error of get all entries
-//         console.error("Find Error :", err)
-//     })
+    // })
+    // .catch(function(err) {
+    //     // error of get all entries
+    //     console.error("Find Error :", err)
+    // })
 
 
 
@@ -70,17 +72,17 @@ const Demo = new ContentstackDemo({ 'api_key': 'blta9acacf9a6d0813f', 'access_to
 
 
 // get all assets
-Demo
-    .getSyncApi({"sync_token": "blt123something"})
-    .then(function(result) {
+// Demo
+//     .getSyncApi({"sync_token": "blt123something"})
+//     .then(function(result) {
 
-        console.log("result", JSON.stringify(result))
+//         console.log("result", JSON.stringify(result))
        
-    })
-    .catch(function(err) {
-        // error of get entry
-        console.error("getSync Fetch Error :", err)
-    })    
+//     })
+//     .catch(function(err) {
+//         // error of get entry
+//         console.error("getSync Fetch Error :", err)
+//     })    
 
 
 

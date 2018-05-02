@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
 <style ="text/css">
   .container ul.session-sec2               { margin-bottom: 15px;  clear: both; overflow: hidden; }
     .container ul.session-sec2 li            { border-left:3px solid #85bb42; clear: both; overflow: hidden; padding-left: 15px; margin-bottom: 5px;  }
@@ -15,22 +16,22 @@
 <div class="container">
 
 <script>
-            var session = localStorage.getItem("blta9acacf9a6d0813f.development.session");
-            var speaker = localStorage.getItem("blta9acacf9a6d0813f.development.speaker");
+            var session = localStorage.getItem("bltdbfe70431a817d88.development.sessions");
+            var speaker = localStorage.getItem("bltdbfe70431a817d88.development.speakers");
             var speaker_data = JSON.parse(speaker);
             var session_data = JSON.parse(session);
-
-      document.write("<ul class= session-sec2>")      
+            document.write("<h1 class=text-center>Session List</h1>")  
+      document.write("<ul class= session-sec2>")     
             for(i=0; i < session_data.length; i++) {
             document.write("<li>")
                 document.write("<div class=article>")
                   document.write("<span class=title>" + session_data[i].title  +"</span>")                 
                     for(j=0; j < speaker_data.length; j++) {
-                        if(session_data[i].speaker_details[0] === speaker_data[j].uid) {
-                          document.write("<span class=speaker>" + speaker_data[j].title  +"</span>")
+                        if(session_data[i].speakers[0] === speaker_data[j].uid) {
+                          document.write("<span class=speaker>" + speaker_data[j].first_name  +"</span>")
                         }
                      } 
-                    document.write("<p>" + session_data[i].date +"</p>")                                     
+                    document.write("<p>" + session_data[i].updated_at +"</p>")                                     
                   document.write("</div>")
             document.write("</li>")             
                }
