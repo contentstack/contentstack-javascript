@@ -190,6 +190,7 @@ export function spreadResult(result) {
 };
 
 export function sendRequest(queryObject) {
+
     let env_uid = queryObject.environment_uid;
     if (env_uid) {
         queryObject._query.environment_uid = env_uid;
@@ -243,6 +244,7 @@ export function sendRequest(queryObject) {
                     try {
                         self.entry_uid = self.asset_uid = self.tojson = self.queryCachePolicy = undefined;
                         let entries = {};
+                        let syncstack = {};
                         if (queryObject.singleEntry) {
                             queryObject.singleEntry = false;
                             if (data.schema) entries.schema = data.schema;
@@ -262,9 +264,17 @@ export function sendRequest(queryObject) {
                                 }
                                 return;
                             }
-                        } else {
+                        } else if(data.items) {
+                                syncstack = {
+                                    items : data.items,
+                                    pagination_token : data.pagination_token,
+                                    sync_token : data.sync_token,
+                                    total_count : data.total_count
+                                }
+                            } else {
                             entries = data;
                         }
+
                         if (cachePolicy !== -1) {
                             self.provider.set(hashQuery, entries, function(err) {
                                 try {
@@ -277,6 +287,10 @@ export function sendRequest(queryObject) {
                             });
                             return resolve(spreadResult(entries));
                         } else {
+                            if(syncstack) {
+                                return resolve(syncstack);
+                            }
+                            
                             if (!tojson) 
                                 entries = resultWrapper(entries);
                             return resolve(spreadResult(entries));

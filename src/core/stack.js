@@ -2,7 +2,7 @@ import config from '../../config';
 import * as Utils from './lib/utils';
 import Entry from './modules/entry';
 import Assets from './modules/assets';
-import Sync from './modules/sync';
+/*import Sync from './modules/sync';*/
 import Query from './modules/query';
 import Request from './lib/request';
 import * as cache from './cache';
@@ -14,9 +14,11 @@ import CacheProvider from './cache-provider/index';
  */
 export default class Stack {
     constructor(...stack_arguments) {
+
         this.config = config;
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
         this.provider = CacheProvider.providers('localstorage');
+        this.web_ui_api_key = stack_arguments[0].web_ui_api_key;
         switch (stack_arguments.length) {
             case 1:
                 if (typeof stack_arguments[0] === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].access_token === "string" && typeof stack_arguments[0].environment === "string") {
@@ -263,9 +265,21 @@ export default class Stack {
      * @ignore
      */
     sync(params) {
-        let sync = new Sync();
-        sync["params"] = params;
-        return Utils.merge(sync, this);
+        this._query = {};
+        this["params"] = params;
+        this._query['web_ui_api_key'] = this.web_ui_api_key;
+        this._query = Object.assign(this._query, this.params);
+        this.requestParams = {
+            method: 'POST',
+            headers: this.headers,
+            url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.sync,
+            body: {
+                _method: 'GET',
+                query: this._query
+            }
+        }
+        return Utils.sendRequest(this);
+
     }
 
   
