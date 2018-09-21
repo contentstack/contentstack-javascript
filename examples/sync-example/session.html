@@ -1,42 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE <!DOCTYPE html>
+<html>
 <head>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-<style ="text/css">
-  .container ul.session-sec2               { margin-bottom: 15px;  clear: both; overflow: hidden; }
-    .container ul.session-sec2 li            { border-left:3px solid #85bb42; clear: both; overflow: hidden; padding-left: 15px; margin-bottom: 5px;  }
-    .container ul.session-sec2 li .image     { width: 20%; border-radius: 50%; float: left; height: 196px;  }
-    .container ul.session-sec2 li .image img { width: 100%; height: auto; border-radius: 50%; }
-    .container ul.session-sec2 li .article   { width: auto; border-bottom: 1px solid #ccc; padding-bottom: 25px; color: #858585; font-family: 'Open Sans', sans-serif; } 
-    .container ul.session-sec2 li .title     { display: block; font-size: 16px; margin-bottom: 5px; color: #000; font-weight: 700;  font-family: 'Open Sans', sans-serif;   }
-    .container ul.session-sec2 li .speaker   { display: block; font-size: 14px; margin-bottom: 5px; color: #858585;  font-family:'Open Sans', sans-serif;}
- </style>
-</head>
-<body>
-<div class="container">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Page Title</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+            crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="../../dist/web/contentstack.js"></script>
+        <script src="scripts/custom.min.js"></script>
+            <link rel="stylesheet" type="text/css" media="screen" href="./css/main.css" />
+        <script src="./js/main.js"></script>
+    </head>
+    <script>
+        var session = localStorage.getItem("blt3095c4e04a3d69e6.development.session");
+        var speaker = localStorage.getItem("blt3095c4e04a3d69e6.development.speaker");
+        var speaker_data = JSON.parse(speaker);
+        var session_data = JSON.parse(session);
+        document.write("<div class=container-fluid id=backcol>")
+        document.write("<div class=container id=main>")
+        document.write("<h1 class=agenda>AGENDA</h1>")
+        document.write("<div class=day>")
+        for (i = 0; i < session_data.length; i++) {
+            document.write("<div class=row >")
+            document.write("<div class=col-sm-3 id=time>10:00 AM - 11:00 AM</div>")
+            document.write("<div class=col-sm-9>")
+            document.write("<div class=row>")
+            document.write("<div class=growth id=author-description>")
+            document.write("<h1 class=activity-name>" + session_data[i].title + "</h1>")
 
-<script>
-            var session = localStorage.getItem("bltdbfe70431a817d88.development.sessions");
-            var speaker = localStorage.getItem("bltdbfe70431a817d88.development.speakers");
-            var speaker_data = JSON.parse(speaker);
-            var session_data = JSON.parse(session);
-            document.write("<h1 class=text-center>Session List</h1>")  
-      document.write("<ul class= session-sec2>")     
-            for(i=0; i < session_data.length; i++) {
-            document.write("<li>")
-                document.write("<div class=article>")
-                  document.write("<span class=title>" + session_data[i].title  +"</span>")                 
-                    for(j=0; j < speaker_data.length; j++) {
-                        if(session_data[i].speakers[0] === speaker_data[j].uid) {
-                          document.write("<span class=speaker>" + speaker_data[j].first_name  +"</span>")
+            if (session_data[i].speakers != undefined) {
+                for (j = 0; j < session_data[i].speakers.length; j++) {
+                    for (k = 0; k < speaker_data.length; k++) {
+                        console.log("session_data[i].speakers[j]", session_data[i].speakers[j])
+                        if (session_data[i].speakers[j] == speaker_data[k].uid) {
+                            // start
+                            document.write("<div class=row id=img-content>")
+                            document.write("<div class=author-img>")
+                            document.write("<img src=./assets/img1.png>")
+                            document.write("</div>")
+                            document.write("<h3 class='activity-name author-name'>" + speaker_data[k].full_name + "</h3>")
+                            document.write("</div>")
+                            // end
+                            document.write("<div class=detail-content>")
+                            document.write("<span class=close>&times;</span>")
+                            document.write("<h2>" + session_data[i].title + "</h2>")
+                            document.write("<h3>10:00 AM - 11:00 AM</h3>")
+                            document.write("<h3>" + session_data[i].room + "</h3>")
+
+                            document.write("<div class=author-description>")
+                            document.write("<p>" + session_data[i].description + "</p>")
+                            document.write("<div>")
+                            document.write("<div class=row id=author-row>")
+                            document.write("<div class=author-data-img>")
+                            document.write("<img src=./assets/img1.png />")
+                            document.write("</div>")
+                            document.write("<div class=author-data>")
+                            document.write("<p class=name>" + speaker_data[k].full_name + "</p>")
+                            document.write("<p class=post>Chairman, C Space</p>")
+                            document.write("</div>")
+                            document.write("</div>")
+                            document.write("<div class=author-para>")
+                            document.write("<p>" + speaker_data[k].bio + "</p>")
+                            document.write("</div>")
+                            document.write("</div>")
+                            document.write("</div>")
+                            document.write("</div>")
                         }
-                     } 
-                    document.write("<p>" + session_data[i].updated_at +"</p>")                                     
-                  document.write("</div>")
-            document.write("</li>")             
-               }
-      document.write("</ul>")         
-        </script>
-        </div>
+                    }
+                }
+            }
+            document.write("</div>")
+
+            document.write("</div>")
+            document.write("</div>")
+            document.write("</div>")
+
+        }
+
+        document.write("</div>")
+        document.write("</div>")
+        document.write("</div>")
+
+        document.write("<div class=detail>")
+        document.write("</div>")
+
+    </script>
+</head>
+
+<body>
 </body>
+
 </html>
