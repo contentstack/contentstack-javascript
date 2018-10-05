@@ -71,7 +71,7 @@ class ContentstackDemo {
      */
     getSyncApi(params) {
         params = params || 'blt123something'
-        return this.Stack.sync(params).toJSON().fetch();
+        return this.Stack.sync(params);
     }
 
 }
