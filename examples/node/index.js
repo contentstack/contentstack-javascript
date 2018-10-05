@@ -2,7 +2,7 @@
 
 const ContentstackDemo = require('./contentstack-demo.js')
 
-const Demo = new ContentstackDemo({ 'api_key': 'blt7226fe8124ef0a4a', 'access_token': 'blt6e288386d4a8e18a', 'environment': 'development' })
+const Demo = new ContentstackDemo({ 'api_key': 'blt3095c4e04a3d69e6', 'access_token': 'bltd4c70163cb65d8e2', 'environment': 'development', 'web_ui_api_key': '607a456d7f3afc20cd9fcb1f' })
 
 
  // Demo
@@ -22,16 +22,16 @@ const Demo = new ContentstackDemo({ 'api_key': 'blt7226fe8124ef0a4a', 'access_to
 
 
     //get all the entries
-Demo.getEntries('test')
-    // .spread(function(result) {
-    //     // result object with entries
-    //     console.info("Result: ", result)
+Demo.getSyncApi({'init': 'true'})
+    .then(function(result) {
+        // result object with entries
+        console.info("Result: ", result)
 
-    // })
-    // .catch(function(err) {
-    //     // error of get all entries
-    //     console.error("Find Error :", err)
-    // })
+    })
+    .catch(function(err) {
+        // error of get all entries
+        console.error("Find Error :", err)
+    })
 
 
 

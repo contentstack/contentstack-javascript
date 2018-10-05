@@ -4,7 +4,9 @@
 // require('./entry/findone');
 // require('./entry/findone-result-wrapper');
 // require('./entry/spread');
-require('./entry/sync-testcases');
+
+console.log("sadjhsejhfjsed");
+require('./sync/sync-testcases');
 
 // Assets 
 // require('./asset/find');
