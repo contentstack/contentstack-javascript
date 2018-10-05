@@ -270,6 +270,8 @@ function resultWrapper(result) {
         result.entry = (0, _result2.default)(result.entry);
     } else if (result && typeof result.asset !== 'undefined') {
         result.asset = (0, _result2.default)(result.asset);
+    } else if (result && typeof result.items !== 'undefined') {
+        result.items = (0, _result2.default)(result.items).toJSON();
     }
 
     return result;
@@ -285,11 +287,13 @@ function spreadResult(result) {
         if (typeof result.count !== 'undefined') _results.push(result.count);
         if (typeof result.entry !== 'undefined') _results = result.entry;
         if (typeof result.asset !== 'undefined') _results = result.asset;
+        if (typeof result.items !== 'undefined') _results.push(result);
     }
     return _results;
 };
 
 function sendRequest(queryObject) {
+
     var env_uid = queryObject.environment_uid;
     if (env_uid) {
         queryObject._query.environment_uid = env_uid;
@@ -341,6 +345,7 @@ function sendRequest(queryObject) {
                 try {
                     self.entry_uid = self.asset_uid = self.tojson = self.queryCachePolicy = undefined;
                     var entries = {};
+                    var syncstack = {};
                     if (queryObject.singleEntry) {
                         queryObject.singleEntry = false;
                         if (data.schema) entries.schema = data.schema;
@@ -360,9 +365,17 @@ function sendRequest(queryObject) {
                             }
                             return;
                         }
+                    } else if (data.items) {
+                        syncstack = {
+                            items: data.items,
+                            pagination_token: data.pagination_token,
+                            sync_token: data.sync_token,
+                            total_count: data.total_count
+                        };
                     } else {
                         entries = data;
                     }
+
                     if (cachePolicy !== -1) {
                         self.provider.set(hashQuery, entries, function (err) {
                             try {
@@ -375,6 +388,10 @@ function sendRequest(queryObject) {
                         });
                         return resolve(spreadResult(entries));
                     } else {
+                        if (syncstack) {
+                            return resolve(syncstack);
+                        }
+
                         if (!tojson) entries = resultWrapper(entries);
                         return resolve(spreadResult(entries));
                     }
@@ -498,6 +515,8 @@ Object.defineProperty(exports, "__esModule", {
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+/*import Sync from './modules/sync';*/
+
 
 var _config = __webpack_require__(7);
 
@@ -553,6 +572,7 @@ var Stack = function () {
             stack_arguments[_key] = arguments[_key];
         }
 
+        this.web_ui_api_key = stack_arguments[0].web_ui_api_key;
         switch (stack_arguments.length) {
             case 1:
                 if (_typeof(stack_arguments[0]) === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].access_token === "string" && typeof stack_arguments[0].environment === "string") {
@@ -778,7 +798,7 @@ var Stack = function () {
          * @method Assets
          * @description Set the Asset Uid which you want to retrive the Asset.
          * @param {String} uid - asset_uid
-         * @example Stack.Assets('blt1234567890abcef')
+         * @example Stack.Assets('blt1234567890abcef').fetch
          * @returns {Assets}
          */
 
@@ -830,6 +850,33 @@ var Stack = function () {
                 }
             };
             return (0, _request2.default)(query);
+        }
+
+        /**
+         * @method sync
+         * @description sync get all the sync data.
+         * @example Stack.sync({'init': 'true'})
+         * @returns {object}
+         * @ignore
+         */
+
+    }, {
+        key: 'sync',
+        value: function sync(params) {
+            this._query = {};
+            this["params"] = params;
+            this._query['web_ui_api_key'] = this.web_ui_api_key;
+            this._query = Object.assign(this._query, this.params);
+            this.requestParams = {
+                method: 'POST',
+                headers: this.headers,
+                url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.sync,
+                body: {
+                    _method: 'GET',
+                    query: this._query
+                }
+            };
+            return Utils.sendRequest(this);
         }
 
         /**
@@ -894,7 +941,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //JS SDK version
-var version = '3.3.0';
+var version = '3.4.0';
+var environment = void 0,
+    api_key = void 0;
 
 function Request(options) {
     return new Promise(function (resolve, reject) {
@@ -934,6 +983,7 @@ function Request(options) {
             method: 'GET',
             headers: headers
         }).then(function (response) {
+
             if (response.ok && response.status === 200) {
                 var data = response.json();
                 resolve(data);
@@ -1326,6 +1376,7 @@ var Entry = function () {
                         query: this._query
                     }
                 };
+
                 return Utils.sendRequest(this);
             } else {
                 console.error("Kindly provide an entry uid. e.g. .Entry('bltsomething123')");
@@ -1911,10 +1962,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 var config = {
     protocol: "https",
-    host: "cdn.contentstack.io",
+    host: "dev-new-api.contentstack.io",
     port: 443,
     version: "v3",
     urls: {
+        sync: "/stacks/sync",
         content_types: "/content_types/",
         entries: "/entries/",
         assets: "/assets/",
@@ -2441,17 +2493,6 @@ var Assets = function () {
         this.only = Utils.transform('only');
         return this;
     }
-
-    /**
-     * @method Query
-     * @description Query instance to provide support for all search queries.
-     * @example Assets().Query()
-     * @returns {Query}
-     */
-    // Query() {
-    //     let query = new Query();
-    //     return Utils.merge(query, this);
-    // }
 
     /**
      * @method toJSON
