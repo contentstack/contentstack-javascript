@@ -35,7 +35,7 @@ To import the SDK in your project, use the following command:
 
 To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.
 
-    const Stack = Contentstack.Stack("api_key","access_token","environment_name");
+    const Stack = contentstack.Stack("api_key","access_token","environment_name");
 
 #### For React Native
 
