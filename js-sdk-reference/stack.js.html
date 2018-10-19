@@ -317,7 +317,6 @@ export default class Stack {
     sync(params) {
         this._query = {};
         this["params"] = params;
-        //this._query['sync_cdn_api_key'] = this.sync_cdn_api_key;
         this._query = Object.assign(this._query, this.params);
         this.requestParams = {
             method: 'POST',
