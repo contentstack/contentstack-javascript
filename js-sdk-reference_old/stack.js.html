@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>stack.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Result.html">Result</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Contentstack">Contentstack</a></li><li><a href="global.html#CachePolicy">CachePolicy</a></li><li><a href="global.html#Stack">Stack</a></li><li><a href="global.html#setPort">setPort</a></li><li><a href="global.html#setProtocol">setProtocol</a></li><li><a href="global.html#setHost">setHost</a></li><li><a href="global.html#setCachePolicy">setCachePolicy</a></li><li><a href="global.html#setCacheProvider">setCacheProvider</a></li><li><a href="global.html#getCacheProvider">getCacheProvider</a></li><li><a href="global.html#ContentType">ContentType</a></li><li><a href="global.html#Entry">Entry</a></li><li><a href="global.html#Assets">Assets</a></li><li><a href="global.html#Query">Query</a></li><li><a href="global.html#imageTransform">imageTransform</a></li><li><a href="global.html#only">only</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#AddParam">AddParam</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#except">except</a></li><li><a href="global.html#includeReference">includeReference</a></li><li><a href="global.html#language">language</a></li><li><a href="global.html#addQuery">addQuery</a></li><li><a href="global.html#includeSchema">includeSchema</a></li><li><a href="global.html#includeContentType">includeContentType</a></li><li><a href="global.html#includeOwner">includeOwner</a></li><li><a href="global.html#lessThan">lessThan</a></li><li><a href="global.html#lessThanOrEqualTo">lessThanOrEqualTo</a></li><li><a href="global.html#greaterThan">greaterThan</a></li><li><a href="global.html#greaterThanOrEqualTo">greaterThanOrEqualTo</a></li><li><a href="global.html#notEqualTo">notEqualTo</a></li><li><a href="global.html#containedIn">containedIn</a></li><li><a href="global.html#notContainedIn">notContainedIn</a></li><li><a href="global.html#exists">exists</a></li><li><a href="global.html#notExists">notExists</a></li><li><a href="global.html#ascending">ascending</a></li><li><a href="global.html#descending">descending</a></li><li><a href="global.html#skip">skip</a></li><li><a href="global.html#limit">limit</a></li><li><a href="global.html#or">or</a></li><li><a href="global.html#and">and</a></li><li><a href="global.html#whereequalTo">where</a></li><li><a href="global.html#count">count</a></li><li><a href="global.html#query">query</a></li><li><a href="global.html#tags">tags</a></li><li><a href="global.html#includeCount">includeCount</a></li><li><a href="global.html#getQuery">getQuery</a></li><li><a href="global.html#regex">regex</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#find">find</a></li><li><a href="global.html#findOne">findOne</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getDownloadUrl">getDownloadUrl</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">stack.js</h1>
+    
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import config from '../../config';
+import * as Utils from './lib/utils';
+import Entry from './modules/entry';
+import Assets from './modules/assets';
+/*import Sync from './modules/sync';*/
+import Query from './modules/query';
+import Request from './lib/request';
+import * as cache from './cache';
+import CacheProvider from './cache-provider/index';
+
+/**
+ * Expose `Stack`.
+ * @ignore
+ */
+export default class Stack {
+    constructor(...stack_arguments) {
+
+        this.config = config;
+        this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
+        this.provider = CacheProvider.providers('localstorage');
+        //this.sync_cdn_api_key = stack_arguments[0].sync_cdn_api_key;
+        switch (stack_arguments.length) {
+            case 1:
+                if (typeof stack_arguments[0] === "object" &amp;&amp; typeof stack_arguments[0].api_key === "string" &amp;&amp; typeof stack_arguments[0].access_token === "string" &amp;&amp; typeof stack_arguments[0].environment === "string") {
+                    this.headers = {
+                        api_key: stack_arguments[0].api_key,
+                        access_token: stack_arguments[0].access_token
+                    };
+                    this.environment = stack_arguments[0].environment;
+                    return this;
+                } else {
+                    console.error("Kindly provide valid object parameters.");
+                }
+            case 3:
+                if (typeof stack_arguments[0] === "string" &amp;&amp; typeof stack_arguments[1] === "string" &amp;&amp; typeof stack_arguments[2] === "string") {
+                    this.headers = {
+                        api_key: stack_arguments[0],
+                        access_token: stack_arguments[1]
+                    };
+                    this.environment = stack_arguments[2];
+                    return this;
+                } else {
+                    console.error("Kindly provide valid string parameters.");
+                }
+            default:
+                console.error("Kindly provide valid parameters to initialize the Built.io Contentstack javascript-SDK Stack.");
+        }
+
+    }
+
+    /**
+     * @method setPort
+     * @description Sets the port of the host.
+     * @param {Number} port - Port Number
+     * @return Stack
+     * */
+    setPort(port) {
+        if (typeof port === "number") this.config.port = port;
+        return this;
+    }
+
+    /**
+     * @method setProtocol
+     * @description Sets the protocol of the host.
+     * @param {String} protocol - http/https protocol
+     * @return Stack
+     * */
+    setProtocol(protocol) {
+        if (typeof protocol === "string" &amp;&amp; ~["https", "http"].indexOf(protocol)) this.config.protocol = protocol;
+        return this;
+    }
+
+    /**
+     * @method setHost
+     * @description Sets the host of the API server.
+     * @param {String} host - valid ip or host
+     * @return Stack
+     * */
+    setHost(host) {
+        if (typeof host === "string" &amp;&amp; host) this.config.host = host;
+        return this;
+    }
+
+    /**
+     * @method setCachePolicy
+     * @description setCachePolicy which contains different cache policies.
+     * @param {Constant} [key=ONLY_NETWORK] - Cache policy to be applied on Stack or Query.
+     * @example
+     * Stack.setCachePolicy(Contentstack.CachePolicy.IGNORE_CACHE)
+     * Stack.setCachePolicy(Contentstack.CachePolicy.ONLY_NETWORK)
+     * Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_ELSE_NETWORK)
+     * Stack.setCachePolicy(Contentstack.CachePolicy.NETWORK_ELSE_CACHE)
+     * Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)
+     * @returns {Stack}
+     */
+    setCachePolicy(policy) {
+        if (typeof policy === 'number' &amp;&amp; policy >= -1 &amp;&amp; policy &lt; 4) {
+            if (!this._query) {
+                this.cachePolicy = policy;
+            } else {
+                this.queryCachePolicy = policy;
+            }
+        } else {
+            console.error("Kindly provide the valid policy");
+        }
+        return this;
+    }
+
+    /**
+     * @method setCacheProvider
+     * @description Set 'Cache Provider' object.
+     * @example
+     * Stack
+     *      .setCacheProvider({
+     *          get: function (key, callback) {
+     *              // custom logic
+     *          },
+     *          set: function (key, value, callback) {
+     *              // custom logic
+     *          }
+     *      });
+     * @returns {Stack}
+     */
+    setCacheProvider(provider) {
+        if (provider &amp;&amp; typeof provider === 'object') {
+            this.provider = provider;
+
+        }
+        return this;
+    }
+
+    /**
+     * @method clearByQuery
+     * @description 'clearByQuery' function to clear the query from the cache.
+     * @example
+     * Stack.clearQuery(query, callback);
+     * @ignore
+     */
+    clearByQuery() {
+        if (this.provider &amp;&amp; typeof this.provider.clearByQuery === 'function') {
+            return this.provider.clearByQuery.apply(this.provider, arguments);
+        }
+    }
+
+    /**
+     * @method clearByContentType
+     * @description 'clearByContentType' function to clear the query from the cache by specified content type.
+     * @example
+     * Stack.clearByContentType(content_type_uid, callback);
+     * Stack.clearByContentType(content_type_uid, language_uid, callback);
+     * @ignore
+     */
+    clearByContentType() {
+        if (this.provider &amp;&amp; typeof this.provider.clearByContentType === 'function') {
+            return this.provider.clearByContentType.apply(this.provider, arguments);
+        }
+    }
+
+    /**
+     * @method clearAll
+     * @description 'clearAll' function to clear all the queries from cache.
+     * @example
+     * Stack.clearAll(callback);
+     * @ignore
+     */
+    clearAll() {
+        if (this.provider &amp;&amp; typeof this.provider.clearAll === 'function') {
+            return this.provider.clearAll.apply(this.provider, arguments);
+        }
+    }
+
+    /**
+     * @method getCacheProvider
+     * @description Returns currently set CacheProvider object.
+     * @example Stack.getCacheProvider();
+     * @returns {Object}
+     */
+    getCacheProvider() {
+        return this.provider;
+    }
+
+    /**
+     * @method ContentType
+     * @description Set "ContentType" from the Stack from where you want to retrive the entries.
+     * @param {String} [content_type_uid] - uid of the existing contenttype
+     * @returns {Stack}
+     */
+    ContentType(uid) {
+        if (uid &amp;&amp; typeof uid === 'string') {
+            this.content_type_uid = uid;
+            this.type = "contentType";
+        }
+        return this;
+    }
+
+    /**
+     * @method Entry
+     * @description Set the Entry Uid which you want to retrive from the Contenttype specified.
+     * @param {String} uid - entry_uid
+     * @example ContentType('blog').Entry('blt1234567890abcef')
+     * @returns {Entry}
+     */
+    Entry(uid) {
+        let entry = new Entry();
+        if (uid &amp;&amp; typeof uid === "string") {
+            entry.entry_uid = uid;
+        }
+        return Utils.merge(entry, this);
+    }
+
+    /**
+     * @method Assets
+     * @description Set the Asset Uid which you want to retrive the Asset.
+     * @param {String} uid - asset_uid
+     * @example Stack.Assets('blt1234567890abcef').fetch
+     * @returns {Assets}
+     */
+    Assets(uid) {
+        this.type = 'asset';
+        if (uid &amp;&amp; typeof uid === "string") {
+            let asset = new Assets();
+            asset.asset_uid = uid;
+            return Utils.merge(asset, this);
+        }
+        return this;
+    }
+
+    /**
+     * @method Query
+     * @description Query instance to provide support for all search queries.
+     * @example ContentType('blog').Query()
+     * @returns {Query}
+     */
+    Query() {
+        let query = new Query();
+        return Utils.merge(query, this);
+    }
+
+    /**
+     * @method getLastActivites
+     * @description getLastActivites get all the ContentTypes whose last activity updated.
+     * @example Stack.getLastActivites()
+     * @returns {Stack}
+     * @ignore
+     */
+    getLastActivities() {
+        let query = {
+            method: 'POST',
+            headers: this.headers,
+            url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
+            body: {
+                _method: 'GET',
+                only_last_activity: true,
+                environment: this.environment
+            }
+        };
+        return Request(query);
+    }
+
+    /**
+     * @method sync
+     * @description sync get all the sync data.
+     * @param {object} params - params is an object with different parameters.
+     * @example 
+     * Stack.sync({'init': 'true'})
+     * @example 
+     * Stack.sync({'init': 'true', 'locale': 'en-us'})
+     * @example 
+     * Stack.sync({'init': 'true', 'start_date': '2018-09-12'})
+     * @example 
+     * Stack.sync({'pagination_token': 'btlsomething'})
+     * @example 
+     * Stack.sync({'sync_token': 'btlsomething'})
+     * @returns {object}
+     * @ignore
+     */
+    sync(params) {
+        this._query = {};
+        this["params"] = params;
+        //this._query['sync_cdn_api_key'] = this.sync_cdn_api_key;
+        this._query = Object.assign(this._query, this.params);
+        this.requestParams = {
+            method: 'POST',
+            headers: this.headers,
+            url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.sync,
+            body: {
+                _method: 'GET',
+                query: this._query
+            }
+        }
+        return Utils.sendRequest(this);
+
+    }
+
+  
+    /**
+     * @method imageTransform
+     * @description Transforms provided image url based on transformation parameters.  
+     * @param {String} url - Url on which transformations to be applied.
+     * @param {String} params - Transformation parameters
+     * @example
+     * Stack.imageTransform(imageURL, {height: 100, width: 200, disable: "upscale"});
+     * @example
+     * Stack.imageTransform(imageURL, {crop: "150,100"});
+     * @example
+     * Stack.imageTransform(imageURL, {format: "png", crop: "150,100"});
+     * @returns {string} [Image url with transformation parameters.]
+     */
+    imageTransform(url, params) {
+        if (url &amp;&amp; typeof url === "string" &amp;&amp; typeof params === "object" &amp;&amp; params.length === undefined) {
+            let queryParams = [];
+            for (const operation in params) {
+                queryParams.push(operation + '=' + params[operation]);
+            }
+            url += (url.indexOf("?") &lt;= -1) ? "?" + queryParams.join('&amp;') : "&amp;" + queryParams.join('&amp;');
+        }
+
+        return url;
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    <div class="inner-content center">
+        <span class="copy-right"><a href="mailto:support-contentstack@built.io" target="_self">support-contentstack@built.io</a> | © 2017 Contentstack. All rights reserved.</span>
+    </div>
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

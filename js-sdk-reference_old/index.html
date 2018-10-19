@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Home - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Result.html">Result</a></li></ul><h3>Global</h3><ul><li><a href="global.html#Contentstack">Contentstack</a></li><li><a href="global.html#CachePolicy">CachePolicy</a></li><li><a href="global.html#Stack">Stack</a></li><li><a href="global.html#setPort">setPort</a></li><li><a href="global.html#setProtocol">setProtocol</a></li><li><a href="global.html#setHost">setHost</a></li><li><a href="global.html#setCachePolicy">setCachePolicy</a></li><li><a href="global.html#setCacheProvider">setCacheProvider</a></li><li><a href="global.html#getCacheProvider">getCacheProvider</a></li><li><a href="global.html#ContentType">ContentType</a></li><li><a href="global.html#Entry">Entry</a></li><li><a href="global.html#Assets">Assets</a></li><li><a href="global.html#Query">Query</a></li><li><a href="global.html#imageTransform">imageTransform</a></li><li><a href="global.html#only">only</a></li><li><a href="global.html#toJSON">toJSON</a></li><li><a href="global.html#AddParam">AddParam</a></li><li><a href="global.html#fetch">fetch</a></li><li><a href="global.html#except">except</a></li><li><a href="global.html#includeReference">includeReference</a></li><li><a href="global.html#language">language</a></li><li><a href="global.html#addQuery">addQuery</a></li><li><a href="global.html#includeSchema">includeSchema</a></li><li><a href="global.html#includeContentType">includeContentType</a></li><li><a href="global.html#includeOwner">includeOwner</a></li><li><a href="global.html#lessThan">lessThan</a></li><li><a href="global.html#lessThanOrEqualTo">lessThanOrEqualTo</a></li><li><a href="global.html#greaterThan">greaterThan</a></li><li><a href="global.html#greaterThanOrEqualTo">greaterThanOrEqualTo</a></li><li><a href="global.html#notEqualTo">notEqualTo</a></li><li><a href="global.html#containedIn">containedIn</a></li><li><a href="global.html#notContainedIn">notContainedIn</a></li><li><a href="global.html#exists">exists</a></li><li><a href="global.html#notExists">notExists</a></li><li><a href="global.html#ascending">ascending</a></li><li><a href="global.html#descending">descending</a></li><li><a href="global.html#skip">skip</a></li><li><a href="global.html#limit">limit</a></li><li><a href="global.html#or">or</a></li><li><a href="global.html#and">and</a></li><li><a href="global.html#whereequalTo">where</a></li><li><a href="global.html#count">count</a></li><li><a href="global.html#query">query</a></li><li><a href="global.html#tags">tags</a></li><li><a href="global.html#includeCount">includeCount</a></li><li><a href="global.html#getQuery">getQuery</a></li><li><a href="global.html#regex">regex</a></li><li><a href="global.html#search">search</a></li><li><a href="global.html#find">find</a></li><li><a href="global.html#findOne">findOne</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getDownloadUrl">getDownloadUrl</a></li></ul>
+</nav>
+
+<div id="main">
+    
+        <h1 class="page-title">Contentstack - Javascript SDK</h1>
+        <div id="installation" class="group">
+            <h2><a id="JavaScript_SDK_for_Contentstack_1"></a>JavaScript SDK for Contentstack</h2>
+            <p>Contentstack is a headless CMS with an API-first approach. It is a CMS that developers can use to build powerful cross-platform applications in their favorite languages. Build your application frontend, and Contentstack will take care of the rest. <a href="https://www.contentstack.com/">Read More</a>.</p>
+            <p>Contentstack provides JavaScript SDK to build application on top of JavaScript. Given below is the detailed guide and helpful resources to get started with our JavaScript SDK.</p>
+            <p>The JavaScript SDK can also be used to create Node.js and React native applications.</p>
+            <h3><a id="Prerequisite_9"></a>Prerequisite</h3>
+            <p>You need Node.js version 4.4.7 or later installed to use the Contentstack JavaScript SDK.</p>
+            <h3><a id="Setup_and_Installation_13"></a>Setup and Installation</h3>
+            <h4><a id="For_JavaScript_Browser_15"></a>For JavaScript (Browser)</h4>
+            <p>To use the JavaScript SDK, download it from <a href="https://www.contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest">here</a> and include it in the &lt;script&gt; tag:</p>
+            <pre class="prettyprint"><code>&lt;script type="text/javascript" src="/path/to/contentstack.min.js"&gt;&lt;/script&gt;;
+            </code></pre>
+            <p>To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.</p>
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
+            </code></pre>
+            <h4><a id="For_Nodejs_25"></a>For Node.js</h4>
+            <p>Node.js uses the Javascript SDK to create apps. To use the JavaScript SDK, download it from <a href="https://www.contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest">here</a>, OR install it via npm:</p>
+            <pre class="prettyprint"><code>npm -i contentstack
+            </code></pre>
+            <p>To import the SDK in your project, use the following command:</p>
+            <pre class="prettyprint"><code>import contentstack from ‘contentstack’
+            </code></pre>
+            <p>To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.</p>
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key","access_token","environment_name");
+            </code></pre>
+            <h4><a id="For_React_Native_39"></a>For React Native</h4>
+            <p>React Native uses the Javascript SDK to create apps. To use the JavaScript SDK, download it from <a href="https://www.contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest">here</a>, OR install ist via npm:</p>
+            <pre class="prettyprint"><code>npm -i contentstack
+            </code></pre>
+            <p>To import the SDK in your project, use the following command:</p>
+            <pre class="prettyprint" class="prettyprint"><code>import contentstack from `contentstack/react-native`
+            </code></pre>
+            <p>To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.</p>
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
+            </code></pre>
+            <h3><a id="Key_Concepts_for_using_Contentstack_54"></a>Key Concepts for using Contentstack</h3>
+            <h4><a id="Stack_56"></a>Stack</h4>
+            <p>A stack is like a container that holds the content of your app. Learn more about <a href="https://www.contentstack.com/docs/guide/stack">Stacks</a>.</p>
+            <h4><a id="Content_Type_60"></a>Content Type</h4>
+            <p>Content type lets you define the structure or blueprint of a page or a section of your digital property. It is a form-like page that gives Content Managers an interface to input and upload content. <a href="https://www.contentstack.com/docs/guide/content-types">Read more</a>.</p>
+            <h4><a id="Entry_64"></a>Entry</h4>
+            <p>An entry is the actual piece of content created using one of the defined content types. Learn more about <a href="https://www.contentstack.com/docs/guide/content-management#working-with-entries">Entries</a>.</p>
+            <h4><a id="Asset_68"></a>Asset</h4>
+            <p>Assets refer to all the media files (images, videos, PDFs, audio files, and so on) uploaded to Contentstack. These files can be used in multiple entries. Read more about <a href="https://www.contentstack.com/docs/guide/content-management#working-with-assets">Assets</a>.</p>
+            <h4><a id="Environment_72"></a>Environment</h4>
+            <p>A publishing environment corresponds to one or more deployment servers or a content delivery destination where the entries need to be published. Learn how to work with <a href="https://www.contentstack.com/docs/guide/environments">Environments</a>.</p>
+            <h3><a id="Contentstack_JavaScript_SDK_5minute_Quickstart_78"></a>Contentstack JavaScript SDK: 5-minute Quickstart</h3>
+            <h4><a id="Initializing_your_SDK_80"></a>Initializing your SDK</h4>
+            <p>You will need to specify the API key, Access token, and Environment Name of your stack to initialize the SDK:</p>
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
+            </code></pre>
+            <p>Once you have initialized the SDK, you can start getting content in your app.</p>
+            <h4><a id="Querying_content_from_your_stack_90"></a>Querying content from your stack</h4>
+            <p>To get a single entry, you need to specify the content type as well as the ID of the entry.</p>
+            <pre class="prettyprint"><code>const Query = Stack.ContentType('blog').Entry("blt123something");
+
+            Query.fetch()
+            .then(function success(entry) {
+            console.log(entry.get('title')); // Retrieve field value by providing a field's uid
+            console.log(entry.toJSON()); // Convert the entry result object to JSON
+            }, function error(err) {
+            // err object
+            });
+            </code></pre>
+            <p>To retrieve multiple entries of a content type, you need to specify the content type uid. You can also specify search parameters to filter results.</p>
+            <pre class="prettyprint"><code>const Query = Stack.ContentType('blog').Query();
+
+            Query 
+            .where("title", "welcome")
+            .includeSchema()
+            .includeCount()
+            .toJSON()
+            .find()
+            .then(function success(result) {
+                // result is array where -
+                // result[0] =&amp;gt; entry objects
+                // result[result.length-1] =&amp;gt; entry objects count included only when .includeCount() is queried.
+                // result[1] =&amp;gt; schema of the content type is included when .includeSchema() is queried.
+            }, function error(err) {
+            // err object
+            });
+            </code></pre>
+            <h4><a id="Cache_Policies_123"></a>Cache Policies</h4>
+            <p>You can set a cache policy on a stack and/or query object.</p>
+            <h5><a id="Setting_a_cache_policy_on_a_stack_127"></a>Setting a cache policy on a stack</h5>
+            <p>This option allows you to globalize a cache policy. This means the cache policy you set will be applied to all the query objects of the stack.</p>
+            <pre class="prettyprint"><code>//Setting a cache policy on a stack    
+            Stack.setCachePolicy(Contentstack.CachePolicy.NETWORK_ELSE_CACHE)
+            </code></pre>
+            <h5><a id="Setting_a_cache_policy_on_a_query_object_134"></a>Setting a cache policy on a query object</h5>
+            <p>This option allows you to set/override a cache policy on a specific query object.</p>
+            <pre class="prettyprint"><code>// setting a cache policy on a queryobject
+            Query.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)
+            </code></pre>
+            <h3><a id="Advanced_Queries_141"></a>Advanced Queries</h3>
+            <p>You can query for content types, entries, assets and more using our JavaScript API Reference.</p>
+            <p><a href="https://www.contentstack.com/docs/platforms/javascript-browser/api-reference/">JavaScript API Reference Doc</a></p>
+            <h3><a id="Working_with_Images_147"></a>Working with Images</h3>
+            <p>We have introduced Image Delivery APIs that let you retrieve images and then manipulate and optimize them for your digital properties. It lets you perform a host of other actions such as crop, trim, resize, rotate, overlay, and so on.</p>
+            <p>For example, if you want to crop an image (with width as 300 and height as 400), you simply need to append query parameters at the end of the image URL, such as, <a href="https://images.contentstack.io/v3/assets/blteae40eb499811073/bltc5064f36b5855343/59e0c41ac0eddd140d5a8e3e/download?crop=300,400">https://images.contentstack.io/v3/assets/blteae40eb499811073/bltc5064f36b5855343/59e0c41ac0eddd140d5a8e3e/download?crop=300,400</a>. There are several more parameters that you can use for your images.</p>
+            <p><a href="https://www.contentstack.com/docs/apis/image-delivery-api/">Read Image Delivery API documentation</a>.</p>
+            <p>SDK functions for Image Delivery API coming soon.</p>
+            <h3><a id="Helpful_Links_157"></a>Helpful Links</h3>
+            <ul>
+            <li><a href="https://www.contentstack.com">Contentstack Website</a></li>
+            <li><a href="https://www.contentstack.com/docs">Official Documentation</a></li>
+            <li><a href="https://www.contentstack.com/docs/apis/content-delivery-api/">Content Delivery API Docs</a></li>
+            </ul>
+            <h3><a id="The_MIT_License_MIT_163"></a>The MIT License (MIT)</h3>
+            <p>Copyright © 2012-2017 <a href="https://www.built.io/">Built.io</a>. All Rights Reserved</p>
+            <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
+            <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
+            <p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
+            </div>
+        </div>
+    
+    
+
+
+
+    
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    <div class="inner-content center">
+        <span class="copy-right"><a href="mailto:support-contentstack@built.io" target="_self">support-contentstack@built.io</a> | © 2017 Contentstack. All rights reserved.</span>
+    </div>
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
