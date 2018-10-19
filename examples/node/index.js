@@ -2,7 +2,7 @@
 
 const ContentstackDemo = require('./contentstack-demo.js')
 
-const Demo = new ContentstackDemo({ 'api_key': 'blt3095c4e04a3d69e6', 'access_token': 'bltd4c70163cb65d8e2', 'environment': 'development', 'web_ui_api_key': '607a456d7f3afc20cd9fcb1f' })
+const Demo = new ContentstackDemo({ 'api_key': 'blt3095c4e04a3d69e6', 'access_token': 'csb4aacc6e090dfd2e8c1b01cd', 'environment': 'web'})
 
 
  // Demo
@@ -22,7 +22,7 @@ const Demo = new ContentstackDemo({ 'api_key': 'blt3095c4e04a3d69e6', 'access_to
 
 
     //get all the entries
-Demo.getSyncApi({'init': 'true'})
+Demo.getSyncApi({"init": "true"})
     .then(function(result) {
         // result object with entries
         console.info("Result: ", result)

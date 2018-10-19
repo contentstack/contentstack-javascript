@@ -18,7 +18,7 @@ export default class Stack {
         this.config = config;
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
         this.provider = CacheProvider.providers('localstorage');
-        this.web_ui_api_key = stack_arguments[0].web_ui_api_key;
+        //this.sync_cdn_api_key = stack_arguments[0].sync_cdn_api_key;
         switch (stack_arguments.length) {
             case 1:
                 if (typeof stack_arguments[0] === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].access_token === "string" && typeof stack_arguments[0].environment === "string") {
@@ -257,17 +257,28 @@ export default class Stack {
         return Request(query);
     }
 
+
     /**
      * @method sync
-     * @description sync get all the sync data.
-     * @example Stack.sync({'init': 'true'})
+     * @description Synchronization API is used to synchronize content from API server in order to keep local copy of content time to time.API allows incremental(changes in Content from timepoint) updates of content time to time instead of getting all content at same time.
+     * @param {object} params - params is an object with different parameters.
+     * @example 
+     * Stack.sync({'init': 'true'})
+     * @example 
+     * Stack.sync({'init': 'true', 'locale': 'en-us'})
+     * @example 
+     * Stack.sync({'init': 'true', 'start_date': '2018-09-12'})
+     * @example 
+     * Stack.sync({'pagination_token': 'btlsomething'})
+     * @example 
+     * Stack.sync({'sync_token': 'btlsomething'})
      * @returns {object}
-     * @ignore
      */
+
     sync(params) {
         this._query = {};
         this["params"] = params;
-        this._query['web_ui_api_key'] = this.web_ui_api_key;
+        //this._query['sync_cdn_api_key'] = this.sync_cdn_api_key;
         this._query = Object.assign(this._query, this.params);
         this.requestParams = {
             method: 'POST',
@@ -279,7 +290,6 @@ export default class Stack {
             }
         }
         return Utils.sendRequest(this);
-
     }
 
   
