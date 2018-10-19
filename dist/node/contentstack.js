@@ -578,12 +578,12 @@ var Stack = function () {
         this.config = _config2.default;
         this.cachePolicy = _index2.default.policies.IGNORE_CACHE;
         this.provider = _index2.default.providers('localstorage');
+        //this.sync_cdn_api_key = stack_arguments[0].sync_cdn_api_key;
 
         for (var _len = arguments.length, stack_arguments = Array(_len), _key = 0; _key < _len; _key++) {
             stack_arguments[_key] = arguments[_key];
         }
 
-        this.web_ui_api_key = stack_arguments[0].web_ui_api_key;
         switch (stack_arguments.length) {
             case 1:
                 if (_typeof(stack_arguments[0]) === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].access_token === "string" && typeof stack_arguments[0].environment === "string") {
@@ -866,7 +866,17 @@ var Stack = function () {
         /**
          * @method sync
          * @description sync get all the sync data.
-         * @example Stack.sync({'init': 'true'})
+         * @param {object} params - params is an object with different parameters.
+         * @example 
+         * Stack.sync({'init': 'true'})
+         * @example 
+         * Stack.sync({'init': 'true', 'locale': 'en-us'})
+         * @example 
+         * Stack.sync({'init': 'true', 'start_date': '2018-09-12'})
+         * @example 
+         * Stack.sync({'pagination_token': 'btlsomething'})
+         * @example 
+         * Stack.sync({'sync_token': 'btlsomething'})
          * @returns {object}
          * @ignore
          */
@@ -876,7 +886,7 @@ var Stack = function () {
         value: function sync(params) {
             this._query = {};
             this["params"] = params;
-            this._query['web_ui_api_key'] = this.web_ui_api_key;
+            //this._query['sync_cdn_api_key'] = this.sync_cdn_api_key;
             this._query = Object.assign(this._query, this.params);
             this.requestParams = {
                 method: 'POST',
@@ -2446,7 +2456,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var config = {
     protocol: "https",
-    host: "dev-new-api.contentstack.io",
+    host: "dev-cdn.contentstack.io",
     port: 443,
     version: "v3",
     urls: {

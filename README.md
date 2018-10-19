@@ -168,6 +168,88 @@ Following are Image Delivery API examples.
         'height': 100
     }) 
 
+### Working with Sync API
+
+We have introduced Synchronization API is used to synchronize content from API server in order to keep local copy of content time to time.API allows incremental(changes in Content from timepoint) updates of content time to time instead of getting all content at same time. It lets you perform other actions also such as pagination, from_date, locale.
+
+[Read Sync API API documentation](https://www.contentstack.com/docs/apis/image-delivery-api/). 
+
+Following are Sync API examples.
+
+    // For initialization
+    new Promise((resolve, reject) => {            
+                Stack
+                    .sync({
+                        "init": "true"
+                    })
+                    .then(function(data) {
+                        let result = publish(data);
+                        return resolve(result);
+                    }, function(err) {
+                        console.info('Error : ' + err);
+                        reject(err);
+                    }); 
+
+    // For Subsequent Sync
+    new Promise((resolve, reject) => {            
+                Stack
+                    .sync({
+                        "sync_token": sync_token
+                    })
+                    .then(function(data) {
+                        let result = publish(data);
+                        return resolve(result);
+                    }, function(err) {
+                        console.info('Error : ' + err);
+                        reject(err);
+                    });
+
+    // For pagination
+    new Promise((resolve, reject) => {            
+                Stack
+                    .sync({
+                        "pagination_token": <pagination_token>
+                    })
+                    .then(function(data) {
+                        let result = publish(data);
+                        return resolve(result);
+                    }, function(err) {
+                        console.info('Error : ' + err);
+                        reject(err);
+                    });
+
+     // For From_date
+    new Promise((resolve, reject) => {            
+                Stack
+                    .sync({"init": true,
+                        "From_date": <From_date>
+                    })
+                    .then(function(data) {
+                        let result = publish(data);
+                        return resolve(result);
+                    }, function(err) {
+                        console.info('Error : ' + err);
+                        reject(err);
+                    });                
+                
+
+     // For locale
+    new Promise((resolve, reject) => {            
+                Stack
+                    .sync({ "init": true,
+                        "locale": <locale>
+                    })
+                    .then(function(data) {
+                        let result = publish(data);
+                        return resolve(result);
+                    }, function(err) {
+                        console.info('Error : ' + err);
+                        reject(err);
+                    });                
+                            
+
+
+
 ### Helpful Links
 
 - [Contentstack Website](https://www.contentstack.com) 
