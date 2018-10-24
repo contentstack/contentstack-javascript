@@ -168,15 +168,16 @@ Following are Image Delivery API examples.
         'height': 100
     }) 
 
-### Working with Sync API
+### Using the Sync API with JavaScript SDK
 
-The Sync API takes care of syncing your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates. Contentstack’s iOS SDK supports Sync API, which you can use to build powerful apps. Read through to understand how to use the Sync API with Contentstack JavaScript SDK. It lets you perform other actions also such as pagination, start_date, locale, content.
-
+The Sync API takes care of syncing your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates. Contentstack’s JavaScript SDK supports Sync API, which you can use to build powerful apps. Read through to understand how to use the Sync API with Contentstack JavaScript SDK.
 [Read Sync API documentation](https://docs.google.com/document/d/14IFRlmtOja5OPzlK1Q6DxW3auISEQNhX6opMYJcHVsI/). 
 
-Following are Sync API examples.
+#####Initial sync
 
-    // For initializing sync
+The Initial Sync process performs a complete sync of your app data. It returns all the published entries and assets of the specified stack in response.
+
+To start the Initial Sync process, use the syncStack method.
         
         let data = Stack.sync({"init": true})
         data.then(function(sync_data, err) {
@@ -187,8 +188,15 @@ Following are Sync API examples.
             if (err) throw err
         })
 
+The response also contains a sync token, which you need to store, since this token is used to get subsequent delta updates later, as shown in the Subsequent Sync section below. 
 
-    // For fetching the next batch of entries using pagination token
+You can also fetch custom results in initial sync by using advanced sync queries. 
+
+
+#####Sync pagination
+
+If the result of the initial sync (or subsequent sync) contains more than 100 records, the response would be paginated. It provides pagination token in the response. You will need to use this token to get the next batch of data. 
+
         
         let data = Stack.sync({"pagination_token" : "<pagination_token>"})
         data.then(function(result,  err) {
@@ -199,7 +207,10 @@ Following are Sync API examples.
             if(err) throw err    
         })
 
-    // For performing subsequent sync after initial sync
+#####Subsequent sync
+
+You can use the sync token (that you receive after initial sync) to get the updated content next time. The sync token fetches only the content that was added after your last sync, and the details of the content that was deleted or updated.
+
     
         let data = Stack.sync({"sync_token" :  “<sync_token>”})
         data.then(function(sync_data,  err) {
@@ -209,6 +220,12 @@ Following are Sync API examples.
             //sync_token.syncToken: for performing subsequent sync after initial sync
             if(err) throw err
         })
+
+##### Advanced sync queries
+
+You can use advanced sync queries to fetch custom results while performing initial sync. 
+[Read advanced sync queries documentation](https://www.contentstack.com/docs/guide/synchronization/using-the-sync-api-with-javascript-sdk#advanced-sync-queries)
+
 
 
 ### Helpful Links
