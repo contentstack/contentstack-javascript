@@ -264,14 +264,15 @@ export function sendRequest(queryObject) {
                                 }
                                 return;
                             }
-                        } else if(data.items) {
-                                syncstack = {
-                                    items : data.items,
-                                    pagination_token : data.pagination_token,
-                                    sync_token : data.sync_token,
-                                    total_count : data.total_count
-                                }
-                            } else {
+                        } 
+                        else if(data.items) {
+                            syncstack = {
+                                items : data.items,
+                                pagination_token : data.pagination_token,
+                                sync_token : data.sync_token,
+                                total_count : data.total_count
+                            }
+                        } else {
                             entries = data;
                         }
 
@@ -286,15 +287,16 @@ export function sendRequest(queryObject) {
                                 }
                             });
                             return resolve(spreadResult(entries));
-                        } else {
-                            if(syncstack) {
-                                return resolve(syncstack);
-                            }
-                            
-                            if (!tojson) 
-                                entries = resultWrapper(entries);
-                            return resolve(spreadResult(entries));
+                        } 
+                        
+                        if(Object.keys(syncstack).length) {
+                            return resolve(syncstack);
                         }
+                            
+                        if (!tojson) 
+                            entries = resultWrapper(entries);
+                            return resolve(spreadResult(entries));
+
                     } catch (e) {
                         return reject({
                             message: e.message
