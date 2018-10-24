@@ -10,7 +10,7 @@ const Utils = require('./utils.js');
 const contentTypes = init.contentTypes;
 
 let Stack;
-
+console.log("contentTypes=============>>>>", contentTypes);
 /*
  * Initalise the Contentstack Instance
  * */
@@ -23,12 +23,15 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
 });
 
 test('default .find()', function(assert) {
+    Stack = Contentstack.Stack(init.stack);
+    Stack.setHost(init.host);
     var Query = Stack.ContentType(contentTypes.source).Query(),
         field = 'updated_at';
     Query
         .toJSON()
         .find()
         .then(function success(entries) {
+            console.log("entrieswsss", entries)
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
             assert.ok(entries[0].length, 'Entries present in the resultset');
@@ -285,7 +288,7 @@ test('.notEqualTo()', function(assert) {
         });
 });
 
-test('.where() compare boolean value (true)', function(assert) {
+test.only('.where() compare boolean value (true)', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
@@ -293,6 +296,7 @@ test('.where() compare boolean value (true)', function(assert) {
         .toJSON()
         .find()
         .then(function success(entries) {
+            console.log("entriesssss", entries)
             assert.ok(entries[0].length, 'Entries present in the resultset');
             assert.equal(entries[0].length, 2, 'two entries present in the resultset');
             assert.end();

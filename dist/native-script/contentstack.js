@@ -387,14 +387,14 @@ function sendRequest(queryObject) {
                             }
                         });
                         return resolve(spreadResult(entries));
-                    } else {
-                        if (syncstack) {
-                            return resolve(syncstack);
-                        }
-
-                        if (!tojson) entries = resultWrapper(entries);
-                        return resolve(spreadResult(entries));
                     }
+
+                    if (Object.keys(syncstack).length) {
+                        return resolve(syncstack);
+                    }
+
+                    if (!tojson) entries = resultWrapper(entries);
+                    return resolve(spreadResult(entries));
                 } catch (e) {
                     return reject({
                         message: e.message
@@ -567,12 +567,12 @@ var Stack = function () {
         this.config = _config2.default;
         this.cachePolicy = _index2.default.policies.IGNORE_CACHE;
         this.provider = _index2.default.providers('localstorage');
+        //this.sync_cdn_api_key = stack_arguments[0].sync_cdn_api_key;
 
         for (var _len = arguments.length, stack_arguments = Array(_len), _key = 0; _key < _len; _key++) {
             stack_arguments[_key] = arguments[_key];
         }
 
-        this.web_ui_api_key = stack_arguments[0].web_ui_api_key;
         switch (stack_arguments.length) {
             case 1:
                 if (_typeof(stack_arguments[0]) === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].access_token === "string" && typeof stack_arguments[0].environment === "string") {
@@ -854,19 +854,28 @@ var Stack = function () {
 
         /**
          * @method sync
-         * @description sync get all the sync data.
-         * @example Stack.sync({'init': 'true'})
+         * @description The Sync API takes care of syncing your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates. Contentstack’s iOS SDK supports Sync API, which you can use to build powerful apps. Read through to understand how to use the Sync API with Contentstack JavaScript SDK.
+         * @param {object} params - params is an object which Supports locale, start_date, content_type_id queries.
+         * @example 
+         * Stack.sync({'init': true})        // For initializing sync
+         * @example 
+         * Stack.sync({'init': true, 'locale': 'en-us'})     //For initializing sync with entries of a specific locale
+         * @example 
+         * Stack.sync({'init': 'true', 'start_date': '2018-10-22'})    //For initializing sync with entries published after a specific date
+         * @example 
+         * Stack.sync({'init': 'true', 'content_type_id': 'session'})   //For initializing sync with entries of a specific content type
+         * @example 
+         * Stack.sync({'pagination_token': '<btlsomething>'})    // For fetching the next batch of entries using pagination token
+         * @example 
+         * Stack.sync({'sync_token': '<btlsomething>'})    // For performing subsequent sync after initial sync
          * @returns {object}
-         * @ignore
          */
 
     }, {
         key: 'sync',
         value: function sync(params) {
             this._query = {};
-            this["params"] = params;
-            this._query['web_ui_api_key'] = this.web_ui_api_key;
-            this._query = Object.assign(this._query, this.params);
+            this._query = Object.assign(this._query, params);
             this.requestParams = {
                 method: 'POST',
                 headers: this.headers,
@@ -983,7 +992,6 @@ function Request(options) {
             method: 'GET',
             headers: headers
         }).then(function (response) {
-
             if (response.ok && response.status === 200) {
                 var data = response.json();
                 resolve(data);
@@ -1962,7 +1970,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var config = {
     protocol: "https",
-    host: "dev-new-api.contentstack.io",
+    host: "stag-cdn.contentstack.io",
     port: 443,
     version: "v3",
     urls: {

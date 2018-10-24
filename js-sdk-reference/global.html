@@ -9,6 +9,7 @@
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <link rel="canonical" href="https://www.contentstack.com/docs/platforms/java/api-reference/">
     <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
@@ -1427,7 +1428,7 @@ Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
 
 
 <div class="description">
-    Synchronization API is used to synchronize content from API server in order to keep local copy of content time to time.API allows incremental(changes in Content from timepoint) updates of content time to time instead of getting all content at same time.
+    The Sync API takes care of syncing your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates. Contentstack’s iOS SDK supports Sync API, which you can use to build powerful apps. Read through to understand how to use the Sync API with Contentstack JavaScript SDK.
 </div>
 
 
@@ -1468,7 +1469,7 @@ Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
 
             
 
-            <td class="description last">params is an object with different parameters.</td>
+            <td class="description last">params is an object which Supports locale, start_date, content_type_id queries.</td>
         </tr>
 
     
@@ -1527,15 +1528,17 @@ Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>Stack.sync({'init': 'true'})</code></pre>
+    <pre class="prettyprint"><code>Stack.sync({'init': true})        // For initializing sync</code></pre>
 
-    <pre class="prettyprint"><code>Stack.sync({'init': 'true', 'locale': 'en-us'})</code></pre>
+    <pre class="prettyprint"><code>Stack.sync({'init': true, 'locale': 'en-us'})     //For initializing sync with entries of a specific locale</code></pre>
 
-    <pre class="prettyprint"><code>Stack.sync({'init': 'true', 'start_date': '2018-09-12'})</code></pre>
+    <pre class="prettyprint"><code>Stack.sync({'init': 'true', 'start_date': '2018-10-22'})    //For initializing sync with entries published after a specific date</code></pre>
 
-    <pre class="prettyprint"><code>Stack.sync({'pagination_token': 'btlsomething'})</code></pre>
+    <pre class="prettyprint"><code>Stack.sync({'init': 'true', 'content_type_id': 'session'})   //For initializing sync with entries of a specific content type</code></pre>
 
-    <pre class="prettyprint"><code>Stack.sync({'sync_token': 'btlsomething'})</code></pre>
+    <pre class="prettyprint"><code>Stack.sync({'pagination_token': '&lt;btlsomething>'})    // For fetching the next batch of entries using pagination token</code></pre>
+
+    <pre class="prettyprint"><code>Stack.sync({'sync_token': '&lt;btlsomething>'})    // For performing subsequent sync after initial sync</code></pre>
 
 
 

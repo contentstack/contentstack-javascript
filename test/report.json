@@ -1,1 +1,0 @@
-{"stats":{"asserts":1,"passes":0,"failures":1},"asserts":[{"number":1,"comment":"default .Init()","name":"Present Data and Totalcount is equal","ok":false,"extra":{"operator":"equal","expected":"90","actual":"91"}}]}
