@@ -260,25 +260,26 @@ export default class Stack {
 
     /**
      * @method sync
-     * @description Synchronization API is used to synchronize content from API server in order to keep local copy of content time to time.API allows incremental(changes in Content from timepoint) updates of content time to time instead of getting all content at same time.
-     * @param {object} params - params is an object with different parameters.
+     * @description The Sync API takes care of syncing your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates. Contentstack’s iOS SDK supports Sync API, which you can use to build powerful apps. Read through to understand how to use the Sync API with Contentstack JavaScript SDK.
+     * @param {object} params - params is an object which Supports locale, start_date, content_type_id queries.
      * @example 
-     * Stack.sync({'init': 'true'})
+     * Stack.sync({'init': true})        // For initializing sync
      * @example 
-     * Stack.sync({'init': 'true', 'locale': 'en-us'})
+     * Stack.sync({'init': true, 'locale': 'en-us'})     //For initializing sync with entries of a specific locale
      * @example 
-     * Stack.sync({'init': 'true', 'start_date': '2018-09-12'})
+     * Stack.sync({'init': 'true', 'start_date': '2018-10-22'})    //For initializing sync with entries published after a specific date
      * @example 
-     * Stack.sync({'pagination_token': 'btlsomething'})
+     * Stack.sync({'init': 'true', 'content_type_id': 'session'})   //For initializing sync with entries of a specific content type
      * @example 
-     * Stack.sync({'sync_token': 'btlsomething'})
+     * Stack.sync({'pagination_token': '<btlsomething>'})    // For fetching the next batch of entries using pagination token
+     * @example 
+     * Stack.sync({'sync_token': '<btlsomething>'})    // For performing subsequent sync after initial sync
      * @returns {object}
      */
 
     sync(params) {
         this._query = {};
-        this["params"] = params;
-        this._query = Object.assign(this._query, this.params);
+        this._query = Object.assign(this._query, params);
         this.requestParams = {
             method: 'POST',
             headers: this.headers,

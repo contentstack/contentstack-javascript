@@ -10,18 +10,12 @@ const Utils = require('../entry/utils.js');
 const contentTypes = init.contentTypes;
 
 
-
 let Stack;
-//let sync_token = "blt555aade6486cd7bb4a206d";
-let sync_token = "bltb6f6ce871e0512420e5788";
-var total_count = 125;
-var pagination_token = "blt19cdbb5a99cff90278af9f";
+let sync_token = "bltd839b884dd314465ddecd0";
+var total_count = 123;
+var pagination_token = "blt3eaa0736eec5635a48e564";
 
 
-
-
-//var sync_token = "blt4ce9ad919cffb996954483";
-//var sync_token_count = ;
 /*
  * Initalise the Contentstack Instance
  * */
@@ -37,18 +31,16 @@ sync_testcase('default .Init()', function(assert) {
     Stack
          .sync({"init" : true})
          .then(function success(data) {
-            console.log("datattatata", data)
-         // assert.equal(data.total_count, total_count, "Present Data and Totalcount is equal");     	
-         // assert.end();
+          assert.equal(data.total_count, total_count, "Present Data and Totalcount is equal");     	
+          assert.end();
          });
 });
 
 sync_testcase('default .startdate()', function(assert) {
-   var date_entry_count = 17
+   var date_entry_count = 3
     Stack
-         .sync({"init": "true", "start_from": "2018-10-05"})
+         .sync({"init": true, "start_from": "2018-10-22"})
          .then(function success(data) {
-            console.log("datatattatat", data)
              assert.equal(data.total_count, date_entry_count, "Present data and filtered data count on date bases is equal");       
              assert.end();
          });
@@ -56,22 +48,22 @@ sync_testcase('default .startdate()', function(assert) {
 
 
 sync_testcase('default .locale()', function(assert) {
-    var locale_entry_count = 2;
+    var locale_entry_count = 123;
     Stack
-         .sync({"init": "true", "locale": "en-gb"})
-         .then(function success(data) {
+         .sync({"init": "true", "locale": "en-us"})
+         .then(function success(data) {     
             assert.equal(data.total_count, locale_entry_count, "Present data and filtered data count on locale bases is equal");       
             assert.end();
          });
 });
 
 sync_testcase('default .localeDate()', function(assert) {
-    var locale_date_entry_count = 2;
+    var locale_date_entry_count = 3;
     Stack
-         .sync({"init": "true", "locale": "en-gb", "start_from": "2018-10-05"})
+         .sync({"init": true, "locale": "en-us", "start_from": "2018-10-22"})
          .then(function success(data) {
             assert.equal(data.total_count, locale_date_entry_count, "Present data and filtered data count on date and locale bases is equal");       
-            assert.end();
+             assert.end();
          });
 });
 
@@ -79,36 +71,42 @@ sync_testcase('default .localeDate()', function(assert) {
 sync_testcase('default .pagination_token()', function(assert) {
 
     Stack
-           .sync({"pagination_token : blt19cdbb5a99cff90278af9f"})
+           .sync({"pagination_token" : pagination_token})
            .then(function success(result) {
-            console.log("sdjchchdsjk", result)
-                assert.equal(result.total_count, 25, "pagination_token testcase executed successfully");  
+            let pagination_count = result.items.length
+                assert.equal(pagination_count, 23, "pagination_token testcase executed successfully");  
                 assert.end();
            });  
-      assert.end();
 });
 
 
 sync_testcase('default .contentTypeUid()', function(assert) {
     var contenttype_count = 29;
     Stack
-         .sync({"init": "true", "content_type_uid": "session"})
+         .sync({"init": true, "content_type_uid": "session"})
          .then(function success(data) {
-            assert.equal(data.total_count, contenttype_count, "Present data and filtered data total count on contentType bases is equal");       
+            assert.equal(data.total_count, 31, "Present data and filtered data total count on contentType bases is equal");       
             assert.end();
          });
 });
 
+sync_testcase('default .type()', function(assert) {
+    var items_count = 8;
+    Stack
+         .sync({"init": true, "type": "asset_published"})
+         .then(function success(data) {
+            assert.equal(data.total_count, items_count, "Present data and filtered data total count on type bases is equal");       
+            assert.end();
+         });
+});
 
-
- sync_testcase('default .sync_token()', function(assert) {
-   var sync_expected_count = 3 
+sync_testcase('default .sync_token()', function(assert) {
+   var sync_expected_count = 6 
 
    Stack
          .sync({"sync_token" :  sync_token})
          .then(function success(result) {
-            console.log("result++++++", result)
-          assert.equal(data.total_count, sync_expected_count, "Synced Data and Sync_total_count is equal");      
+          assert.equal(result.total_count, sync_expected_count, "Synced Data and Sync_total_count is equal");      
           assert.end();
          });
 });

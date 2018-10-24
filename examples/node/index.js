@@ -2,14 +2,14 @@
 
 const ContentstackDemo = require('./contentstack-demo.js')
 
-const Demo = new ContentstackDemo({ 'api_key': 'blt3095c4e04a3d69e6', 'access_token': 'csb4aacc6e090dfd2e8c1b01cd', 'environment': 'web'})
+const Demo = new ContentstackDemo({ 'api_key': '<api_key>', 'access_token': '<Delivery_token>', 'environment': '<Environment>'})
 
 
  // Demo
- //    .getEntries('home_reference')
+ //    .getEntries('source')
  //    .then(function(result) {
  //        // result object with entry
- //        console.info("Result2 : ", typeof result)
+ //        console.info("Result2 : ",  result)
         
  //        //console.info("Result2 : ", JSON.stringify(result))
 
@@ -22,7 +22,7 @@ const Demo = new ContentstackDemo({ 'api_key': 'blt3095c4e04a3d69e6', 'access_to
 
 
     //get all the entries
-Demo.getSyncApi({"init": "true"})
+Demo.getSyncApi({"init": true, "type": "asset_published"})
     .then(function(result) {
         // result object with entries
         console.info("Result: ", result)

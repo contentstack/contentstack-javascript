@@ -170,84 +170,45 @@ Following are Image Delivery API examples.
 
 ### Working with Sync API
 
-We have introduced Synchronization API is used to synchronize content from API server in order to keep local copy of content time to time.API allows incremental(changes in Content from timepoint) updates of content time to time instead of getting all content at same time. It lets you perform other actions also such as pagination, from_date, locale.
+The Sync API takes care of syncing your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates. Contentstack’s iOS SDK supports Sync API, which you can use to build powerful apps. Read through to understand how to use the Sync API with Contentstack JavaScript SDK. It lets you perform other actions also such as pagination, start_date, locale, content.
 
-[Read Sync API API documentation](https://www.contentstack.com/docs/apis/image-delivery-api/). 
+[Read Sync API documentation](https://docs.google.com/document/d/14IFRlmtOja5OPzlK1Q6DxW3auISEQNhX6opMYJcHVsI/). 
 
 Following are Sync API examples.
 
-    // For initialization
-    new Promise((resolve, reject) => {            
-                Stack
-                    .sync({
-                        "init": "true"
-                    })
-                    .then(function(data) {
-                        let result = publish(data);
-                        return resolve(result);
-                    }, function(err) {
-                        console.info('Error : ' + err);
-                        reject(err);
-                    }); 
+    // For initializing sync
+        
+        let data = Stack.sync({"init": true})
+        data.then(function(sync_data, err) {
+            //error for any error description
+            //sync_data.items: contains sync data
+            //sync_data.paginationToken: for fetching the next batch of entries using pagination token
+            //sync_token.syncToken: for performing subsequent sync after initial sync
+            if (err) throw err
+        })
 
-    // For Subsequent Sync
-    new Promise((resolve, reject) => {            
-                Stack
-                    .sync({
-                        "sync_token": sync_token
-                    })
-                    .then(function(data) {
-                        let result = publish(data);
-                        return resolve(result);
-                    }, function(err) {
-                        console.info('Error : ' + err);
-                        reject(err);
-                    });
 
-    // For pagination
-    new Promise((resolve, reject) => {            
-                Stack
-                    .sync({
-                        "pagination_token": <pagination_token>
-                    })
-                    .then(function(data) {
-                        let result = publish(data);
-                        return resolve(result);
-                    }, function(err) {
-                        console.info('Error : ' + err);
-                        reject(err);
-                    });
+    // For fetching the next batch of entries using pagination token
+        
+        let data = Stack.sync({"pagination_token" : "<pagination_token>"})
+        data.then(function(result,  err) {
+            //error for any error description
+            //result.items: contains sync data
+            //result.paginationToken: For fetching the next batch of entries using pagination token
+            //result.syncToken: For performing subsequent sync after initial sync
+            if(err) throw err    
+        })
 
-     // For From_date
-    new Promise((resolve, reject) => {            
-                Stack
-                    .sync({"init": true,
-                        "From_date": <From_date>
-                    })
-                    .then(function(data) {
-                        let result = publish(data);
-                        return resolve(result);
-                    }, function(err) {
-                        console.info('Error : ' + err);
-                        reject(err);
-                    });                
-                
-
-     // For locale
-    new Promise((resolve, reject) => {            
-                Stack
-                    .sync({ "init": true,
-                        "locale": <locale>
-                    })
-                    .then(function(data) {
-                        let result = publish(data);
-                        return resolve(result);
-                    }, function(err) {
-                        console.info('Error : ' + err);
-                        reject(err);
-                    });                
-                            
-
+    // For performing subsequent sync after initial sync
+    
+        let data = Stack.sync({"sync_token" :  “<sync_token>”})
+        data.then(function(sync_data,  err) {
+            //error for any error description
+            //sync_data.items: contains sync data
+            //sync_data.paginationToken: for fetching the next batch of entries using pagination token
+            //sync_token.syncToken: for performing subsequent sync after initial sync
+            if(err) throw err
+        })
 
 
 ### Helpful Links
