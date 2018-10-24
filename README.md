@@ -173,7 +173,7 @@ Following are Image Delivery API examples.
 The Sync API takes care of syncing your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates. Contentstack’s JavaScript SDK supports Sync API, which you can use to build powerful apps. Read through to understand how to use the Sync API with Contentstack JavaScript SDK.
 [Read Sync API documentation](https://docs.google.com/document/d/14IFRlmtOja5OPzlK1Q6DxW3auISEQNhX6opMYJcHVsI/). 
 
-#####Initial sync
+##### Initial sync
 
 The Initial Sync process performs a complete sync of your app data. It returns all the published entries and assets of the specified stack in response.
 
@@ -193,7 +193,7 @@ The response also contains a sync token, which you need to store, since this tok
 You can also fetch custom results in initial sync by using advanced sync queries. 
 
 
-#####Sync pagination
+##### Sync pagination
 
 If the result of the initial sync (or subsequent sync) contains more than 100 records, the response would be paginated. It provides pagination token in the response. You will need to use this token to get the next batch of data. 
 
@@ -207,7 +207,7 @@ If the result of the initial sync (or subsequent sync) contains more than 100 re
             if(err) throw err    
         })
 
-#####Subsequent sync
+##### Subsequent sync
 
 You can use the sync token (that you receive after initial sync) to get the updated content next time. The sync token fetches only the content that was added after your last sync, and the details of the content that was deleted or updated.
 
