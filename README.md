@@ -35,7 +35,7 @@ To import the SDK in your project, use the following command:
 
 To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.
 
-    const Stack = Contentstack.Stack("api_key","access_token","environment_name");
+    const Stack = contentstack.Stack("api_key","access_token","environment_name");
 
 #### For React Native
 
@@ -143,7 +143,7 @@ This option allows you to set/override a cache policy on a specific query object
 
 You can query for content types, entries, assets and more using our JavaScript API Reference. 
 
-[JavaScript API Reference Doc](https://contentstack.com/docs/platforms/javascript-browser/api-reference)
+[JavaScript API Reference Doc](https://contentstack.com/docs/platforms/javascript-browser/api-reference/)
 
 ### Working with Images
 

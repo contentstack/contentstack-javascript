@@ -952,7 +952,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //JS SDK version
-var version = '3.4.0';
+var version = '3.4.1';
 var environment = void 0,
     api_key = void 0;
 
@@ -1972,7 +1972,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var config = {
     protocol: "https",
-    host: "stag-cdn.contentstack.io",
+    host: "cdn.contentstack.io",
     port: 443,
     version: "v3",
     urls: {
