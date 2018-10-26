@@ -1532,9 +1532,11 @@ Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
 
     <pre class="prettyprint"><code>Stack.sync({'init': true, 'locale': 'en-us'})     //For initializing sync with entries of a specific locale</code></pre>
 
-    <pre class="prettyprint"><code>Stack.sync({'init': 'true', 'start_date': '2018-10-22'})    //For initializing sync with entries published after a specific date</code></pre>
+    <pre class="prettyprint"><code>Stack.sync({'init': true, 'start_date': '2018-10-22'})    //For initializing sync with entries published after a specific date</code></pre>
 
-    <pre class="prettyprint"><code>Stack.sync({'init': 'true', 'content_type_id': 'session'})   //For initializing sync with entries of a specific content type</code></pre>
+    <pre class="prettyprint"><code>Stack.sync({'init': true, 'content_type_id': 'session'})   //For initializing sync with entries of a specific content type</code></pre>
+
+    <pre class="prettyprint"><code>Stack.sync({'init': true, 'type': 'entry_published'})   //Use the type parameter to get a specific type of content.Supports 'asset_published', 'entry_published', 'asset_unpublished', 'entry_unpublished', 'asset_deleted', 'entry_deleted', 'content_type_deleted'.</code></pre>
 
     <pre class="prettyprint"><code>Stack.sync({'pagination_token': '&lt;btlsomething>'})    // For fetching the next batch of entries using pagination token</code></pre>
 
