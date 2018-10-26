@@ -6,8 +6,8 @@ module.exports = {
         "access_token": "<DELIVERY_Token>",
         "environment": "<Environment>"
     },
-    host: "stag-cdn.contentstack.io",
-    url: "https://stag-api.contentstack.io/v3",
+    host: "cdn.contentstack.io",
+    url: "https://api.contentstack.io/v3",
      // runscope: {
      //     url: "https://api.runscope.com/radar/76730163-fab9-4554-95c1-7ba75aaa2628/trigger?runscope_environment=1f5114ea-7a2d-4adf-9fd3-abc885c47783",
      //     username: "<USERNAME>",

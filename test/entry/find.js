@@ -10,7 +10,6 @@ const Utils = require('./utils.js');
 const contentTypes = init.contentTypes;
 
 let Stack;
-console.log("contentTypes=============>>>>", contentTypes);
 /*
  * Initalise the Contentstack Instance
  * */
@@ -288,7 +287,7 @@ test('.notEqualTo()', function(assert) {
         });
 });
 
-test.only('.where() compare boolean value (true)', function(assert) {
+test('.where() compare boolean value (true)', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
