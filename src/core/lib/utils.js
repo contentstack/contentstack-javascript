@@ -167,6 +167,8 @@ export function resultWrapper(result) {
         result.entry = Result(result.entry);
     } else if (result && typeof result.asset !== 'undefined') {
         result.asset = Result(result.asset);
+    } else if (result && typeof result.items !== 'undefined') {
+        result.items = Result(result.items).toJSON();
     }
 
     return result;
@@ -182,11 +184,13 @@ export function spreadResult(result) {
         if (typeof result.count !== 'undefined') _results.push(result.count);
         if (typeof result.entry !== 'undefined') _results = result.entry;
         if (typeof result.asset !== 'undefined') _results = result.asset;
+        if (typeof result.items !== 'undefined') _results.push(result);
     }
     return _results;
 };
 
 export function sendRequest(queryObject) {
+
     let env_uid = queryObject.environment_uid;
     if (env_uid) {
         queryObject._query.environment_uid = env_uid;
@@ -240,6 +244,7 @@ export function sendRequest(queryObject) {
                     try {
                         self.entry_uid = self.asset_uid = self.tojson = self.queryCachePolicy = undefined;
                         let entries = {};
+                        let syncstack = {};
                         if (queryObject.singleEntry) {
                             queryObject.singleEntry = false;
                             if (data.schema) entries.schema = data.schema;
@@ -259,9 +264,18 @@ export function sendRequest(queryObject) {
                                 }
                                 return;
                             }
+                        } 
+                        else if(data.items) {
+                            syncstack = {
+                                items : data.items,
+                                pagination_token : data.pagination_token,
+                                sync_token : data.sync_token,
+                                total_count : data.total_count
+                            }
                         } else {
                             entries = data;
                         }
+
                         if (cachePolicy !== -1) {
                             self.provider.set(hashQuery, entries, function(err) {
                                 try {
@@ -273,10 +287,16 @@ export function sendRequest(queryObject) {
                                 }
                             });
                             return resolve(spreadResult(entries));
-                        } else {
-                            if (!tojson) entries = resultWrapper(entries);
-                            return resolve(spreadResult(entries));
+                        } 
+                        
+                        if(Object.keys(syncstack).length) {
+                            return resolve(syncstack);
                         }
+                            
+                        if (!tojson) 
+                            entries = resultWrapper(entries);
+                            return resolve(spreadResult(entries));
+
                     } catch (e) {
                         return reject({
                             message: e.message
