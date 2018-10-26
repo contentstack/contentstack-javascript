@@ -1,6 +1,6 @@
 const config = {
     protocol: "https",
-    host: "stag-cdn.contentstack.io",
+    host: "cdn.contentstack.io",
     port: 443,
     version: "v3",
     urls: {
