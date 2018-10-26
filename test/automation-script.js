@@ -14,7 +14,8 @@ let transporter = nodemailer.createTransport(config.smtp);
 let automation = function() {
     let self = this;
     console.log("-----automation started ------")
-    self.init();
+    //self.init();
+    self.run();
 }
 
 automation.prototype.init = function() {
@@ -58,6 +59,7 @@ automation.prototype.run = function() {
     process.chdir(_path);
     // run command "node index.js" to run the test cases
     console.log("Running the test cases....");
+    // let executeCommand = "node index.js";
     let executeCommand = "node index.js | tap-json > " + reportFileName;
     exec(executeCommand, function(err, stdout, stderr) {
         if (!err) {
