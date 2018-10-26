@@ -6,3 +6,4 @@ reports/*
 apidocs-templates/*
 test/smtpconfig.js
 test/config.js
+test/sync_config.js

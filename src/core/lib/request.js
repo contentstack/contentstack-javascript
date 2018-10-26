@@ -42,6 +42,7 @@ export default function Request(options) {
             queryParams = serialize(options.body);
         }
 
+
         fetch(url + '?' + queryParams, {
                 method: 'GET',
                 headers: headers
