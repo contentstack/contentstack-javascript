@@ -872,9 +872,11 @@ var Stack = function () {
          * @example 
          * Stack.sync({'init': true, 'locale': 'en-us'})     //For initializing sync with entries of a specific locale
          * @example 
-         * Stack.sync({'init': 'true', 'start_date': '2018-10-22'})    //For initializing sync with entries published after a specific date
+         * Stack.sync({'init': true, 'start_date': '2018-10-22'})    //For initializing sync with entries published after a specific date
          * @example 
-         * Stack.sync({'init': 'true', 'content_type_id': 'session'})   //For initializing sync with entries of a specific content type
+         * Stack.sync({'init': true, 'content_type_id': 'session'})   //For initializing sync with entries of a specific content type
+         * @example 
+         * Stack.sync({'init': true, 'type': 'entry_published'})   //Use the type parameter to get a specific type of content.Supports 'asset_published', 'entry_published', 'asset_unpublished', 'entry_unpublished', 'asset_deleted', 'entry_deleted', 'content_type_deleted'.
          * @example 
          * Stack.sync({'pagination_token': '<btlsomething>'})    // For fetching the next batch of entries using pagination token
          * @example 
@@ -2454,7 +2456,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var config = {
     protocol: "https",
-    host: "stag-cdn.contentstack.io",
+    host: "cdn.contentstack.io",
     port: 443,
     version: "v3",
     urls: {

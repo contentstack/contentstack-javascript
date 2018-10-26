@@ -9,11 +9,10 @@ const Utils = require('../entry/utils.js');
 
 const contentTypes = init.contentTypes;
 
-
 let Stack;
-let sync_token = "bltd839b884dd314465ddecd0";
+let sync_token = "bltbb61f31a70a572e6c9506a";
 var total_count = 123;
-var pagination_token = "blt3eaa0736eec5635a48e564";
+var pagination_token = "blt082fd2818f5b2fbd003048";
 
 
 /*
@@ -31,16 +30,18 @@ sync_testcase('default .Init()', function(assert) {
     Stack
          .sync({"init" : true})
          .then(function success(data) {
+            console.log("dtatatata", data)
           assert.equal(data.total_count, total_count, "Present Data and Totalcount is equal");     	
           assert.end();
          });
 });
 
 sync_testcase('default .startdate()', function(assert) {
-   var date_entry_count = 3
+   var date_entry_count = 2
     Stack
          .sync({"init": true, "start_from": "2018-10-22"})
          .then(function success(data) {
+            console.log("dattatatata", data)
              assert.equal(data.total_count, date_entry_count, "Present data and filtered data count on date bases is equal");       
              assert.end();
          });
@@ -58,7 +59,7 @@ sync_testcase('default .locale()', function(assert) {
 });
 
 sync_testcase('default .localeDate()', function(assert) {
-    var locale_date_entry_count = 3;
+    var locale_date_entry_count = 2;
     Stack
          .sync({"init": true, "locale": "en-us", "start_from": "2018-10-22"})
          .then(function success(data) {
@@ -101,7 +102,7 @@ sync_testcase('default .type()', function(assert) {
 });
 
 sync_testcase('default .sync_token()', function(assert) {
-   var sync_expected_count = 6 
+   var sync_expected_count = 2 
 
    Stack
          .sync({"sync_token" :  sync_token})
