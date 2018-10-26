@@ -2,6 +2,7 @@ import config from '../../config';
 import * as Utils from './lib/utils';
 import Entry from './modules/entry';
 import Assets from './modules/assets';
+/*import Sync from './modules/sync';*/
 import Query from './modules/query';
 import Request from './lib/request';
 import * as cache from './cache';
@@ -13,9 +14,11 @@ import CacheProvider from './cache-provider/index';
  */
 export default class Stack {
     constructor(...stack_arguments) {
+
         this.config = config;
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
         this.provider = CacheProvider.providers('localstorage');
+        //this.sync_cdn_api_key = stack_arguments[0].sync_cdn_api_key;
         switch (stack_arguments.length) {
             case 1:
                 if (typeof stack_arguments[0] === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].access_token === "string" && typeof stack_arguments[0].environment === "string") {
@@ -254,6 +257,44 @@ export default class Stack {
         return Request(query);
     }
 
+
+    /**
+     * @method sync
+     * @description The Sync API takes care of syncing your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates. Contentstack’s iOS SDK supports Sync API, which you can use to build powerful apps. Read through to understand how to use the Sync API with Contentstack JavaScript SDK.
+     * @param {object} params - params is an object which Supports locale, start_date, content_type_id queries.
+     * @example 
+     * Stack.sync({'init': true})        // For initializing sync
+     * @example 
+     * Stack.sync({'init': true, 'locale': 'en-us'})     //For initializing sync with entries of a specific locale
+     * @example 
+     * Stack.sync({'init': true, 'start_date': '2018-10-22'})    //For initializing sync with entries published after a specific date
+     * @example 
+     * Stack.sync({'init': true, 'content_type_id': 'session'})   //For initializing sync with entries of a specific content type
+     * @example 
+     * Stack.sync({'init': true, 'type': 'entry_published'})   //Use the type parameter to get a specific type of content.Supports 'asset_published', 'entry_published', 'asset_unpublished', 'entry_unpublished', 'asset_deleted', 'entry_deleted', 'content_type_deleted'.
+     * @example 
+     * Stack.sync({'pagination_token': '<btlsomething>'})    // For fetching the next batch of entries using pagination token
+     * @example 
+     * Stack.sync({'sync_token': '<btlsomething>'})    // For performing subsequent sync after initial sync
+     * @returns {object}
+     */
+
+    sync(params) {
+        this._query = {};
+        this._query = Object.assign(this._query, params);
+        this.requestParams = {
+            method: 'POST',
+            headers: this.headers,
+            url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.sync,
+            body: {
+                _method: 'GET',
+                query: this._query
+            }
+        }
+        return Utils.sendRequest(this);
+    }
+
+  
     /**
      * @method imageTransform
      * @description Transforms provided image url based on transformation parameters.  
