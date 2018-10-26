@@ -3,6 +3,8 @@ import fetch from "runtime/http.js";
 
 //JS SDK version
 let version = '{{VERSION}}';
+let environment,
+    api_key;
 
 export default function Request(options) {
     return new Promise(function(resolve, reject) {
@@ -39,6 +41,7 @@ export default function Request(options) {
             if (typeof options.body.query === "object" && Object.keys(options.body.query).length === 0) delete options.body.query;
             queryParams = serialize(options.body);
         }
+
 
         fetch(url + '?' + queryParams, {
                 method: 'GET',

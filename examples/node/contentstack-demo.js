@@ -14,6 +14,7 @@ class ContentstackDemo {
             // Initialize the Contentstackstack
         this.Stack = Contentstack.Stack(config);
     }
+    
 
     /**
      * getEntries
@@ -23,8 +24,9 @@ class ContentstackDemo {
      */
     getEntries(contentTypeUid) {
         contentTypeUid = contentTypeUid || 'source'
-        return this.Stack.ContentType(contentTypeUid).Query().where('title', "hometestfinal").toJSON().find()
+        return this.Stack.ContentType(contentTypeUid).Query().toJSON().find()
     }
+
 
     /**
      * fetchEntry
@@ -38,14 +40,16 @@ class ContentstackDemo {
             entryUid = entryUid || 'blt123something'
             return this.Stack.ContentType(contentTypeUid).Entry(entryUid).fetch()
         }
+
         /**
          * getAssets
          * @description  : getAssets is used to get the assets
          * @return       : Result {Promise}
          */
     getAssets() {
-        return this.Stack.Assets().Query().addParam('include_dimension', 'true').toJSON().find()
+        return this.Stack.Assets().Query().toJSON().find()
     }
+
 
     /**
      * fetchAsset
@@ -56,6 +60,18 @@ class ContentstackDemo {
     getAsset(assetUid) {
         assetUid = assetUid || 'blt123something'
         return this.Stack.Assets(assetUid).addParam('include_dimension', 'true').fetch()
+    }
+
+
+    /**
+     * fetchAsset
+     * @description  : fetchAsset is used to get the specified uid asset
+     * @params       : assetUid       {string} - Specified Asset uid to be fetched                 
+     * @return       : Result {Promise}
+     */
+    getSyncApi(params) {
+        params = params || 'blt123something'
+        return this.Stack.sync(params);
     }
 
 }
