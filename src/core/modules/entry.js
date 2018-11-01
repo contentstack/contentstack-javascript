@@ -15,9 +15,10 @@ export default class Entry {
         this._query = {};
         /**
          * @method only
-         * @description This method is use to show the selected fields of the entries in resultset.
-         * @param {String} [key=BASE] - reference field in the entry/single field in entry
-         * @param {Array} values - array of fields to be show in resultset
+         * @description Displays values of only the specified fields in the response
+         * @param {String} [key=BASE] - BASE (default value) - retrieves default fields of the schema.
+                                      - referenced content-type-uid - retrieves fields of the referred content type.
+         * @param {Array} values - array of fields that you want to display in the response
          * @example
          * <caption> .only with field uid </caption>
          * blogEntry.only('title')
@@ -38,24 +39,25 @@ export default class Entry {
         this.only = Utils.transform('only');
         /**
          * @method except
-         * @description This method is use to hide the selected fields of the entries in resultset.
-         * @param {String} [key=BASE] - reference field in the entry/single field in entry
-         * @param {Array} values - array of fields to be show in resultset
+         * @description Displays all data of an entry excluding the data of the specified fields.
+         * @param {String} [key=BASE] - BASE (default value) - retrieves default fields of the schema.
+                                                             - referenced_content-type-uid - retrieves fields of the referred content type.
+         * @param {Array} values - array of fields that you want to skip in the response
          * @example
          * <caption> .except with field uid </caption>
-         * blogEntry.except('title')
+         * Stack.ContentType('contentTypeUid').Query().except('title').toJSON().find()
          * @example
          * <caption> .except with field uid </caption>
-         * blogEntry.except('BASE','title')
+         * Stack.ContentType('contentTypeUid').Query().except('BASE','title').toJSON().find()
          * @example
          * <caption> .except with field uids(array) </caption>
-         * blogEntry.except(['title','description'])
+         * Stack.ContentType('contentTypeUid').Query().except(['title','description']).toJSON().find()
          * @example
          * <caption> .except with reference_field_uid and field uid </caption>
-         * blogEntry.includeReference('category').except('category','title')
+         * Stack.ContentType('contentTypeUid').Query().includeReference('category').except('category','title').toJSON().find()
          * @example
          * <caption> .except with reference_field_uid and field uids(array) </caption>
-         * blogEntry.includeReference('category').except('category', ['title', 'description'])
+         * Stack.ContentType('contentTypeUid').Query().includeReference('category').except('category', ['title', 'description']).toJSON().find()
          * @returns {Entry} */
         this.except = Utils.transform('except');
         return this;
@@ -83,7 +85,7 @@ export default class Entry {
 
     /**
      * @method includeReference
-     * @description This method is use to include referenced entries from the other Contenttype.
+     * @description Fetches the entire content of referenced entry(ies)
      * @example
      * <caption> .includeReference with reference_field_uids as array </caption>
      * blogEntry.includeReference(['category', 'author'])
@@ -106,11 +108,19 @@ export default class Entry {
         }
     }
 
-    /**
+     /**
      * @method language
-     * @description This method is used set language code, which language's data to be retrieve.
+     * @description Sets the language code of which you want to retrieve data.
      * @param {String} language_code - language code. e.g. 'en-us', 'ja-jp', etc.
-     * @example blogEntry.language('en-us')
+     * @example 
+     * let data = blogEntry.language('en-us')
+     * data
+     *      .then(function(result) {
+     *           // result is  an object used to retrieve data of en-us language.
+     *      }, function(error) {
+     *           // error function
+     *      })
+     *          
      * @returns {Entry}
      */
     language(language_code) {
@@ -122,9 +132,9 @@ export default class Entry {
         }
     }
 
-    /**
+     /**
      * @method addQuery
-     * @description This method is used to add query to Entry object.
+     * @description Adds query to Entry object.
      * @param {String} key - key of the query
      * @param {String} value - value of the query
      * @example blogEntry.addQuery('include_schema',true)
@@ -140,10 +150,10 @@ export default class Entry {
     }
 
     /**
-     * @method includeSchema
+     * @method IncludeSchema
      * @deprecated since verion 3.3.0
-     * @description This method is used to include the schema of the current contenttype in result set along with the entry/entries.
-     * @example blogEntry.includeSchema()
+     * @description  Include schema of the current contenttype along with entry/entries details.
+     * @example Stack.ContentType("contentType_uid").Entry("entry_uid").includeSchema().fetch()
      * @returns {Entry}
      */
     includeSchema() {
@@ -153,7 +163,7 @@ export default class Entry {
 
     /**
      * @method includeContentType
-     * @description This method is used to include the current contenttype in result set along with the entry/entries.
+     * @description Include the details of the contenttype along with the entry/entries details.
      * @example blogEntry.includeContentType()
      * @returns {Entry}
      */
@@ -162,9 +172,9 @@ export default class Entry {
         return this;
     }
 
-    /**
+   /**
      * @method includeOwner
-     * @description This method is used to include the owner of the entry/entries in resultset.
+     * @description Includes the owner details of the entry/entries
      * @example blogEntry.includeOwner()
      * @returns {Entry}
      */
@@ -193,8 +203,13 @@ export default class Entry {
 
     /**
      * @method AddParam
-     * @description This method includes query parameter in query.
-     * @example blogQuery.addParam('include_count', 'true').fetch()
+     * @description AddParam method includes query parameter in query.
+     * @example var data = blogQuery.addParam('include_count', 'true').fetch()
+     *      data.then(function (result) {
+     *          // result is an object which content the data including count in json object form
+     *       },function (error) {
+     *          // error function
+     *      })
      */
     addParam(key, value) {
         if (key && value && typeof key === 'string' && typeof value === 'string') { 
@@ -206,11 +221,11 @@ export default class Entry {
     }
 
 
-    /**
+     /**
      * @method fetch
-     * @description fetch entry of requested content_type of defined query if present.
+     * @description Fetches a particular entry based on the provided entry UID.
      * @example
-     * blogEntry.fetch()
+     * Stack.blogEntry('entry_uid').fetch()
      */
     fetch() {
         if (this.entry_uid) {

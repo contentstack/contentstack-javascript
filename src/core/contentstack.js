@@ -24,7 +24,7 @@ class Contentstack {
 
 	/**
 	 * @method Stack
-	 * @description Initialize "Built.io Contentstack" Stack javascript-SDK instance
+	 * @description Initialize "Contentstack" Stack javascript-SDK instance
 	 * @api public
 	 * @example
 	 * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment');
@@ -36,7 +36,7 @@ class Contentstack {
 	 *   });
 	 *
 	 * @returns {Stack}
-	 */	
+	 */
 	Stack(...stack_arguments){
 		return new Stack(...stack_arguments);
 	}
