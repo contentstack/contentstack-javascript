@@ -169,9 +169,9 @@ export default class Stack {
         }
     }
 
-    /**
+   /**
      * @method getCacheProvider
-     * @description Returns currently set CacheProvider object.
+     * @description Returns the currently set object of CacheProvider.
      * @example Stack.getCacheProvider();
      * @returns {Object}
      */
@@ -179,10 +179,18 @@ export default class Stack {
         return this.provider;
     }
 
-    /**
+   /**
      * @method ContentType
-     * @description Set "ContentType" from the Stack from where you want to retrive the entries.
+     * @description Set the contentType the entries of which you want to retrieve
      * @param {String} [content_type_uid] - uid of the existing contenttype
+     * @example 
+     * let data = Stack.ContentType('blog').Query().toJSON().find()
+     *      data
+     *      .then(function(result) {
+     *           // result content the list of entries of particular contenttype blog.       
+     *      }, function(error) {
+     *           // error function
+     *      })
      * @returns {Stack}
      */
     ContentType(uid) {
@@ -195,9 +203,16 @@ export default class Stack {
 
     /**
      * @method Entry
-     * @description Set the Entry Uid which you want to retrive from the Contenttype specified.
-     * @param {String} uid - entry_uid
-     * @example ContentType('blog').Entry('blt1234567890abcef')
+     * @description Retrieves the entry based on the specified UID. 
+     * @param {String} uid - Entry_uid of entry you want to retrieve
+     * @example 
+     * let data = Stack.ContentType('blog').Entry('bltsomething123').toJSON().fetch()
+     *      data
+     *      .then(function(result) {
+     *           // result is single entry object of specific entry_uid.       
+     *      }, function(error) {
+     *           // error function
+     *      })
      * @returns {Entry}
      */
     Entry(uid) {
@@ -210,9 +225,16 @@ export default class Stack {
 
     /**
      * @method Assets
-     * @description Set the Asset Uid which you want to retrive the Asset.
-     * @param {String} uid - asset_uid
-     * @example Stack.Assets('blt1234567890abcef').fetch
+     * @description Retrieves the asset based on the specified UID
+     * @param {String} uid - uid of asset you want to retrieve
+     * @example 
+     * let data = Stack.Assets('bltsomething123').toJSON().fetch()
+     *      data
+     *      .then(function(result) {
+     *           // result is single asset object of specific asset_uid.       
+     *      }, function(error) {
+     *           // error function
+     *      })
      * @returns {Assets}
      */
     Assets(uid) {
@@ -227,8 +249,8 @@ export default class Stack {
 
     /**
      * @method Query
-     * @description Query instance to provide support for all search queries.
-     * @example ContentType('blog').Query()
+     * @description Provides support for all search queries.
+     * @example Stack.ContentType('blog').Query().toJSON().find()
      * @returns {Query}
      */
     Query() {
@@ -236,10 +258,18 @@ export default class Stack {
         return Utils.merge(query, this);
     }
 
-    /**
+   /**
      * @method getLastActivites
      * @description getLastActivites get all the ContentTypes whose last activity updated.
      * @example Stack.getLastActivites()
+     * @example 
+     * let data = Stack.getLastActivites().toJSON().fetch()
+     *      data
+     *      .then(function(result) {
+     *           // result is list of contentTypes whose last activity updated.       
+     *      }, function(error) {
+     *           // error function
+     *      })
      * @returns {Stack}
      * @ignore
      */
@@ -297,9 +327,9 @@ export default class Stack {
   
     /**
      * @method imageTransform
-     * @description Transforms provided image url based on transformation parameters.  
-     * @param {String} url - Url on which transformations to be applied.
-     * @param {String} params - Transformation parameters
+     * @description Performs transformations on images of mentioned url based on transformation parameters.  
+     * @param {String} url - Image url on which transformations need to be applied.
+     * @param {String} params - Object with transformation parameters
      * @example
      * Stack.imageTransform(imageURL, {height: 100, width: 200, disable: "upscale"});
      * @example

@@ -36,7 +36,7 @@ export default class Assets {
 
     /**
      * @method toJSON
-     * @description This method is used to convert the result in to plain javascript object.
+     * @description Converts your response into plain JavasScript object.
      * @example
      * assetQuery
      *      .toJSON()
@@ -52,10 +52,15 @@ export default class Assets {
         return this;
     }
 
-     /**
+    /**
      * @method AddParam
-     * @description This method includes query parameter in query.
-     * @example Stack.Assets('bltsomething123').addParam('include_dimension', 'true').fetch()
+     * @description Includes query parameters in your query.
+     * @example var data = blogQuery.addParam('include_count', 'true').toJSON().fetch()
+     *      data.then(function (result) {
+     *          // result contents count in JSON object form
+     *       },function (error) {
+     *          // error function
+     *      })
      */
     addParam(key, value) {
         if (key && typeof key === 'string' && value && typeof value === 'string') {        
@@ -68,9 +73,9 @@ export default class Assets {
 
     /**
      * @method fetch
-     * @description fetch asset obhect of requested Asset uid of defined query if present.
+     * @description Fetches a particular Asset based on the provided assets UID.
      * @example
-     * Stack.Assets('bltsomething123').fetch()
+     * Stack.Assets('bltsomething123').toJSON().fetch()
      */
     fetch() {
         if (this.asset_uid) {
