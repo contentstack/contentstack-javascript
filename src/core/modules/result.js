@@ -50,10 +50,10 @@ class Result {
         return (this.object()) ? Utils.mergeDeep(JSON.parse(JSON.stringify({})), this.object()) : null;
     }
 
-    /**
+   /**
      * @method get
-     * @description `get` to access the key value.
-     * @param field_uid
+     * @description Retrieve details of a field based on the UID provided
+     * @param field_uid uid of the field
      * @example
      * blogEntry.then(function (result) {
      *      let value = result.get(field_uid)
@@ -79,10 +79,10 @@ class Result {
         return ;
     }
 
-    /**
+     /**
      * @method getDownloadUrl
-     * @description `getDownloadUrl` to get the download url.
-     * @param {String} string - Disposition value
+     * @description Retrieves the download URL based on the disposition value.
+     * @param {String} string - disposition value
      * @example
      * assetQuery.then(function (result) {
      *      let value = result.getDownloadUrl(disposition_value)
