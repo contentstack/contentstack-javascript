@@ -15,9 +15,12 @@ export default class Entry {
         this._query = {};
         /**
          * @method only
-         * @description Displays values of only the specified fields in the response
-         * @param {String} [key=BASE] - BASE (default value) - retrieves default fields of the schema.
-                                      - referenced content-type-uid - retrieves fields of the referred content type.
+         * @description Displays values of only the specified fields of entries or assets in the response
+         * @param {String} [key=BASE] -  Assets: </br>
+         *                                <p>Retrieves specified field of asset</p>
+         * @param {String}            -  Entries:</br>
+         *                                       <p>- retrieves default fields of the schema.</p>
+         *                                       <p>- referenced_content-type-uid : retrieves fields of the referred content type.</p>
          * @param {Array} values - array of fields that you want to display in the response
          * @example
          * <caption> .only with field uid </caption>
@@ -35,11 +38,12 @@ export default class Entry {
          * <caption> .only with reference_field_uid and field uids(array) </caption>
          * blogEntry.includeReference('category').only('category', ['title', 'description'])
          * @returns {Entry}
+         * @returns {Asset}
          */
         this.only = Utils.transform('only');
         /**
          * @method except
-         * @description Displays all data of an entry excluding the data of the specified fields.
+         * @description Displays all data of an entries or assets excluding the data of the specified fields.
          * @param {String} [key=BASE] - BASE (default value) - retrieves default fields of the schema.
                                                              - referenced_content-type-uid - retrieves fields of the referred content type.
          * @param {Array} values - array of fields that you want to skip in the response
@@ -134,7 +138,7 @@ export default class Entry {
 
      /**
      * @method addQuery
-     * @description Adds query to Entry object.
+     * @description Adds query to Entry object
      * @param {String} key - key of the query
      * @param {String} value - value of the query
      * @example blogEntry.addQuery('include_schema',true)
@@ -150,9 +154,9 @@ export default class Entry {
     }
 
     /**
-     * @method IncludeSchema
+     * @method includeSchema
      * @deprecated since verion 3.3.0
-     * @description  Include schema of the current contenttype along with entry/entries details.
+     * @description  Include schema of the current content type along with entry/entries details.
      * @example Stack.ContentType("contentType_uid").Entry("entry_uid").includeSchema().fetch()
      * @returns {Entry}
      */
@@ -163,7 +167,7 @@ export default class Entry {
 
     /**
      * @method includeContentType
-     * @description Include the details of the contenttype along with the entry/entries details.
+     * @description Include the details of the content type along with the entry/entries details.
      * @example blogEntry.includeContentType()
      * @returns {Entry}
      */
@@ -185,9 +189,9 @@ export default class Entry {
 
     /**
      * @method toJSON
-     * @description This method is used to convert the result in to plain javascript object.
+     * @description Converts your response into plain JavasScript object.Supports both entry and asset queries.
      * @example
-     * blogEntry
+     * Query
      *      .toJSON()
      *      .then(function (result) {
      *          let value = result.get(field_uid)
@@ -203,10 +207,10 @@ export default class Entry {
 
     /**
      * @method AddParam
-     * @description AddParam method includes query parameter in query.
+     * @description Includes query parameters in your queries. Supports both 'entries' and 'assets' queries.
      * @example var data = blogQuery.addParam('include_count', 'true').fetch()
      *      data.then(function (result) {
-     *          // result is an object which content the data including count in json object form
+     *          // 'result' is an object which content the data including count in json object form
      *       },function (error) {
      *          // error function
      *      })
@@ -223,9 +227,11 @@ export default class Entry {
 
      /**
      * @method fetch
-     * @description Fetches a particular entry based on the provided entry UID.
+     * @description Fetches a particular entry/asset based on the provided entry UID/asset UID.
      * @example
-     * Stack.blogEntry('entry_uid').fetch()
+     * Stack.blogEntry('entry_uid').toJSON().fetch()
+     * @example
+     * Stack.Assets('assets_uid').toJSON().fetch()
      */
     fetch() {
         if (this.entry_uid) {

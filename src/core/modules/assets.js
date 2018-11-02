@@ -3,7 +3,7 @@ import Stack from '../stack';
 import Query from './query';
 
 /**
- * @summary Creates an instance of `Assets`.
+ * @summary Creates an instance of 'Assets'.
  * @description An initializer is responsible for creating Asset object.
  * @param {String} uid - uid of the asset
  * @example
@@ -13,55 +13,18 @@ import Query from './query';
  */
 export default class Assets {
     constructor() {
-         this._query = {};
-        /**
-         * @method only
-         * @description This method is use to show the selected fields of the assets in resultset.
-         * @param {String} [key=BASE] - single field in asset
-         * @param {Array} values - array of fields to be show in resultset
-         * @example
-         * <caption> .only with field uid </caption>
-         * Assets().only('title')
-         * @example
-         * <caption> .only with field uid </caption>
-         * Assets().only('BASE','title')
-         * @example
-         * <caption> .only with field uids(array) </caption>
-         * Assets().only(['title','description'])
-         * @returns {Asset}
-         */
+        this._query = {};        
         this.only = Utils.transform('only');
         return this;
     }
 
-    /**
-     * @method toJSON
-     * @description Converts your response into plain JavasScript object.
-     * @example
-     * assetQuery
-     *      .toJSON()
-     *      .then(function (result) {
-     *          let value = result.get(field_uid)
-     *       },function (error) {
-     *          // error function
-     *      })
-     * @returns {Object}
-     */
+    
     toJSON() {
         this.tojson = true;
         return this;
     }
 
-    /**
-     * @method AddParam
-     * @description Includes query parameters in your query.
-     * @example var data = blogQuery.addParam('include_count', 'true').toJSON().fetch()
-     *      data.then(function (result) {
-     *          // result contents count in JSON object form
-     *       },function (error) {
-     *          // error function
-     *      })
-     */
+
     addParam(key, value) {
         if (key && typeof key === 'string' && value && typeof value === 'string') {        
             this._query[key] = value;
@@ -71,12 +34,8 @@ export default class Assets {
         }
     }
 
-    /**
-     * @method fetch
-     * @description Fetches a particular Asset based on the provided assets UID.
-     * @example
-     * Stack.Assets('bltsomething123').toJSON().fetch()
-     */
+   
+
     fetch() {
         if (this.asset_uid) {
             this.requestParams = {

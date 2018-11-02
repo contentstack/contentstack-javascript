@@ -50,7 +50,7 @@ export default class Stack {
 
     /**
      * @method setPort
-     * @description Sets the port of the host.
+     * @description Sets the port of the host
      * @param {Number} port - Port Number
      * @return Stack
      * */
@@ -61,7 +61,7 @@ export default class Stack {
 
     /**
      * @method setProtocol
-     * @description Sets the protocol of the host.
+     * @description Sets the protocol for the host
      * @param {String} protocol - http/https protocol
      * @return Stack
      * */
@@ -72,7 +72,7 @@ export default class Stack {
 
     /**
      * @method setHost
-     * @description Sets the host of the API server.
+     * @description Sets the host of the API server
      * @param {String} host - valid ip or host
      * @return Stack
      * */
@@ -83,7 +83,7 @@ export default class Stack {
 
     /**
      * @method setCachePolicy
-     * @description setCachePolicy which contains different cache policies.
+     * @description Allows you to set cache policies
      * @param {Constant} [key=ONLY_NETWORK] - Cache policy to be applied on Stack or Query.
      * @example
      * Stack.setCachePolicy(Contentstack.CachePolicy.IGNORE_CACHE)
@@ -106,9 +106,9 @@ export default class Stack {
         return this;
     }
 
-    /**
+     /**
      * @method setCacheProvider
-     * @description Set 'Cache Provider' object.
+     * @description Allows you to set an object of the cache provider
      * @example
      * Stack
      *      .setCacheProvider({
@@ -171,7 +171,7 @@ export default class Stack {
 
    /**
      * @method getCacheProvider
-     * @description Returns the currently set object of CacheProvider.
+     * @description Returns the currently set object of 'CacheProvider'
      * @example Stack.getCacheProvider();
      * @returns {Object}
      */
@@ -181,13 +181,13 @@ export default class Stack {
 
    /**
      * @method ContentType
-     * @description Set the contentType the entries of which you want to retrieve
-     * @param {String} [content_type_uid] - uid of the existing contenttype
+     * @description Set the content type of which you want to retrieve the entries
+     * @param {String} [content_type_uid] - uid of the existing content type
      * @example 
      * let data = Stack.ContentType('blog').Query().toJSON().find()
      *      data
      *      .then(function(result) {
-     *           // result content the list of entries of particular contenttype blog.       
+     *           // 'result' content the list of entries of particular content type blog.       
      *      }, function(error) {
      *           // error function
      *      })
@@ -203,13 +203,13 @@ export default class Stack {
 
     /**
      * @method Entry
-     * @description Retrieves the entry based on the specified UID. 
-     * @param {String} uid - Entry_uid of entry you want to retrieve
+     * @description Retrieves the entry based on the specified UID 
+     * @param {String} uid - uid of entry you want to retrieve
      * @example 
      * let data = Stack.ContentType('blog').Entry('bltsomething123').toJSON().fetch()
      *      data
      *      .then(function(result) {
-     *           // result is single entry object of specific entry_uid.       
+     *           // ‘result’ is a single entry object of specified uid       
      *      }, function(error) {
      *           // error function
      *      })
@@ -231,7 +231,7 @@ export default class Stack {
      * let data = Stack.Assets('bltsomething123').toJSON().fetch()
      *      data
      *      .then(function(result) {
-     *           // result is single asset object of specific asset_uid.       
+     *           // ‘result’ is a single asset object of specified uid       
      *      }, function(error) {
      *           // error function
      *      })
@@ -249,7 +249,7 @@ export default class Stack {
 
     /**
      * @method Query
-     * @description Provides support for all search queries.
+     * @description Provides support for all search queries
      * @example Stack.ContentType('blog').Query().toJSON().find()
      * @returns {Query}
      */
@@ -266,7 +266,7 @@ export default class Stack {
      * let data = Stack.getLastActivites().toJSON().fetch()
      *      data
      *      .then(function(result) {
-     *           // result is list of contentTypes whose last activity updated.       
+     *           // 'result' is list of contentTypes whose last activity updated.       
      *      }, function(error) {
      *           // error function
      *      })
@@ -290,8 +290,8 @@ export default class Stack {
 
     /**
      * @method sync
-     * @description The Sync API takes care of syncing your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates. Contentstack’s iOS SDK supports Sync API, which you can use to build powerful apps. Read through to understand how to use the Sync API with Contentstack JavaScript SDK.
-     * @param {object} params - params is an object which Supports locale, start_date, content_type_id queries.
+     * @description Syncs your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates
+     * @param {object} params - params is an object that supports ‘locale’, ‘start_date’, ‘content_type_id’, and ‘type’ queries.
      * @example 
      * Stack.sync({'init': true})        // For initializing sync
      * @example 
@@ -327,7 +327,7 @@ export default class Stack {
   
     /**
      * @method imageTransform
-     * @description Performs transformations on images of mentioned url based on transformation parameters.  
+     * @description Performs transformations on images of mentioned url based on transformation parameters 
      * @param {String} url - Image url on which transformations need to be applied.
      * @param {String} params - Object with transformation parameters
      * @example
