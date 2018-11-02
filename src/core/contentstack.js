@@ -24,16 +24,16 @@ class Contentstack {
 
 	/**
 	 * @method Stack
-	 * @description Initialize "Contentstack" Stack javascript-SDK instance
+	 * @description Initialize an instance of ‘Stack’
 	 * @api public
 	 * @example
-	 * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment');
-	 *                  OR
-	 * var Stack = Contentstack.Stack({
-	 *      'api_key':'bltsomethingapikey',
-	 *      'access_token':'bltsomethongtoken',
-	 *      'environment':'environment_name'
-	 *   });
+	 *var Stack = Contentstack.Stack('api_key', 'delivery_token', 'environment');
+                 OR
+	 *var Stack = Contentstack.Stack({
+	 *    'api_key':'stack_api_key',
+	 *   'access_token':'stack_delivery_token',
+	 *    'environment':'environment_name'
+	 * });
 	 *
 	 * @returns {Stack}
 	 */
