@@ -80,7 +80,7 @@ const _extend = {
 
 /**
  * @summary
- * Creates an instance of `Query`.
+ * Creates an instance of 'Query'.
  * @description
  * An initializer is responsible for creating Query object.
  * @example
@@ -103,7 +103,7 @@ export default class Query extends Entry {
          * @example let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.lessThan('created_at','2015-06-22').find()
          *          data.then(function (result) {
-         *          // result content the data who's created_at date is less than '2015-06-22'
+         *          // result content the data who's 'created_at date' is less than '2015-06-22'
          *       },function (error) {
          *          // error function
          *      })
@@ -119,7 +119,7 @@ export default class Query extends Entry {
          * @example let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.lessThanOrEqualTo('created_at','2015-06-22').find()
          *          data.then(function (result) {
-         *          // result contain the data of entries where the created_at date will be less than or equalto '2015-06-22'.
+         *          // result contain the data of entries where the 'created_at' date will be less than or equalto '2015-06-22'.
          *       },function (error) {
          *          // error function
          *      })
@@ -130,12 +130,12 @@ export default class Query extends Entry {
          * @method greaterThan
          * @description Retrieves entries in which the value for a field is greater than the provided value.
          * @param {String} key - uid of the field
-         * @param {*} value -  value used to match or compare.
+         * @param {*} value -  value used to match or compare
          * @example 
          *          let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.greaterThan('created_at','2015-03-12').find()
          *                     data.then(function(result) {
-         *                       // result contains the data of entries where the created_at date will be greaterthan '2015-06-22'
+         *                       // result contains the data of entries where the 'created_at' date will be greaterthan '2015-06-22'
          *                     },function (error) {
          *                       // error function
          *                     })
@@ -151,7 +151,7 @@ export default class Query extends Entry {
          * @example let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.greaterThanOrEqualTo('created_at','2015-03-12').find()
          *          data.then(function(result) {
-         *          // result contains the data of entries where the created_at date will be greaterThan or equalto '2015-06-22'
+         *          // result contains the data of entries where the 'created_at' date will be greaterThan or equalto '2015-06-22'
          *       },function (error) {
          *          // error function
          *      })
@@ -200,7 +200,7 @@ export default class Query extends Entry {
          * @example let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.notContainedIn('title', ['Demo', 'Welcome']).find()
          *          data.then(function(result) {
-         *          // result contains the list of entries where value of the title field should not be either "Demo" or ‘Welcome’
+         *          // 'result' contains the list of entries where value of the title field should not be either "Demo" or ‘Welcome’
          *       },function (error) {
          *          // error function
          *      })
@@ -243,7 +243,7 @@ export default class Query extends Entry {
          /**
          * @method ascending
          * @description Sort fetched entries in the ascending order with respect to a specific field.
-         * @param {String} key - uid of the field
+         * @param {String} key - field uid based on which the ordering will be done
          * @example let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.ascending('created_at').find()
          *          data.then(function(result) {
@@ -298,7 +298,7 @@ export default class Query extends Entry {
          * @example let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.skip(5).find()
          *          data.then(function(result) {
-         *          // result contains the list of data which is sorted in descending order on created_at bases. 
+         *          // result contains the list of data which is sorted in descending order on 'created_at' bases. 
          *       },function (error) {
          *          // error function
          *      })
@@ -370,7 +370,7 @@ export default class Query extends Entry {
     }
 
     /**
-     * @method where()
+     * @method where
      * @description Retrieve entries in which a specific field satisfies the value provided
      * @param {String} key - uid of the field
      * @param {*} value - value used to match or compare
@@ -477,19 +477,7 @@ export default class Query extends Entry {
         return this;
     }
 
-    /**
-     * @method AddParam
-     * @description Retrieves entries based on the query provided
-     * @example blogQuery.addParam('include_count', 'true')
-     * @example let blogQuery = Stack().ContentType('example').Query();
-     *          let data = blogQuery.addParam('include_count', 'true').find()
-     *          data.then(function(result) {
-     *         // ‘result’ contains the count of object present in array[1] position. 
-     *       },function (error) {
-     *          // error function
-     *      })
-     * @returns {Query}
-     */
+    
     addParam(key, value) {
         if (key && value && typeof key === 'string' && typeof value === 'string') {
                 this._query[key] = value;
