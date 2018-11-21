@@ -2,36 +2,35 @@
 
 const ContentstackDemo = require('./contentstack-demo.js')
 
-const Demo = new ContentstackDemo({ 'api_key': '<api_key>', 'access_token': '<Delivery_token>', 'environment': '<Environment>'})
+const Demo = new ContentstackDemo({ 'api_key': 'blt4f29123a87c48c8b', 'access_token': 'bltb77300e99de1ce68', 'environment': 'local'})
 
 
- // Demo
- //    .getEntries('source')
- //    .then(function(result) {
- //        // result object with entry
- //        console.info("Result2 : ",  result)
-        
- //        //console.info("Result2 : ", JSON.stringify(result))
+ Demo
+    .getEntries('generic_template_1')
+    .then(function(result) {
+        // result object with entry
+        console.log("scnjdncjdncjd", result[0][0].getDownloadUrl())
+        //console.info("Result2 : ", JSON.stringify(result))
 
- //    })
- //    .catch(function(err) {
- //        // error of get entry
- //        console.error("Fetch Error :", err)
- //    })
+    })
+    .catch(function(err) {
+        // error of get entry
+        console.error("Fetch Error :", err)
+    })
 
 
 
     //get all the entries
-Demo.getSyncApi({"init": true, "type": "asset_published"})
-    .then(function(result) {
-        // result object with entries
-        console.info("Result: ", result)
+// Demo.getSyncApi({"init": true, "type": "asset_published"})
+//     .then(function(result) {
+//         // result object with entries
+//         console.info("Result: ", result)
 
-    })
-    .catch(function(err) {
-        // error of get all entries
-        console.error("Find Error :", err)
-    })
+//     })
+//     .catch(function(err) {
+//         // error of get all entries
+//         console.error("Find Error :", err)
+//     })
 
 
 
