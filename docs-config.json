@@ -19,6 +19,7 @@
         ]
     },
     "tags": {
-        "dictionaries": ["jsdoc", "closure"]
+        "dictionaries": ["jsdoc", "closure"],
+        "allowUnknownTags": true
     }
 }
