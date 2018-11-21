@@ -9,9 +9,21 @@ import * as cache from './cache';
 import CacheProvider from './cache-provider/index';
 
 /**
- * Expose `Stack`.
- * @ignore
- */
+     * @class 
+        Stack 
+     * @description Initialize an instance of ‘Stack’
+     * @example
+     * var Stack = Contentstack.Stack('api_key', 'delivery_token', 'environment');
+                 OR
+     * var Stack = Contentstack.Stack({
+     *    'api_key':'stack_api_key',
+     *   'access_token':'stack_delivery_token',
+     *    'environment':'environment_name'
+     * });
+     *
+     * @returns {Stack}
+     * @instance
+     */
 export default class Stack {
     constructor(...stack_arguments) {
 
@@ -50,9 +62,11 @@ export default class Stack {
 
     /**
      * @method setPort
+     * @memberOf Stack
      * @description Sets the port of the host
      * @param {Number} port - Port Number
-     * @return Stack
+     * @return {Stack}
+     * @instance
      * */
     setPort(port) {
         if (typeof port === "number") this.config.port = port;
@@ -61,9 +75,11 @@ export default class Stack {
 
     /**
      * @method setProtocol
+     * @memberOf Stack
      * @description Sets the protocol for the host
      * @param {String} protocol - http/https protocol
-     * @return Stack
+     * @return {Stack}
+     * @instance
      * */
     setProtocol(protocol) {
         if (typeof protocol === "string" && ~["https", "http"].indexOf(protocol)) this.config.protocol = protocol;
@@ -72,9 +88,11 @@ export default class Stack {
 
     /**
      * @method setHost
+     * @memberOf Stack
      * @description Sets the host of the API server
      * @param {String} host - valid ip or host
-     * @return Stack
+     * @return {Stack}
+     * @instance
      * */
     setHost(host) {
         if (typeof host === "string" && host) this.config.host = host;
@@ -83,6 +101,7 @@ export default class Stack {
 
     /**
      * @method setCachePolicy
+     * @memberOf Stack
      * @description Allows you to set cache policies
      * @param {Constant} [key=ONLY_NETWORK] - Cache policy to be applied on Stack or Query.
      * @example
@@ -92,6 +111,7 @@ export default class Stack {
      * Stack.setCachePolicy(Contentstack.CachePolicy.NETWORK_ELSE_CACHE)
      * Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)
      * @returns {Stack}
+     * @instance
      */
     setCachePolicy(policy) {
         if (typeof policy === 'number' && policy >= -1 && policy < 4) {
@@ -108,6 +128,7 @@ export default class Stack {
 
      /**
      * @method setCacheProvider
+     * @memberOf Stack
      * @description Allows you to set an object of the cache provider
      * @example
      * Stack
@@ -120,6 +141,7 @@ export default class Stack {
      *          }
      *      });
      * @returns {Stack}
+     * @instance
      */
     setCacheProvider(provider) {
         if (provider && typeof provider === 'object') {
@@ -131,10 +153,12 @@ export default class Stack {
 
     /**
      * @method clearByQuery
+     * @memberOf Stack
      * @description 'clearByQuery' function to clear the query from the cache.
      * @example
      * Stack.clearQuery(query, callback);
-     * @ignore
+     * @returns {Stack}
+     * @instance
      */
     clearByQuery() {
         if (this.provider && typeof this.provider.clearByQuery === 'function') {
@@ -144,11 +168,13 @@ export default class Stack {
 
     /**
      * @method clearByContentType
+     * @memberOf Stack
      * @description 'clearByContentType' function to clear the query from the cache by specified content type.
      * @example
      * Stack.clearByContentType(content_type_uid, callback);
      * Stack.clearByContentType(content_type_uid, language_uid, callback);
-     * @ignore
+     * @returns {Stack}
+     * @instance
      */
     clearByContentType() {
         if (this.provider && typeof this.provider.clearByContentType === 'function') {
@@ -158,10 +184,12 @@ export default class Stack {
 
     /**
      * @method clearAll
+     * @memberOf Stack
      * @description 'clearAll' function to clear all the queries from cache.
      * @example
      * Stack.clearAll(callback);
-     * @ignore
+     * @returns {Stack}
+     * @instance   
      */
     clearAll() {
         if (this.provider && typeof this.provider.clearAll === 'function') {
@@ -171,9 +199,11 @@ export default class Stack {
 
    /**
      * @method getCacheProvider
+     * @memberOf Stack
      * @description Returns the currently set object of 'CacheProvider'
      * @example Stack.getCacheProvider();
-     * @returns {Object}
+     * @returns {Stack}
+     * @instance
      */
     getCacheProvider() {
         return this.provider;
@@ -181,6 +211,7 @@ export default class Stack {
 
    /**
      * @method ContentType
+     * @memberOf Stack
      * @description Set the content type of which you want to retrieve the entries
      * @param {String} [content_type_uid] - uid of the existing content type
      * @example 
@@ -192,6 +223,7 @@ export default class Stack {
      *           // error function
      *      })
      * @returns {Stack}
+     * @instance
      */
     ContentType(uid) {
         if (uid && typeof uid === 'string') {
@@ -201,19 +233,13 @@ export default class Stack {
         return this;
     }
 
-    /**
+ /**
      * @method Entry
-     * @description Retrieves the entry based on the specified UID 
-     * @param {String} uid - uid of entry you want to retrieve
-     * @example 
-     * let data = Stack.ContentType('blog').Entry('bltsomething123').toJSON().fetch()
-     *      data
-     *      .then(function(result) {
-     *           // ‘result’ is a single entry object of specified uid       
-     *      }, function(error) {
-     *           // error function
-     *      })
+     * @memberOf Stack
+     * @param {String} uid - uid of the entry 
+     * @description An initializer is responsible for creating Entry object
      * @returns {Entry}
+     * @instance 
      */
     Entry(uid) {
         let entry = new Entry();
@@ -223,19 +249,13 @@ export default class Stack {
         return Utils.merge(entry, this);
     }
 
-    /**
+  /**
      * @method Assets
+     * @memberOf Stack
+     * @param {String} uid - uid of the asset 
      * @description Retrieves the asset based on the specified UID
-     * @param {String} uid - uid of asset you want to retrieve
-     * @example 
-     * let data = Stack.Assets('bltsomething123').toJSON().fetch()
-     *      data
-     *      .then(function(result) {
-     *           // ‘result’ is a single asset object of specified uid       
-     *      }, function(error) {
-     *           // error function
-     *      })
      * @returns {Assets}
+     * @instance 
      */
     Assets(uid) {
         this.type = 'asset';
@@ -247,11 +267,12 @@ export default class Stack {
         return this;
     }
 
-    /**
+ /**
      * @method Query
-     * @description Provides support for all search queries
-     * @example Stack.ContentType('blog').Query().toJSON().find()
+     * @memberOf Stack
+     * @description An initializer is responsible for creating Query object.Provides support for all search queries
      * @returns {Query}
+     * @instance  
      */
     Query() {
         let query = new Query();
@@ -260,6 +281,7 @@ export default class Stack {
 
    /**
      * @method getLastActivites
+     * @memberOf Stack
      * @description getLastActivites get all the ContentTypes whose last activity updated.
      * @example Stack.getLastActivites()
      * @example 
@@ -271,7 +293,7 @@ export default class Stack {
      *           // error function
      *      })
      * @returns {Stack}
-     * @ignore
+     * @instance
      */
     getLastActivities() {
         let query = {
@@ -290,6 +312,7 @@ export default class Stack {
 
     /**
      * @method sync
+     * @memberOf Stack
      * @description Syncs your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates
      * @param {object} params - params is an object that supports ‘locale’, ‘start_date’, ‘content_type_id’, and ‘type’ queries.
      * @example 
@@ -306,7 +329,8 @@ export default class Stack {
      * Stack.sync({'pagination_token': '<btlsomething>'})    // For fetching the next batch of entries using pagination token
      * @example 
      * Stack.sync({'sync_token': '<btlsomething>'})    // For performing subsequent sync after initial sync
-     * @returns {object}
+     * @returns {promise}
+     * @instance
      */
 
     sync(params) {
@@ -327,6 +351,7 @@ export default class Stack {
   
     /**
      * @method imageTransform
+     * @memberOf Stack
      * @description Performs transformations on images of mentioned url based on transformation parameters 
      * @param {String} url - Image url on which transformations need to be applied.
      * @param {String} params - Object with transformation parameters
@@ -337,6 +362,7 @@ export default class Stack {
      * @example
      * Stack.imageTransform(imageURL, {format: "png", crop: "150,100"});
      * @returns {string} [Image url with transformation parameters.]
+     * @instance
      */
     imageTransform(url, params) {
         if (url && typeof url === "string" && typeof params === "object" && params.length === undefined) {
