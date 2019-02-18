@@ -1,6 +1,6 @@
 {
     "opts": {
-        "template": "csio-templates",
+        "template": "contentstack-templates",
         "encoding": "utf8",
         "destination": "./js-sdk-reference/",
         "recurse": true
