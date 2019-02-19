@@ -24,7 +24,7 @@ class ContentstackDemo {
      */
     getEntries(contentTypeUid) {
         contentTypeUid = contentTypeUid || 'source'
-        return this.Stack.ContentType(contentTypeUid).Query().toJSON().find()
+        return this.Stack.ContentType(contentTypeUid).Query().includeReference('secondary_section.reference.reference').find()
     }
 
 
@@ -38,7 +38,7 @@ class ContentstackDemo {
     getEntry(contentTypeUid, entryUid) {
             contentTypeUid = contentTypeUid || 'source'
             entryUid = entryUid || 'blt123something'
-            return this.Stack.ContentType(contentTypeUid).Entry(entryUid).fetch()
+            return this.Stack.ContentType(contentTypeUid).Entry(entryUid).language('ja-jp').fetch()
         }
 
         /**
