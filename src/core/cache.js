@@ -12,11 +12,16 @@ export function get(key) {
 };
 
 export function set(key, data) {
-    if (typeof data === 'object') {
-        storage.setItem(key, JSON.stringify(data));
-    } else {
-        storage.setItem(key, data);
+    try {
+        if (typeof data === 'object') {
+            storage.setItem(key, JSON.stringify(data));
+        } else {
+            storage.setItem(key, data);
+        }
+    } catch (error) {
+        
     }
+    
 };
 
 export function getStorage() {
