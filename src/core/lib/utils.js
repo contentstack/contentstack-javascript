@@ -312,10 +312,11 @@ export function sendRequest(queryObject) {
                 });
         }
     };
-
+console.log("cachePolicy", cachePolicy)
     switch (cachePolicy) {
         case 1:
             return new Promise(function(resolve, reject) {
+                console.log("self.prvider>>>>>", self.provider)
                 if (self.provider !== null) {
                     self.provider.get(hashQuery, function(err, _data) {
                         try {
@@ -345,91 +346,107 @@ export function sendRequest(queryObject) {
     };
 
     if (cachePolicy === 3) {
-        /////// New Implementaion 
-            // return new Promise(function(resolve, reject) {
-            //     // if (self.provider !== null) {
-            //         self.provider.get(hashQuery, function(err, _data) {
-            //             try {
-            //                 if (err) {
-            //                     reject(err);
-            //                 } else {
-            //                     if (!tojson) _data = resultWrapper(_data);
-            //                     resolve(spreadResult(_data));
-            //                 }
-            //             } catch (e) {
-            //                 reject(e);
-            //             }
-            //         });
-            //     // }else  {
-            //     //     callback(true, resolve, reject);
-            //     //     // reject({ error_code: 141, error_message: 'The requested entry doesn\'t exist.' });
-            //     // }
-            // });
 
-       // Old Implementation
-        return {
-            cache: (function() {
-                return new Promise(function(resolve, reject) {
-                        self.provider.get(hashQuery, function(err, _data) {
-                            try {
-                                if (err) {
-                                    reject(err);
-                                } else {
-                                    if (!tojson) _data = resultWrapper(_data);
-                                    resolve(spreadResult(_data));
-                                }
-                            } catch (e) {
-                                reject(e);
-                            }
-                        });
-                });
-            }()),
-            network: (function() {
-                return new Promise(function(resolve, reject) {
-                    callback(true, resolve, reject);
-                });
-            }()),
-            both: function(_callback_) {
+        var promise = new Promise(function(resolve, reject) {
                 if (self.provider !== null) {
-                    self.provider.get(hashQuery, function(err, entries) {
-                        if (!tojson) entries = resultWrapper(entries);
-                        _callback_(err, spreadResult(entries))
+                    console.log("inside the catche")
+                    self.provider.get(hashQuery, function(err, _data) {
+                        try {
+                            if (err || !_data) {
+                                return reject(err);
+                                //reject(Error("It broke"));
+                            } else {
+                                console.log("inside else part")
+                                if (!tojson) _data = resultWrapper(_data);
+                                return resolve(spreadResult(_data));
+                            }
+                        } catch (e) {
+                            return reject(e);
+                        }
                     });
                 }
-                Request(queryObject.requestParams)
-                    .then(function(data) {
-                        try {
-                            self.entry_uid = self.tojson = self.queryCachePolicy = undefined;
-                            let entries = {},
-                                error = null;
-                            if (queryObject.singleEntry) {
-                                queryObject.singleEntry = false;
-                                if (data.schema) entries.schema = data.schema;
-                                if (data.content_type) {
-                                    entries.content_type = data.content_type;
-                                    delete entries.schema
-                                }
-                                if (data.entries && data.entries.length) {
-                                    entries.entry = data.entries[0];
-                                } else if (data.assets && data.assets.length) {
-                                    entries.assets = data.assets[0];
-                                } else {
-                                    error = { error_code: 141, error_message: 'The requested entry doesn\'t exist.' };
-                                }
-                            } else {
-                                entries = data;
-                            }
-                            if (!tojson) entries = resultWrapper(entries);
-                            _callback_(error, spreadResult(entries));
-                        } catch (e) {
-                            _callback_(e);
-                        }
-                    }.bind(self))
-                    .catch(function(error) {
-                        _callback_(error);
-                    });
-            }
+            });
 
-        };
+        return promise.then(function() {
+            return new Promise(function(resolve, reject) {
+                    callback(true, resolve, reject);
+                });
+              }).catch((error) => {
+            return new Promise(function(resolve, reject) {
+                    callback(true, resolve, reject);
+                });
+                  console.error(error)
+              })
+        
+        // return {
+        //     cache: (function() {
+        //         console.log("inside cache")
+        //         return new Promise(function(resolve, reject) {
+        //                 self.provider.get(hashQuery, function(err, _data) {
+        //                     console.log("datatatat", _data)
+        //                     try {
+        //                         if (err) {
+        //                             reject(err);
+        //                         } else { 
+        //                     console.log("else part")
+        //                             if (!tojson) _data = resultWrapper(_data);
+        //                             console.log("spreddatat", _data)
+        //                             resolve(spreadResult(_data));
+        //                         }
+        //                     } catch (e) {
+        //                         reject(e);
+        //                     }
+        //                 });
+        //          });
+        //     }()),
+        //     network: (function() {
+        //         console.log("inside netwrk")
+        //         return new Promise(function(resolve, reject) {
+        //             callback(true, resolve, reject);
+        //         });
+        //     }()),
+        //     both: function(_callback_) {
+        //         console.log("inside both")
+        //         if (self.provider !== null) {
+        //             self.provider.get(hashQuery, function(err, entries) {
+        //                 if (!tojson) entries = resultWrapper(entries);
+        //                 _callback_(err, spreadResult(entries))
+        //             });
+        //         }
+        //         Request(queryObject.requestParams)
+        //             .then(function(data) {
+        //                 console.log("datattatat>>>>>>>", data)
+        //                 try {
+        //                     self.entry_uid = self.tojson = self.queryCachePolicy = undefined;
+        //                     let entries = {},
+        //                         error = null;
+        //                     if (queryObject.singleEntry) {
+        //                         queryObject.singleEntry = false;
+        //                         if (data.schema) entries.schema = data.schema;
+        //                         if (data.content_type) {
+        //                             entries.content_type = data.content_type;
+        //                             delete entries.schema
+        //                         }
+        //                         if (data.entries && data.entries.length) {
+        //                             entries.entry = data.entries[0];
+        //                         } else if (data.assets && data.assets.length) {
+        //                             entries.assets = data.assets[0];
+        //                         } else {
+        //                             error = { error_code: 141, error_message: 'The requested entry doesn\'t exist.' };
+        //                         }
+        //                     } else {
+        //                         entries = data;
+        //                     }
+        //                     if (!tojson) entries = resultWrapper(entries);
+        //                     _callback_(error, spreadResult(entries));
+        //                 } catch (e) {
+        //                     _callback_(e);
+        //                 }
+        //             }.bind(self))
+        //             .catch(function(error) {
+        //                 _callback_(error);
+        //             });
+        //     }
+        // };
     }
 };
