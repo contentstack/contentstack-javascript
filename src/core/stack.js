@@ -309,6 +309,32 @@ export default class Stack {
         return Request(query);
     }
 
+   /**
+     * @method getContentTypes
+     * @memberOf Stack
+     * @description getContentTypes get all the ContentTypes.
+     * @example Stack.getContentTypes()
+     * @example
+     * let data = Stack.getContentTypes()
+     *     data.then(function(result) {
+     *           // 'result' is list of contentTypes.
+     *     }, function(error) {
+     *           // error function
+     *     })
+     * @returns {Promise}
+     * @instance
+     */
+    getContentTypes() {
+        let query = {
+            headers: this.headers,
+            url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
+            body: {
+                _method: 'GET',
+                environment: this.environment
+            }
+        };
+        return Request(query);
+    }
 
     /**
      * @method sync
