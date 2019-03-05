@@ -289,6 +289,61 @@ export default class Stack {
 
 
     /**
+     * @method getAllContentType
+     * @description getAllContentType get all the ContentTypes whose last activity updated.
+     * @example Stack.getAllContentType()
+     * @example 
+     * let data = Stack.getAllContentType().toJSON().fetch()
+     *      data
+     *      .then(function(result) {
+     *           // 'result' is list of contentTypes whose last activity updated.       
+     *      }, function(error) {
+     *           // error function
+     *      })
+     * @returns {Stack}
+     * @ignore
+     */
+    getAllContentTypes() {
+        let query = {
+            method: 'POST',
+            headers: this.headers,
+            url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
+            body: {
+                _method: 'GET'
+            }
+        };
+        return Request(query);
+    }
+
+     /**
+     * @method getContentType
+     * @description getContentType get all the ContentTypes whose last activity updated.
+     * @example Stack.getContentType()
+     * @example 
+     * let data = Stack.getContentType().toJSON().fetch()
+     *      data
+     *      .then(function(result) {
+     *           // 'result' is list of contentTypes whose last activity updated.       
+     *      }, function(error) {
+     *           // error function
+     *      })
+     * @returns {Stack}
+     * @ignore
+     */
+    getContentType(content_type_uid) {
+        let query = {
+            method: 'POST',
+            headers: this.headers,
+            url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types + content_type_uid,
+            body: {
+                _method: 'GET',
+                environment: this.environment
+            }
+        };
+        return Request(query);
+    }
+
+    /**
      * @method sync
      * @description Syncs your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates
      * @param {object} params - params is an object that supports ‘locale’, ‘start_date’, ‘content_type_id’, and ‘type’ queries.
