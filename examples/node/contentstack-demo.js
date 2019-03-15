@@ -27,6 +27,43 @@ class ContentstackDemo {
         return this.Stack.ContentType(contentTypeUid).Query().includeReference('secondary_section.reference.reference').find()
     }
 
+    /**
+     * getEntries
+     * @description  : getEntries is used to get the entries of the specified entries
+     * @params       : contentTypeUid {string} - Content-Type from which entries to be retrieved
+     * @return       : Result {Promise}
+     */
+    getLastActivities() {
+        //contentTypeUid = contentTypeUid || 'source'
+        return this.Stack.getLastActivities()
+    }
+
+    /**
+     * getEntries
+     * @description  : getEntries is used to get the entries of the specified entries
+     * @params       : contentTypeUid {string} - Content-Type from which entries to be retrieved
+     * @return       : Result {Promise}
+     */
+    getAllContentType() {
+        //contentTypeUid = contentTypeUid || 'source'
+        return this.Stack.getAllContentTypes()
+    }
+
+    /**
+     * getEntries
+     * @description  : getEntries is used to get the entries of the specified entries
+     * @params       : contentTypeUid {string} - Content-Type from which entries to be retrieved
+     * @return       : Result {Promise}
+     */
+    getContentType(uid) {
+        //contentTypeUid = contentTypeUid || 'source'
+        return this.Stack.getContentType(uid)
+    }
+
+
+
+
+
 
     /**
      * fetchEntry
