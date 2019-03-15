@@ -79,15 +79,15 @@ const _extend = {
 };
 
 /**
- * @summary
- * Creates an instance of 'Query'.
+ * @class 
+   Query  
  * @description
- * An initializer is responsible for creating Query object.
+ * An initializer is responsible for creating Query object.Provides support for all search queries
  * @example
  * <caption>Query instance creation.</caption>
  * let Query = Contentstack.Stack().ContentType('example').Query();
  * let assetQuery =  Contentstack.Stack().Assets().Query();
- * @ignore
+ * @returns {Query}
  */
 export default class Query extends Entry {
 
@@ -97,6 +97,7 @@ export default class Query extends Entry {
         this._query['query'] = this._query['query'] || {};
          /**
          * @method lessThan
+         * @memberOf Query
          * @description Retrieves entries in which the value of a field is lesser than the provided value
          * @param {String} key - uid of the field
          * @param {*} value - Value used to match or compare
@@ -108,11 +109,13 @@ export default class Query extends Entry {
          *          // error function
          *      })
          * @returns {Query}
+         * @instance
          */
         this.lessThan = _extend.compare('$lt');
 
          /**
          * @method lessThanOrEqualTo
+         * @memberOf Query
          * @description Retrieves entries in which the value of a field is lesser than or equal to the provided value.
          * @param {String} key - uid of the field
          * @param {*} value - Value used to match or compare
@@ -124,10 +127,12 @@ export default class Query extends Entry {
          *          // error function
          *      })
          * @returns {Query}
+         * @instance
          */
         this.lessThanOrEqualTo = _extend.compare('$lte');
          /**
          * @method greaterThan
+         * @memberOf Query
          * @description Retrieves entries in which the value for a field is greater than the provided value.
          * @param {String} key - uid of the field
          * @param {*} value -  value used to match or compare
@@ -140,11 +145,13 @@ export default class Query extends Entry {
          *                       // error function
          *                     })
          * @returns {Query}
+         * @instance
          */
         this.greaterThan = _extend.compare('$gt');
 
         /**
          * @method greaterThanOrEqualTo
+         * @memberOf Query
          * @description Retrieves entries in which the value for a field is greater than or equal to the provided value.
          * @param {String} key - uid of the field 
          * @param {*} value - Value used to match or compare
@@ -156,15 +163,16 @@ export default class Query extends Entry {
          *          // error function
          *      })
          * @returns {Query}
+         * @instance
          */
         this.greaterThanOrEqualTo = _extend.compare('$gte');
 
         /**
          * @method notEqualTo
+         * @memberOf Query
          * @description Retrieves entries in which the value for a field does not match the provided value.
          * @param {String} key - uid of the field 
          * @param {*} value - Value used to match or compare
-         * @example blogQuery.notEqualTo('title','Demo')
          * @example let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.notEqualTo('title','Demo').find()
          *          data.then(function(result) {
@@ -173,11 +181,13 @@ export default class Query extends Entry {
          *          // error function
          *      })
          * @returns {Query}
+         * @instance
          */
         this.notEqualTo = _extend.compare('$ne');
 
         /**
          * @method containedIn
+         * @memberOf Query
          * @description Retrieve entries in which the value of a field matches with any of the provided array of values
          * @param {String} key - uid of the field
          * @param {*} value - Array of values that are to be used to match or compare
@@ -189,11 +199,13 @@ export default class Query extends Entry {
          *          // error function
          *      })
          * @returns {Query}
+         * @instance
          */
         this.containedIn = _extend.contained(true);
 
        /**
          * @method notContainedIn
+         * @memberOf Query
          * @description Retrieve entries in which the value of a field does not match with any of the provided array of values.
          * @param {String} key - uid of the field
          * @param {Array} value - Array of values that are to be used to match or compare
@@ -205,11 +217,13 @@ export default class Query extends Entry {
          *          // error function
          *      })
          * @returns {Query}
+         * @instance
          */
         this.notContainedIn = _extend.contained(false);
 
          /**
-         * @method exists
+         * @method exists 
+         * @memberOf Query
          * @description Retrieve entries if value of the field, mentioned in the condition, exists.
          * @param {String} key - uid of the field
          * @example blogQuery.exists('featured')
@@ -221,11 +235,13 @@ export default class Query extends Entry {
          *          // error function
          *      })
          * @returns {Query}
+         * @instance
          */
         this.exists = _extend.exists(true);
 
          /**
          * @method notExists
+         * @memberOf Query
          * @description Retrieve entries if value of the field, mentioned in the condition, does not exists.
          * @param {String} key - uid of the field
          * @example blogQuery.notExists('featured')
@@ -237,11 +253,13 @@ export default class Query extends Entry {
          *          // error function
          *      })
          * @returns {Query}
+         * @instance
          */
         this.notExists = _extend.exists(false);
 
          /**
          * @method ascending
+         * @memberOf Query
          * @description Sort fetched entries in the ascending order with respect to a specific field.
          * @param {String} key - field uid based on which the ordering will be done
          * @example let blogQuery = Stack().ContentType('example').Query();
@@ -252,11 +270,13 @@ export default class Query extends Entry {
          *          // error function
          *      })
          * @returns {Query}
+         * @instance
          */
         this.ascending = _extend.sort('asc');
 
         /**
          * @method descending
+         * @memberOf Query
          * @description Sort fetched entries in the descending order with respect to a specific field
          * @param {String} key - field uid based on which the ordering will be done.
          * @example let blogQuery = Stack().ContentType('example').Query();
@@ -267,31 +287,35 @@ export default class Query extends Entry {
          *          // error function
          *      })
          * @returns {Query}
+         * @instance
          */
         this.descending = _extend.sort('desc');
 
          /**
          * @method beforeUid
+         * @memberOf Query
          * @description Sort fetched entries in the descending order with respect to a specific field
          * @param {String} uid - field uid based on which the ordering will be done.
          * @example blogQuery.beforeUid('blt1234567890abcdef')
          * @returns {Query}
-         * @ignore
+         * @instance
          */
         this.beforeUid = _extend.sort('before_uid');
 
         /**
          * @method afterUid
+         * @memberOf Query
          * @description This method provides only the entries after the specified entry id.
          * @param {String} uid - uid of the entry
          * @example blogQuery.afterUid('blt1234567890abcdef')
          * @returns {Query}
-         * @ignore
+         * @instance
          */
         this.afterUid = _extend.sort('after_uid');
 
          /**
          * @method skip
+         * @memberOf Query
          * @description Skips at specific number of entries.
          * @param {Number} skip - number of entries to be skipped
          * @example blogQuery.skip(5)
@@ -303,11 +327,13 @@ export default class Query extends Entry {
          *          // error function
          *      })
          * @returns {Query}
+         * @instance
          */
         this.skip = _extend.pagination('skip');
 
          /**
          * @method limit
+         * @memberOf Query
          * @description Returns a specific number of entries based on the set limit
          * @param {Number} limit - maximum number of entries to be returned
          * @example let blogQuery = Stack().ContentType('example').Query();
@@ -318,11 +344,13 @@ export default class Query extends Entry {
          *          // error function
          *      })
          * @returns {Query}
+         * @instance
          */
         this.limit = _extend.pagination('limit');
 
          /**
          * @method or
+         * @memberOf Query
          * @description Retrieves entries that satisfy at least one of the given conditions
          * @param {object} queries - array of Query objects or raw queries
          * @example
@@ -336,11 +364,13 @@ export default class Query extends Entry {
          * let Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10).getQuery()
          * blogQuery.or(Query1, Query2)
          * @returns {Query}
+         * @instance
          */
         this.or = _extend.logical('$or');
 
         /**
          * @method and
+         * @memberOf Query
          * @description Retrieve entries that satisfy all the provided conditions.
          * @param {object} queries - array of query objects or raw queries.
          * @example
@@ -354,6 +384,7 @@ export default class Query extends Entry {
          * let Query2 = Stack.ContentType('blog').Query().lessThan('comments', 10).getQuery()
          * blogQuery.and(Query1, Query2)
          * @returns {Query}
+         * @instance
          */
         this.and = _extend.logical('$and');
     }
@@ -370,7 +401,7 @@ export default class Query extends Entry {
     }
 
     /**
-     * @method where
+     * @memberOf Query
      * @description Retrieve entries in which a specific field satisfies the value provided
      * @param {String} key - uid of the field
      * @param {*} value - value used to match or compare
@@ -382,6 +413,7 @@ export default class Query extends Entry {
      *          // error function
      *      })
      * @returns {Query}
+     * @instance
      */
 
     where(key, value) {
@@ -395,6 +427,7 @@ export default class Query extends Entry {
 
     /**
      * @method count
+     * @memberOf Query
      * @description Returns the total number of entries
      * @example blogQuery.count()
      * @example let blogQuery = Stack().ContentType('example').Query();
@@ -405,6 +438,7 @@ export default class Query extends Entry {
      *          // error function
      *      })
      * @returns {Query}
+     * @instance
      */
     count() {
         const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
@@ -424,9 +458,11 @@ export default class Query extends Entry {
 
     /**
      * @method query
+     * @memberOf Query
      * @description Retrieve entries based on raw queries
      * @param {object} query - RAW (JSON) queries 
      * @returns {Query}
+     * @instance
      */
     query(query) {
         if (typeof query === "object") {
@@ -439,6 +475,7 @@ export default class Query extends Entry {
 
     /**
      * @method tags
+     * @memberOf Query
      * @description Retrieves entries based on the provided tags
      * @param {Array} values - tags
      * @example let blogQuery = Stack().ContentType('example').Query();
@@ -449,6 +486,7 @@ export default class Query extends Entry {
      *          // error function
      *      })
      * @returns {Query}
+     * @instance
      */
     tags(values) {
         if (Array.isArray(values)) {
@@ -461,6 +499,7 @@ export default class Query extends Entry {
 
     /**
      * @method includeCount
+     * @memberOf Query
      * @description Includes the total number of entries returned in the response.
      * @example blogQuery.includeCount()
      * @example let blogQuery = Stack().ContentType('example').Query();
@@ -471,12 +510,26 @@ export default class Query extends Entry {
      *          // error function
      *      })
      * @returns {Query}
+     * @instance
      */
     includeCount() {
         this._query['include_count'] = true;
         return this;
     }
 
+/**
+     * @method addParam
+     * @description Includes query parameters in your queries.
+     * @memberOf Query
+     * @example var data = blogQuery.addParam('include_count', 'true').fetch()
+     *      data.then(function (result) {
+     *          // 'result' is an object which content the data including count in json object form
+     *       },function (error) {
+     *          // error function
+     *      })
+     * @returns {Query}
+     * @instance
+     */
     
     addParam(key, value) {
         if (key && value && typeof key === 'string' && typeof value === 'string') {
@@ -489,9 +542,11 @@ export default class Query extends Entry {
 
     /**
      * @method getQuery
+     * @memberOf Query
      * @description Returns the raw (JSON) query based on the filters applied on Query object.
      * @example Stack.ContentType('contentType_uid').Query().where('title','Demo').getQuery().find()
      * @returns {Query}
+     * @instance
      */
     getQuery() {
         return this._query.query || {};
@@ -499,6 +554,7 @@ export default class Query extends Entry {
 
     /**
      * @method regex
+     * @memberOf Query
      * @description Retrieve entries that match the provided regular expressions
      * @param {String} key - uid of the field
      * @param {*} value - value used to match or compare
@@ -510,6 +566,7 @@ export default class Query extends Entry {
      * <caption> .regex with options</caption>
      * blogQuery.regex('title','^Demo', 'i')
      * @returns {Query}
+     * @instance
      */
     regex(key, value, options) {
         if (key && value && typeof key === 'string' && typeof value === 'string') {
@@ -525,6 +582,7 @@ export default class Query extends Entry {
 
     /**
      * @method search
+     * @memberOf Query
      * @description Retrieve entries that have fields which match the provided search value.
      * @param {string} value - value to search in entries
      * @example blogQuery.search('Welcome to demo')
@@ -536,6 +594,7 @@ export default class Query extends Entry {
      *          // error function
      *      })
      * @returns {Query}
+     * @instance
      */
     search(value) {
         if (value && typeof value === 'string') {
@@ -548,6 +607,7 @@ export default class Query extends Entry {
 
     /**
      * @method find
+     * @memberOf Query
      * @description Retrieves entries that satisfied the specified query
      * @example let blogQuery = Stack().ContentType('example').Query().find();
      *          blogQuery.then(function(result) {
@@ -556,6 +616,8 @@ export default class Query extends Entry {
      *          // error function
      *      })
      * blogQuery.find()
+     * @returns {promise}
+     * @instance
      */
     find() {
         const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
@@ -574,6 +636,7 @@ export default class Query extends Entry {
 
      /**
      * @method findOne
+     * @memberOf Query
      * @deprecated since verion 3.3.0
      * @description Retrieve a single entry from the result
      * @example let blogQuery = Stack().ContentType('example').Query().findOne();
@@ -583,6 +646,8 @@ export default class Query extends Entry {
      *          // error function
      *      })
      * blogQuery.findOne()
+     * @returns {promise}
+     * @instance
      */
     findOne() {
         const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
