@@ -1,6 +1,7 @@
 import * as Utils  from '../lib/utils'
 
 /**
+ * @class Result
  * @summary Creates an instance of `Result`.
  * @description An initializer is responsible for creating Result object.
  * @param {Object} object - API result object
@@ -17,6 +18,7 @@ import * as Utils  from '../lib/utils'
  *      // error function
  * })
  * @returns {Result}
+ * @instance 
  */
 class Result {
     constructor(object){
@@ -31,20 +33,22 @@ class Result {
 
     /**
      * @method toJSON
+     * @memberOf Result
      * @description Converts `Result` to plain javascript object.
      * @example
      * blogEntry.then(function (result) {
-     *      result = result.toJSON()
+     *      result = result[0][0].toJSON()
      * },function (error) {
      *      // error function
      * })
      * @example
      * assetQuery.then(function (result) {
-     *      result = result.toJSON()
+     *      result = result[0][0].toJSON()
      * },function (error) {
      *      // error function
      * })
      * @returns {object}
+     * @instance 
      */
     toJSON() {
         return (this.object()) ? Utils.mergeDeep(JSON.parse(JSON.stringify({})), this.object()) : null;
@@ -52,21 +56,23 @@ class Result {
 
    /**
      * @method get
+     * @memberOf Result
      * @description Retrieve details of a field based on the UID provided
      * @param field_uid uid of the field
      * @example
      * blogEntry.then(function (result) {
-     *      let value = result.get(field_uid)
+     *      let value = result[0][0].get(field_uid)
      * },function (error) {
      *      // error function
      * })
      * @example
      * assetQuery.then(function (result) {
-     *      let value = result.get(field_uid)
+     *      let value = result[0][0].get(field_uid)
      * },function (error) {
      *      // error function
      * })
-     * @returns {Object}
+     * @returns {promise}
+     * @instance  
      */
     get(key){
         if(this.object() && key) {
@@ -81,15 +87,17 @@ class Result {
 
      /**
      * @method getDownloadUrl
+     * @memberOf Result
      * @description Retrieves the download URL based on the disposition value.
      * @param {String} string - disposition value
      * @example
      * assetQuery.then(function (result) {
-     *      let value = result.getDownloadUrl(disposition_value)
+     *      let value = result[0][0].getDownloadUrl(disposition_value)
      * },function (error) {
      *      // error function
      * })
      * @returns {Object}
+     * @instance    
      */
      getDownloadUrl(disposition) {
         if (this.object()) {
@@ -98,7 +106,6 @@ class Result {
             return (url) ? url + '?disposition=' + _disposition : null;    
         }
      }    
-
 }
 
 module.exports = function(object) {
