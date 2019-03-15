@@ -2,37 +2,43 @@
 
 const ContentstackDemo = require('./contentstack-demo.js')
 
-const Demo = new ContentstackDemo({ 'api_key': 'blt4f29123a87c48c8b', 'access_token': 'bltb77300e99de1ce68', 'environment': 'local'})
+//const Demo = new ContentstackDemo({ 'api_key': "blt292960b854e5170e", 'access_token': "blt468d2af41a0f061c", 'environment': "development"})
+const Demo = new ContentstackDemo({ 'api_key': "blta18f3e7d09cb530c", 'access_token': "blt5260e2a69bb91bc6", 'environment': "development"})
 
 
- Demo
-    .getEntries('generic_template_1')
-    .then(function(result) {
-        // result object with entry
-        console.log("scnjdncjdncjd", result[0][0].getDownloadUrl())
-        //console.info("Result2 : ", JSON.stringify(result))
+ // Demo
+ //    .getEntries('source')
+ //    .then(function(result) {
+ //        // result object with entry
+ //        console.info("Result2 : ",  result)
+        
+ //        //console.info("Result2 : ", JSON.stringify(result))
 
-    })
-    .catch(function(err) {
-        // error of get entry
-        console.error("Fetch Error :", err)
-    })
+ //    })
+ //    .catch(function(err) {
+ //        // error of get entry
+ //        console.error("Fetch Error :", err)
+ //    })
 
 
 
     //get all the entries
-// Demo.getSyncApi({"init": true, "type": "asset_published"})
-//     .then(function(result) {
-//         // result object with entries
-//         console.info("Result: ", result)
-
-//     })
-//     .catch(function(err) {
-//         // error of get all entries
-//         console.error("Find Error :", err)
-//     })
-
-
+Demo.getContentType("header")
+    .then(function(err, result) {
+        try {
+            if (err || !result) {
+                console.log(err)
+            } else {
+                console.info("Result: ", JSON.stringify(result))
+            }
+        } catch (e) {
+            return reject(e);
+        } 
+    })
+    .catch(function(err) {
+        // error of get all entries
+        console.error("Find Error :", err)
+    })
 
 //     // get single asset
 // Demo
