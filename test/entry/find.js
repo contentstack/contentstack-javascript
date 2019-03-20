@@ -30,7 +30,6 @@ test('default .find()', function(assert) {
         .toJSON()
         .find()
         .then(function success(entries) {
-            console.log("entrieswsss", entries)
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
             assert.ok(entries[0].length, 'Entries present in the resultset');
@@ -295,7 +294,6 @@ test('.where() compare boolean value (true)', function(assert) {
         .toJSON()
         .find()
         .then(function success(entries) {
-            console.log("entriesssss", entries)
             assert.ok(entries[0].length, 'Entries present in the resultset');
             assert.equal(entries[0].length, 4, 'two entries present in the resultset');
             assert.end();
@@ -1111,10 +1109,8 @@ test('.except() - Single String Parameter', function(assert) {
         .toJSON()
         .find()
         .then(function success(entries) {
-            console.log("cmd,cmdcmd", entries)
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             var flag = entries[0].every(function(entry) {
-                console.log("cmd,cmdcmd11111111", entry)
                 return (entry && !("title" in entry));
             });
             assert.ok(flag, 'entries without the field title in the resultset');
