@@ -14,11 +14,8 @@ export function get(key) {
 export function set(key, data) {
     try {
         if (typeof data === 'object') {
-            console.log("storage", storage)
-            storage.setItem(key, JSON.stringify(data));
-            //localStorage.setItem("hello", "Smith");            
+            storage.setItem(key, JSON.stringify(data));         
         } else {
-            console.log("else")
             storage.setItem(key, data);
         }
     } catch (error) {   
