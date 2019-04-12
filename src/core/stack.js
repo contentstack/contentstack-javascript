@@ -252,7 +252,7 @@ export default class Stack {
      /**
      * @method fetch
      * @memberOf Stack
-     * @description This method will returns information of a specific content type. It returns the content type schema.
+     * @description This method returns the complete information of a specific content type.
      * @example
      * let single_contenttype = Stack.ContentType(content_type_uid).fetch()
      *    single_contenttype
@@ -341,7 +341,7 @@ export default class Stack {
      /**
      * @method getContentTypes
      * @memberOf Stack
-     * @description getContentTypes method returns comprehensive information of all the content types available in a particular stack in your account.
+     * @description This method returns comprehensive information of all the content types of a particular stack in your account.
      * @example Stack.getContentTypes()
      * @example 
      * let data = Stack.getContentTypes()
