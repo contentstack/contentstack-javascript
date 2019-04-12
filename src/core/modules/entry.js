@@ -289,5 +289,4 @@ export default class Entry {
             console.error("Kindly provide an entry uid. e.g. .Entry('bltsomething123')");
         }
     }
-
 }
