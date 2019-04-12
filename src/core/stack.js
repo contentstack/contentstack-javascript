@@ -249,6 +249,35 @@ export default class Stack {
         return Utils.merge(entry, this);
     }
 
+     /**
+     * @method fetch
+     * @memberOf Stack
+     * @description This method will returns information of a specific content type. It returns the content type schema.
+     * @example
+     * let single_contenttype = Stack.ContentType(content_type_uid).fetch()
+     *    single_contenttype
+     *    .then(function(result) {
+     *      // 'result' is a single contentType information.       
+     *     }).catch((error) => {
+     *        console.log(error)
+     *  });
+     * @returns {ContentType}
+     * @instance 
+     */
+    fetch() {
+        let result = {
+            method: 'POST',
+            headers: this.headers,
+            url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid,
+            body: {
+                _method: 'GET',
+                environment: this.environment
+            }
+        };
+        return Request(result);
+
+    }
+
   /**
      * @method Assets
      * @memberOf Stack
@@ -308,6 +337,38 @@ export default class Stack {
         };
         return Request(query);
     }
+
+     /**
+     * @method getContentTypes
+     * @memberOf Stack
+     * @description getContentTypes method returns comprehensive information of all the content types available in a particular stack in your account.
+     * @example Stack.getContentTypes()
+     * @example 
+     * let data = Stack.getContentTypes()
+     *      data
+     *      .then(function(result) {
+     *           // 'result' is list of contentTypes.       
+     *      }, function(error) {
+     *           // error function
+     *      })
+     * @returns {Stack}
+     * @instance
+     */
+    getContentTypes() {
+        let query = {
+            method: 'POST',
+            headers: this.headers,
+            url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
+            body: {
+                _method: 'GET',
+                environment: this.environment
+            }
+        };
+        return Request(query);
+    }
+
+
+    
 
 
     /**
