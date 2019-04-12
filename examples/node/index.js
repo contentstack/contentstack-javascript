@@ -3,7 +3,7 @@
 const ContentstackDemo = require('./contentstack-demo.js')
 
 //const Demo = new ContentstackDemo({ 'api_key': "blt292960b854e5170e", 'access_token': "blt468d2af41a0f061c", 'environment': "development"})
-const Demo = new ContentstackDemo({ 'api_key': "blt477ba55f9a67bcdf", 'access_token': "cs7731f03a2feef7713546fde5", 'environment': "web"})
+const Demo = new ContentstackDemo({ 'api_key': "", 'access_token': "", 'environment': ""})
 
 
     //get all the entries
