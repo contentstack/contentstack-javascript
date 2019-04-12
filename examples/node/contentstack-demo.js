@@ -44,9 +44,10 @@ class ContentstackDemo {
      * @params       : contentTypeUid {string} - Content-Type from which entries to be retrieved
      * @return       : Result {Promise}
      */
-    getAllContentType() {
+    getContentTypedemo() {
         //contentTypeUid = contentTypeUid || 'source'
-        return this.Stack.getAllContentTypes()
+        return this.Stack.ContentType('conference').fetch()
+       // return this.Stack.ContentType('event_list').Entry('blt5d40c608567844d4').toJSON().fetch()
     }
 
     /**
