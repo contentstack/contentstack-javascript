@@ -4,6 +4,7 @@ node_modules/*
 .idea/*
 reports/*
 apidocs-templates/*
-test/smtpconfig.js
-test/config.js
-test/sync_config.js
+test/smtpconfig.js/*
+test/config.js/*
+test/sync_config.js/*
+test/report.json/*
