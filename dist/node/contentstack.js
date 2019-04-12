@@ -904,6 +904,30 @@ var Stack = function () {
         }
 
         /**
+        * @method fetch
+        * @memberOf Stack
+        * @param {String} uid - uid of the entry 
+        * @description An initializer is responsible for creating Entry object
+        * @returns {Entry}
+        * @instance 
+        */
+
+    }, {
+        key: 'fetch',
+        value: function fetch() {
+            var result = {
+                method: 'POST',
+                headers: this.headers,
+                url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid,
+                body: {
+                    _method: 'GET',
+                    environment: this.environment
+                }
+            };
+            return (0, _request2.default)(result);
+        }
+
+        /**
            * @method Assets
            * @memberOf Stack
            * @param {String} uid - uid of the asset 
@@ -966,6 +990,38 @@ var Stack = function () {
                 body: {
                     _method: 'GET',
                     only_last_activity: true,
+                    environment: this.environment
+                }
+            };
+            return (0, _request2.default)(query);
+        }
+
+        /**
+        * @method getContentTypes
+        * @memberOf Stack
+        * @description getContentTypes get all the ContentTypes.
+        * @example Stack.getContentTypes()
+        * @example 
+        * let data = Stack.getLastActivites()
+        *      data
+        *      .then(function(result) {
+        *           // 'result' is list of contentTypes.       
+        *      }, function(error) {
+        *           // error function
+        *      })
+        * @returns {Stack}
+        * @instance
+        */
+
+    }, {
+        key: 'getContentTypes',
+        value: function getContentTypes() {
+            var query = {
+                method: 'POST',
+                headers: this.headers,
+                url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
+                body: {
+                    _method: 'GET',
                     environment: this.environment
                 }
             };
@@ -1479,7 +1535,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //JS SDK version
-var version = '3.5.1';
+var version = '3.5.2';
 var environment = void 0,
     api_key = void 0;
 
@@ -1666,11 +1722,8 @@ function get(key) {
 function set(key, data) {
     try {
         if ((typeof data === 'undefined' ? 'undefined' : _typeof(data)) === 'object') {
-            console.log("storage", _localstorage2.default);
             _localstorage2.default.setItem(key, JSON.stringify(data));
-            //localStorage.setItem("hello", "Smith");            
         } else {
-            console.log("else");
             _localstorage2.default.setItem(key, data);
         }
     } catch (error) {}
