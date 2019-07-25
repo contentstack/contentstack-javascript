@@ -848,6 +848,55 @@ test('.includeSchema()', function(assert) {
         });
 });
 
+// includeReferenceContenttypeUid with an object
+test('.includeReferenceContenttypeUid()', function(assert) {
+    var Query = Stack.ContentType(contentTypes.source).Query();
+
+    Query
+        .includeSchema()
+        .includeReferenceContentTypeUID()
+        .toJSON()
+        .find()
+        .then(function success(entries) {
+            for(var i=0; i<entries[1].length; i++) {
+                if(entries[1][i].data_type == "reference" && entries[1][i].display_name == "Other Reference") {
+                    assert.equal(entries[1][i].field_metadata.hasOwnProperty("ref_multiple_content_types"), true, "multiple ContentType Reference is present")                    
+                    assert.ok(typeof entries[1][i].reference_to === "object")
+                    assert.end();
+                }
+            }
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".includeSchema()");
+            assert.end();
+        });
+});
+
+
+// includeReferenceContenttypeUid with string
+test('.includeReferenceContenttypeUid()', function(assert) {
+    var Query = Stack.ContentType(contentTypes.source).Query();
+
+    Query
+        .includeSchema()
+        .includeReferenceContentTypeUID()
+        .toJSON()
+        .find()
+        .then(function success(entries) {
+            for(var i=0; i<entries[1].length; i++) {
+                if(entries[1][i].data_type == "reference" && entries[1][i].display_name == "Reference") {
+                    assert.equal(entries[1][i].field_metadata.hasOwnProperty("ref_multiple_content_types"), false, "multiple contentType reference is not present")                    
+                    assert.ok(typeof entries[1][i].reference_to === "string")
+                    assert.end();
+                }
+            }
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".includeSchema()");
+            assert.end();
+        });
+});
+
 // includeCount && includeSchema
 test('.includeCount() and .includeSchema()', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query();
@@ -1164,71 +1213,71 @@ test('.except() - Array of String Parameter', function(assert) {
         });
 });
 
-// test('.except() - For the reference - String', function(assert) {
-//     var Query = Stack.ContentType(contentTypes.source).Query();
+test('.except() - For the reference - String', function(assert) {
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
-//     Query
-//         .includeReference('reference')
-//         .only('BASE', ['reference'])
-//         .except('reference', 'title')
-//         .toJSON()
-//         .find()
-//         .then(function success(entries) {
-//             // assert.ok("entries" in result, 'Entries key present in the resultset');
-//             var flag = entries[0].every(function(entry) {
-//                 var _flag;
-//                 if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
-//                     console.log("11111111sdchdsjcbdjcbjd", JSON.stringify())
-//                     _flag = true;
-//                     _flag = entry.reference.every(function(reference) {
-//                         console.log("inside>>>>>>>", JSON.stringify(reference))
-//                         return (reference && !("title" in reference));
-//                     });
-//                 } else {
+    Query
+        .includeReference('reference')
+        .only('BASE', ['reference'])
+        .except('reference', 'title')
+        .toJSON()
+        .find()
+        .then(function success(entries) {
+            // assert.ok("entries" in result, 'Entries key present in the resultset');
+            var flag = entries[0].every(function(entry) {
+                var _flag;
+                if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
+                    console.log("11111111sdchdsjcbdjcbjd", JSON.stringify())
+                    _flag = true;
+                    _flag = entry.reference.every(function(reference) {
+                        console.log("inside>>>>>>>", JSON.stringify(reference))
+                        return (reference && !("title" in reference));
+                    });
+                } else {
 
-//                     console.log("sdchdsjcbdjcbjd")
-//                     _flag = false;
-//                 }
-//                 return (_flag && entry && Object.keys(entry).length === 3 && "reference" in entry && "uid" in entry && "url" in entry);
-//             });
-//             assert.ok(flag, 'entries with the field reference without title field in the resultset');
-//             assert.end();
-//         }, function error(err) {
-//             console.error("error :", err);
-//             assert.fail(".except() - For the reference - String");
-//             assert.end();
-//         });
-// });
+                    console.log("sdchdsjcbdjcbjd")
+                    _flag = false;
+                }
+                return (_flag && entry && Object.keys(entry).length === 3 && "reference" in entry && "uid" in entry && "url" in entry);
+            });
+            assert.ok(flag, 'entries with the field reference without title field in the resultset');
+            assert.end();
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".except() - For the reference - String");
+            assert.end();
+        });
+});
 
-// test('.except() - For the reference - Array', function(assert) {
-//     var Query = Stack.ContentType(contentTypes.source).Query(),
-//         field = 'updated_at';
+test('.except() - For the reference - Array', function(assert) {
+    var Query = Stack.ContentType(contentTypes.source).Query(),
+        field = 'updated_at';
 
-//     Query
-//         .includeReference('reference')
-//         .only('BASE', ['reference'])
-//         .except('reference', ['title'])
-//         .toJSON()
-//         .find()
-//         .then(function success(entries) {
-//             // assert.ok("entries" in result, 'Entries key present in the resultset');
-//             var flag = entries[0].every(function(entry) {
-//                 var _flag;
-//                 if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
-//                     _flag = true;
-//                     _flag = entry.reference.every(function(reference) {
-//                         return (reference && !("title" in reference));
-//                     });
-//                 } else {
-//                     _flag = false;
-//                 }
-//                 return (_flag && entry && Object.keys(entry).length === 3 && "reference" in entry && "uid" in entry && "url" in entry);
-//             });
-//             assert.ok(flag, 'entries with the field reference without title field in the resultset');
-//             assert.end();
-//         }, function error(err) {
-//             console.error("error :", err);
-//             assert.fail(".except() - For the reference - Array");
-//             assert.end();
-//         });
-// });
+    Query
+        .includeReference('reference')
+        .only('BASE', ['reference'])
+        .except('reference', ['title'])
+        .toJSON()
+        .find()
+        .then(function success(entries) {
+            // assert.ok("entries" in result, 'Entries key present in the resultset');
+            var flag = entries[0].every(function(entry) {
+                var _flag;
+                if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
+                    _flag = true;
+                    _flag = entry.reference.every(function(reference) {
+                        return (reference && !("title" in reference));
+                    });
+                } else {
+                    _flag = false;
+                }
+                return (_flag && entry && Object.keys(entry).length === 3 && "reference" in entry && "uid" in entry && "url" in entry);
+            });
+            assert.ok(flag, 'entries with the field reference without title field in the resultset');
+            assert.end();
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".except() - For the reference - Array");
+            assert.end();
+        });
+});

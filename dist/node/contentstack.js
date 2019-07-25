@@ -906,9 +906,16 @@ var Stack = function () {
         /**
         * @method fetch
         * @memberOf Stack
-        * @param {String} uid - uid of the entry 
-        * @description An initializer is responsible for creating Entry object
-        * @returns {Entry}
+        * @description This method returns the complete information of a specific content type.
+        * @example
+        * let single_contenttype = Stack.ContentType(content_type_uid).fetch()
+        *    single_contenttype
+        *    .then(function(result) {
+        *      // 'result' is a single contentType information.       
+        *     }).catch((error) => {
+        *        console.log(error)
+        *  });
+        * @returns {ContentType}
         * @instance 
         */
 
@@ -931,7 +938,23 @@ var Stack = function () {
            * @method Assets
            * @memberOf Stack
            * @param {String} uid - uid of the asset 
-           * @description Retrieves the asset based on the specified UID
+           * @description Retrieves all assets of a stack by default. To retrieve a single asset, specify its UID.
+           * @example 
+           * let data = Stack.Assets('bltsomething123').toJSON().fetch()
+           *      data
+           *        .then(function(result) {
+           *           // ‘result’ is a single asset object of specified uid       
+           *      }, function(error) {
+           *           // error function
+           *      })
+           * @example 
+           * let data = Stack.Assets().toJSON().find()
+           *      data
+           *      .then(function(result) {
+           *           // ‘result’ will display all assets present in stack       
+           *      }, function(error) {
+           *           // error function
+           *      })
            * @returns {Assets}
            * @instance 
            */
@@ -999,10 +1022,10 @@ var Stack = function () {
         /**
         * @method getContentTypes
         * @memberOf Stack
-        * @description getContentTypes get all the ContentTypes.
+        * @description This method returns comprehensive information of all the content types of a particular stack in your account.
         * @example Stack.getContentTypes()
         * @example 
-        * let data = Stack.getLastActivites()
+        * let data = Stack.getContentTypes()
         *      data
         *      .then(function(result) {
         *           // 'result' is list of contentTypes.       
@@ -1535,7 +1558,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //JS SDK version
-var version = '3.5.2';
+var version = '3.6.0';
 var environment = void 0,
     api_key = void 0;
 
@@ -1976,6 +1999,23 @@ var Entry = function () {
         key: "includeSchema",
         value: function includeSchema() {
             this._query['include_schema'] = true;
+            return this;
+        }
+
+        /**
+         * @method includeReferenceContentTypeUid
+         * @memberOf Entry
+         * @deprecated since verion 3.6.0
+         * @description  Include Reference Content Type Uid of the current content type  details.
+         * @example Stack.ContentType("contentType_uid").Entry("entry_uid").includeReferenceContentt().fetch()
+         * @returns {Entry}
+         * @instance
+         */
+
+    }, {
+        key: "IncludeReferenceContentTypeUID",
+        value: function IncludeReferenceContentTypeUID() {
+            this._query['include_reference_content_type_uid'] = true;
             return this;
         }
 
@@ -2647,6 +2687,23 @@ var Query = function (_Entry) {
         }
 
         /**
+         * @method includeReferenceContentTypeUid
+         * @memberOf Entry
+         * @deprecated since verion 3.6.1
+         * @description  Include Reference Content Type Uid of the current content type schema.
+         * @example Stack.ContentType("contentType_uid").Query().IncludeReferenceContentTypeUID().find()
+         * @returns {Entry}
+         * @instance
+         */
+
+    }, {
+        key: 'includeReferenceContentTypeUID',
+        value: function includeReferenceContentTypeUID() {
+            this._query['include_reference_content_type_uid'] = true;
+            return this;
+        }
+
+        /**
          * @method includeCount
          * @memberOf Query
          * @description Includes the total number of entries returned in the response.
@@ -2832,6 +2889,7 @@ var Query = function (_Entry) {
                     query: this._query
                 }
             };
+
             return Utils.sendRequest(this);
         }
     }]);
@@ -2871,7 +2929,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var config = {
     protocol: "https",
-    host: "cdn.contentstack.io",
+    host: "stag-cdn.contentstack.io",
     port: 443,
     version: "v3",
     urls: {
@@ -7563,13 +7621,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
  * @class 
   Assets  
 * @summary Creates an instance of `Assets`.
-* @description Retrieves the asset based on the specified UID
+* @description Retrieves all assets of a stack by default. To retrieve a single asset, specify its UID.
 * @param {String} uid - uid of asset you want to retrieve
 * @example 
 * let data = Stack.Assets('bltsomething123').toJSON().fetch()
 *      data
 *      .then(function(result) {
 *           // ‘result’ is a single asset object of specified uid       
+*      }, function(error) {
+*           // error function
+*      })
+* @example 
+* let data = Stack.Assets().toJSON().find()
+*      data
+*      .then(function(result) {
+*           // ‘result’ will display all assets present in stack       
 *      }, function(error) {
 *           // error function
 *      })

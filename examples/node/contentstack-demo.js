@@ -24,7 +24,7 @@ class ContentstackDemo {
      */
     getEntries(contentTypeUid) {
         contentTypeUid = contentTypeUid || 'source'
-        return this.Stack.ContentType(contentTypeUid).Query().includeReference('secondary_section.reference.reference').find()
+        return this.Stack.ContentType("source").Query().includeSchema().IncludeReferenceContentTypeUID().find()
     }
 
     /**
@@ -60,11 +60,6 @@ class ContentstackDemo {
         //contentTypeUid = contentTypeUid || 'source'
         return this.Stack.getContentType(uid)
     }
-
-
-
-
-
 
     /**
      * fetchEntry
