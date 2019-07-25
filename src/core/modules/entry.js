@@ -194,6 +194,21 @@ export default class Entry {
     }
 
     /**
+     * @method includeReferenceContentTypeUid
+     * @memberOf Entry
+     * @deprecated since verion 3.6.0
+     * @description  Include Reference Content Type Uid of the current content type  details.
+     * @example Stack.ContentType("contentType_uid").Entry("entry_uid").includeReferenceContentt().fetch()
+     * @returns {Entry}
+     * @instance
+     */
+    IncludeReferenceContentTypeUID() {
+        this._query['include_reference_content_type_uid'] = true;
+        return this;
+    }
+
+
+    /**
      * @method includeContentType
      * @memberOf Entry
      * @description Include the details of the content type along with the entry/entries details.
