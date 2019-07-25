@@ -498,6 +498,21 @@ export default class Query extends Entry {
     }
 
     /**
+     * @method includeReferenceContentTypeUid
+     * @memberOf Entry
+     * @deprecated since verion 3.6.1
+     * @description  Include Reference Content Type Uid of the current content type schema.
+     * @example Stack.ContentType("contentType_uid").Query().IncludeReferenceContentTypeUID().find()
+     * @returns {Entry}
+     * @instance
+     */
+    includeReferenceContentTypeUID() {
+        this._query['include_reference_content_type_uid'] = true;
+        return this;
+    }
+
+
+    /**
      * @method includeCount
      * @memberOf Query
      * @description Includes the total number of entries returned in the response.
@@ -663,6 +678,7 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
+        
         return Utils.sendRequest(this);
     }
 
