@@ -196,13 +196,21 @@ export default class Entry {
     /**
      * @method includeReferenceContentTypeUid
      * @memberOf Entry
-     * @deprecated since verion 3.6.0
-     * @description  Include Reference Content Type Uid of the current content type  details.
-     * @example Stack.ContentType("contentType_uid").Entry("entry_uid").includeReferenceContentt().fetch()
+     * @description  This method also includes the content type UIDs of the referenced entries returned in the response.
+     * @example Stack.ContentType("contentType_uid").Entry("entry_uid").includeReferenceContentTypeUID().fetch()
+     * @example 
+     * Query = Stack.ContentType("contentType_uid").Entry("entry_uid").includeReferenceContentTypeUID().fetch()
+     * Query
+     *      .toJSON()
+     *      .then(function (result) {
+     *          let value = result.get(field_uid)
+     *       },function (error) {
+     *          // error function
+     *      })
      * @returns {Entry}
      * @instance
      */
-    IncludeReferenceContentTypeUID() {
+    includeReferenceContentTypeUID() {
         this._query['include_reference_content_type_uid'] = true;
         return this;
     }
