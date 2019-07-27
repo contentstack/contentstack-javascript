@@ -770,8 +770,6 @@ test('.includeReference() - String', function(assert) {
         .toJSON()
         .find()
         .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
             var flag = entries[0].every(function(entry) {
                 return (entry && entry.reference && typeof entry.reference === 'object');
             });
@@ -892,7 +890,7 @@ test('.includeReferenceContenttypeUid()', function(assert) {
             }
         }, function error(err) {
             console.error("error :", err);
-            assert.fail(".includeSchema()");
+            assert.fail(".includeReferenceContenttypeUid()");
             assert.end();
         });
 });
@@ -1227,15 +1225,11 @@ test('.except() - For the reference - String', function(assert) {
             var flag = entries[0].every(function(entry) {
                 var _flag;
                 if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
-                    console.log("11111111sdchdsjcbdjcbjd", JSON.stringify())
                     _flag = true;
                     _flag = entry.reference.every(function(reference) {
-                        console.log("inside>>>>>>>", JSON.stringify(reference))
                         return (reference && !("title" in reference));
                     });
                 } else {
-
-                    console.log("sdchdsjcbdjcbjd")
                     _flag = false;
                 }
                 return (_flag && entry && Object.keys(entry).length === 3 && "reference" in entry && "uid" in entry && "url" in entry);
