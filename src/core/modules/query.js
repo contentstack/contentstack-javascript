@@ -499,11 +499,18 @@ export default class Query extends Entry {
 
     /**
      * @method includeReferenceContentTypeUid
-     * @memberOf Entry
-     * @deprecated since verion 3.6.1
-     * @description  Include Reference Content Type Uid of the current content type schema.
-     * @example Stack.ContentType("contentType_uid").Query().IncludeReferenceContentTypeUID().find()
-     * @returns {Entry}
+     * @memberOf Query
+     * @description  This method also includes the content type UIDs of the referenced entries returned in the response.
+     * @example Stack.ContentType("contentType_uid").Query().includeReferenceContentTypeUID().find()
+     * @example 
+     * let blogQuery = Stack.ContentType("contentType_uid").Query();
+     *          let data = blogQuery.includeReferenceContentTypeUID().find()
+     *          data.then(function(result) {
+     *         // ‘result’ contains a list of entries in which content type UIDs is present. 
+     *       },function (error) {
+     *          // error function
+     *      })
+     * @returns {Query}
      * @instance
      */
     includeReferenceContentTypeUID() {
@@ -545,7 +552,6 @@ export default class Query extends Entry {
      * @returns {Query}
      * @instance
      */
-    
     addParam(key, value) {
         if (key && value && typeof key === 'string' && typeof value === 'string') {
                 this._query[key] = value;
@@ -610,7 +616,7 @@ export default class Query extends Entry {
      *      })
      * @returns {Query}
      * @instance
-     */
+     */     
     search(value) {
         if (value && typeof value === 'string') {
             this._query['typeahead'] = value;
