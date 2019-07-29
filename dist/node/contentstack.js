@@ -1558,7 +1558,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //JS SDK version
-var version = '3.6.0';
+var version = '3.7.0';
 var environment = void 0,
     api_key = void 0;
 
@@ -2005,16 +2005,24 @@ var Entry = function () {
         /**
          * @method includeReferenceContentTypeUid
          * @memberOf Entry
-         * @deprecated since verion 3.6.0
-         * @description  Include Reference Content Type Uid of the current content type  details.
-         * @example Stack.ContentType("contentType_uid").Entry("entry_uid").includeReferenceContentt().fetch()
+         * @description  This method also includes the content type UIDs of the referenced entries returned in the response.
+         * @example Stack.ContentType("contentType_uid").Entry("entry_uid").includeReferenceContentTypeUID().fetch()
+         * @example 
+         * Query = Stack.ContentType("contentType_uid").Entry("entry_uid").includeReferenceContentTypeUID().fetch()
+         * Query
+         *      .toJSON()
+         *      .then(function (result) {
+         *          let value = result.get(field_uid)
+         *       },function (error) {
+         *          // error function
+         *      })
          * @returns {Entry}
          * @instance
          */
 
     }, {
-        key: "IncludeReferenceContentTypeUID",
-        value: function IncludeReferenceContentTypeUID() {
+        key: "includeReferenceContentTypeUID",
+        value: function includeReferenceContentTypeUID() {
             this._query['include_reference_content_type_uid'] = true;
             return this;
         }
@@ -2688,11 +2696,18 @@ var Query = function (_Entry) {
 
         /**
          * @method includeReferenceContentTypeUid
-         * @memberOf Entry
-         * @deprecated since verion 3.6.1
-         * @description  Include Reference Content Type Uid of the current content type schema.
-         * @example Stack.ContentType("contentType_uid").Query().IncludeReferenceContentTypeUID().find()
-         * @returns {Entry}
+         * @memberOf Query
+         * @description  This method also includes the content type UIDs of the referenced entries returned in the response.
+         * @example Stack.ContentType("contentType_uid").Query().includeReferenceContentTypeUID().find()
+         * @example 
+         * let blogQuery = Stack.ContentType("contentType_uid").Query();
+         *          let data = blogQuery.includeReferenceContentTypeUID().find()
+         *          data.then(function(result) {
+         *         // ‘result’ contains a list of entries in which content type UIDs is present. 
+         *       },function (error) {
+         *          // error function
+         *      })
+         * @returns {Query}
          * @instance
          */
 
@@ -2929,7 +2944,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var config = {
     protocol: "https",
-    host: "stag-cdn.contentstack.io",
+    host: "cdn.contentstack.io",
     port: 443,
     version: "v3",
     urls: {
