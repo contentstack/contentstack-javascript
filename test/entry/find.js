@@ -312,7 +312,7 @@ test('.where() compare boolean value (false)', function(assert) {
         .find()
         .then(function success(entries) {
             assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.equal(entries[0].length, 4, ' three entries present in the resultset');
+            assert.equal(entries[0].length, 3, ' three entries present in the resultset');
             assert.end();
         }, function error(err) {
             console.error("error :", err);
@@ -347,7 +347,7 @@ test('.equalTo() compare boolean value (true)', function(assert) {
         .find()
         .then(function success(entries) {
             assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.equal(entries[0].length, 2, ' three entries present in the resultset');
+            assert.equal(entries[0].length, 4, ' four entries present in the resultset');
             assert.end();
         }, function error(err) {
             console.error("error :", err);
@@ -364,7 +364,7 @@ test('.equalTo() compare boolean value (false)', function(assert) {
         .find()
         .then(function success(entries) {
             assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.equal(entries[0].length, 4, ' three entries present in the resultset');
+            assert.equal(entries[0].length, 3, ' three entries present in the resultset');
             assert.end();
         }, function error(err) {
             console.error("error :", err);
@@ -373,9 +373,9 @@ test('.equalTo() compare boolean value (false)', function(assert) {
         });
 });
 
-/*!
- * Array/Subset
- * !*/
+// /*!
+//  * Array/Subset
+//  * !*/
 
 test('.containedIn()', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query(),
@@ -770,8 +770,6 @@ test('.includeReference() - String', function(assert) {
         .toJSON()
         .find()
         .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
             var flag = entries[0].every(function(entry) {
                 return (entry && entry.reference && typeof entry.reference === 'object');
             });
@@ -844,6 +842,55 @@ test('.includeSchema()', function(assert) {
         }, function error(err) {
             console.error("error :", err);
             assert.fail(".includeSchema()");
+            assert.end();
+        });
+});
+
+// includeReferenceContenttypeUid with an object
+test('.includeReferenceContenttypeUid()', function(assert) {
+    var Query = Stack.ContentType(contentTypes.source).Query();
+
+    Query
+        .includeSchema()
+        .includeReferenceContentTypeUID()
+        .toJSON()
+        .find()
+        .then(function success(entries) {
+            for(var i=0; i<entries[1].length; i++) {
+                if(entries[1][i].data_type == "reference" && entries[1][i].display_name == "Other Reference") {
+                    assert.equal(entries[1][i].field_metadata.hasOwnProperty("ref_multiple_content_types"), true, "multiple ContentType Reference is present")                    
+                    assert.ok(typeof entries[1][i].reference_to === "object")
+                    assert.end();
+                }
+            }
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".includeSchema()");
+            assert.end();
+        });
+});
+
+
+// includeReferenceContenttypeUid with string
+test('.includeReferenceContenttypeUid()', function(assert) {
+    var Query = Stack.ContentType(contentTypes.source).Query();
+
+    Query
+        .includeSchema()
+        .includeReferenceContentTypeUID()
+        .toJSON()
+        .find()
+        .then(function success(entries) {
+            for(var i=0; i<entries[1].length; i++) {
+                if(entries[1][i].data_type == "reference" && entries[1][i].display_name == "Reference") {
+                    assert.equal(entries[1][i].field_metadata.hasOwnProperty("ref_multiple_content_types"), false, "multiple contentType reference is not present")                    
+                    assert.ok(typeof entries[1][i].reference_to === "string")
+                    assert.end();
+                }
+            }
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".includeReferenceContenttypeUid()");
             assert.end();
         });
 });
@@ -1178,15 +1225,11 @@ test('.except() - Array of String Parameter', function(assert) {
 //             var flag = entries[0].every(function(entry) {
 //                 var _flag;
 //                 if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
-//                     console.log("11111111sdchdsjcbdjcbjd", JSON.stringify())
 //                     _flag = true;
 //                     _flag = entry.reference.every(function(reference) {
-//                         console.log("inside>>>>>>>", JSON.stringify(reference))
 //                         return (reference && !("title" in reference));
 //                     });
 //                 } else {
-
-//                     console.log("sdchdsjcbdjcbjd")
 //                     _flag = false;
 //                 }
 //                 return (_flag && entry && Object.keys(entry).length === 3 && "reference" in entry && "uid" in entry && "url" in entry);

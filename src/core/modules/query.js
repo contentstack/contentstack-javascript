@@ -498,6 +498,28 @@ export default class Query extends Entry {
     }
 
     /**
+     * @method includeReferenceContentTypeUid
+     * @memberOf Query
+     * @description  This method also includes the content type UIDs of the referenced entries returned in the response.
+     * @example Stack.ContentType("contentType_uid").Query().includeReferenceContentTypeUID().find()
+     * @example 
+     * let blogQuery = Stack.ContentType("contentType_uid").Query();
+     *          let data = blogQuery.includeReferenceContentTypeUID().find()
+     *          data.then(function(result) {
+     *         // ‘result’ contains a list of entries in which content type UIDs is present. 
+     *       },function (error) {
+     *          // error function
+     *      })
+     * @returns {Query}
+     * @instance
+     */
+    includeReferenceContentTypeUID() {
+        this._query['include_reference_content_type_uid'] = true;
+        return this;
+    }
+
+
+    /**
      * @method includeCount
      * @memberOf Query
      * @description Includes the total number of entries returned in the response.
@@ -530,7 +552,6 @@ export default class Query extends Entry {
      * @returns {Query}
      * @instance
      */
-    
     addParam(key, value) {
         if (key && value && typeof key === 'string' && typeof value === 'string') {
                 this._query[key] = value;
@@ -595,7 +616,7 @@ export default class Query extends Entry {
      *      })
      * @returns {Query}
      * @instance
-     */
+     */     
     search(value) {
         if (value && typeof value === 'string') {
             this._query['typeahead'] = value;
@@ -663,6 +684,7 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
+        
         return Utils.sendRequest(this);
     }
 

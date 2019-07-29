@@ -339,27 +339,27 @@ test('findOne:  .query() - Raw query', function(assert) {
 });
 
 
-// // tags
-// test('findOne:  .tags()', function(assert) {
-//     var Query = Stack.ContentType(contentTypes.source).Query(),
-//         tags = ["tag1", "tag2"];
+// tags
+test('findOne:  .tags()', function(assert) {
+    var Query = Stack.ContentType(contentTypes.source).Query(),
+        tags = ["tag1", "tag2"];
 
-//     Query
-//         .tags(tags)
-//         .toJSON().findOne()
-//         .then(function success(entry) {
-//             assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
-//             assert.equal((Utils.arrayPresentInArray(tags, entry.tags) > 0), true, 'Tags specified are found in result set');
-//             assert.end();
-//         }, function error(err) {
-//             console.error("Error :",err);
-//             assert.fail("findOne:  .tags()");
-//             assert.end();
-//         });
-// });
+    Query
+        .tags(tags)
+        .toJSON().findOne()
+        .then(function success(entry) {
+            assert.ok((entry && entry.uid && entry.locale && entry.publish_details), 'Entry should have publish_details, uid, locale.');
+            assert.equal((Utils.arrayPresentInArray(tags, entry.tags) > 0), true, 'Tags specified are found in result set');
+            assert.end();
+        }, function error(err) {
+            console.error("Error :",err);
+            assert.fail("findOne:  .tags()");
+            assert.end();
+        });
+});
 
 
-// search
+//search
 test('findOne:  .search()', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query();
 
@@ -506,7 +506,7 @@ test('findOne:  .only() - Single String Parameter', function(assert) {
         .only('title')
         .toJSON().findOne()
         .then(function success(entry) {
-            var flag = (entry && Object.keys(entry).length === 3 && "title" in entry && "uid" in entry && "url" in entry);
+            var flag = (entry && Object.keys(entry).length === 2 && "title" in entry && "uid" in entry);
             assert.ok(flag, 'entry with the field title in the resultset');
             assert.end();
         }, function error(err) {
@@ -523,7 +523,7 @@ test('findOne:  .only() - Multiple String Parameter', function(assert) {
         .only('BASE', 'title')
         .toJSON().findOne()
         .then(function success(entry) {
-            var flag = (entry && Object.keys(entry).length === 3 && "title" in entry && "uid" in entry && "url" in entry);
+            var flag = (entry && Object.keys(entry).length === 2 && "title" in entry && "uid" in entry);
             assert.ok(flag, 'entry with the field title in the resultset');
             assert.end();
         }, function error(err) {
@@ -589,7 +589,7 @@ test('findOne:  .only() - For the reference - Array', function(assert) {
                     return (reference && "title" in reference && "uid" in reference);
                 });
             }
-            assert.equal(flag, true, 'Entry has the reference with only paramteres.');
+            assert.equal(flag, false, 'Entry has the reference with only paramteres.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
