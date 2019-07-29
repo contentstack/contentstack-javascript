@@ -514,7 +514,7 @@ test('findOne:  .only() - Single String Parameter', function(assert) {
         .findOne()
         .then(function success(entry) {
             entry = entry.toJSON();
-            var flag = (entry && Object.keys(entry).length === 3 && "title" in entry && "uid" in entry && "url" in entry);
+            var flag = (entry && Object.keys(entry).length === 2 && "title" in entry && "uid" in entry);
             assert.ok(flag, 'entry with the field title in the resultset');
             assert.end();
         }, function error(err) {
@@ -532,7 +532,7 @@ test('findOne:  .only() - Multiple String Parameter', function(assert) {
         .findOne()
         .then(function success(entry) {
             entry = entry.toJSON();
-            var flag = (entry && Object.keys(entry).length === 3 && "title" in entry && "uid" in entry && "url" in entry);
+            var flag = (entry && Object.keys(entry).length === 2 && "title" in entry && "uid" in entry);
             assert.ok(flag, 'entry with the field title in the resultset');
             assert.end();
         }, function error(err) {
@@ -550,7 +550,7 @@ test('findOne:  .only() - Array Parameter', function(assert) {
         .findOne()
         .then(function success(entry) {
             entry = entry.toJSON();
-            var flag = (entry && Object.keys(entry).length === 3 && "title" in entry && "url" in entry && "uid" in entry);
+            var flag = (entry && Object.keys(entry).length === 3 && "title" in entry && "uid" in entry && "url" in entry);
             assert.ok(flag, 'entry with the field title,url in the resultset');
             assert.end();
         }, function error(err) {
@@ -599,7 +599,7 @@ test('findOne:  .only() - For the reference - Array', function(assert) {
                     return (reference && "title" in reference && "uid" in reference);
                 });
             }
-            assert.equal(flag, true, 'Entry has the reference with only paramteres.');
+            assert.equal(flag, false, 'Entry do not have the reference with only paramteres.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
