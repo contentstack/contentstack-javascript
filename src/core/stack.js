@@ -282,7 +282,23 @@ export default class Stack {
      * @method Assets
      * @memberOf Stack
      * @param {String} uid - uid of the asset 
-     * @description Retrieves the asset based on the specified UID
+     * @description Retrieves all assets of a stack by default. To retrieve a single asset, specify its UID.
+     * @example 
+     * let data = Stack.Assets('bltsomething123').toJSON().fetch()
+     *      data
+     *        .then(function(result) {
+     *           // ‘result’ is a single asset object of specified uid       
+     *      }, function(error) {
+     *           // error function
+     *      })
+     * @example 
+     * let data = Stack.Assets().toJSON().find()
+     *      data
+     *      .then(function(result) {
+     *           // ‘result’ will display all assets present in stack       
+     *      }, function(error) {
+     *           // error function
+     *      })
      * @returns {Assets}
      * @instance 
      */
