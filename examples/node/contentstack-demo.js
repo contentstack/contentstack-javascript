@@ -10,8 +10,10 @@ const Contentstack = require('../../dist/node/contentstack.js');
 
 class ContentstackDemo {
     constructor(config) {
-        config = config || { 'api_key': 'blt123something', 'access_token': 'blt123something', 'environment': 'development' }
+        config = config || { 'api_key': 'blt123something', 'access_token': 'blt123something', 'environment': 'development',  }
             // Initialize the Contentstackstack
+            //console.log("datattatata", Contentstack.Region.EUROPE)
+
         this.Stack = Contentstack.Stack(config);
     }
     
@@ -24,7 +26,8 @@ class ContentstackDemo {
      */
     getEntries(contentTypeUid) {
         contentTypeUid = contentTypeUid || 'source'
-        return this.Stack.ContentType("source").Query().includeSchema().IncludeReferenceContentTypeUID().find()
+        return this.Stack.ContentType(contentTypeUid).Query().toJSON().find()
+    
     }
 
     /**
@@ -45,8 +48,8 @@ class ContentstackDemo {
      * @return       : Result {Promise}
      */
     getContentTypedemo() {
-        //contentTypeUid = contentTypeUid || 'source'
-        return this.Stack.ContentType('conference').fetch()
+        contentTypeUid = contentTypeUid || 'source'
+        return this.Stack.ContentType(contentTypeUid).fetch()
        // return this.Stack.ContentType('event_list').Entry('blt5d40c608567844d4').toJSON().fetch()
     }
 
