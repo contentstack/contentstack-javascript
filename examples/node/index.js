@@ -1,7 +1,6 @@
 'use strict'
 
 const ContentstackDemo = require('./contentstack-demo.js')
-
 const Demo = new ContentstackDemo({ 'api_key': "", 'access_token': "", 'environment': ""})
 
 
