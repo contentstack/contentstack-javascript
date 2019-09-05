@@ -8,6 +8,7 @@ import Request from './lib/request';
 import * as cache from './cache';
 import CacheProvider from './cache-provider/index';
 
+
 /**
      * @class 
         Stack 
@@ -26,11 +27,12 @@ import CacheProvider from './cache-provider/index';
      */
 export default class Stack {
     constructor(...stack_arguments) {
-
+        if(stack_arguments[0].region && stack_arguments[0].region != undefined && stack_arguments[0].region != "us") {
+            config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com"
+        }
         this.config = config;
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
         this.provider = CacheProvider.providers('localstorage');
-        //this.sync_cdn_api_key = stack_arguments[0].sync_cdn_api_key;
         switch (stack_arguments.length) {
             case 1:
                 if (typeof stack_arguments[0] === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].access_token === "string" && typeof stack_arguments[0].environment === "string") {
