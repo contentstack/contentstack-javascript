@@ -1,5 +1,6 @@
 import Stack from "./stack";
 import CacheProvider from './cache-provider/index';
+import ContentstackRegion from "./contentstackregion";
 
 
  /**
@@ -23,6 +24,7 @@ class Contentstack {
 		 * Contentstack.CachePolicy.CACHE_THEN_NETWORK
 		 */
 		this.CachePolicy = CacheProvider.policies;
+		this.Region = ContentstackRegion;
 	}
 /**
 
