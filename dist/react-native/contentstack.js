@@ -64,7 +64,7 @@ module.exports =
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 12);
+/******/ 	return __webpack_require__(__webpack_require__.s = 13);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -96,7 +96,7 @@ var _request = __webpack_require__(2);
 
 var _request2 = _interopRequireDefault(_request);
 
-var _result = __webpack_require__(14);
+var _result = __webpack_require__(15);
 
 var _result2 = _interopRequireDefault(_result);
 
@@ -471,7 +471,7 @@ function sendRequest(queryObject) {
         });
     }
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
 /* 1 */
@@ -490,7 +490,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 /*import Sync from './modules/sync';*/
 
 
-var _config = __webpack_require__(7);
+var _config = __webpack_require__(8);
 
 var _config2 = _interopRequireDefault(_config);
 
@@ -502,7 +502,7 @@ var _entry = __webpack_require__(5);
 
 var _entry2 = _interopRequireDefault(_entry);
 
-var _assets = __webpack_require__(13);
+var _assets = __webpack_require__(14);
 
 var _assets2 = _interopRequireDefault(_assets);
 
@@ -548,15 +548,16 @@ var Stack = function () {
     function Stack() {
         _classCallCheck(this, Stack);
 
-        this.config = _config2.default;
-        this.cachePolicy = _index2.default.policies.IGNORE_CACHE;
-        this.provider = _index2.default.providers('localstorage');
-        //this.sync_cdn_api_key = stack_arguments[0].sync_cdn_api_key;
-
         for (var _len = arguments.length, stack_arguments = Array(_len), _key = 0; _key < _len; _key++) {
             stack_arguments[_key] = arguments[_key];
         }
 
+        if (stack_arguments[0].region && stack_arguments[0].region != undefined && stack_arguments[0].region != "us") {
+            _config2.default['host'] = stack_arguments[0].region + "-" + "cdn.contentstack.com";
+        }
+        this.config = _config2.default;
+        this.cachePolicy = _index2.default.policies.IGNORE_CACHE;
+        this.provider = _index2.default.providers('localstorage');
         switch (stack_arguments.length) {
             case 1:
                 if (_typeof(stack_arguments[0]) === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].access_token === "string" && typeof stack_arguments[0].environment === "string") {
@@ -1050,7 +1051,7 @@ var _utils = __webpack_require__(0);
 
 var Utils = _interopRequireWildcard(_utils);
 
-var _http = __webpack_require__(15);
+var _http = __webpack_require__(16);
 
 var _http2 = _interopRequireDefault(_http);
 
@@ -1125,7 +1126,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _localstorage = __webpack_require__(11);
+var _localstorage = __webpack_require__(12);
 
 var _localstorage2 = _interopRequireDefault(_localstorage);
 
@@ -1173,7 +1174,7 @@ var _utils = __webpack_require__(0);
 
 var Utils = _interopRequireWildcard(_utils);
 
-var _localstorage = __webpack_require__(16);
+var _localstorage = __webpack_require__(17);
 
 var _localstorage2 = _interopRequireDefault(_localstorage);
 
@@ -2373,6 +2374,24 @@ exports.default = Query;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+var ContentstackRegion = {
+    EU: "eu",
+    US: "us"
+};
+
+exports.default = ContentstackRegion;
+//module.exports = ContentstackRegion;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 var config = {
     protocol: "https",
     host: "cdn.contentstack.io",
@@ -2390,7 +2409,7 @@ var config = {
 exports.default = config;
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2449,10 +2468,10 @@ exports.default = config;
     module.exports = new LocalStorage();
   }
 })();
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11)))
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2645,7 +2664,7 @@ process.umask = function () {
 };
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2675,7 +2694,7 @@ try {
 module.exports = g;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2767,7 +2786,7 @@ localStorage.clearAll = function (callback) {
 exports.default = localStorage;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2782,6 +2801,10 @@ var _stack2 = _interopRequireDefault(_stack);
 var _index = __webpack_require__(3);
 
 var _index2 = _interopRequireDefault(_index);
+
+var _contentstackregion = __webpack_require__(7);
+
+var _contentstackregion2 = _interopRequireDefault(_contentstackregion);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2809,6 +2832,7 @@ var Contentstack = function () {
    * Contentstack.CachePolicy.CACHE_THEN_NETWORK
    */
 		this.CachePolicy = _index2.default.policies;
+		this.Region = _contentstackregion2.default;
 	}
 	/**
  
@@ -2833,7 +2857,7 @@ var Contentstack = function () {
 module.exports = new Contentstack();
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2980,7 +3004,7 @@ var Assets = function () {
 exports.default = Assets;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3123,7 +3147,7 @@ module.exports = function (object) {
 };
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3135,7 +3159,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = fetch;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3145,7 +3169,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _localStorage = __webpack_require__(8);
+var _localStorage = __webpack_require__(9);
 
 var _localStorage2 = _interopRequireDefault(_localStorage);
 
