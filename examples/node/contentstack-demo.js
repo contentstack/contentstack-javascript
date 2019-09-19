@@ -26,7 +26,8 @@ class ContentstackDemo {
      */
     getEntries(contentTypeUid) {
         contentTypeUid = contentTypeUid || 'source'
-        return this.Stack.ContentType(contentTypeUid).Query().toJSON().find()
+        return this.Stack.ContentType('dinu1234').Query().includeSchema().toJSON().find()
+        //return this.Stack.getContentTypes(contentTypeUid)
     
     }
 
