@@ -652,7 +652,7 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
-        return Utils.sendRequest(this);
+         return Utils.sendRequest(this);
     }
 
      /**
