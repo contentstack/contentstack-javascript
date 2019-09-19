@@ -1039,7 +1039,7 @@ var Stack = function () {
 
     }, {
         key: 'getContentTypes',
-        value: function getContentTypes() {
+        value: function getContentTypes(param) {
             var query = {
                 method: 'POST',
                 headers: this.headers,
@@ -1049,6 +1049,11 @@ var Stack = function () {
                     environment: this.environment
                 }
             };
+            if (param && param !== undefined) {
+                for (var key in param) {
+                    query.body[key] = param[key];
+                }
+            }
             return (0, _request2.default)(query);
         }
 
@@ -2000,6 +2005,7 @@ var Entry = function () {
         key: "includeSchema",
         value: function includeSchema() {
             this._query['include_schema'] = true;
+            this._query['include_snippet_schema'] = true;
             return this;
         }
 
@@ -2041,6 +2047,7 @@ var Entry = function () {
         key: "includeContentType",
         value: function includeContentType() {
             this._query['include_content_type'] = true;
+            this._query['include_snippet_schema'] = true;
             return this;
         }
 
@@ -2870,6 +2877,7 @@ var Query = function (_Entry) {
                     query: this._query
                 }
             };
+
             return Utils.sendRequest(this);
         }
 

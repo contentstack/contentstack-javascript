@@ -372,7 +372,7 @@ export default class Stack {
      * @returns {Stack}
      * @instance
      */
-    getContentTypes() {
+    getContentTypes(param) { 
         let query = {
             method: 'POST',
             headers: this.headers,
@@ -382,6 +382,11 @@ export default class Stack {
                 environment: this.environment
             }
         };
+        if(param && param !== undefined) {
+            for( var key in param) {
+                query.body[key] = param[key]    
+            }
+        }
         return Request(query);
     }
 
