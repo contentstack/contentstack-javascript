@@ -26,7 +26,7 @@ class ContentstackDemo {
      */
     getEntries(contentTypeUid) {
         contentTypeUid = contentTypeUid || 'source'
-        return this.Stack.ContentType('dinu1234').Query().includeSchema().toJSON().find()
+        return this.Stack.ContentType('test').Query().includeContentType().toJSON().find()
         //return this.Stack.getContentTypes(contentTypeUid)
     
     }
@@ -60,9 +60,11 @@ class ContentstackDemo {
      * @params       : contentTypeUid {string} - Content-Type from which entries to be retrieved
      * @return       : Result {Promise}
      */
-    getContentType(uid) {
+    getContentType() {
         //contentTypeUid = contentTypeUid || 'source'
-        return this.Stack.getContentType(uid)
+        // return this.Stack.getContentType(uid)
+        // return this.Stack.ContentType(uid).fetch({"include_global_field_schema": false})
+        return this.Stack.getContentTypes({"include_global_field_schema": false})
     }
 
     /**
