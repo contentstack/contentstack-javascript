@@ -60,11 +60,11 @@ class ContentstackDemo {
      * @params       : contentTypeUid {string} - Content-Type from which entries to be retrieved
      * @return       : Result {Promise}
      */
-    getContentType() {
+    getContentType(uid) {
         //contentTypeUid = contentTypeUid || 'source'
         // return this.Stack.getContentType(uid)
-        // return this.Stack.ContentType(uid).fetch({"include_global_field_schema": false})
-        return this.Stack.getContentTypes({"include_global_field_schema": false})
+        // return this.Stack.ContentType(uid).Entry("blta07130f8b344b260").includeReferenceContentTypeUID().includeSchema().toJSON().fetch()
+        //return this.Stack.getContentTypes({"include_global_field_schema": true})
     }
 
     /**
