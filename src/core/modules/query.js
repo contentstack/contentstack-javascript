@@ -463,6 +463,14 @@ export default class Query extends Entry {
      * @param {object} query - RAW (JSON) queries 
      * @returns {Query}
      * @instance
+     * @example 
+     * let blogQuery = Stack().ContentType('example').Query();
+     * let data = blogQuery.query({"brand": {"$nin_query": {"title": "Apple Inc."}}}).find()
+     * data.then(function(result) {
+     *    // ‘result’ contains the total count. 
+     * },function (error) {
+     *    // error function
+     * })
      */
     query(query) {
         if (typeof query === "object") {
@@ -471,6 +479,92 @@ export default class Query extends Entry {
         } else {
             console.error("Kindly provide valid parameters");
         }
+    }
+
+    /**
+     * @method referenceIn
+     * @memberOf Query
+     * @description Retrieve entries that satisfy the query conditions made on referenced fields.
+     * @param {Query} query - RAW (JSON) queries 
+     * @returns {Query}
+     * @instance
+     * @example 
+     * <caption> referenceIn with Query instances</caption>
+     * let blogQuery = Stack().ContentType('example').Query();
+     * let Query = Stack.ContentType('blog').Query().where('title', 'Demo').find()
+     * let data = blogQuery.referenceIn("brand", Query).find()
+     * data.then(function(result) {
+     *    // ‘result’ contains the total count. 
+     * },function (error) {
+     *    // error function
+     * })
+     * 
+     * @example 
+     * <caption> referenceIn with raw queries</caption>
+     * let blogQuery = Stack().ContentType('example').Query();
+     * let data = blogQuery.referenceIn("brand", {'title': 'Demo'}).find()
+     * data.then(function(result) {
+     *    // ‘result’ contains the total count. 
+     * },function (error) {
+     *    // error function
+     * })
+     */
+    referenceIn(key, query) {
+        var _query = {}
+        if (query instanceof Query && query._query.query) {
+            _query["$in_query"] =  query._query.query;
+        } else if (typeof query === "object") {
+            _query["$in_query"] =  query;
+        }
+        if (this._query['query'][key]) {
+            this._query['query'][key] = this._query['query'][key].concat(_query);
+        } else {
+            this._query['query'][key] = _query;
+        }
+        return this;
+    }
+
+
+    /**
+     * @method referenceNotIn
+     * @memberOf Query
+     * @description Retrieve entries that does not satisfy the query conditions made on referenced fields.
+     * @param {Query} query - RAW (JSON) queries 
+     * @returns {Query}
+     * @instance
+     * @example 
+     * <caption> referenceNotIn with Query instances</caption>
+     * let blogQuery = Stack().ContentType('example').Query();
+     * let data = blogQuery.referenceNotIn("brand", {'title': 'Demo'}).find()
+     * data.then(function(result) {
+     *    // ‘result’ contains the total count. 
+     * },function (error) {
+     *    // error function
+     * })
+     * 
+     * @example 
+     * <caption> referenceNotIn with raw queries</caption>
+     * let blogQuery = Stack().ContentType('example').Query();
+     * let data = blogQuery.referenceNotIn("brand", {'title': 'Demo'}).find()
+     * data.then(function(result) {
+     *    // ‘result’ contains the total count. 
+     * },function (error) {
+     *    // error function
+     * })
+     */
+    referenceNotIn(key, query) {
+        var _query = {}
+        if (query instanceof Query && query._query.query) {
+            _query["$nin_query"] =  query._query.query;
+        } else if (typeof query === "object") {
+            _query["$nin_query"] =  query;
+        }
+        if (this._query['query'][key]) {
+            this._query['query'][key] = this._query['query'][key].concat(_query);
+        } else {
+            this._query['query'][key] = _query;
+        }
+        return this;
     }
 
     /**
@@ -539,7 +633,7 @@ export default class Query extends Entry {
         return this;
     }
 
-/**
+    /**
      * @method addParam
      * @description Includes query parameters in your queries.
      * @memberOf Query
