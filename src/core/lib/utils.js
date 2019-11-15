@@ -174,15 +174,40 @@ export function resultWrapper(result) {
     return result;
 };
 
+// // spread the result object
+// export function spreadResult(result) {
+//     let _results = [];
+//     if (result && Object.keys(result).length) {
+//         if (typeof result.entries !== 'undefined') _results.push(result.entries);
+//         if (typeof result.assets !== 'undefined') _results.push(result.assets);
+//         if (typeof result.content_type !== 'undefined' || typeof result.schema !== 'undefined') _results.push(result.content_type || result.schema);
+//         if (typeof result.count !== 'undefined') _results.push(result.count);
+//         if (typeof result.entry !== 'undefined') _results = result.entry;
+//         if (typeof result.asset !== 'undefined') _results = result.asset;
+//         if (typeof result.items !== 'undefined') _results.push(result);
+//     }
+//     return _results;
+// };
+
 // spread the result object
 export function spreadResult(result) {
     let _results = [];
     if (result && Object.keys(result).length) {
-        if (typeof result.entries !== 'undefined') _results.push(result.entries);
+        if (typeof result.entries !== 'undefined') {
+            _results.push(result.entries);
+            if(result.content_type){
+                _results['schema'] = result.content_type
+           }
+        }
         if (typeof result.assets !== 'undefined') _results.push(result.assets);
         if (typeof result.content_type !== 'undefined' || typeof result.schema !== 'undefined') _results.push(result.content_type || result.schema);
         if (typeof result.count !== 'undefined') _results.push(result.count);
-        if (typeof result.entry !== 'undefined') _results = result.entry;
+        if (typeof result.entry !== 'undefined') {
+            _results = result.entry;
+            if(result.schema){
+                _results['schema'] = result.schema
+           }
+        }
         if (typeof result.asset !== 'undefined') _results = result.asset;
         if (typeof result.items !== 'undefined') _results.push(result);
     }
