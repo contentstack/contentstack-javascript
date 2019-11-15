@@ -2,9 +2,9 @@
 
 module.exports = {
     stack: {
-        "api_key": "bltc0a6a8609e24c651",
-        "access_token": "blt882b9ae3ee9af2e1",
-        "environment": "development"
+        "api_key": "",
+        "access_token": "",
+        "environment": ""
     },
     host: "cdn.contentstack.io",
     url: "https://api.contentstack.io/v3",
