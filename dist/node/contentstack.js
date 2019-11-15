@@ -277,15 +277,40 @@ function resultWrapper(result) {
     return result;
 };
 
+// // spread the result object
+// export function spreadResult(result) {
+//     let _results = [];
+//     if (result && Object.keys(result).length) {
+//         if (typeof result.entries !== 'undefined') _results.push(result.entries);
+//         if (typeof result.assets !== 'undefined') _results.push(result.assets);
+//         if (typeof result.content_type !== 'undefined' || typeof result.schema !== 'undefined') _results.push(result.content_type || result.schema);
+//         if (typeof result.count !== 'undefined') _results.push(result.count);
+//         if (typeof result.entry !== 'undefined') _results = result.entry;
+//         if (typeof result.asset !== 'undefined') _results = result.asset;
+//         if (typeof result.items !== 'undefined') _results.push(result);
+//     }
+//     return _results;
+// };
+
 // spread the result object
 function spreadResult(result) {
     var _results = [];
     if (result && Object.keys(result).length) {
-        if (typeof result.entries !== 'undefined') _results.push(result.entries);
+        if (typeof result.entries !== 'undefined') {
+            _results.push(result.entries);
+            if (result.content_type) {
+                _results['schema'] = result.content_type;
+            }
+        }
         if (typeof result.assets !== 'undefined') _results.push(result.assets);
         if (typeof result.content_type !== 'undefined' || typeof result.schema !== 'undefined') _results.push(result.content_type || result.schema);
         if (typeof result.count !== 'undefined') _results.push(result.count);
-        if (typeof result.entry !== 'undefined') _results = result.entry;
+        if (typeof result.entry !== 'undefined') {
+            _results = result.entry;
+            if (result.schema) {
+                _results['schema'] = result.schema;
+            }
+        }
         if (typeof result.asset !== 'undefined') _results = result.asset;
         if (typeof result.items !== 'undefined') _results.push(result);
     }
@@ -1039,7 +1064,7 @@ var Stack = function () {
 
     }, {
         key: 'getContentTypes',
-        value: function getContentTypes() {
+        value: function getContentTypes(param) {
             var query = {
                 method: 'POST',
                 headers: this.headers,
@@ -1049,6 +1074,11 @@ var Stack = function () {
                     environment: this.environment
                 }
             };
+            if (param && param !== undefined) {
+                for (var key in param) {
+                    query.body[key] = param[key];
+                }
+            }
             return (0, _request2.default)(query);
         }
 
@@ -1559,7 +1589,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //JS SDK version
-var version = '3.7.1';
+var version = '3.8.1';
 var environment = void 0,
     api_key = void 0;
 
@@ -2000,6 +2030,7 @@ var Entry = function () {
         key: "includeSchema",
         value: function includeSchema() {
             this._query['include_schema'] = true;
+            this._query['include_snippet_schema'] = true;
             return this;
         }
 
@@ -2041,6 +2072,7 @@ var Entry = function () {
         key: "includeContentType",
         value: function includeContentType() {
             this._query['include_content_type'] = true;
+            this._query['include_snippet_schema'] = true;
             return this;
         }
 
@@ -2655,6 +2687,14 @@ var Query = function (_Entry) {
          * @param {object} query - RAW (JSON) queries 
          * @returns {Query}
          * @instance
+         * @example 
+         * let blogQuery = Stack().ContentType('example').Query();
+         * let data = blogQuery.query({"brand": {"$nin_query": {"title": "Apple Inc."}}}).find()
+         * data.then(function(result) {
+         *    // ‘result’ contains the total count. 
+         * },function (error) {
+         *    // error function
+         * })
          */
 
     }, {
@@ -2666,6 +2706,97 @@ var Query = function (_Entry) {
             } else {
                 console.error("Kindly provide valid parameters");
             }
+        }
+
+        /**
+         * @method referenceIn
+         * @memberOf Query
+         * @description Retrieve entries that satisfy the query conditions made on referenced fields.
+         * @param {Query} query - RAW (JSON) queries 
+         * @returns {Query}
+         * @instance
+         * @example 
+         * <caption> referenceIn with Query instances</caption>
+         * let blogQuery = Stack().ContentType('example').Query();
+         * let Query = Stack.ContentType('blog').Query().where('title', 'Demo').find()
+         * let data = blogQuery.referenceIn("brand", Query).find()
+         * data.then(function(result) {
+         *    // ‘result’ contains the total count. 
+         * },function (error) {
+         *    // error function
+         * })
+         * 
+         * @example 
+         * <caption> referenceIn with raw queries</caption>
+         * let blogQuery = Stack().ContentType('example').Query();
+         * let data = blogQuery.referenceIn("brand", {'title': 'Demo'}).find()
+         * data.then(function(result) {
+         *    // ‘result’ contains the total count. 
+         * },function (error) {
+         *    // error function
+         * })
+         */
+
+    }, {
+        key: 'referenceIn',
+        value: function referenceIn(key, query) {
+            var _query = {};
+            if (query instanceof Query && query._query.query) {
+                _query["$in_query"] = query._query.query;
+            } else if ((typeof query === 'undefined' ? 'undefined' : _typeof(query)) === "object") {
+                _query["$in_query"] = query;
+            }
+            if (this._query['query'][key]) {
+                this._query['query'][key] = this._query['query'][key].concat(_query);
+            } else {
+                this._query['query'][key] = _query;
+            }
+            return this;
+        }
+
+        /**
+         * @method referenceNotIn
+         * @memberOf Query
+         * @description Retrieve entries that does not satisfy the query conditions made on referenced fields.
+         * @param {Query} query - RAW (JSON) queries 
+         * @returns {Query}
+         * @instance
+         * @example 
+         * <caption> referenceNotIn with Query instances</caption>
+         * let blogQuery = Stack().ContentType('example').Query();
+         * let data = blogQuery.referenceNotIn("brand", {'title': 'Demo'}).find()
+         * data.then(function(result) {
+         *    // ‘result’ contains the total count. 
+         * },function (error) {
+         *    // error function
+         * })
+         * 
+         * @example 
+         * <caption> referenceNotIn with raw queries</caption>
+         * let blogQuery = Stack().ContentType('example').Query();
+         * let data = blogQuery.referenceNotIn("brand", {'title': 'Demo'}).find()
+         * data.then(function(result) {
+         *    // ‘result’ contains the total count. 
+         * },function (error) {
+         *    // error function
+         * })
+         */
+
+    }, {
+        key: 'referenceNotIn',
+        value: function referenceNotIn(key, query) {
+            var _query = {};
+            if (query instanceof Query && query._query.query) {
+                _query["$nin_query"] = query._query.query;
+            } else if ((typeof query === 'undefined' ? 'undefined' : _typeof(query)) === "object") {
+                _query["$nin_query"] = query;
+            }
+            if (this._query['query'][key]) {
+                this._query['query'][key] = this._query['query'][key].concat(_query);
+            } else {
+                this._query['query'][key] = _query;
+            }
+            return this;
         }
 
         /**
@@ -2743,18 +2874,18 @@ var Query = function (_Entry) {
         }
 
         /**
-             * @method addParam
-             * @description Includes query parameters in your queries.
-             * @memberOf Query
-             * @example var data = blogQuery.addParam('include_count', 'true').fetch()
-             *      data.then(function (result) {
-             *          // 'result' is an object which content the data including count in json object form
-             *       },function (error) {
-             *          // error function
-             *      })
-             * @returns {Query}
-             * @instance
-             */
+         * @method addParam
+         * @description Includes query parameters in your queries.
+         * @memberOf Query
+         * @example var data = blogQuery.addParam('include_count', 'true').fetch()
+         *      data.then(function (result) {
+         *          // 'result' is an object which content the data including count in json object form
+         *       },function (error) {
+         *          // error function
+         *      })
+         * @returns {Query}
+         * @instance
+         */
 
     }, {
         key: 'addParam',
