@@ -171,7 +171,7 @@ Following are Image Delivery API examples.
 ### Using the Sync API with JavaScript SDK
 
 The Sync API takes care of syncing your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates. Contentstack’s JavaScript SDK supports Sync API, which you can use to build powerful apps. Read through to understand how to use the Sync API with Contentstack JavaScript SDK.
-[Read Sync API documentation](https://docs.google.com/document/d/14IFRlmtOja5OPzlK1Q6DxW3auISEQNhX6opMYJcHVsI/). 
+[Read Sync API documentation](https://www.contentstack.com/docs/platforms/javascript-browser#using-the-sync-api-with-javascript-sdk). 
 
 ##### Initial sync
 
