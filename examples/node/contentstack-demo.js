@@ -26,7 +26,8 @@ class ContentstackDemo {
      */
     getEntries(contentTypeUid) {
         contentTypeUid = contentTypeUid || 'source'
-        return this.Stack.ContentType(contentTypeUid).Query().toJSON().find()
+        return this.Stack.ContentType('test').Query().includeContentType().toJSON().find()
+        //return this.Stack.getContentTypes(contentTypeUid)
     
     }
 
@@ -61,7 +62,9 @@ class ContentstackDemo {
      */
     getContentType(uid) {
         //contentTypeUid = contentTypeUid || 'source'
-        return this.Stack.getContentType(uid)
+        // return this.Stack.getContentType(uid)
+        // return this.Stack.ContentType(uid).Entry("blta07130f8b344b260").includeReferenceContentTypeUID().includeSchema().toJSON().fetch()
+        //return this.Stack.getContentTypes({"include_global_field_schema": true})
     }
 
     /**

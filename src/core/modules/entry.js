@@ -190,6 +190,7 @@ export default class Entry {
      */
     includeSchema() {
         this._query['include_schema'] = true;
+        this._query['include_snippet_schema'] = true;
         return this;
     }
 
@@ -226,6 +227,7 @@ export default class Entry {
      */
     includeContentType() {
         this._query['include_content_type'] = true;
+        this._query['include_snippet_schema'] = true;
         return this;
     }
 
