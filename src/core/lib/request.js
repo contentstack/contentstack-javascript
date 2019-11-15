@@ -42,12 +42,11 @@ export default function Request(options) {
             queryParams = serialize(options.body);
         }
 
-
         fetch(url + '?' + queryParams, {
                 method: 'GET',
                 headers: headers
             })
-            .then(function(response) {
+            .then(function(response) {             
                 if (response.ok && response.status === 200) {
                     let data = response.json();
                     resolve(data);
