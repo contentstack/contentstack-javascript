@@ -359,10 +359,10 @@ export default class Stack {
      /**
      * @method getContentTypes
      * @memberOf Stack
+     * @param {String} param - Query on contentTypes
      * @description This method returns comprehensive information of all the content types of a particular stack in your account.
-     * @example Stack.getContentTypes()
      * @example 
-     * let data = Stack.getContentTypes()
+     * let data = Stack.getContentTypes({"include_global_field_schema": true})
      *      data
      *      .then(function(result) {
      *           // 'result' is list of contentTypes.       
