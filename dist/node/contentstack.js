@@ -1048,10 +1048,10 @@ var Stack = function () {
         /**
         * @method getContentTypes
         * @memberOf Stack
+        * @param {String} param - Query on contentTypes
         * @description This method returns comprehensive information of all the content types of a particular stack in your account.
-        * @example Stack.getContentTypes()
         * @example 
-        * let data = Stack.getContentTypes()
+        * let data = Stack.getContentTypes({"include_global_field_schema": true})
         *      data
         *      .then(function(result) {
         *           // 'result' is list of contentTypes.       
@@ -1589,7 +1589,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //JS SDK version
-var version = '3.8.1';
+var version = '3.8.0';
 var environment = void 0,
     api_key = void 0;
 
@@ -2030,7 +2030,6 @@ var Entry = function () {
         key: "includeSchema",
         value: function includeSchema() {
             this._query['include_schema'] = true;
-            this._query['include_snippet_schema'] = true;
             return this;
         }
 
@@ -2072,7 +2071,6 @@ var Entry = function () {
         key: "includeContentType",
         value: function includeContentType() {
             this._query['include_content_type'] = true;
-            this._query['include_snippet_schema'] = true;
             return this;
         }
 
@@ -2718,7 +2716,7 @@ var Query = function (_Entry) {
          * @example 
          * <caption> referenceIn with Query instances</caption>
          * let blogQuery = Stack().ContentType('example').Query();
-         * let Query = Stack.ContentType('blog').Query().where('title', 'Demo').find()
+         * let Query = Stack.ContentType('blog').Query().where('title', 'Demo')
          * let data = blogQuery.referenceIn("brand", Query).find()
          * data.then(function(result) {
          *    // ‘result’ contains the total count. 
@@ -2774,7 +2772,8 @@ var Query = function (_Entry) {
          * @example 
          * <caption> referenceNotIn with raw queries</caption>
          * let blogQuery = Stack().ContentType('example').Query();
-         * let data = blogQuery.referenceNotIn("brand", {'title': 'Demo'}).find()
+         * let Query = Stack.ContentType('blog').Query().where('title', 'Demo')
+         * let data = blogQuery.referenceNotIn("brand", Query).find()
          * data.then(function(result) {
          *    // ‘result’ contains the total count. 
          * },function (error) {
