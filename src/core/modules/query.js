@@ -491,7 +491,7 @@ export default class Query extends Entry {
      * @example 
      * <caption> referenceIn with Query instances</caption>
      * let blogQuery = Stack().ContentType('example').Query();
-     * let Query = Stack.ContentType('blog').Query().where('title', 'Demo').find()
+     * let Query = Stack.ContentType('blog').Query().where('title', 'Demo')
      * let data = blogQuery.referenceIn("brand", Query).find()
      * data.then(function(result) {
      *    // ‘result’ contains the total count. 
@@ -545,7 +545,8 @@ export default class Query extends Entry {
      * @example 
      * <caption> referenceNotIn with raw queries</caption>
      * let blogQuery = Stack().ContentType('example').Query();
-     * let data = blogQuery.referenceNotIn("brand", {'title': 'Demo'}).find()
+     * let Query = Stack.ContentType('blog').Query().where('title', 'Demo')
+     * let data = blogQuery.referenceNotIn("brand", Query).find()
      * data.then(function(result) {
      *    // ‘result’ contains the total count. 
      * },function (error) {
