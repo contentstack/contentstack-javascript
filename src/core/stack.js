@@ -30,6 +30,10 @@ export default class Stack {
         if(stack_arguments[0].region && stack_arguments[0].region != undefined && stack_arguments[0].region != "us") {
             config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com"
         }
+        if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions != undefined) {
+            this.fetchOptions = fetchOptions;
+        }
+        
         this.config = config;
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
         this.provider = CacheProvider.providers('localstorage');
@@ -266,7 +270,7 @@ export default class Stack {
      * @returns {ContentType}
      * @instance 
      */
-    fetch() {
+    fetch(fetchOptions) {
         let result = {
             method: 'POST',
             headers: this.headers,
@@ -276,7 +280,11 @@ export default class Stack {
                 environment: this.environment
             }
         };
-        return Request(result);
+        var options = {
+            ...this.fetchOptions,
+            ...fetchOptions
+        }
+        return Request(result, options);
 
     }
 
@@ -353,7 +361,7 @@ export default class Stack {
                 environment: this.environment
             }
         };
-        return Request(query);
+        return Request(query, this.fetchOptions);
     }
 
      /**
@@ -387,7 +395,7 @@ export default class Stack {
                 query.body[key] = param[key]    
             }
         }
-        return Request(query);
+        return Request(query, this.fetchOptions);
     }
 
 
@@ -417,7 +425,7 @@ export default class Stack {
      * @instance
      */
 
-    sync(params) {
+    sync(params, fetchOptions) {
         this._query = {};
         this._query = Object.assign(this._query, params);
         this.requestParams = {
@@ -429,7 +437,11 @@ export default class Stack {
                 query: this._query
             }
         }
-        return Utils.sendRequest(this);
+        var options = {
+            ...this.fetchOptions,
+            ...fetchOptions
+        }
+        return Utils.sendRequest(this, options);
     }
 
   
