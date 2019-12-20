@@ -88,7 +88,7 @@ export default class Assets {
    * @instance
    */
 
-    fetch() {
+    fetch(fetchoptions) {
         if (this.asset_uid) {
             this.requestParams = {
                 method: 'POST',
@@ -99,7 +99,11 @@ export default class Assets {
                     query: this._query
                 }
             }
-            return Utils.sendRequest(this);
+            var options = {
+                ...this.fetchOptions,
+                ...fetchOptions
+            };
+            return Utils.sendRequest(this, options);
         } else {
             console.error("Kindly provide an asset uid. e.g. .Assets('bltsomething123')");
         }

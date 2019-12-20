@@ -735,7 +735,7 @@ export default class Query extends Entry {
      * @returns {promise}
      * @instance
      */
-    find() {
+    find(fetchOptions) {
         const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
             url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this.requestParams = {
@@ -747,6 +747,11 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
+        var options = {
+            ...this.fetchOptions,
+            ...fetchOptions
+        };
+        return Utils.sendRequest(this, options);
          return Utils.sendRequest(this);
     }
 
@@ -765,7 +770,7 @@ export default class Query extends Entry {
      * @returns {promise}
      * @instance
      */
-    findOne() {
+    findOne(fetchOptions) {
         const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
             url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this.singleEntry = true;
@@ -779,8 +784,11 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
-        
-        return Utils.sendRequest(this);
+        var options = {
+            ...this.fetchOptions,
+            ...fetchOptions
+        };
+        return Utils.sendRequest(this, options);
     }
 
 }

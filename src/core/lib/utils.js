@@ -214,7 +214,7 @@ export function spreadResult(result) {
     return _results;
 };
 
-export function sendRequest(queryObject) {
+export function sendRequest(queryObject, options) {
 
     let env_uid = queryObject.environment_uid;
     if (env_uid) {
@@ -264,7 +264,7 @@ export function sendRequest(queryObject) {
 
     let callback = function(continueFlag, resolve, reject) {
         if (continueFlag) {
-            Request(queryObject.requestParams)
+            Request(queryObject.requestParams, options)
                 .then(function(data) {
                     try {
                         self.entry_uid = self.asset_uid = self.tojson = self.queryCachePolicy = undefined;
