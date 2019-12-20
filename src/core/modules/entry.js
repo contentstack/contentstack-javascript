@@ -295,7 +295,7 @@ export default class Entry {
      * @returns {promise}
      * @instance
      */
-    fetch() {
+    fetch(fetchOptions) {
         if (this.entry_uid) {
             this.requestParams = {
                 method: 'POST',
@@ -306,8 +306,11 @@ export default class Entry {
                     query: this._query
                 }
             };
-
-            return Utils.sendRequest(this);
+            var options = {
+                ...this.fetchOptions,
+                ...fetchOptions
+            };
+            return Utils.sendRequest(this, options);
         } else {
             console.error("Kindly provide an entry uid. e.g. .Entry('bltsomething123')");
         }

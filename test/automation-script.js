@@ -60,7 +60,7 @@ automation.prototype.run = function() {
     // run command "node index.js" to run the test cases
     console.log("Running the test cases....");
     // let executeCommand = "node index.js";
-    let executeCommand = "node index.js | tap-json > " + reportFileName;
+    let executeCommand = "node index.js | tap-html > " + reportFileName;
     exec(executeCommand, function(err, stdout, stderr) {
         if (!err) {
             console.log("Test cases runned successfully....");
