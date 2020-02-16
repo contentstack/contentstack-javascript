@@ -3,9 +3,8 @@ import CacheProvider from './cache-provider/index';
 import ContentstackRegion from "./contentstackregion";
 
 
- /**
- * @class 
-  Contentstack 
+/**
+* @class Contentstack 
 * @description Creates an instance of `Contentstack`.
 * @instance
 */

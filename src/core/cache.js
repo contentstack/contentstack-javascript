@@ -1,4 +1,3 @@
-import * as Utils from "./lib/utils.js";
 import storage from 'runtime/localstorage.js';
 
 export function get(key) {
@@ -9,7 +8,7 @@ export function get(key) {
         return data;
     }
     return data || null;
-};
+}
 
 export function set(key, data) {
     try {
@@ -18,14 +17,14 @@ export function set(key, data) {
         } else {
             storage.setItem(key, data);
         }
-    } catch (error) {   
-    } 
-};
+    } catch (error) {
+    }
+}
 
 export function getStorage() {
     return storage || null;
-};
+}
 
 export function getKeys() {
     return (storage) ? Object.keys(storage) : [];
-};
+}

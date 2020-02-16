@@ -2,29 +2,26 @@ import config from '../../config';
 import * as Utils from './lib/utils';
 import Entry from './modules/entry';
 import Assets from './modules/assets';
-/*import Sync from './modules/sync';*/
 import Query from './modules/query';
 import Request from './lib/request';
-import * as cache from './cache';
 import CacheProvider from './cache-provider/index';
 
 
 /**
-     * @class 
-        Stack 
-     * @description Initialize an instance of ‘Stack’
-     * @example
-     * var Stack = Contentstack.Stack('api_key', 'delivery_token', 'environment');
-                 OR
-     * var Stack = Contentstack.Stack({
-     *    'api_key':'stack_api_key',
-     *   'access_token':'stack_delivery_token',
-     *    'environment':'environment_name'
-     * });
-     *
-     * @returns {Stack}
-     * @instance
-     */
+* @class Stack
+* @description Initialize an instance of ‘Stack’
+* @example
+* var Stack = Contentstack.Stack('api_key', 'delivery_token', 'environment');
+    OR
+* var Stack = Contentstack.Stack({
+*    'api_key':'stack_api_key',
+*   'access_token':'stack_delivery_token',
+*    'environment':'environment_name'
+* });
+*
+* @returns {Stack}
+* @instance
+*/
 export default class Stack {
     constructor(...stack_arguments) {
         if(stack_arguments[0].region && stack_arguments[0].region != undefined && stack_arguments[0].region != "us") {
@@ -45,6 +42,7 @@ export default class Stack {
                 } else {
                     console.error("Kindly provide valid object parameters.");
                 }
+                break;
             case 3:
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
@@ -56,6 +54,7 @@ export default class Stack {
                 } else {
                     console.error("Kindly provide valid string parameters.");
                 }
+                break;
             default:
                 console.error("Kindly provide valid parameters to initialize the Built.io Contentstack javascript-SDK Stack.");
         }

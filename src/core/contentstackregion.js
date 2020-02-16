@@ -4,4 +4,3 @@ const ContentstackRegion = {
 };
 
 export default ContentstackRegion;
-//module.exports = ContentstackRegion;

@@ -1,5 +1,6 @@
 import Request from './request';
 import Result from '../modules/result';
+
 /**
  * @method addSpread
  * @description method to add the spread.
@@ -53,13 +54,13 @@ export function _type(val) {
         case 'object':
             _typeof = __typeof;
             if (Array.isArray(val)) {
-                __typeof = 'array';
+                _typeof = 'array';
             }
             break;
         default:
             _typeof = __typeof;
     }
-    return __typeof;
+    return _typeof;
 };
 
 // merge two objects

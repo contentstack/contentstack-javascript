@@ -7,8 +7,8 @@ require('./entry/spread');
 
 //require('./sync/sync-testcases');
 
- // Assets 
- require('./asset/find');
- require('./asset/find-result-wrapper');
- require('./asset/spread');
- require('./asset/image-transformation.js');
+// Assets 
+require('./asset/find');
+require('./asset/find-result-wrapper');
+require('./asset/spread');
+require('./asset/image-transformation.js');

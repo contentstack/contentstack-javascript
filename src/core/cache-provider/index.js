@@ -1,6 +1,6 @@
 import localstorage from './localstorage';
-var CacheProvider = {};
 
+var CacheProvider = {};
 
 CacheProvider.providers = function(provider) {
     if (provider) {

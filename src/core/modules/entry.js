@@ -1,5 +1,4 @@
 import * as Utils from "../lib/utils";
-import Stack from "../stack";
 
 /**
  * @class 

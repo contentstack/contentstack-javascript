@@ -1,10 +1,7 @@
 import * as Utils from '../lib/utils';
-import Stack from '../stack';
-import Query from './query';
 
 /**
- * @class 
-  Assets  
+ * @class Assets
 * @summary Creates an instance of `Assets`.
 * @description Retrieves all assets of a stack by default. To retrieve a single asset, specify its UID.
 * @param {String} uid - uid of asset you want to retrieve

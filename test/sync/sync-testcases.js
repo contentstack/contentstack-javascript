@@ -80,11 +80,11 @@ sync_testcase('default .pagination_token()', function(assert) {
 
 
 sync_testcase('default .contentTypeUid()', function(assert) {
-    var contenttype_count = 29;
+    var contenttype_count = 31;
     Stack
          .sync({"init": true, "content_type_uid": "session"})
          .then(function success(data) {
-            assert.equal(data.total_count, 31, "Present data and filtered data total count on contentType bases is equal");       
+            assert.equal(data.total_count, contenttype_count, "Present data and filtered data total count on contentType bases is equal");       
             assert.end();
          });
 });

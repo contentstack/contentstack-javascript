@@ -1,10 +1,7 @@
-import * as Utils from "./utils.js";
 import fetch from "runtime/http.js";
 
 //JS SDK version
 let version = '{{VERSION}}';
-let environment,
-    api_key;
 
 export default function Request(options) {
     return new Promise(function(resolve, reject) {

@@ -1,6 +1,3 @@
-/**
- * Created by Aamod Pisat on 09-06-2017.
- */
 'use strict';
 /*
  * Module Dependencies.
