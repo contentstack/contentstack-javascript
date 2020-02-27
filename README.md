@@ -32,7 +32,7 @@ const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
 Node.js uses the Javascript SDK to create apps. To use the JavaScript SDK, download it from [here](https://contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest), OR install it via npm:
 
 ```bash
-npm -i contentstack
+npm i contentstack
 ```
 
 To import the SDK in your project, use the following command:
@@ -52,7 +52,7 @@ const Stack = contentstack.Stack("api_key","access_token","environment_name");
 React Native uses the Javascript SDK to create apps. To use the JavaScript SDK, download it from [here](https://contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest), OR install ist via npm:
 
 ```bash
-npm -i contentstack
+npm i contentstack
 ```
 
 To import the SDK in your project, use the following command:
