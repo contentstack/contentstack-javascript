@@ -14,12 +14,15 @@ import CacheProvider from './cache-provider/index';
         Stack 
      * @description Initialize an instance of ‘Stack’
      * @example
-     * var Stack = Contentstack.Stack('api_key', 'delivery_token', 'environment');
-                 OR
+     * 
      * var Stack = Contentstack.Stack({
-     *    'api_key':'stack_api_key',
-     *   'access_token':'stack_delivery_token',
-     *    'environment':'environment_name'
+     *      'api_key':'api_key',
+     *      'delivery_token':'delivery_token',
+     *      'environment':'environment_name',
+     *      'region': 'us',
+     *      'fetchOption': {
+     *          'agent': proxy
+     *      }
      * });
      *
      * @returns {Stack}
@@ -28,10 +31,11 @@ import CacheProvider from './cache-provider/index';
 export default class Stack {
     constructor(...stack_arguments) {
         if(stack_arguments[0].region && stack_arguments[0].region != undefined && stack_arguments[0].region != "us") {
-            config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com"
-        }
+            config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
+        } 
+
         if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions != undefined) {
-            this.fetchOptions = fetchOptions;
+            this.fetchOptions = stack_arguments[0].fetchOptions;
         }
         
         this.config = config;
@@ -39,17 +43,17 @@ export default class Stack {
         this.provider = CacheProvider.providers('localstorage');
         switch (stack_arguments.length) {
             case 1:
-                if (typeof stack_arguments[0] === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].access_token === "string" && typeof stack_arguments[0].environment === "string") {
+                if (typeof stack_arguments[0] === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].delivery_token === "string" && typeof stack_arguments[0].environment === "string") {
                     this.headers = {
                         api_key: stack_arguments[0].api_key,
-                        access_token: stack_arguments[0].access_token
+                        access_token: stack_arguments[0].delivery_token
                     };
                     this.environment = stack_arguments[0].environment;
                     return this;
                 } else {
                     console.error("Kindly provide valid object parameters.");
                 }
-            case 3:
+            case 3, 4:
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
@@ -61,7 +65,7 @@ export default class Stack {
                     console.error("Kindly provide valid string parameters.");
                 }
             default:
-                console.error("Kindly provide valid parameters to initialize the Built.io Contentstack javascript-SDK Stack.");
+                console.error("Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
         }
 
     }
@@ -280,12 +284,8 @@ export default class Stack {
                 environment: this.environment
             }
         };
-        var options = {
-            ...this.fetchOptions,
-            ...fetchOptions
-        }
+        var options = Object.assign({}, this.fetchOptions, fetchOptions);
         return Request(result, options);
-
     }
 
   /**
@@ -437,10 +437,7 @@ export default class Stack {
                 query: this._query
             }
         }
-        var options = {
-            ...this.fetchOptions,
-            ...fetchOptions
-        }
+        var options = Object.assign({}, this.fetchOptions, fetchOptions);
         return Utils.sendRequest(this, options);
     }
 

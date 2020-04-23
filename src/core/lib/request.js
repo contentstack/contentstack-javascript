@@ -42,12 +42,11 @@ export default function Request(options, fetchOptions) {
             queryParams = serialize(options.body);
         }
 
-        var option = {
-            method: 'GET',
-            headers: headers,
-            fetchOptions
-        };
-        
+        var option = Object.assign({ 
+                                    method: 'GET',
+                                    headers: headers
+                                }, 
+                                fetchOptions);
 
         fetch(url + '?' + queryParams, option)
             .then(function(response) {             
