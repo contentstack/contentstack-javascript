@@ -784,7 +784,7 @@ export default class Query extends Entry {
      * @returns {promise}
      * @instance
      */
-    find() {
+    find(fetchOptions) {
         const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
             url = (this.type &amp;&amp; this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this.requestParams = {
@@ -796,7 +796,8 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
-         return Utils.sendRequest(this);
+        var options = Object.assign({}, this.fetchOptions, fetchOptions);
+        return Utils.sendRequest(this, options);
     }
 
      /**
@@ -814,7 +815,7 @@ export default class Query extends Entry {
      * @returns {promise}
      * @instance
      */
-    findOne() {
+    findOne(fetchOptions) {
         const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
             url = (this.type &amp;&amp; this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this.singleEntry = true;
@@ -828,8 +829,8 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
-        
-        return Utils.sendRequest(this);
+        var options = Object.assign({}, this.fetchOptions, fetchOptions);
+        return Utils.sendRequest(this, options);
     }
 
 }</code></pre>
@@ -845,7 +846,7 @@ export default class Query extends Entry {
 
 <footer>
     <div class="inner-content center">
-        <span class="copy-right"><a href="mailto:support-contentstack@built.io" target="_self">support-contentstack@built.io</a> | © 2017 Contentstack. All rights reserved.</span>
+        <span class="copy-right"><a href="mailto:support@contentstack.com" target="_self">support@contentstack.com</a> | © 2016-2020 Contentstack. All rights reserved.</span>
     </div>
 </footer>
 
