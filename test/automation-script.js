@@ -14,7 +14,7 @@ let transporter = nodemailer.createTransport(config.smtp);
 let automation = function() {
     let self = this;
     console.log("-----automation started ------")
-    //self.init();
+    self.init();
     self.run();
 }
 
@@ -31,17 +31,17 @@ automation.prototype.init = function() {
                 "username": config.runscope.username,
                 "password": config.runscope.password,
                 "api_key": config.stack.api_key,
-                "access_token": config.stack.access_token,
+                "delivery_token": config.stack.delivery_token,
                 "Content-Type": "application/json"
             }
         };
-        console.log("Creating data in Built.io Contentstack...");
+        console.log("Creating data in Contentstack...");
 
-        // trigger runscope url for data creation in Built.io Contentstack
+        // trigger runscope url for data creation in Contentstack
         request(options, function(err, res, body) {
             if (!err && body) {
                 setTimeout(function() {
-                    console.log("Data created in Built.io Contentstack...");
+                    console.log("Data created in Contentstack...");
                     self.run();
                 }, 240000);
             }

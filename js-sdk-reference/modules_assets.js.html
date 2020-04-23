@@ -137,7 +137,7 @@ export default class Assets {
    * @instance
    */
 
-    fetch() {
+    fetch(fetchoptions) {
         if (this.asset_uid) {
             this.requestParams = {
                 method: 'POST',
@@ -148,7 +148,8 @@ export default class Assets {
                     query: this._query
                 }
             }
-            return Utils.sendRequest(this);
+            var options = Object.assign({}, this.fetchOptions, fetchOptions);
+            return Utils.sendRequest(this, options);
         } else {
             console.error("Kindly provide an asset uid. e.g. .Assets('bltsomething123')");
         }
@@ -166,7 +167,7 @@ export default class Assets {
 
 <footer>
     <div class="inner-content center">
-        <span class="copy-right"><a href="mailto:support-contentstack@built.io" target="_self">support-contentstack@built.io</a> | © 2017 Contentstack. All rights reserved.</span>
+        <span class="copy-right"><a href="mailto:support@contentstack.com" target="_self">support@contentstack.com</a> | © 2016-2020 Contentstack. All rights reserved.</span>
     </div>
 </footer>
 
