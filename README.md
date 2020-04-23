@@ -19,9 +19,9 @@ To use the JavaScript SDK, download it from [here](https://contentstack.com/docs
 
     <script type="text/javascript" src="/path/to/contentstack.min.js"></script>;
 
-To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.
+To initialize the SDK, you will need to specify the API Key, Delivery Token, and Environment Name of your stack.
 
-    const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
+    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name");
 
 #### For Node.js
 
@@ -33,9 +33,9 @@ To import the SDK in your project, use the following command:
 
     import contentstack from ‘contentstack’
 
-To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.
+To initialize the SDK, you will need to specify the API Key, Delivery Token, and Environment Name of your stack.
 
-    const Stack = contentstack.Stack("api_key","access_token","environment_name");
+    const Stack = contentstack.Stack("api_key","delivery_token","environment_name");
 
 #### For React Native
 
@@ -47,9 +47,9 @@ To import the SDK in your project, use the following command:
 
     import contentstack from `contentstack/react-native`
 
-To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.
+To initialize the SDK, you will need to specify the API Key, Delivery Token, and Environment Name of your stack.
 
-    const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
+    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name");
 
 
 ### Key Concepts for using Contentstack
@@ -80,9 +80,9 @@ A publishing environment corresponds to one or more deployment servers or a cont
 
 #### Initializing your SDK 
 
-You will need to specify the API key, Access token, and Environment Name of your stack to initialize the SDK:
+You will need to specify the API key, Delivery Token, and Environment Name of your stack to initialize the SDK:
 
-    const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
+    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name");
 
 Once you have initialized the SDK, you can start getting content in your app.
 

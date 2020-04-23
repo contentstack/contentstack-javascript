@@ -747,12 +747,8 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
-        var options = {
-            ...this.fetchOptions,
-            ...fetchOptions
-        };
+        var options = Object.assign({}, this.fetchOptions, fetchOptions);
         return Utils.sendRequest(this, options);
-         return Utils.sendRequest(this);
     }
 
      /**
@@ -784,10 +780,7 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
-        var options = {
-            ...this.fetchOptions,
-            ...fetchOptions
-        };
+        var options = Object.assign({}, this.fetchOptions, fetchOptions);
         return Utils.sendRequest(this, options);
     }
 

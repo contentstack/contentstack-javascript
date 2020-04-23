@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/builtio-contentstack/contentstack-javascript.git"
+    "url": "https://github.com/contentstack/contentstack-javascript.git"
   },
   "_shasum": "a328ed07240476a26b31a23261355dc929e1da63",
   "_from": "contentstack@latest",

@@ -306,10 +306,7 @@ export default class Entry {
                     query: this._query
                 }
             };
-            var options = {
-                ...this.fetchOptions,
-                ...fetchOptions
-            };
+            var options = Object.assign({}, this.fetchOptions, fetchOptions);
             return Utils.sendRequest(this, options);
         } else {
             console.error("Kindly provide an entry uid. e.g. .Entry('bltsomething123')");

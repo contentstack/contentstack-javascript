@@ -133,12 +133,14 @@
 
     <h5>Example</h5>
     
-    <pre class="prettyprint"><code>var Stack = Contentstack.Stack('api_key', 'delivery_token', 'environment');
-                 OR
-var Stack = Contentstack.Stack({
-   'api_key':'stack_api_key',
-  'access_token':'stack_delivery_token',
-   'environment':'environment_name'
+    <pre class="prettyprint"><code>var Stack = Contentstack.Stack({
+     'api_key':'api_key',
+     'delivery_token':'delivery_token',
+     'environment':'environment_name',
+     'region': 'us',
+     'fetchOption': {
+         'agent': proxy
+     }
 });</code></pre>
 
 
@@ -2072,7 +2074,7 @@ Stack.clearByContentType(content_type_uid, language_uid, callback);</code></pre>
 
 <footer>
     <div class="inner-content center">
-        <span class="copy-right"><a href="mailto:support-contentstack@built.io" target="_self">support-contentstack@built.io</a> | © 2017 Contentstack. All rights reserved.</span>
+        <span class="copy-right"><a href="mailto:support@contentstack.com" target="_self">support@contentstack.com</a> | © 2016-2020 Contentstack. All rights reserved.</span>
     </div>
 </footer>
 
