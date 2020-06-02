@@ -12,6 +12,7 @@
   "_id": "contentstack@3.1.1",
   "scripts": {
     "test": "tape test/index.js | tap-html --out ./tap-html.html",
+    "automate": "node test.js",
     "buildnode": "webpack --config webpack/webpack.node.js",
     "buildweb": "webpack -p --config webpack/webpack.web.js",
     "buildreactnative": "webpack --config webpack/webpack.react-native.js",
@@ -65,7 +66,7 @@
     "es3ify-loader": "0.2.0",
     "http-proxy-agent": "^3.0.0",
     "jsdoc": "^3.5.5",
-    "jshint": "2.9.5",
+    "jshint": "^2.11.0",
     "nodemailer": "^4.3.1",
     "request": "^2.83.0",
     "string-replace-loader": "1.3.0",
