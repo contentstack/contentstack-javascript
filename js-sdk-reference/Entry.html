@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Entry - Documentation</title>
-
+    <link rel="shortcut icon" href="./favicon.ico">
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
@@ -600,7 +600,7 @@
 
 
 <div class="description">
-    Fetches the entire content of referenced entry(ies)
+    Fetches the entire content of referenced entry(ies). <a href='https://www.contentstack.com/docs/developers/apis/content-delivery-api/#include-reference'>Read More</a>
 </div>
 
 
@@ -666,7 +666,18 @@
     
     <pre class="prettyprint"><code>var Query = Stack.ContentType(contentTypes.source).Query();
             Query
-                .includeReference(['reference', 'other_reference'])
+                .includeReference(['reference_field_uid', 'other_reference_field_uid'])
+                .toJSON()
+                .find()
+                .then(function success(entries) {
+                    //'entries' is  an object used to retrieve data including reference entries.
+                })</code></pre>
+
+        <p class="code-caption"> .includeReference with reference_field_uids and its children reference </p>
+    
+    <pre class="prettyprint"><code>var Query = Stack.ContentType(contentTypes.source).Query();
+            Query
+                .includeReference(['reference_field_uid', 'reference_field_uid.child_reference_field_uid'])
                 .toJSON()
                 .find()
                 .then(function success(entries) {
@@ -677,7 +688,7 @@
     
     <pre class="prettyprint"><code>var Query = Stack.ContentType(contentTypes.source).Query(); 
      Query
-        .includeReference('reference')
+        .includeReference('reference_field_uid')
         .toJSON()
         .find()
         .then(function success(entries) {
