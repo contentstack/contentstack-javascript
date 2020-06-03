@@ -9,13 +9,15 @@ const init = require('../config.js');
 const Utils = require('./utils.js');
 
 const contentTypes = init.contentTypes;
-
+const config = require('../config.json')
+Object.assign(init, config)
 let Stack;
 /*
  * Initalise the Contentstack Instance
  * */
 test('Initalise the Contentstack Stack Instance', function(TC) {
     setTimeout(function() {
+        console.log(init.stack)
         Stack = Contentstack.Stack(init.stack);
         Stack.setHost(init.host);
         TC.end();
