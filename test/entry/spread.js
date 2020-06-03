@@ -9,6 +9,9 @@ const test = require('tape');
 const Contentstack = require('../../dist/node/contentstack.js');
 const init = require('../config.js');
 
+const config = require('../config.json')
+Object.assign(init, config)
+
 const contentTypes = init.contentTypes;
 
 var Stack;

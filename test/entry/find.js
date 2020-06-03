@@ -930,8 +930,16 @@ test('.includeReferenceContenttypeUid()', function(assert) {
         .then(function success(entries) {
             for(var i=0; i<entries[1].length; i++) {
                 if(entries[1][i].data_type == "reference" && entries[1][i].display_name == "Reference") {
-                    assert.equal(entries[1][i].field_metadata.hasOwnProperty("ref_multiple_content_types"), false, "multiple contentType reference is not present")                    
-                    assert.ok(typeof entries[1][i].reference_to === "string")
+                    if (entries[1][i].field_metadata.hasOwnProperty("ref_multiple")) {
+                        assert.equal(entries[1][i].field_metadata.ref_multiple, false, "multiple contentType reference is not present")                    
+                    }
+                    if (entries[1][i].field_metadata.hasOwnProperty("ref_multiple_content_types")) {
+                        if (entries[1][i].field_metadata.ref_multiple_content_types === true) {
+                            assert.ok(typeof entries[1][i].reference_to === 'object')
+                        }else {
+                            assert.ok(typeof entries[1][i].reference_to === 'string')
+                        }
+                    }
                     assert.end();
                 }
             }

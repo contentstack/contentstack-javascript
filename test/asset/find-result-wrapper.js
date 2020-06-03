@@ -7,6 +7,9 @@ var Contentstack = require('../../dist/node/contentstack.js');
 var init = require('../config.js');
 var Utils = require('../entry/utils.js');
 
+const config = require('../config.json')
+Object.assign(init, config)
+
 var Stack;
 /*
  * Initalise the Contentstack Instance
