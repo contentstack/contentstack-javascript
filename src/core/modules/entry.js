@@ -305,8 +305,7 @@ export default class Entry {
      * 
      * @example
      * Stack.ContentType(contentTypeUid).Entry(entryUid).toJSON().fetch({
-     *          'agent': proxy,
-     *          timeout: 2000,
+     *         
      *      })
      * @returns {promise}
      * @instance
