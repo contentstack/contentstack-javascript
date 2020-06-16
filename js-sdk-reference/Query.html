@@ -3805,10 +3805,21 @@ data.then(function(result) {
 
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
     <pre class="prettyprint"><code>let blogQuery = Stack().ContentType('example').Query().find();
          blogQuery.then(function(result) {
+         // result contains the list of object. 
+      },function (error) {
+         // error function
+     })
+blogQuery.find()</code></pre>
+
+    <pre class="prettyprint"><code>let blogQuery = Stack.ContentType(contentTypeUid).Query().find({
+         'agent': proxy,
+         timeout: 2000,
+     });
+blogQuery.then(function(result) {
          // result contains the list of object. 
       },function (error) {
          // error function
