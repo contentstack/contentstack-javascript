@@ -10,7 +10,7 @@ const Contentstack = require('../../dist/node/contentstack.js');
 
 class ContentstackDemo {
     constructor(config) {
-        config = config || { 'api_key': 'blt123something', 'devlivery_token': 'blt123something', 'environment': 'development',  }
+        config = config || { 'api_key': 'blt123something', 'delivery_token': 'blt123something', 'environment': 'development',  }
             // Initialize the Contentstackstack
             //console.log("datattatata", Contentstack.Region.EUROPE)
 
