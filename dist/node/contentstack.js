@@ -2186,8 +2186,7 @@ var Entry = function () {
         * 
         * @example
         * Stack.ContentType(contentTypeUid).Entry(entryUid).toJSON().fetch({
-        *          'agent': proxy,
-        *          timeout: 2000,
+        *         
         *      })
         * @returns {promise}
         * @instance
@@ -3028,8 +3027,7 @@ var Query = function (_Entry) {
          * blogQuery.find()
          * @example
          * let blogQuery = Stack.ContentType(contentTypeUid).Query().find({
-         *          'agent': proxy,
-         *          timeout: 2000,
+         *        
          *      });
          * blogQuery.then(function(result) {
          *          // result contains the list of object. 
@@ -7931,8 +7929,7 @@ var Assets = function () {
            * Stack.Assets('assets_uid').toJSON().fetch()
            * @example
            * Stack.Assets('assets_uid').toJSON().fetch({
-           *          'agent': proxy,
-           *          timeout: 2000,
+           *         
            *      })
            * @returns {promise}
            * @instance
