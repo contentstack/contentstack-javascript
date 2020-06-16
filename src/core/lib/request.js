@@ -44,7 +44,8 @@ export default function Request(options, fetchOptions) {
 
         var option = Object.assign({ 
                                     method: 'GET',
-                                    headers: headers
+                                    headers: headers,
+                                    timeout: 500,
                                 }, 
                                 fetchOptions);
 
