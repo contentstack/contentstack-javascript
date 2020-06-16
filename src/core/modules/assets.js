@@ -84,6 +84,11 @@ export default class Assets {
    * @memberOf Assets
    * @example
    * Stack.Assets('assets_uid').toJSON().fetch()
+   * @example
+   * Stack.Assets('assets_uid').toJSON().fetch({
+   *          'agent': proxy,
+   *          timeout: 2000,
+   *      })
    * @returns {promise}
    * @instance
    */

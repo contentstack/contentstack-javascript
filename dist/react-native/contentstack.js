@@ -565,10 +565,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
      *      'environment':'environment_name',
      *      'region': 'us',
      *      'fetchOption': {
-     *          'agent': proxy
+     *       
      *      }
      * });
-     *
+     * @example
+     * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment', {
+     * 
+     * });
      * @returns {Stack}
      * @instance
      */
@@ -601,9 +604,9 @@ var Stack = function () {
                     this.environment = stack_arguments[0].environment;
                     return this;
                 } else {
-                    console.error("Kindly provide valid object parameters.");
+                    console.error("Kindly provide valid object parameters. The specified API Key, Delivery Token, or Environment Name is invalid.");
                 }
-            case (3, 4):
+            case (3, 4, 5):
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
@@ -614,6 +617,18 @@ var Stack = function () {
                 } else {
                     console.error("Kindly provide valid string parameters.");
                 }
+                if (stack_arguments[3]) {
+                    if (typeof stack_arguments[3] === "string" && stack_arguments[3].region !== "us" && stack_arguments[3].region === "eu") {
+                        _config2.default['host'] = stack_arguments[0].region + "-" + "cdn.contentstack.com";
+                    } else if (_typeof(stack_arguments[3]) === 'object') {
+                        this.fetchOptions = stack_arguments[3];
+                    }
+                }
+
+                if (stack_arguments[4] && _typeof(stack_arguments[4]) === 'object') {
+                    this.fetchOptions = stack_arguments[3];
+                }
+
             default:
                 console.error("Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
         }
@@ -1100,7 +1115,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //JS SDK version
-var version = '3.8.1';
+var version = '3.9.0';
 var environment = void 0,
     api_key = void 0;
 
@@ -1140,7 +1155,8 @@ function Request(options, fetchOptions) {
 
         var option = Object.assign({
             method: 'GET',
-            headers: headers
+            headers: headers,
+            timeout: 500
         }, fetchOptions);
 
         (0, _http2.default)(url + '?' + queryParams, option).then(function (response) {
@@ -1382,12 +1398,22 @@ var Entry = function () {
         /**
             * @method includeReference
             * @memberOf Entry
-            * @description Fetches the entire content of referenced entry(ies)
+            * @description Fetches the entire content of referenced entry(ies). <a href='https://www.contentstack.com/docs/developers/apis/content-delivery-api/#include-reference'>Read More</a>
             * @example
             * <caption> .includeReference with reference_field_uids as array </caption>
             * var Query = Stack.ContentType(contentTypes.source).Query();
                    Query
-                       .includeReference(['reference', 'other_reference'])
+                       .includeReference(['reference_field_uid', 'other_reference_field_uid'])
+                       .toJSON()
+                       .find()
+                       .then(function success(entries) {
+                           //'entries' is  an object used to retrieve data including reference entries.
+                       })
+            * @example
+            * <caption> .includeReference with reference_field_uids and its children reference </caption>
+            * var Query = Stack.ContentType(contentTypes.source).Query();
+                   Query
+                       .includeReference(['reference_field_uid', 'reference_field_uid.child_reference_field_uid'])
                        .toJSON()
                        .find()
                        .then(function success(entries) {
@@ -1397,7 +1423,7 @@ var Entry = function () {
             * <caption> .includeReference with reference_field_uids </caption>
             * var Query = Stack.ContentType(contentTypes.source).Query(); 
             Query
-               .includeReference('reference')
+               .includeReference('reference_field_uid')
                .toJSON()
                .find()
                .then(function success(entries) {
@@ -1606,6 +1632,12 @@ var Entry = function () {
         * @description Fetches a particular entry based on the provided entry UID.
         * @example
         * Stack.ContentType(contentTypeUid).Entry(entryUid).toJSON().fetch()
+        * 
+        * @example
+        * Stack.ContentType(contentTypeUid).Entry(entryUid).toJSON().fetch({
+        *          'agent': proxy,
+        *          timeout: 2000,
+        *      })
         * @returns {promise}
         * @instance
         */
@@ -2443,6 +2475,17 @@ var Query = function (_Entry) {
          *          // error function
          *      })
          * blogQuery.find()
+         * @example
+         * let blogQuery = Stack.ContentType(contentTypeUid).Query().find({
+         *          'agent': proxy,
+         *          timeout: 2000,
+         *      });
+         * blogQuery.then(function(result) {
+         *          // result contains the list of object. 
+         *       },function (error) {
+         *          // error function
+         *      })
+         * blogQuery.find()
          * @returns {promise}
          * @instance
          */
@@ -2483,7 +2526,7 @@ var Query = function (_Entry) {
 
     }, {
         key: 'findOne',
-        value: function findOne(fetchOptions) {
+        value: function findOne() {
             var host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
                 url = this.type && this.type === 'asset' ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
             this.singleEntry = true;
@@ -2497,7 +2540,7 @@ var Query = function (_Entry) {
                     query: this._query
                 }
             };
-            var options = Object.assign({}, this.fetchOptions, fetchOptions);
+            var options = Object.assign({}, this.fetchOptions);
             return Utils.sendRequest(this, options);
         }
     }]);
@@ -3117,6 +3160,11 @@ var Assets = function () {
            * @memberOf Assets
            * @example
            * Stack.Assets('assets_uid').toJSON().fetch()
+           * @example
+           * Stack.Assets('assets_uid').toJSON().fetch({
+           *          'agent': proxy,
+           *          timeout: 2000,
+           *      })
            * @returns {promise}
            * @instance
            */

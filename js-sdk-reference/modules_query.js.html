@@ -781,6 +781,17 @@ export default class Query extends Entry {
      *          // error function
      *      })
      * blogQuery.find()
+     * @example
+     * let blogQuery = Stack.ContentType(contentTypeUid).Query().find({
+     *          'agent': proxy,
+     *          timeout: 2000,
+     *      });
+     * blogQuery.then(function(result) {
+     *          // result contains the list of object. 
+     *       },function (error) {
+     *          // error function
+     *      })
+     * blogQuery.find()
      * @returns {promise}
      * @instance
      */
@@ -815,7 +826,7 @@ export default class Query extends Entry {
      * @returns {promise}
      * @instance
      */
-    findOne(fetchOptions) {
+    findOne() {
         const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
             url = (this.type &amp;&amp; this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this.singleEntry = true;
@@ -829,7 +840,7 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
-        var options = Object.assign({}, this.fetchOptions, fetchOptions);
+        var options = Object.assign({}, this.fetchOptions);
         return Utils.sendRequest(this, options);
     }
 

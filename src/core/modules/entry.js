@@ -302,6 +302,12 @@ export default class Entry {
      * @description Fetches a particular entry based on the provided entry UID.
      * @example
      * Stack.ContentType(contentTypeUid).Entry(entryUid).toJSON().fetch()
+     * 
+     * @example
+     * Stack.ContentType(contentTypeUid).Entry(entryUid).toJSON().fetch({
+     *          'agent': proxy,
+     *          timeout: 2000,
+     *      })
      * @returns {promise}
      * @instance
      */

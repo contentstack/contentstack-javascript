@@ -453,9 +453,14 @@
 
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
     <pre class="prettyprint"><code>Stack.Assets('assets_uid').toJSON().fetch()</code></pre>
+
+    <pre class="prettyprint"><code>Stack.Assets('assets_uid').toJSON().fetch({
+         'agent': proxy,
+         timeout: 2000,
+     })</code></pre>
 
 
 
