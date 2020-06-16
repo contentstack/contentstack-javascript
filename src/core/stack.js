@@ -21,10 +21,13 @@ import CacheProvider from './cache-provider/index';
      *      'environment':'environment_name',
      *      'region': 'us',
      *      'fetchOption': {
-     *          'agent': proxy
+     *       
      *      }
      * });
-     *
+     * @example
+     * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment', {
+     * 
+     * });
      * @returns {Stack}
      * @instance
      */
@@ -51,9 +54,9 @@ export default class Stack {
                     this.environment = stack_arguments[0].environment;
                     return this;
                 } else {
-                    console.error("Kindly provide valid object parameters.");
+                    console.error("Kindly provide valid object parameters. The specified API Key, Delivery Token, or Environment Name is invalid.");
                 }
-            case 3, 4:
+            case 3, 4, 5:
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
@@ -64,6 +67,18 @@ export default class Stack {
                 } else {
                     console.error("Kindly provide valid string parameters.");
                 }
+                if (stack_arguments[3]) {
+                    if(typeof stack_arguments[3] === "string" && stack_arguments[3].region !== "us" && stack_arguments[3].region === "eu") {
+                        config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
+                    } else if (typeof stack_arguments[3] === 'object') {
+                        this.fetchOptions = stack_arguments[3]
+                    }
+                }
+
+                if (stack_arguments[4] && typeof stack_arguments[4] === 'object') {
+                    this.fetchOptions = stack_arguments[3]
+                }
+                
             default:
                 console.error("Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
         }
@@ -398,10 +413,6 @@ export default class Stack {
         return Request(query, this.fetchOptions);
     }
 
-
-    
-
-
     /**
      * @method sync
      * @memberOf Stack
@@ -441,7 +452,6 @@ export default class Stack {
         return Utils.sendRequest(this, options);
     }
 
-  
     /**
      * @method imageTransform
      * @memberOf Stack
