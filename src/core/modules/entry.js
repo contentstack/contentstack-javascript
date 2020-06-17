@@ -97,12 +97,22 @@ export default class Entry {
  /**
      * @method includeReference
      * @memberOf Entry
-     * @description Fetches the entire content of referenced entry(ies)
+     * @description Fetches the entire content of referenced entry(ies). <a href='https://www.contentstack.com/docs/developers/apis/content-delivery-api/#include-reference'>Read More</a>
      * @example
      * <caption> .includeReference with reference_field_uids as array </caption>
      * var Query = Stack.ContentType(contentTypes.source).Query();
             Query
-                .includeReference(['reference', 'other_reference'])
+                .includeReference(['reference_field_uid', 'other_reference_field_uid'])
+                .toJSON()
+                .find()
+                .then(function success(entries) {
+                    //'entries' is  an object used to retrieve data including reference entries.
+                })
+     * @example
+     * <caption> .includeReference with reference_field_uids and its children reference </caption>
+     * var Query = Stack.ContentType(contentTypes.source).Query();
+            Query
+                .includeReference(['reference_field_uid', 'reference_field_uid.child_reference_field_uid'])
                 .toJSON()
                 .find()
                 .then(function success(entries) {
@@ -112,7 +122,7 @@ export default class Entry {
      * <caption> .includeReference with reference_field_uids </caption>
      * var Query = Stack.ContentType(contentTypes.source).Query(); 
      Query
-        .includeReference('reference')
+        .includeReference('reference_field_uid')
         .toJSON()
         .find()
         .then(function success(entries) {
@@ -292,10 +302,15 @@ export default class Entry {
      * @description Fetches a particular entry based on the provided entry UID.
      * @example
      * Stack.ContentType(contentTypeUid).Entry(entryUid).toJSON().fetch()
+     * 
+     * @example
+     * Stack.ContentType(contentTypeUid).Entry(entryUid).toJSON().fetch({
+     *         
+     *      })
      * @returns {promise}
      * @instance
      */
-    fetch() {
+    fetch(fetchOptions) {
         if (this.entry_uid) {
             this.requestParams = {
                 method: 'POST',
@@ -306,8 +321,8 @@ export default class Entry {
                     query: this._query
                 }
             };
-
-            return Utils.sendRequest(this);
+            var options = Object.assign({}, this.fetchOptions, fetchOptions);
+            return Utils.sendRequest(this, options);
         } else {
             console.error("Kindly provide an entry uid. e.g. .Entry('bltsomething123')");
         }

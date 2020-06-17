@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Stack - Documentation</title>
-
+    <link rel="shortcut icon" href="./favicon.ico">
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
@@ -64,7 +64,7 @@
 
     
 
-    <h4 class="name" id="Stack"><span class="type-signature"></span>new Stack<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
+    <h4 class="name" id="Stack"><span class="type-signature"></span>new Stack<span class="signature">(api_key, delivery_token, environment, fetchOption)</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
 
     
 
@@ -80,6 +80,124 @@
 
 
 
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>api_key</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Stack API Key.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>delivery_token</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Stack Delivery token.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>environment</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Stack Environment name.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fetchOption</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Custom setting for the request.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>timeout</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Set timeout for the request.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
 
 
 
@@ -131,14 +249,20 @@
 
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>var Stack = Contentstack.Stack('api_key', 'delivery_token', 'environment');
-                 OR
-var Stack = Contentstack.Stack({
-   'api_key':'stack_api_key',
-  'access_token':'stack_delivery_token',
-   'environment':'environment_name'
+    <pre class="prettyprint"><code>var Stack = Contentstack.Stack({
+     'api_key':'api_key',
+     'delivery_token':'delivery_token',
+     'environment':'environment_name',
+     'region': 'us',
+     'fetchOption': {
+      
+     }
+});</code></pre>
+
+    <pre class="prettyprint"><code>var Stack = Contentstack.Stack('api_key', 'access_token', 'environment', {
+
 });</code></pre>
 
 
@@ -2072,7 +2196,7 @@ Stack.clearByContentType(content_type_uid, language_uid, callback);</code></pre>
 
 <footer>
     <div class="inner-content center">
-        <span class="copy-right"><a href="mailto:support-contentstack@built.io" target="_self">support-contentstack@built.io</a> | © 2017 Contentstack. All rights reserved.</span>
+        <span class="copy-right"><a href="mailto:support@contentstack.com" target="_self">support@contentstack.com</a> | © 2016-2020 Contentstack. All rights reserved.</span>
     </div>
 </footer>
 
