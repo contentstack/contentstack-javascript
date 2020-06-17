@@ -6,7 +6,7 @@ let version = '{{VERSION}}';
 let environment,
     api_key;
 
-export default function Request(options) {
+export default function Request(options, fetchOptions) {
     return new Promise(function(resolve, reject) {
         let queryParams;
         let serialize = function(obj, prefix) {
@@ -42,10 +42,14 @@ export default function Request(options) {
             queryParams = serialize(options.body);
         }
 
-        fetch(url + '?' + queryParams, {
-                method: 'GET',
-                headers: headers
-            })
+        var option = Object.assign({ 
+                                    method: 'GET',
+                                    headers: headers,
+                                    timeout: 3000,
+                                }, 
+                                fetchOptions);
+
+        fetch(url + '?' + queryParams, option)
             .then(function(response) {             
                 if (response.ok && response.status === 200) {
                     let data = response.json();

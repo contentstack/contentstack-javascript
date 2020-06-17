@@ -6,7 +6,7 @@ let request = require('request'),
     exec = require('child_process').exec,
     nodemailer = require('nodemailer'),
     config = require('./config.js'),
-    reportFileName = "report.json";
+    reportFileName = "report.html";
 
 //configure the smtp 
 let transporter = nodemailer.createTransport(config.smtp);
@@ -14,8 +14,8 @@ let transporter = nodemailer.createTransport(config.smtp);
 let automation = function() {
     let self = this;
     console.log("-----automation started ------")
-    //self.init();
-    self.run();
+    self.init();
+    // self.run();
 }
 
 automation.prototype.init = function() {
@@ -31,17 +31,17 @@ automation.prototype.init = function() {
                 "username": config.runscope.username,
                 "password": config.runscope.password,
                 "api_key": config.stack.api_key,
-                "access_token": config.stack.access_token,
+                "delivery_token": config.stack.delivery_token,
                 "Content-Type": "application/json"
             }
         };
-        console.log("Creating data in Built.io Contentstack...");
+        console.log("Creating data in Contentstack...");
 
-        // trigger runscope url for data creation in Built.io Contentstack
+        // trigger runscope url for data creation in Contentstack
         request(options, function(err, res, body) {
             if (!err && body) {
                 setTimeout(function() {
-                    console.log("Data created in Built.io Contentstack...");
+                    console.log("Data created in Contentstack...");
                     self.run();
                 }, 240000);
             }
@@ -56,11 +56,11 @@ automation.prototype.run = function() {
     let self = this;
     let _path = path.join(process.cwd(), 'test');
     //change directory to run "node index.js | tap-json > report.json" command
-    process.chdir(_path);
+    // process.chdir(_path);
     // run command "node index.js" to run the test cases
     console.log("Running the test cases....");
     // let executeCommand = "node index.js";
-    let executeCommand = "node index.js | tap-json > " + reportFileName;
+    let executeCommand = "node index.js | tap-html > " + reportFileName;
     exec(executeCommand, function(err, stdout, stderr) {
         if (!err) {
             console.log("Test cases runned successfully....");
@@ -76,12 +76,12 @@ automation.prototype.sendMail = function() {
     let reportPath = path.join(__dirname, '../', 'test', reportFileName);
     if (fs.existsSync(reportPath)) {
         let message = {
-            from: 'aamod.pisat@raweng.com',
-            to: 'aamod.pisat@raweng.com',
+            from: 'uttam.ukkoji@contentstack.com',
+            to: 'uttam.ukkoji@contentstack.com',
             subject: 'Report of JS SDK test cases | ' + new Date(),
             html: '<p>Hi Team, Please check below attachment of test cases report.</p>',
             attachments: [{
-                filename: "reports.json",
+                filename: "reports.html",
                 path: reportPath
             }]
         };

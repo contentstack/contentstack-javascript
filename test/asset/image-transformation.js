@@ -7,6 +7,9 @@ const Contentstack = require('../../dist/node/contentstack.js');
 const init = require('./../config.js');
 const Utils = require('./../entry/utils.js');
 
+const config = require('../config.json')
+Object.assign(init, config)
+
 const Regexp = new RegExp('\\\?', 'g');
 
 let Stack;

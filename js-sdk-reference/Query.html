@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>Query - Documentation</title>
-
+    <link rel="shortcut icon" href="./favicon.ico">
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
@@ -3805,10 +3805,20 @@ data.then(function(result) {
 
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
     <pre class="prettyprint"><code>let blogQuery = Stack().ContentType('example').Query().find();
          blogQuery.then(function(result) {
+         // result contains the list of object. 
+      },function (error) {
+         // error function
+     })
+blogQuery.find()</code></pre>
+
+    <pre class="prettyprint"><code>let blogQuery = Stack.ContentType(contentTypeUid).Query().find({
+       
+     });
+blogQuery.then(function(result) {
          // result contains the list of object. 
       },function (error) {
          // error function
@@ -3923,7 +3933,7 @@ blogQuery.findOne()</code></pre>
 
 <footer>
     <div class="inner-content center">
-        <span class="copy-right"><a href="mailto:support-contentstack@built.io" target="_self">support-contentstack@built.io</a> | © 2017 Contentstack. All rights reserved.</span>
+        <span class="copy-right"><a href="mailto:support@contentstack.com" target="_self">support@contentstack.com</a> | © 2016-2020 Contentstack. All rights reserved.</span>
     </div>
 </footer>
 

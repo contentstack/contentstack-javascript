@@ -317,7 +317,7 @@ function spreadResult(result) {
     return _results;
 };
 
-function sendRequest(queryObject) {
+function sendRequest(queryObject, options) {
 
     var env_uid = queryObject.environment_uid;
     if (env_uid) {
@@ -366,7 +366,7 @@ function sendRequest(queryObject) {
 
     var callback = function callback(continueFlag, resolve, reject) {
         if (continueFlag) {
-            (0, _request2.default)(queryObject.requestParams).then(function (data) {
+            (0, _request2.default)(queryObject.requestParams, options).then(function (data) {
                 try {
                     self.entry_uid = self.asset_uid = self.tojson = self.queryCachePolicy = undefined;
                     var entries = {};
@@ -653,15 +653,27 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
      * @class 
         Stack 
      * @description Initialize an instance of ‘Stack’
+     * @param api_key - Stack API Key.
+     * @param delivery_token - Stack Delivery token.
+     * @param environment - Stack Environment name.
+     * @param fetchOption - Custom setting for the request.
+     * @param fetchOption.timeout - Set timeout for the request.
+     * 
      * @example
-     * var Stack = Contentstack.Stack('api_key', 'delivery_token', 'environment');
-                 OR
      * var Stack = Contentstack.Stack({
-     *    'api_key':'stack_api_key',
-     *   'access_token':'stack_delivery_token',
-     *    'environment':'environment_name'
+     *      'api_key':'api_key',
+     *      'delivery_token':'delivery_token',
+     *      'environment':'environment_name',
+     *      'region': 'us',
+     *      'fetchOption': {
+     *       
+     *      }
      * });
-     *
+     * 
+     * @example
+     * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment', {
+     * 
+     * });
      * @returns {Stack}
      * @instance
      */
@@ -676,22 +688,27 @@ var Stack = function () {
         if (stack_arguments[0].region && stack_arguments[0].region != undefined && stack_arguments[0].region != "us") {
             _config2.default['host'] = stack_arguments[0].region + "-" + "cdn.contentstack.com";
         }
+
+        if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions != undefined) {
+            this.fetchOptions = stack_arguments[0].fetchOptions;
+        }
+
         this.config = _config2.default;
         this.cachePolicy = _index2.default.policies.IGNORE_CACHE;
         this.provider = _index2.default.providers('localstorage');
         switch (stack_arguments.length) {
             case 1:
-                if (_typeof(stack_arguments[0]) === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].access_token === "string" && typeof stack_arguments[0].environment === "string") {
+                if (_typeof(stack_arguments[0]) === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].delivery_token === "string" && typeof stack_arguments[0].environment === "string") {
                     this.headers = {
                         api_key: stack_arguments[0].api_key,
-                        access_token: stack_arguments[0].access_token
+                        access_token: stack_arguments[0].delivery_token
                     };
                     this.environment = stack_arguments[0].environment;
                     return this;
                 } else {
-                    console.error("Kindly provide valid object parameters.");
+                    console.error("Kindly provide valid object parameters. The specified API Key, Delivery Token, or Environment Name is invalid.");
                 }
-            case 3:
+            case (3, 4, 5):
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
@@ -702,8 +719,20 @@ var Stack = function () {
                 } else {
                     console.error("Kindly provide valid string parameters.");
                 }
+                if (stack_arguments[3]) {
+                    if (typeof stack_arguments[3] === "string" && stack_arguments[3].region !== "us" && stack_arguments[3].region === "eu") {
+                        _config2.default['host'] = stack_arguments[0].region + "-" + "cdn.contentstack.com";
+                    } else if (_typeof(stack_arguments[3]) === 'object') {
+                        this.fetchOptions = stack_arguments[3];
+                    }
+                }
+
+                if (stack_arguments[4] && _typeof(stack_arguments[4]) === 'object') {
+                    this.fetchOptions = stack_arguments[3];
+                }
+
             default:
-                console.error("Kindly provide valid parameters to initialize the Built.io Contentstack javascript-SDK Stack.");
+                console.error("Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
         }
     }
 
@@ -947,7 +976,7 @@ var Stack = function () {
 
     }, {
         key: 'fetch',
-        value: function fetch() {
+        value: function fetch(fetchOptions) {
             var result = {
                 method: 'POST',
                 headers: this.headers,
@@ -957,7 +986,8 @@ var Stack = function () {
                     environment: this.environment
                 }
             };
-            return (0, _request2.default)(result);
+            var options = Object.assign({}, this.fetchOptions, fetchOptions);
+            return (0, _request2.default)(result, options);
         }
 
         /**
@@ -1042,7 +1072,7 @@ var Stack = function () {
                     environment: this.environment
                 }
             };
-            return (0, _request2.default)(query);
+            return (0, _request2.default)(query, this.fetchOptions);
         }
 
         /**
@@ -1079,7 +1109,7 @@ var Stack = function () {
                     query.body[key] = param[key];
                 }
             }
-            return (0, _request2.default)(query);
+            return (0, _request2.default)(query, this.fetchOptions);
         }
 
         /**
@@ -1107,7 +1137,7 @@ var Stack = function () {
 
     }, {
         key: 'sync',
-        value: function sync(params) {
+        value: function sync(params, fetchOptions) {
             this._query = {};
             this._query = Object.assign(this._query, params);
             this.requestParams = {
@@ -1119,7 +1149,8 @@ var Stack = function () {
                     query: this._query
                 }
             };
-            return Utils.sendRequest(this);
+            var options = Object.assign({}, this.fetchOptions, fetchOptions);
+            return Utils.sendRequest(this, options);
         }
 
         /**
@@ -1589,11 +1620,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //JS SDK version
-var version = '3.8.0';
+var version = '3.9.0';
 var environment = void 0,
     api_key = void 0;
 
-function Request(options) {
+function Request(options, fetchOptions) {
     return new Promise(function (resolve, reject) {
         var queryParams = void 0;
         var serialize = function serialize(obj, prefix) {
@@ -1627,10 +1658,13 @@ function Request(options) {
             queryParams = serialize(options.body);
         }
 
-        (0, _http2.default)(url + '?' + queryParams, {
+        var option = Object.assign({
             method: 'GET',
-            headers: headers
-        }).then(function (response) {
+            headers: headers,
+            timeout: 3000
+        }, fetchOptions);
+
+        (0, _http2.default)(url + '?' + queryParams, option).then(function (response) {
             if (response.ok && response.status === 200) {
                 var data = response.json();
                 resolve(data);
@@ -1921,12 +1955,22 @@ var Entry = function () {
         /**
             * @method includeReference
             * @memberOf Entry
-            * @description Fetches the entire content of referenced entry(ies)
+            * @description Fetches the entire content of referenced entry(ies). <a href='https://www.contentstack.com/docs/developers/apis/content-delivery-api/#include-reference'>Read More</a>
             * @example
             * <caption> .includeReference with reference_field_uids as array </caption>
             * var Query = Stack.ContentType(contentTypes.source).Query();
                    Query
-                       .includeReference(['reference', 'other_reference'])
+                       .includeReference(['reference_field_uid', 'other_reference_field_uid'])
+                       .toJSON()
+                       .find()
+                       .then(function success(entries) {
+                           //'entries' is  an object used to retrieve data including reference entries.
+                       })
+            * @example
+            * <caption> .includeReference with reference_field_uids and its children reference </caption>
+            * var Query = Stack.ContentType(contentTypes.source).Query();
+                   Query
+                       .includeReference(['reference_field_uid', 'reference_field_uid.child_reference_field_uid'])
                        .toJSON()
                        .find()
                        .then(function success(entries) {
@@ -1936,7 +1980,7 @@ var Entry = function () {
             * <caption> .includeReference with reference_field_uids </caption>
             * var Query = Stack.ContentType(contentTypes.source).Query(); 
             Query
-               .includeReference('reference')
+               .includeReference('reference_field_uid')
                .toJSON()
                .find()
                .then(function success(entries) {
@@ -2145,13 +2189,18 @@ var Entry = function () {
         * @description Fetches a particular entry based on the provided entry UID.
         * @example
         * Stack.ContentType(contentTypeUid).Entry(entryUid).toJSON().fetch()
+        * 
+        * @example
+        * Stack.ContentType(contentTypeUid).Entry(entryUid).toJSON().fetch({
+        *         
+        *      })
         * @returns {promise}
         * @instance
         */
 
     }, {
         key: "fetch",
-        value: function fetch() {
+        value: function fetch(fetchOptions) {
             if (this.entry_uid) {
                 this.requestParams = {
                     method: 'POST',
@@ -2162,8 +2211,8 @@ var Entry = function () {
                         query: this._query
                     }
                 };
-
-                return Utils.sendRequest(this);
+                var options = Object.assign({}, this.fetchOptions, fetchOptions);
+                return Utils.sendRequest(this, options);
             } else {
                 console.error("Kindly provide an entry uid. e.g. .Entry('bltsomething123')");
             }
@@ -2982,13 +3031,23 @@ var Query = function (_Entry) {
          *          // error function
          *      })
          * blogQuery.find()
+         * @example
+         * let blogQuery = Stack.ContentType(contentTypeUid).Query().find({
+         *        
+         *      });
+         * blogQuery.then(function(result) {
+         *          // result contains the list of object. 
+         *       },function (error) {
+         *          // error function
+         *      })
+         * blogQuery.find()
          * @returns {promise}
          * @instance
          */
 
     }, {
         key: 'find',
-        value: function find() {
+        value: function find(fetchOptions) {
             var host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
                 url = this.type && this.type === 'asset' ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
             this.requestParams = {
@@ -3000,7 +3059,8 @@ var Query = function (_Entry) {
                     query: this._query
                 }
             };
-            return Utils.sendRequest(this);
+            var options = Object.assign({}, this.fetchOptions, fetchOptions);
+            return Utils.sendRequest(this, options);
         }
 
         /**
@@ -3035,8 +3095,8 @@ var Query = function (_Entry) {
                     query: this._query
                 }
             };
-
-            return Utils.sendRequest(this);
+            var options = Object.assign({}, this.fetchOptions);
+            return Utils.sendRequest(this, options);
         }
     }]);
 
@@ -7873,13 +7933,17 @@ var Assets = function () {
            * @memberOf Assets
            * @example
            * Stack.Assets('assets_uid').toJSON().fetch()
+           * @example
+           * Stack.Assets('assets_uid').toJSON().fetch({
+           *         
+           *      })
            * @returns {promise}
            * @instance
            */
 
     }, {
         key: 'fetch',
-        value: function fetch() {
+        value: function fetch(fetchoptions) {
             if (this.asset_uid) {
                 this.requestParams = {
                     method: 'POST',
@@ -7890,7 +7954,8 @@ var Assets = function () {
                         query: this._query
                     }
                 };
-                return Utils.sendRequest(this);
+                var options = Object.assign({}, this.fetchOptions, fetchOptions);
+                return Utils.sendRequest(this, options);
             } else {
                 console.error("Kindly provide an asset uid. e.g. .Assets('bltsomething123')");
             }
