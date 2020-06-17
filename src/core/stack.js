@@ -50,7 +50,6 @@ export default class Stack {
         this.config = config;
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
         this.provider = CacheProvider.providers('localstorage');
-        console.error(stack_arguments.length);
 
         switch (stack_arguments.length) {
             case 1:
@@ -82,17 +81,17 @@ export default class Stack {
                         access_token: stack_arguments[1]
                     };
                     this.environment = stack_arguments[2];
-                    return this;
                 } else {
                     console.error("Kindly provide valid string parameters.");
                 }
-                if (stack_arguments[3]) {
+                if (stack_arguments[3]) {                    
                     if(typeof stack_arguments[3] === "string" && stack_arguments[3].region !== "us" && stack_arguments[3].region === "eu") {
-                        config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
+                        config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
                         this.fetchOptions = stack_arguments[3]
                     }
                 }
+                return this;
             case 5:
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
@@ -100,21 +99,21 @@ export default class Stack {
                         access_token: stack_arguments[1]
                     };
                     this.environment = stack_arguments[2];
-                    return this;
                 } else {
                     console.error("Kindly provide valid string parameters.");
                 }
+
                 if (stack_arguments[3]) {
-                    if(typeof stack_arguments[3] === "string" && stack_arguments[3].region !== "us" && stack_arguments[3].region === "eu") {
-                        config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
+                    if(typeof stack_arguments[3] === "string" && stack_arguments[3].region !== "us") {
+                        config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
                         this.fetchOptions = stack_arguments[3]
                     }
                 }
                 if (stack_arguments[4] && typeof stack_arguments[4] === 'object') {
-                    this.fetchOptions = stack_arguments[3]
+                    this.fetchOptions = stack_arguments[4]
                 }
-                
+                return this;
             default:
                 console.error("Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
         }
