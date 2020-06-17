@@ -600,7 +600,6 @@ var Stack = function () {
         this.config = _config2.default;
         this.cachePolicy = _index2.default.policies.IGNORE_CACHE;
         this.provider = _index2.default.providers('localstorage');
-        console.error(stack_arguments.length);
 
         switch (stack_arguments.length) {
             case 1:
@@ -632,17 +631,17 @@ var Stack = function () {
                         access_token: stack_arguments[1]
                     };
                     this.environment = stack_arguments[2];
-                    return this;
                 } else {
                     console.error("Kindly provide valid string parameters.");
                 }
                 if (stack_arguments[3]) {
                     if (typeof stack_arguments[3] === "string" && stack_arguments[3].region !== "us" && stack_arguments[3].region === "eu") {
-                        _config2.default['host'] = stack_arguments[0].region + "-" + "cdn.contentstack.com";
+                        _config2.default['host'] = stack_arguments[3] + "-" + "cdn.contentstack.com";
                     } else if (_typeof(stack_arguments[3]) === 'object') {
                         this.fetchOptions = stack_arguments[3];
                     }
                 }
+                return this;
             case 5:
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
@@ -650,21 +649,21 @@ var Stack = function () {
                         access_token: stack_arguments[1]
                     };
                     this.environment = stack_arguments[2];
-                    return this;
                 } else {
                     console.error("Kindly provide valid string parameters.");
                 }
+
                 if (stack_arguments[3]) {
-                    if (typeof stack_arguments[3] === "string" && stack_arguments[3].region !== "us" && stack_arguments[3].region === "eu") {
-                        _config2.default['host'] = stack_arguments[0].region + "-" + "cdn.contentstack.com";
+                    if (typeof stack_arguments[3] === "string" && stack_arguments[3].region !== "us") {
+                        _config2.default['host'] = stack_arguments[3] + "-" + "cdn.contentstack.com";
                     } else if (_typeof(stack_arguments[3]) === 'object') {
                         this.fetchOptions = stack_arguments[3];
                     }
                 }
                 if (stack_arguments[4] && _typeof(stack_arguments[4]) === 'object') {
-                    this.fetchOptions = stack_arguments[3];
+                    this.fetchOptions = stack_arguments[4];
                 }
-
+                return this;
             default:
                 console.error("Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
         }
@@ -1151,7 +1150,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //JS SDK version
-var version = '3.9.0';
+var version = '3.9.1';
 var environment = void 0,
     api_key = void 0;
 
