@@ -4,7 +4,7 @@ docs-config.json
 test.js
 test/
 reports/
-csio-templates/
+contentstack-templates/
 js-sdk-reference/
 examples/
-
+mocktest.json
