@@ -732,10 +732,20 @@ export default class Query extends Entry {
      *          // error function
      *      })
      * blogQuery.find()
+     * @example
+     * let blogQuery = Stack.ContentType(contentTypeUid).Query().find({
+     *        
+     *      });
+     * blogQuery.then(function(result) {
+     *          // result contains the list of object. 
+     *       },function (error) {
+     *          // error function
+     *      })
+     * blogQuery.find()
      * @returns {promise}
      * @instance
      */
-    find() {
+    find(fetchOptions) {
         const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
             url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this.requestParams = {
@@ -747,7 +757,8 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
-         return Utils.sendRequest(this);
+        var options = Object.assign({}, this.fetchOptions, fetchOptions);
+        return Utils.sendRequest(this, options);
     }
 
      /**
@@ -779,8 +790,8 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
-        
-        return Utils.sendRequest(this);
+        var options = Object.assign({}, this.fetchOptions);
+        return Utils.sendRequest(this, options);
     }
 
 }

@@ -84,11 +84,15 @@ export default class Assets {
    * @memberOf Assets
    * @example
    * Stack.Assets('assets_uid').toJSON().fetch()
+   * @example
+   * Stack.Assets('assets_uid').toJSON().fetch({
+   *         
+   *      })
    * @returns {promise}
    * @instance
    */
 
-    fetch() {
+    fetch(fetchoptions) {
         if (this.asset_uid) {
             this.requestParams = {
                 method: 'POST',
@@ -99,7 +103,8 @@ export default class Assets {
                     query: this._query
                 }
             }
-            return Utils.sendRequest(this);
+            var options = Object.assign({}, this.fetchOptions, fetchOptions);
+            return Utils.sendRequest(this, options);
         } else {
             console.error("Kindly provide an asset uid. e.g. .Assets('bltsomething123')");
         }

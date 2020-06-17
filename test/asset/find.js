@@ -6,6 +6,9 @@ var test = require('tape');
 var Contentstack = require('../../dist/node/contentstack.js');
 var init = require('../config.js');
 var Utils = require('../entry/utils.js')
+
+const config = require('../config.json')
+Object.assign(init, config)
 var Stack;
 /*
  * Initalise the Contentstack Instance
@@ -711,7 +714,7 @@ test('.only() - Single String Parameter', function(assert) {
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             var flag = assets[0].every(function(asset) {
-                return (asset && Object.keys(asset).length === 4 && "title" in asset && "uid" in asset && 'url' in asset);
+                return (asset && Object.keys(asset).length === 5 && "title" in asset && "uid" in asset && 'url' in asset);
             });
             assert.ok(flag, 'assets with the field title in the resultset');
             assert.end();
@@ -733,7 +736,7 @@ test('.only() - Multiple String Parameter', function(assert) {
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             var flag = assets[0].every(function(asset) {
-                return (asset && Object.keys(asset).length === 4 && "title" in asset && "uid" in asset && 'url' in asset);
+                return (asset && Object.keys(asset).length === 5 && "title" in asset && "uid" in asset && 'url' in asset);
             });
             assert.ok(flag, 'assets with the field title in the resultset');
             assert.end();
@@ -754,7 +757,7 @@ test('.only() - Array Parameter', function(assert) {
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             var flag = assets[0].every(function(asset) {
-                return (asset && Object.keys(asset).length === 4 && "title" in asset && "filename" in asset && "uid" in asset && "url" in asset);
+                return (asset && Object.keys(asset).length === 5 && "title" in asset && "filename" in asset && "uid" in asset && "url" in asset);
             });
             assert.ok(flag, 'assets with the field title,filename in the resultset');
             assert.end();

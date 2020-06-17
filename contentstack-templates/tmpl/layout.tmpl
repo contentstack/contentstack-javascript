@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title><?js= title ?> - Documentation</title>
-
+    <link rel="shortcut icon" href="./favicon.ico">
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
@@ -53,8 +53,8 @@
             <p>To use the JavaScript SDK, download it from <a href="https://www.contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest">here</a> and include it in the &lt;script&gt; tag:</p>
             <pre class="prettyprint"><code>&lt;script type="text/javascript" src="/path/to/contentstack.min.js"&gt;&lt;/script&gt;;
             </code></pre>
-            <p>To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.</p>
-            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
+            <p>To initialize the SDK, you will need to specify the API Key, Delivery Token, and Environment Name of your stack.</p>
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name");
             </code></pre>
             <h4><a id="For_Nodejs_25"></a>For Node.js</h4>
             <p>Node.js uses the Javascript SDK to create apps. To use the JavaScript SDK, download it from <a href="https://www.contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest">here</a>, OR install it via npm:</p>
@@ -63,8 +63,8 @@
             <p>To import the SDK in your project, use the following command:</p>
             <pre class="prettyprint"><code>import contentstack from ‘contentstack’
             </code></pre>
-            <p>To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.</p>
-            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key","access_token","environment_name");
+            <p>To initialize the SDK, you will need to specify the API Key, Delivery Token, and Environment Name of your stack.</p>
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key","delivery_token","environment_name");
             </code></pre>
             <h4><a id="For_React_Native_39"></a>For React Native</h4>
             <p>React Native uses the Javascript SDK to create apps. To use the JavaScript SDK, download it from <a href="https://www.contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest">here</a>, OR install ist via npm:</p>
@@ -73,8 +73,8 @@
             <p>To import the SDK in your project, use the following command:</p>
             <pre class="prettyprint" class="prettyprint"><code>import contentstack from `contentstack/react-native`
             </code></pre>
-            <p>To initialize the SDK, you will need to specify the API Key, Access Token, and Environment Name of your stack.</p>
-            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
+            <p>To initialize the SDK, you will need to specify the API Key, Delivery Token, and Environment Name of your stack.</p>
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name");
             </code></pre>
             <h3><a id="Key_Concepts_for_using_Contentstack_54"></a>Key Concepts for using Contentstack</h3>
             <h4><a id="Stack_56"></a>Stack</h4>
@@ -90,7 +90,7 @@
             <h3><a id="Contentstack_JavaScript_SDK_5minute_Quickstart_78"></a>Contentstack JavaScript SDK: 5-minute Quickstart</h3>
             <h4><a id="Initializing_your_SDK_80"></a>Initializing your SDK</h4>
             <p>You will need to specify the API key, Access token, and Environment Name of your stack to initialize the SDK:</p>
-            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key", "access_token", "environment_name");
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name");
             </code></pre>
             <p>Once you have initialized the SDK, you can start getting content in your app.</p>
             <h4><a id="Querying_content_from_your_stack_90"></a>Querying content from your stack</h4>
@@ -150,7 +150,7 @@
             <li><a href="https://www.contentstack.com/docs/apis/content-delivery-api/">Content Delivery API Docs</a></li>
             </ul>
             <h3><a id="The_MIT_License_MIT_163"></a>The MIT License (MIT)</h3>
-            <p>Copyright © 2012-2017 <a href="https://www.built.io/">Built.io</a>. All Rights Reserved</p>
+            <p>Copyright © 2016-2020 <a href="https://www.contentstack.com">Contentstack</a>. All Rights Reserved</p>
             <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
             <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
             <p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
@@ -164,7 +164,7 @@
 
 <footer>
     <div class="inner-content center">
-        <span class="copy-right"><a href="mailto:support-contentstack@built.io" target="_self">support-contentstack@built.io</a> | © 2017 Contentstack. All rights reserved.</span>
+        <span class="copy-right"><a href="mailto:support@contentstack.com" target="_self">support@contentstack.com</a> | © 2016-2020 Contentstack. All rights reserved.</span>
     </div>
 </footer>
 

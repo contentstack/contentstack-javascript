@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <title>modules/assets.js - Documentation</title>
-
+    <link rel="shortcut icon" href="./favicon.ico">
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
     <!--[if lt IE 9]>
@@ -133,11 +133,15 @@ export default class Assets {
    * @memberOf Assets
    * @example
    * Stack.Assets('assets_uid').toJSON().fetch()
+   * @example
+   * Stack.Assets('assets_uid').toJSON().fetch({
+   *         
+   *      })
    * @returns {promise}
    * @instance
    */
 
-    fetch() {
+    fetch(fetchoptions) {
         if (this.asset_uid) {
             this.requestParams = {
                 method: 'POST',
@@ -148,7 +152,8 @@ export default class Assets {
                     query: this._query
                 }
             }
-            return Utils.sendRequest(this);
+            var options = Object.assign({}, this.fetchOptions, fetchOptions);
+            return Utils.sendRequest(this, options);
         } else {
             console.error("Kindly provide an asset uid. e.g. .Assets('bltsomething123')");
         }
@@ -166,7 +171,7 @@ export default class Assets {
 
 <footer>
     <div class="inner-content center">
-        <span class="copy-right"><a href="mailto:support-contentstack@built.io" target="_self">support-contentstack@built.io</a> | © 2017 Contentstack. All rights reserved.</span>
+        <span class="copy-right"><a href="mailto:support@contentstack.com" target="_self">support@contentstack.com</a> | © 2016-2020 Contentstack. All rights reserved.</span>
     </div>
 </footer>
 
