@@ -653,8 +653,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
      * @class 
         Stack 
      * @description Initialize an instance of ‘Stack’
-     * @example
+     * @param api_key - Stack API Key.
+     * @param delivery_token - Stack Delivery token.
+     * @param environment - Stack Environment name.
+     * @param fetchOption - Custom setting for the request.
+     * @param fetchOption.timeout - Set timeout for the request.
      * 
+     * @example
      * var Stack = Contentstack.Stack({
      *      'api_key':'api_key',
      *      'delivery_token':'delivery_token',
@@ -664,6 +669,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
      *       
      *      }
      * });
+     * 
      * @example
      * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment', {
      * 
