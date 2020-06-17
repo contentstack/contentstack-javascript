@@ -50,6 +50,8 @@ export default class Stack {
         this.config = config;
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
         this.provider = CacheProvider.providers('localstorage');
+        console.error(stack_arguments.length);
+
         switch (stack_arguments.length) {
             case 1:
                 if (typeof stack_arguments[0] === "object" && typeof stack_arguments[0].api_key === "string" && typeof stack_arguments[0].delivery_token === "string" && typeof stack_arguments[0].environment === "string") {
@@ -62,7 +64,18 @@ export default class Stack {
                 } else {
                     console.error("Kindly provide valid object parameters. The specified API Key, Delivery Token, or Environment Name is invalid.");
                 }
-            case 3, 4, 5:
+            case 3:
+                if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
+                    this.headers = {
+                        api_key: stack_arguments[0],
+                        access_token: stack_arguments[1]
+                    };
+                    this.environment = stack_arguments[2];
+                    return this;
+                } else {
+                    console.error("Kindly provide valid string parameters.");
+                }
+            case 4:
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
@@ -80,7 +93,24 @@ export default class Stack {
                         this.fetchOptions = stack_arguments[3]
                     }
                 }
-
+            case 5:
+                if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
+                    this.headers = {
+                        api_key: stack_arguments[0],
+                        access_token: stack_arguments[1]
+                    };
+                    this.environment = stack_arguments[2];
+                    return this;
+                } else {
+                    console.error("Kindly provide valid string parameters.");
+                }
+                if (stack_arguments[3]) {
+                    if(typeof stack_arguments[3] === "string" && stack_arguments[3].region !== "us" && stack_arguments[3].region === "eu") {
+                        config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
+                    } else if (typeof stack_arguments[3] === 'object') {
+                        this.fetchOptions = stack_arguments[3]
+                    }
+                }
                 if (stack_arguments[4] && typeof stack_arguments[4] === 'object') {
                     this.fetchOptions = stack_arguments[3]
                 }
