@@ -16,8 +16,9 @@ import CacheProvider from './cache-provider/index';
      * @param api_key - Stack API Key.
      * @param delivery_token - Stack Delivery token.
      * @param environment - Stack Environment name.
-     * @param fetchOption - Custom setting for the request.
-     * @param fetchOption.timeout - Set timeout for the request.
+     * @param region - DB region for Stack.
+     * @param fetchOptions - Custom setting for the request.
+     * @param fetchOptions.timeout - Set timeout for the request.
      * 
      * @example
      * var Stack = Contentstack.Stack({
@@ -25,7 +26,7 @@ import CacheProvider from './cache-provider/index';
      *      'delivery_token':'delivery_token',
      *      'environment':'environment_name',
      *      'region': 'us',
-     *      'fetchOption': {
+     *      'fetchOptions': {
      *       
      *      }
      * });
