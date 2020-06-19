@@ -560,8 +560,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
      * @param api_key - Stack API Key.
      * @param delivery_token - Stack Delivery token.
      * @param environment - Stack Environment name.
-     * @param fetchOption - Custom setting for the request.
-     * @param fetchOption.timeout - Set timeout for the request.
+     * @param region - DB region for Stack.
+     * @param fetchOptions - Custom setting for the request.
+     * @param fetchOptions.timeout - Set timeout for the request.
      * 
      * @example
      * var Stack = Contentstack.Stack({
@@ -569,7 +570,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
      *      'delivery_token':'delivery_token',
      *      'environment':'environment_name',
      *      'region': 'us',
-     *      'fetchOption': {
+     *      'fetchOptions': {
      *       
      *      }
      * });
@@ -1150,7 +1151,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 //JS SDK version
-var version = '3.9.1';
+var version = '3.9.2';
 var environment = void 0,
     api_key = void 0;
 
@@ -1190,8 +1191,7 @@ function Request(options, fetchOptions) {
 
         var option = Object.assign({
             method: 'GET',
-            headers: headers,
-            timeout: 3000
+            headers: headers
         }, fetchOptions);
 
         (0, _http2.default)(url + '?' + queryParams, option).then(function (response) {
