@@ -9,12 +9,12 @@ const Contentstack = require('../../dist/node/contentstack.js');
  * */
 
 class ContentstackDemo {
-    constructor(config) {
+    constructor(...config) {
         config = config || { 'api_key': 'blt123something', 'delivery_token': 'blt123something', 'environment': 'development',  }
             // Initialize the Contentstackstack
             //console.log("datattatata", Contentstack.Region.EUROPE)
 
-        this.Stack = Contentstack.Stack(config);
+        this.Stack = Contentstack.Stack(...config);
     }
     
 
