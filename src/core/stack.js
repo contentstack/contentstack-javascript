@@ -40,11 +40,11 @@ import CacheProvider from './cache-provider/index';
      */
 export default class Stack {
     constructor(...stack_arguments) {
-        if(stack_arguments[0].region && stack_arguments[0].region != undefined && stack_arguments[0].region != "us") {
+        if(stack_arguments[0].region && stack_arguments[0].region !== undefined && stack_arguments[0].region !== "us") {
             config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
         } 
 
-        if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions != undefined) {
+        if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions !== undefined) {
             this.fetchOptions = stack_arguments[0].fetchOptions;
         }
         
@@ -86,12 +86,13 @@ export default class Stack {
                     console.error("Kindly provide valid string parameters.");
                 }
                 if (stack_arguments[3]) {                    
-                    if(typeof stack_arguments[3] === "string" && stack_arguments[3].region !== "us" && stack_arguments[3].region === "eu") {
+                    if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== "us") {
                         config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
                         this.fetchOptions = stack_arguments[3]
                     }
                 }
+                this.config = config;
                 return this;
             case 5:
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
@@ -105,7 +106,7 @@ export default class Stack {
                 }
 
                 if (stack_arguments[3]) {
-                    if(typeof stack_arguments[3] === "string" && stack_arguments[3].region !== "us") {
+                    if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== "us") {
                         config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
                         this.fetchOptions = stack_arguments[3]
@@ -114,6 +115,7 @@ export default class Stack {
                 if (stack_arguments[4] && typeof stack_arguments[4] === 'object') {
                     this.fetchOptions = stack_arguments[4]
                 }
+                this.config = config;
                 return this;
             default:
                 console.error("Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
