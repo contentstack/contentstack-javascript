@@ -7977,7 +7977,7 @@ var Assets = function () {
 
     }, {
         key: 'fetch',
-        value: function fetch(fetchoptions) {
+        value: function fetch(fetchOptions) {
             if (this.asset_uid) {
                 this.requestParams = {
                     method: 'POST',
