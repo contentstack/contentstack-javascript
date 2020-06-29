@@ -92,7 +92,7 @@ export default class Assets {
    * @instance
    */
 
-    fetch(fetchoptions) {
+    fetch(fetchOptions) {
         if (this.asset_uid) {
             this.requestParams = {
                 method: 'POST',
