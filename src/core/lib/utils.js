@@ -207,6 +207,9 @@ export function spreadResult(result) {
             if(result.schema){
                 _results['schema'] = result.schema
            }
+           if(result.content_type){
+            _results['content_type'] = result.content_type
+       }
         }
         if (typeof result.asset !== 'undefined') _results = result.asset;
         if (typeof result.items !== 'undefined') _results.push(result);
