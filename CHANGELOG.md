@@ -11,7 +11,7 @@
  - Removed default timeout for request
 
 ### Version: 3.9.0
-#### Date: Jun-19-2020
+#### Date: Jun-17-2020
 
 ##### Update API:
  - Allowing support to add a timeout for request.
