@@ -463,7 +463,7 @@ export default class Stack {
      * @example 
      * Stack.sync({'init': true, 'start_date': '2018-10-22'})    //For initializing sync with entries published after a specific date
      * @example 
-     * Stack.sync({'init': true, 'content_type_id': 'session'})   //For initializing sync with entries of a specific content type
+     * Stack.sync({'init': true, 'content_type_uid': 'session'})   //For initializing sync with entries of a specific content type
      * @example 
      * Stack.sync({'init': true, 'type': 'entry_published'})   //Use the type parameter to get a specific type of content.Supports 'asset_published', 'entry_published', 'asset_unpublished', 'entry_unpublished', 'asset_deleted', 'entry_deleted', 'content_type_deleted'.
      * @example 
