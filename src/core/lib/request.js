@@ -49,15 +49,16 @@ export default function Request(options, fetchOptions) {
                                 fetchOptions);
 
         fetch(url + '?' + queryParams, option)
-            .then(function(response) {             
+            .then(function(response) {       
+                let data = response.json();      
                 if (response.ok && response.status === 200) {
-                    let data = response.json();
                     resolve(data);
                 } else {
-                    reject(response.statusText);
+                    return data;
                 }
+            }).then((json) => {
+                reject(json)
             }).catch(function(error) {
-                console.log("Error: ", error);
                 reject(error);
             });
     });

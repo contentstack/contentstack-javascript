@@ -1159,7 +1159,7 @@ var Stack = function () {
          * @example 
          * Stack.sync({'init': true, 'start_date': '2018-10-22'})    //For initializing sync with entries published after a specific date
          * @example 
-         * Stack.sync({'init': true, 'content_type_id': 'session'})   //For initializing sync with entries of a specific content type
+         * Stack.sync({'init': true, 'content_type_uid': 'session'})   //For initializing sync with entries of a specific content type
          * @example 
          * Stack.sync({'init': true, 'type': 'entry_published'})   //Use the type parameter to get a specific type of content.Supports 'asset_published', 'entry_published', 'asset_unpublished', 'entry_unpublished', 'asset_deleted', 'entry_deleted', 'content_type_deleted'.
          * @example 
@@ -1699,14 +1699,15 @@ function Request(options, fetchOptions) {
         }, fetchOptions);
 
         (0, _http2.default)(url + '?' + queryParams, option).then(function (response) {
+            var data = response.json();
             if (response.ok && response.status === 200) {
-                var data = response.json();
                 resolve(data);
             } else {
-                reject(response.statusText);
+                return data;
             }
+        }).then(function (json) {
+            reject(json);
         }).catch(function (error) {
-            console.log("Error: ", error);
             reject(error);
         });
     });
