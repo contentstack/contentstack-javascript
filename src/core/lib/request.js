@@ -42,24 +42,57 @@ export default function Request(options, fetchOptions) {
             queryParams = serialize(options.body);
         }
 
-        var option = Object.assign({ 
-                                    method: 'GET',
-                                    headers: headers,
-                                }, 
-                                fetchOptions);
-
-        fetch(url + '?' + queryParams, option)
-            .then(function(response) {       
-                let data = response.json();      
-                if (response.ok && response.status === 200) {
-                    resolve(data);
-                } else {
-                    return data;
-                }
-            }).then((json) => {
-                reject(json)
-            }).catch(function(error) {
-                reject(error);
-            });
+        return fetchRetry(url + '?' + queryParams, 
+                            headers, 
+                            fetchOptions.retryDelay, 
+                            fetchOptions.retryLimit, 
+                            fetchOptions, 
+                            resolve, 
+                            reject)
+        
     });
+}
+
+function wait(retryDelay) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, retryDelay)
+    });
+}
+
+function fetchRetry(url, headers, retryDelay = 2, retryLimit = 5, fetchOptions, resolve, reject) {
+    var option = Object.assign({ 
+        method: 'GET',
+        headers: headers,
+        timeout: 3000,                                
+    }, 
+    fetchOptions);
+
+    function onError (error) {
+        if (retryLimit === 0) {
+            reject(error);
+        }else {
+        wait(retryDelay)
+            .then(() => {
+                return fetchRetry(url, headers, retryDelay, retryLimit - 1, fetchOptions, resolve, reject)
+            })
+        }
+    }
+    console.log(url, option, fetch);
+    fetch(url, option)
+        .then(function(response) {       
+            let data = response.json();      
+            if (response.ok && response.status === 200) {
+                resolve(data);
+            } else {
+                data.then((json) => {
+                    // if (response.status === 429) {
+                    onError(json)     
+                    // } else {
+                    //     reject(json)
+                    // }   
+                });
+            }
+        }).catch((error) => {
+            reject(error)
+        });
 }
