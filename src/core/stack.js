@@ -455,7 +455,7 @@ export default class Stack {
      * @method sync
      * @memberOf Stack
      * @description Syncs your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates
-     * @param {object} params - params is an object that supports ‘locale’, ‘start_date’, ‘content_type_id’, and ‘type’ queries.
+     * @param {object} params - params is an object that supports ‘locale’, ‘start_date’, ‘content_type_uid’, and ‘type’ queries.
      * @example 
      * Stack.sync({'init': true})        // For initializing sync
      * @example 
