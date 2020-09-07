@@ -12,6 +12,7 @@
   "_id": "contentstack@3.10.1",
   "scripts": {
     "test": "tape test/index.js | tap-html --out ./tap-html.html",
+    "test:unit": "jest --watchAll --testPathPattern=test/unit",
     "automate": "node test.js",
     "buildnode": "webpack --config webpack/webpack.node.js",
     "buildweb": "webpack -p --config webpack/webpack.web.js",
@@ -64,7 +65,9 @@
     "babel-runtime": "6.26.0",
     "compression-webpack-plugin": "1.0.1",
     "es3ify-loader": "0.2.0",
+    "fetch-mock-jest": "^1.3.0",
     "http-proxy-agent": "^3.0.0",
+    "jest": "^26.4.2",
     "jsdoc": "^3.5.5",
     "jshint": "^2.11.0",
     "nodemailer": "^4.3.1",

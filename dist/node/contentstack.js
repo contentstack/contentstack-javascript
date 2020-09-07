@@ -1151,7 +1151,7 @@ var Stack = function () {
          * @method sync
          * @memberOf Stack
          * @description Syncs your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates
-         * @param {object} params - params is an object that supports ‘locale’, ‘start_date’, ‘content_type_id’, and ‘type’ queries.
+         * @param {object} params - params is an object that supports ‘locale’, ‘start_date’, ‘content_type_uid’, and ‘type’ queries.
          * @example 
          * Stack.sync({'init': true})        // For initializing sync
          * @example 
@@ -1693,23 +1693,54 @@ function Request(options, fetchOptions) {
             queryParams = serialize(options.body);
         }
 
-        var option = Object.assign({
-            method: 'GET',
-            headers: headers
-        }, fetchOptions);
+        return fetchRetry(url + '?' + queryParams, headers, fetchOptions.retryDelay, fetchOptions.retryLimit, fetchOptions, resolve, reject);
+    });
+}
 
-        (0, _http2.default)(url + '?' + queryParams, option).then(function (response) {
-            var data = response.json();
-            if (response.ok && response.status === 200) {
-                resolve(data);
-            } else {
-                return data;
-            }
-        }).then(function (json) {
-            reject(json);
-        }).catch(function (error) {
+function wait(retryDelay) {
+    return new Promise(function (resolve) {
+        setTimeout(resolve, retryDelay);
+    });
+}
+
+function fetchRetry(url, headers) {
+    var retryDelay = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 2;
+    var retryLimit = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 5;
+    var fetchOptions = arguments[4];
+    var resolve = arguments[5];
+    var reject = arguments[6];
+
+    var option = Object.assign({
+        method: 'GET',
+        headers: headers,
+        timeout: 3000
+    }, fetchOptions);
+
+    function onError(error) {
+        if (retryLimit === 0) {
             reject(error);
-        });
+        } else {
+            wait(retryDelay).then(function () {
+                return fetchRetry(url, headers, retryDelay, retryLimit - 1, fetchOptions, resolve, reject);
+            });
+        }
+    }
+    console.log(url, option, _http2.default);
+    (0, _http2.default)(url, option).then(function (response) {
+        var data = response.json();
+        if (response.ok && response.status === 200) {
+            resolve(data);
+        } else {
+            data.then(function (json) {
+                // if (response.status === 429) {
+                onError(json);
+                // } else {
+                //     reject(json)
+                // }   
+            });
+        }
+    }).catch(function (error) {
+        reject(error);
     });
 }
 
