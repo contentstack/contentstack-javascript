@@ -77,7 +77,6 @@ function fetchRetry(url, headers, retryDelay = 2, retryLimit = 5, fetchOptions, 
             })
         }
     }
-    console.log(url, option, fetch);
     fetch(url, option)
         .then(function(response) {       
             let data = response.json();      
