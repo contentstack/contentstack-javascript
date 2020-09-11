@@ -2,7 +2,6 @@ import config from '../../config';
 import * as Utils from './lib/utils';
 import Entry from './modules/entry';
 import Assets from './modules/assets';
-/*import Sync from './modules/sync';*/
 import Query from './modules/query';
 import Request from './lib/request';
 import * as cache from './cache';
@@ -40,15 +39,17 @@ import CacheProvider from './cache-provider/index';
      */
 export default class Stack {
     constructor(...stack_arguments) {
+        this.fetchOptions = {};
+        this.config = Object.assign({}, config)
+
         if(stack_arguments[0].region && stack_arguments[0].region !== undefined && stack_arguments[0].region !== "us") {
-            config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
+            this.config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
         } 
 
         if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions !== undefined) {
             this.fetchOptions = stack_arguments[0].fetchOptions;
         }
         
-        this.config = config;
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
         this.provider = CacheProvider.providers('localstorage');
 
@@ -86,13 +87,12 @@ export default class Stack {
                     console.error("Kindly provide valid string parameters.");
                 }
                 if (stack_arguments[3]) {                    
-                    if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== "us") {
-                        config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
+                    if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== undefined && stack_arguments[3] !== "us") {
+                        this.config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
                         this.fetchOptions = stack_arguments[3]
                     }
                 }
-                this.config = config;
                 return this;
             case 5:
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
@@ -106,8 +106,8 @@ export default class Stack {
                 }
 
                 if (stack_arguments[3]) {
-                    if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== "us") {
-                        config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
+                    if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== undefined && stack_arguments[3] !== "us") {
+                        this.config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
                         this.fetchOptions = stack_arguments[3]
                     }
@@ -115,7 +115,6 @@ export default class Stack {
                 if (stack_arguments[4] && typeof stack_arguments[4] === 'object') {
                     this.fetchOptions = stack_arguments[4]
                 }
-                this.config = config;
                 return this;
             default:
                 console.error("Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
@@ -265,7 +264,7 @@ export default class Stack {
      * @memberOf Stack
      * @description Returns the currently set object of 'CacheProvider'
      * @example Stack.getCacheProvider();
-     * @returns {Stack}
+     * @returns {object}
      * @instance
      */
     getCacheProvider() {
@@ -298,7 +297,7 @@ export default class Stack {
 
  /**
      * @method Entry
-     * @memberOf Stack
+     * @memberOf ContentType
      * @param {String} uid - uid of the entry 
      * @description An initializer is responsible for creating Entry object
      * @returns {Entry}
@@ -314,7 +313,7 @@ export default class Stack {
 
      /**
      * @method fetch
-     * @memberOf Stack
+     * @memberOf ContentType
      * @description This method returns the complete information of a specific content type.
      * @example
      * let single_contenttype = Stack.ContentType(content_type_uid).fetch()
@@ -324,7 +323,7 @@ export default class Stack {
      *     }).catch((error) => {
      *        console.log(error)
      *  });
-     * @returns {ContentType}
+     * @returns {promise}
      * @instance 
      */
     fetch(fetchOptions) {
@@ -400,7 +399,7 @@ export default class Stack {
      *      }, function(error) {
      *           // error function
      *      })
-     * @returns {Stack}
+     * @returns {promise}
      * @instance
      */
     getLastActivities() {
@@ -430,10 +429,10 @@ export default class Stack {
      *      }, function(error) {
      *           // error function
      *      })
-     * @returns {Stack}
+     * @returns {promise}
      * @instance
      */
-    getContentTypes(param) { 
+    getContentTypes(param = {}) { 
         let query = {
             method: 'POST',
             headers: this.headers,

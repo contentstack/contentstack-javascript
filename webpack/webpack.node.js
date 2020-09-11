@@ -26,7 +26,7 @@ module.exports = function(options) {
         module: {
             rules: [{
                 test: /\.js?$/,
-                exclude: ['../node_modules'],
+                exclude: '/node_modules/',
                 use: [{
                     loader: 'string-replace-loader',
                     query: {

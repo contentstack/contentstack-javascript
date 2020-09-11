@@ -5,7 +5,7 @@ import fetch from "runtime/http.js";
 let version = '{{VERSION}}';
 let environment,
     api_key;
-
+let errorRetry = [408, 429]
 export default function Request(options, fetchOptions) {
     return new Promise(function(resolve, reject) {
         let queryParams;
@@ -84,11 +84,11 @@ function fetchRetry(url, headers, retryDelay = 2, retryLimit = 5, fetchOptions, 
                 resolve(data);
             } else {
                 data.then((json) => {
-                    // if (response.status === 429) {
-                    onError(json)     
-                    // } else {
-                    //     reject(json)
-                    // }   
+                    if (errorRetry.includes(response.status) || response.status >= 500) {
+                        onError(json)     
+                    } else {
+                        reject(json)
+                    }   
                 });
             }
         }).catch((error) => {
