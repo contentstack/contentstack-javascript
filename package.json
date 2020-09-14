@@ -1,6 +1,6 @@
 {
   "name": "contentstack",
-  "version": "3.10.1",
+  "version": "3.11.0",
   "description": "Contentstack Javascript SDK",
   "homepage": "https://www.contentstack.com/",
   "author": {
@@ -10,10 +10,11 @@
   "main": "dist/node/contentstack.js",
   "browser": "dist/web/contentstack.js",
   "types": "./index.d.ts",
-  "_id": "contentstack@3.10.1",
+  "_id": "contentstack@3.11.0",
   "scripts": {
-    "test": "tape test/index.js | tap-html --out ./tap-html.html",
-    "test:ts": "jest --watchAll --testPathPattern=test/typescript",
+    "test": "npm run test:e2e && npm run test:typescript",
+    "test:e2e": "tape test/index.js | tap-html --out ./tap-html.html",
+    "test:typescript": "jest --testPathPattern=test/typescript",
     "automate": "node test.js",
     "buildnode": "webpack --config webpack/webpack.node.js",
     "buildweb": "webpack -p --config webpack/webpack.web.js",
@@ -50,14 +51,14 @@
   ],
   "dist": {
     "shasum": "a328ed07240476a26b31a23261355dc929e1da63",
-    "tarball": "https://registry.npmjs.org/contentstack/-/contentstack-3.10.1.tgz"
+    "tarball": "https://registry.npmjs.org/contentstack/-/contentstack-3.11.0.tgz"
   },
   "license": "MIT",
   "directories": {},
-  "_resolved": "https://registry.npmjs.org/contentstack/-/contentstack-3.10.1.tgz",
+  "_resolved": "https://registry.npmjs.org/contentstack/-/contentstack-3.11.0.tgz",
   "_npmOperationalInternal": {
     "host": "packages-18-east.internal.npmjs.com",
-    "tmp": "tmp/contentstack-3.10.1.tgz_1477830884275_0.9869455888401717"
+    "tmp": "tmp/contentstack-3.11.0.tgz_1477830884275_0.9869455888401717"
   },
   "devDependencies": {
     "@types/jest": "^26.0.13",

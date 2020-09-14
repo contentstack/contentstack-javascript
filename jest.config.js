@@ -6,10 +6,14 @@ module.exports = {
     "default",
     ["jest-html-reporters", 
       {
-        "publicPath": "./html-report",
+        "publicPath": "./typescript-html-report",
         "filename": "report.html",
         "expand": true
       }
     ]
+  ],
+  automock: false,
+  setupFiles: [
+    "./test/typescript/setupJest.js"
   ]
 };

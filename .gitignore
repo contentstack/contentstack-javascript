@@ -9,3 +9,4 @@ test/config.js/*
 test/sync_config.js/*
 test/report.json/*
 tap-html.html
+*html-report
