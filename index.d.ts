@@ -1,4 +1,4 @@
-// Type definitions for contentstack 3.10.1
+// Type definitions for contentstack 3.11.0
 // Project: https://www.contentstack.com/
 // Definitions by: Contentstack <https://github.com/contentstack>
 
@@ -154,9 +154,9 @@ export class Query extends Entry {
 
     getQuery(): Query;
 
-    count(fetchOptions?: object): Query;
     includeCount(): Query;
     query(query: object): Query;
+    count(fetchOptions?: object): Query;
 
     referenceIn(key: string, query: Query): Query;
     referenceNotIn(key: string, query: Query): Query;
