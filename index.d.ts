@@ -85,9 +85,9 @@ export class ContentType {
     constructor();
     content_type_uid: string
     
-    fetch(): Promise<any>;
     Query(): Query;
     Entry(uid: string): Entry;
+    fetch(fetchOptions?: object): Promise<any>;
 }
 
 export class Assets {
@@ -102,13 +102,32 @@ export class Assets {
 export class Asset {
     constructor();
 
+    asset_uid: string
+    
     toJSON(): Assets;
     addParam(key: string, value: any): Assets;
-    fetch(): Promise<any>;
+    fetch(fetchOptions?: object): Promise<any>;
 }
 
 export class Entry {
     constructor();
+
+    entry_uid: string;
+    content_type_uid: string;
+    _query: object;
+    provider: any;
+    cachePolicy: number;
+    queryCachePolicy: number;
+
+    only(field_uid: string): Entry;
+    only(field_uids: string[]): Entry;
+    only(reference_field_uid:string, field_uid: string): Entry;
+    only(reference_field_uid:string, field_uids: string[]): Entry;
+
+    except(field_uid: string): Entry;
+    except(field_uids: string[]): Entry;
+    except(reference_field_uid:string, field_uid: string): Entry;
+    except(reference_field_uid:string, field_uids: string[]): Entry;
 
     setCacheProvider(provider: object): Entry;
     setCachePolicy(policy: number): Entry;
@@ -116,37 +135,69 @@ export class Entry {
     includeReference(...val: string[]): Entry;
     language(language_code: string): Entry;
     addQuery(key: string, value: string): Entry;
+
+    /**
+     * @deprecated since verion 3.3.0
+     */
     includeSchema(): Entry;
     includeReferenceContentTypeUID(): Entry;
     includeContentType(): Entry;
     includeOwner(): Entry;
     toJSON(): Entry;
     addParam(key: string, value: any): Entry;
-    fetch(): Promise<any>;
+    fetch(fetchOptions?: object): Promise<any>;
 }
 
 export class Query extends Entry {
     constructor();
+    _query: object;
 
-    equalTo(key: string, value: any): Query;
-    where(key: string, value: any): Query;
-    count(): Query;
-    query(query: any): Query;
+    getQuery(): Query;
+
+    count(fetchOptions?: object): Query;
+    includeCount(): Query;
+    query(query: object): Query;
+
     referenceIn(key: string, query: Query): Query;
     referenceNotIn(key: string, query: Query): Query;
-    tags(value: any[]): Query;
-    includeCount(): Query;
-    getQuery(): Query;
-    regex(key: string, value: any, options: string): Query;
+
+    tags(value: string[]): Query;
+
+    where(key: string, value: (string | number)): Query;
+    equalTo(key: string, value: (string | number)): Query;
+    notEqualTo(key: string, value: (string | number)): Query;
+
+    lessThan(key: string, value: (string | number)): Query;
+    lessThanOrEqualTo(key: string, value: (string | number)): Query;
+
+    greaterThan(key: string, value: (string | number)): Query;
+    greaterThanOrEqualTo(key: string, value: (string | number)): Query;
+
+    containedIn(key: string, value: (string | number)[]): Query;
+    notContainedIn(key: string, value: (string | number)[]): Query;
+
+    exists(key: string): Query;
+    notExists(key: string): Query;
+
+    ascending(key: string): Query;
+    descending(key: string): Query;
+
+    beforeUid(uid: string): Query;
+    afterUid(uid: string): Query;
+
+    skip(skip: number): Query;
+    limit(limit: number): Query;
+
+    or(...queries: Query[]): Query;
+    and(...queries: Query[]): Query;
+
+    referenceIn(key: string, query: (Query | object)): Query;
+    referenceNotIn(key: string, query: (Query | object)): Query;
+
+    regex(key: string, value: string, options?: string): Query;
+    
     search(value: string): Query;
-    greaterThan(key: string, value: any): Query;
-    greaterThanOrEqualTo(key: string, value: any): Query;
-    lessThan(key: string, value: any): Query;
-    lessThanOrEqualTo(key: string, value: any): Query;
-    notEqualTo(key: string, value: any): Query;
-    containedIn(key: string, value: any): Query;
 
-    find(): Promise<any>;
+    find(fetchOptions?: object): Promise<any>;
     findOne(): Promise<any>;
-
 }
