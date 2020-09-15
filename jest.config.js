@@ -12,8 +12,4 @@ module.exports = {
       }
     ]
   ],
-  automock: false,
-  setupFiles: [
-    "./test/typescript/setupJest.js"
-  ]
 };

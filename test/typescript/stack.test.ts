@@ -19,7 +19,7 @@ describe('Stack tests', () => {
         expect(stack.config.port).toEqual(443);
         expect(stack.config.protocol).toEqual("https");
         expect(stack.config.version).toEqual("v3");
-        expect(stack.fetchOptions).toEqual({});
+        expect(stack.fetchOptions.retryLimit).toEqual(5);
         done();
     });
     
@@ -65,7 +65,7 @@ describe('Stack tests', () => {
         expect(stack.config.host).toEqual('cdn.contentstack.io');
         expect(stack.config.port).toEqual(443);
         expect(stack.config.version).toEqual("v3");
-        expect(stack.fetchOptions).toEqual({});
+        expect(stack.fetchOptions.retryLimit).toEqual(5);
 
         done();
     });
