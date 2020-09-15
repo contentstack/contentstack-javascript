@@ -203,6 +203,62 @@
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>retryDelay</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">The number of ms to use for operation retries. Default is 300ms</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>retryCondition</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">A function to determine if the error can be retried. Default retry is on status codes 408, 429, and greter than equal to 500.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>retryDelayOptions.base</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">The base number of milliseconds to use in the exponential backoff for operation retries.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>retryDelayOptions.customBackoff</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds.</td>
+        </tr>
+
+    
     </tbody>
 </table>
 

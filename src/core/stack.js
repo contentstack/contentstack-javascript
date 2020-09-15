@@ -6,7 +6,7 @@ import Query from './modules/query';
 import Request from './lib/request';
 import * as cache from './cache';
 import CacheProvider from './cache-provider/index';
-
+let errorRetry = [408, 429]
 
 /**
      * @class 
@@ -18,7 +18,10 @@ import CacheProvider from './cache-provider/index';
      * @param region - DB region for Stack.
      * @param fetchOptions - Custom setting for the request.
      * @param fetchOptions.timeout - Set timeout for the request.
-     * 
+     * @param fetchOptions.retryDelay - The number of ms to use for operation retries. Default is 300ms
+     * @param fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429, and greter than equal to 500.
+     * @param fetchOptions.retryDelayOptions.base - The base number of milliseconds to use in the exponential backoff for operation retries.
+     * @param fetchOptions.retryDelayOptions.customBackoff - A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds.
      * @example
      * var Stack = Contentstack.Stack({
      *      'api_key':'api_key',
@@ -39,7 +42,15 @@ import CacheProvider from './cache-provider/index';
      */
 export default class Stack {
     constructor(...stack_arguments) {
-        this.fetchOptions = {};
+        this.fetchOptions = { 
+            retryLimit: 5,
+            retryCondition: (error) => {
+                if (errorRetry.includes(error.status)) {
+                    return true;
+                }
+                return false
+            }
+         };
         this.config = Object.assign({}, config)
 
         if(stack_arguments[0].region && stack_arguments[0].region !== undefined && stack_arguments[0].region !== "us") {
@@ -47,7 +58,7 @@ export default class Stack {
         } 
 
         if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions !== undefined) {
-            this.fetchOptions = stack_arguments[0].fetchOptions;
+            this.fetchOptions =  Object.assign(this.fetchOptions, stack_arguments[0].fetchOptions);
         }
         
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
@@ -90,7 +101,7 @@ export default class Stack {
                     if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== undefined && stack_arguments[3] !== "us") {
                         this.config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
-                        this.fetchOptions = stack_arguments[3]
+                        this.fetchOptions = Object.assign(this.fetchOptions, stack_arguments[3]);
                     }
                 }
                 return this;
@@ -109,11 +120,11 @@ export default class Stack {
                     if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== undefined && stack_arguments[3] !== "us") {
                         this.config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
-                        this.fetchOptions = stack_arguments[3]
+                        this.fetchOptions = Object.assign(this.fetchOptions, stack_arguments[3]);
                     }
                 }
                 if (stack_arguments[4] && typeof stack_arguments[4] === 'object') {
-                    this.fetchOptions = stack_arguments[4]
+                    this.fetchOptions = Object.assign(this.fetchOptions, stack_arguments[4]);
                 }
                 return this;
             default:
