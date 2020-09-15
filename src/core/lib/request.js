@@ -5,7 +5,6 @@ import fetch from "runtime/http.js";
 let version = '{{VERSION}}';
 let environment,
     api_key;
-let errorRetry = [408, 429]
 export default function Request(options, fetchOptions) {
     return new Promise(function(resolve, reject) {
         let queryParams;
@@ -59,7 +58,7 @@ function wait(retryDelay) {
     });
 }
 
-function fetchRetry(url, headers, retryDelay = 2, retryLimit = 5, fetchOptions, resolve, reject) {
+function fetchRetry(url, headers, retryDelay = 300, retryLimit = 5, fetchOptions, resolve, reject) {
     var option = Object.assign({ 
         method: 'GET',
         headers: headers,
@@ -71,10 +70,20 @@ function fetchRetry(url, headers, retryDelay = 2, retryLimit = 5, fetchOptions, 
         if (retryLimit === 0) {
             reject(error);
         }else {
-        wait(retryDelay)
-            .then(() => {
-                return fetchRetry(url, headers, retryDelay, retryLimit - 1, fetchOptions, resolve, reject)
-            })
+            var msDelay = retryDelay
+            retryLimit = retryLimit - 1
+            var retryCount = (fetchOptions.retryLimit - retryLimit)
+            if (fetchOptions.retryDelayOptions) {
+                if (fetchOptions.retryDelayOptions.base) {
+                    msDelay = fetchOptions.retryDelayOptions.base * retryCount
+                } else if (fetchOptions.retryDelayOptions.customBackoff) {
+                    msDelay = fetchOptions.retryDelayOptions.customBackoff(retryCount, error)
+                }
+            }
+            wait(msDelay)
+                .then(() => {
+                    return fetchRetry(url, headers, retryDelay, retryLimit, fetchOptions, resolve, reject)
+                })
         }
     }
     fetch(url, option)
@@ -84,7 +93,7 @@ function fetchRetry(url, headers, retryDelay = 2, retryLimit = 5, fetchOptions, 
                 resolve(data);
             } else {
                 data.then((json) => {
-                    if (errorRetry.includes(response.status) || response.status >= 500) {
+                    if (fetchOptions.retryCondition && fetchOptions.retryCondition(response)) {
                         onError(json)     
                     } else {
                         reject(json)
