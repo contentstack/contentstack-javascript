@@ -17,10 +17,13 @@ import Query from './query';
 *           // error function
 *      })
 * @example 
-* let data = Stack.Assets().toJSON().find()
+* // Retrieves all assets*
+* let data = Stack.Assets().Query().toJSON().find()
 *      data
 *      .then(function(result) {
-*           // ‘result’ will display all assets present in stack       
+*          // All the asset with limit of 100
+*          // Use skip and limit functions to paginate
+*          // ‘result’ will display all assets present in stack       
 *      }, function(error) {
 *           // error function
 *      })

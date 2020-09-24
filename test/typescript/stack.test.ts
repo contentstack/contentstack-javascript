@@ -20,6 +20,7 @@ describe('Stack tests', () => {
         expect(stack.config.protocol).toEqual("https");
         expect(stack.config.version).toEqual("v3");
         expect(stack.fetchOptions.retryLimit).toEqual(5);
+        expect(stack.fetchOptions.retryCondition).not.toEqual(undefined);
         done();
     });
     
