@@ -27,6 +27,12 @@ To initialize the SDK, you will need to specify the API Key, Delivery Token, and
     const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name");
 ```
 
+For Setting the European Region:
+If you want to set and use European region, refer to the code below:
+
+```javascript
+    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name", Contentstack.Region.EU);
+```
 
 #### For Node.js
 
@@ -46,6 +52,14 @@ To initialize the SDK, you will need to specify the API Key, Delivery Token, and
 
 ```javascript
     const Stack = contentstack.Stack("api_key","delivery_token","environment_name");
+```
+
+For Setting the European Region: 
+
+If you want to set and use European region, refer to the code below:
+
+```javascript
+    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name", Contentstack.Region.EU);
 ```
 
 #### For React Native
