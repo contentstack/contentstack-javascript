@@ -67,6 +67,7 @@ let errorRetry = [408, 429]
      * @param region - DB region for Stack.
      * @param fetchOptions - Custom setting for the request.
      * @param fetchOptions.timeout - Set timeout for the request.
+     * @param fetchOptions.retryLimit - The number of retries before failure. Default is 5
      * @param fetchOptions.retryDelay - The number of ms to use for operation retries. Default is 300ms
      * @param fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429, and greter than equal to 500.
      * @param fetchOptions.retryDelayOptions.base - The base number of milliseconds to use in the exponential backoff for operation retries.
@@ -94,7 +95,7 @@ export default class Stack {
         this.fetchOptions = { 
             retryLimit: 5,
             retryCondition: (error) => {
-                if (errorRetry.includes(error.status) || error.status >= 500) {
+                if (errorRetry.includes(error.status)) {
                     return true;
                 }
                 return false
@@ -406,6 +407,18 @@ export default class Stack {
      * @param {String} uid - uid of the asset 
      * @description Retrieves all assets of a stack by default. To retrieve a single asset, specify its UID.
      * @example 
+     * // Retrieves all assets
+     * let data = Stack.Assets().Query().toJSON().find()
+     *      data
+     *      .then(function(result) {
+     *          // All the asset with limit of 100
+     *          // Use skip and limit functions to paginate
+     *          // ‘result’ will display all assets present in stack       
+     *      }, function(error) {
+     *           // error function
+     *      })
+     * 
+     * @example 
      * let data = Stack.Assets('bltsomething123').toJSON().fetch()
      *      data
      *        .then(function(result) {
@@ -413,14 +426,7 @@ export default class Stack {
      *      }, function(error) {
      *           // error function
      *      })
-     * @example 
-     * let data = Stack.Assets().toJSON().find()
-     *      data
-     *      .then(function(result) {
-     *           // ‘result’ will display all assets present in stack       
-     *      }, function(error) {
-     *           // error function
-     *      })
+     * 
      * @returns {Assets}
      * @instance 
      */

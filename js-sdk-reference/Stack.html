@@ -206,6 +206,20 @@
 
         <tr>
             
+                <td class="name"><code>retryLimit</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">The number of retries before failure. Default is 5</td>
+        </tr>
+
+    
+
+        <tr>
+            
                 <td class="name"><code>retryDelay</code></td>
             
 
@@ -1484,18 +1498,21 @@ Stack.clearByContentType(content_type_uid, language_uid, callback);</code></pre>
 
     <h5>Examples</h5>
     
-    <pre class="prettyprint"><code>let data = Stack.Assets('bltsomething123').toJSON().fetch()
+    <pre class="prettyprint"><code>// Retrieves all assets
+let data = Stack.Assets().Query().toJSON().find()
      data
-       .then(function(result) {
-          // ‘result’ is a single asset object of specified uid       
+     .then(function(result) {
+         // All the asset with limit of 100
+         // Use skip and limit functions to paginate
+         // ‘result’ will display all assets present in stack       
      }, function(error) {
           // error function
      })</code></pre>
 
-    <pre class="prettyprint"><code>let data = Stack.Assets().toJSON().find()
+    <pre class="prettyprint"><code>let data = Stack.Assets('bltsomething123').toJSON().fetch()
      data
-     .then(function(result) {
-          // ‘result’ will display all assets present in stack       
+       .then(function(result) {
+          // ‘result’ is a single asset object of specified uid       
      }, function(error) {
           // error function
      })</code></pre>
