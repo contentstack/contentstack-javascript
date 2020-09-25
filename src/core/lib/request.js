@@ -5,7 +5,6 @@ import fetch from "runtime/http.js";
 let version = '{{VERSION}}';
 let environment,
     api_key;
-
 export default function Request(options, fetchOptions) {
     return new Promise(function(resolve, reject) {
         let queryParams;
@@ -42,24 +41,66 @@ export default function Request(options, fetchOptions) {
             queryParams = serialize(options.body);
         }
 
-        var option = Object.assign({ 
-                                    method: 'GET',
-                                    headers: headers,
-                                }, 
-                                fetchOptions);
-
-        fetch(url + '?' + queryParams, option)
-            .then(function(response) {       
-                let data = response.json();      
-                if (response.ok && response.status === 200) {
-                    resolve(data);
-                } else {
-                    return data;
-                }
-            }).then((json) => {
-                reject(json)
-            }).catch(function(error) {
-                reject(error);
-            });
+        return fetchRetry(url + '?' + queryParams, 
+                            headers, 
+                            fetchOptions.retryDelay, 
+                            fetchOptions.retryLimit, 
+                            fetchOptions, 
+                            resolve, 
+                            reject)
+        
     });
+}
+
+function wait(retryDelay) {
+    return new Promise((resolve) => {
+        setTimeout(resolve, retryDelay)
+    });
+}
+
+function fetchRetry(url, headers, retryDelay = 300, retryLimit = 5, fetchOptions, resolve, reject) {
+    var option = Object.assign({ 
+        method: 'GET',
+        headers: headers,
+        timeout: 3000,                                
+    }, 
+    fetchOptions);
+
+    function onError (error) {
+        if (retryLimit === 0) {
+            reject(error);
+        }else {
+            var msDelay = retryDelay
+            retryLimit = retryLimit - 1
+            var retryCount = (fetchOptions.retryLimit - retryLimit)
+            if (fetchOptions.retryDelayOptions) {
+                if (fetchOptions.retryDelayOptions.base) {
+                    msDelay = fetchOptions.retryDelayOptions.base * retryCount
+                } else if (fetchOptions.retryDelayOptions.customBackoff) {
+                    msDelay = fetchOptions.retryDelayOptions.customBackoff(retryCount, error)
+                }
+            }
+            wait(msDelay)
+                .then(() => {
+                    return fetchRetry(url, headers, retryDelay, retryLimit, fetchOptions, resolve, reject)
+                })
+        }
+    }
+    fetch(url, option)
+        .then(function(response) {       
+            let data = response.json();      
+            if (response.ok && response.status === 200) {
+                resolve(data);
+            } else {
+                data.then((json) => {
+                    if (fetchOptions.retryCondition && fetchOptions.retryCondition(response)) {
+                        onError(json)     
+                    } else {
+                        reject(json)
+                    }   
+                });
+            }
+        }).catch((error) => {
+            reject(error)
+        });
 }
