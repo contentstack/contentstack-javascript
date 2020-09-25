@@ -1,5 +1,5 @@
 [![Contentstack](https://www.contentstack.com/docs/static/images/contentstack.png)](https://www.contentstack.com/)
-## JavaScript SDK for Contentstack
+## JavaScript Content Delivery SDK for Contentstack
 
 Contentstack is a headless CMS with an API-first approach. It is a CMS that developers can use to build powerful cross-platform applications in their favorite languages. Build your application frontend, and Contentstack will take care of the rest. [Read More](https://www.contentstack.com/).
 
@@ -27,6 +27,12 @@ To initialize the SDK, you will need to specify the API Key, Delivery Token, and
     const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name");
 ```
 
+For Setting the European Region:
+If you want to set and use European region, refer to the code below:
+
+```javascript
+    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name", Contentstack.Region.EU);
+```
 
 #### For Node.js
 
@@ -48,6 +54,14 @@ To initialize the SDK, you will need to specify the API Key, Delivery Token, and
     const Stack = contentstack.Stack("api_key","delivery_token","environment_name");
 ```
 
+For Setting the European Region: 
+
+If you want to set and use European region, refer to the code below:
+
+```javascript
+    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name", Contentstack.Region.EU);
+```
+
 #### For React Native
 
 React Native uses the Javascript SDK to create apps. To use the JavaScript SDK, download it from [here](https://contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest), OR install ist via npm:
@@ -66,6 +80,14 @@ To initialize the SDK, you will need to specify the API Key, Delivery Token, and
 
 ```javascript
     const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name");
+```
+
+For Setting the European Region:
+
+If you want to set and use European region, refer to the code below:
+
+```javascript
+    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name", Contentstack.Region.EU);
 ```
 
 ### Key Concepts for using Contentstack

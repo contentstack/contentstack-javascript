@@ -27,20 +27,18 @@ export default class Entry {
          *                                       <p>- referenced_content-type-uid : retrieves fields of the referred content type.</p>
          * @param {Array} values - array of fields that you want to display in the response
          * @example
-         * <caption> .only with field uid </caption>
-         * blogEntry.only('title')
-         * @example
-         * <caption> .only with field uid </caption>
-         * blogEntry.only('BASE','title')
-         * @example
-         * <caption> .only with field uids(array) </caption>
-         * blogEntry.only(['title','description'])
-         * @example
-         * <caption> .only with reference_field_uid and field uid </caption>
-         * blogEntry.includeReference('category').only('category','title')
-         * @example
-         * <caption> .only with reference_field_uid and field uids(array) </caption>
-         * blogEntry.includeReference('category').only('category', ['title', 'description'])
+         * <caption> The only function with field_uid will include the data of only the specified fields for each entry and exclude the data of all other fields. </caption>
+         * Stack.ContentType('contentTypeUid').Query().only('title').toJSON().find()
+         * 
+         * <caption> The only function with an array of field_uids will include multiple fields for each entry and exclude the data of all other fields.</caption>
+         * Stack.ContentType('contentTypeUid').Query().only(['title','description']).toJSON().find()
+         * 
+         * <caption> In only, we have the only with a reference parameter, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter to include the data of only the specified field_uid for each entry and exclude the data of all other fields.</caption>
+         * Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').only('reference_field_uid','title').toJSON().find()
+         * 
+         * <caption> In only, we have the only with a reference parameter with an array, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter with an array of fields to include the data of only the specified array of field_uids for each entry and exclude the data of all other fields.</caption>
+         * Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').only('reference_field_uid', ['title', 'description']).toJSON().find()
+         * 
          * @returns {Entry}
          * @instance
          */
@@ -53,20 +51,17 @@ export default class Entry {
                                                              - referenced_content-type-uid - retrieves fields of the referred content type.
          * @param {Array} values - array of fields that you want to skip in the response
          * @example
-         * <caption> .except with field uid </caption>
+         * <caption> The except function with field_uid will exclude the data of only the specified fields for each entry and includes the data of all other fields. </caption>
          * Stack.ContentType('contentTypeUid').Query().except('title').toJSON().find()
          * @example
-         * <caption> .except with field uid </caption>
-         * Stack.ContentType('contentTypeUid').Query().except('BASE','title').toJSON().find()
-         * @example
-         * <caption> .except with field uids(array) </caption>
+         * <caption> The except function with an array of field_uids will except multiple fields for each entry and include the data of all other fields.</caption>
          * Stack.ContentType('contentTypeUid').Query().except(['title','description']).toJSON().find()
          * @example
-         * <caption> .except with reference_field_uid and field uid </caption>
-         * Stack.ContentType('contentTypeUid').Query().includeReference('category').except('category','title').toJSON().find()
+         * <caption> In except, we have the only with a reference parameter, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter to except the data of only the specified field_uid for each entry and include the data of all other fields.</caption>
+         * Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').except('reference_field_uid','title').toJSON().find()
          * @example
-         * <caption> .except with reference_field_uid and field uids(array) </caption>
-         * Stack.ContentType('contentTypeUid').Query().includeReference('category').except('category', ['title', 'description']).toJSON().find()
+         * <caption> In except, we have the only with a reference parameter with an array, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter with an array of fields to except the data of only the specified array of field_uids for each entry and include the data of all other fields.</caption>
+         * Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').except('reference_field_uid', ['title', 'description']).toJSON().find()
          * @returns {Entry}
          * @instance 
          */
