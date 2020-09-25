@@ -2,12 +2,11 @@ import config from '../../config';
 import * as Utils from './lib/utils';
 import Entry from './modules/entry';
 import Assets from './modules/assets';
-/*import Sync from './modules/sync';*/
 import Query from './modules/query';
 import Request from './lib/request';
 import * as cache from './cache';
 import CacheProvider from './cache-provider/index';
-
+let errorRetry = [408, 429]
 
 /**
      * @class 
@@ -19,7 +18,11 @@ import CacheProvider from './cache-provider/index';
      * @param region - DB region for Stack.
      * @param fetchOptions - Custom setting for the request.
      * @param fetchOptions.timeout - Set timeout for the request.
-     * 
+     * @param fetchOptions.retryLimit - The number of retries before failure. Default is 5
+     * @param fetchOptions.retryDelay - The number of ms to use for operation retries. Default is 300ms
+     * @param fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429, and greter than equal to 500.
+     * @param fetchOptions.retryDelayOptions.base - The base number of milliseconds to use in the exponential backoff for operation retries.
+     * @param fetchOptions.retryDelayOptions.customBackoff - A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds.
      * @example
      * var Stack = Contentstack.Stack({
      *      'api_key':'api_key',
@@ -35,20 +38,36 @@ import CacheProvider from './cache-provider/index';
      * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment', {
      * 
      * });
+     * 
+     * @example
+     * // For Setting the European Region:
+     * // If you want to set and use European region, refer to the code below:
+     * const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name", Contentstack.Region.EU);
+     * 
      * @returns {Stack}
      * @instance
      */
 export default class Stack {
     constructor(...stack_arguments) {
+        this.fetchOptions = { 
+            retryLimit: 5,
+            retryCondition: (error) => {
+                if (errorRetry.includes(error.status)) {
+                    return true;
+                }
+                return false
+            }
+         };
+        this.config = Object.assign({}, config)
+
         if(stack_arguments[0].region && stack_arguments[0].region !== undefined && stack_arguments[0].region !== "us") {
-            config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
+            this.config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
         } 
 
         if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions !== undefined) {
-            this.fetchOptions = stack_arguments[0].fetchOptions;
+            this.fetchOptions =  Object.assign(this.fetchOptions, stack_arguments[0].fetchOptions);
         }
         
-        this.config = config;
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
         this.provider = CacheProvider.providers('localstorage');
 
@@ -86,13 +105,12 @@ export default class Stack {
                     console.error("Kindly provide valid string parameters.");
                 }
                 if (stack_arguments[3]) {                    
-                    if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== "us") {
-                        config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
+                    if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== undefined && stack_arguments[3] !== "us") {
+                        this.config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
-                        this.fetchOptions = stack_arguments[3]
+                        this.fetchOptions = Object.assign(this.fetchOptions, stack_arguments[3]);
                     }
                 }
-                this.config = config;
                 return this;
             case 5:
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
@@ -106,16 +124,15 @@ export default class Stack {
                 }
 
                 if (stack_arguments[3]) {
-                    if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== "us") {
-                        config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
+                    if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== undefined && stack_arguments[3] !== "us") {
+                        this.config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
-                        this.fetchOptions = stack_arguments[3]
+                        this.fetchOptions = Object.assign(this.fetchOptions, stack_arguments[3]);
                     }
                 }
                 if (stack_arguments[4] && typeof stack_arguments[4] === 'object') {
-                    this.fetchOptions = stack_arguments[4]
+                    this.fetchOptions = Object.assign(this.fetchOptions, stack_arguments[4]);
                 }
-                this.config = config;
                 return this;
             default:
                 console.error("Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
@@ -265,7 +282,7 @@ export default class Stack {
      * @memberOf Stack
      * @description Returns the currently set object of 'CacheProvider'
      * @example Stack.getCacheProvider();
-     * @returns {Stack}
+     * @returns {object}
      * @instance
      */
     getCacheProvider() {
@@ -298,7 +315,7 @@ export default class Stack {
 
  /**
      * @method Entry
-     * @memberOf Stack
+     * @memberOf ContentType
      * @param {String} uid - uid of the entry 
      * @description An initializer is responsible for creating Entry object
      * @returns {Entry}
@@ -314,7 +331,7 @@ export default class Stack {
 
      /**
      * @method fetch
-     * @memberOf Stack
+     * @memberOf ContentType
      * @description This method returns the complete information of a specific content type.
      * @example
      * let single_contenttype = Stack.ContentType(content_type_uid).fetch()
@@ -324,7 +341,7 @@ export default class Stack {
      *     }).catch((error) => {
      *        console.log(error)
      *  });
-     * @returns {ContentType}
+     * @returns {promise}
      * @instance 
      */
     fetch(fetchOptions) {
@@ -347,6 +364,18 @@ export default class Stack {
      * @param {String} uid - uid of the asset 
      * @description Retrieves all assets of a stack by default. To retrieve a single asset, specify its UID.
      * @example 
+     * // Retrieves all assets
+     * let data = Stack.Assets().Query().toJSON().find()
+     *      data
+     *      .then(function(result) {
+     *          // All the asset with limit of 100
+     *          // Use skip and limit functions to paginate
+     *          // ‘result’ will display all assets present in stack       
+     *      }, function(error) {
+     *           // error function
+     *      })
+     * 
+     * @example 
      * let data = Stack.Assets('bltsomething123').toJSON().fetch()
      *      data
      *        .then(function(result) {
@@ -354,14 +383,7 @@ export default class Stack {
      *      }, function(error) {
      *           // error function
      *      })
-     * @example 
-     * let data = Stack.Assets().toJSON().find()
-     *      data
-     *      .then(function(result) {
-     *           // ‘result’ will display all assets present in stack       
-     *      }, function(error) {
-     *           // error function
-     *      })
+     * 
      * @returns {Assets}
      * @instance 
      */
@@ -400,7 +422,7 @@ export default class Stack {
      *      }, function(error) {
      *           // error function
      *      })
-     * @returns {Stack}
+     * @returns {promise}
      * @instance
      */
     getLastActivities() {
@@ -430,10 +452,10 @@ export default class Stack {
      *      }, function(error) {
      *           // error function
      *      })
-     * @returns {Stack}
+     * @returns {promise}
      * @instance
      */
-    getContentTypes(param) { 
+    getContentTypes(param = {}) { 
         let query = {
             method: 'POST',
             headers: this.headers,
@@ -455,7 +477,7 @@ export default class Stack {
      * @method sync
      * @memberOf Stack
      * @description Syncs your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates
-     * @param {object} params - params is an object that supports ‘locale’, ‘start_date’, ‘content_type_id’, and ‘type’ queries.
+     * @param {object} params - params is an object that supports ‘locale’, ‘start_date’, ‘content_type_uid’, and ‘type’ queries.
      * @example 
      * Stack.sync({'init': true})        // For initializing sync
      * @example 
