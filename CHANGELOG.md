@@ -1,3 +1,16 @@
+### Version: 3.11.0
+#### Date: Sept-25-2020
+
+##### Update API:
+ - Retry limit for fetch request 
+ - Retry delay options for fetch request
+ - Retry on error occur for fetch request
+ - Typescript definition added
+
+##### Enhancement Documentation
+ - Documentation update for Only and Except
+
+
 ### Version: 3.10.1
 #### Date: Jun-29-2020
 
