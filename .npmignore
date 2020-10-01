@@ -10,3 +10,5 @@ examples/
 mocktest.json
 webpack
 typescript-html-report
+webpack
+jest.config.js
