@@ -1,3 +1,9 @@
+### Version: 3.12.0
+#### Date: 
+
+##### Update API:
+ - includeEmbeddedObjects method added in Entry and Query to include embedded objects
+
 ### Version: 3.11.0
 #### Date: Sept-25-2020
 
