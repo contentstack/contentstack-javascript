@@ -88,6 +88,13 @@ describe('Entry Test', () => {
         done()
     });
 
+
+    test('Entry include schema test', done => {
+        const entry = makeEntry().includeEmbeddedObjects()
+        expect(entry._query).toEqual({"include_embedded_objects": true});
+        done()
+    });
+
     test('Entry include schema test', done => {
         const entry = makeEntry().includeSchema()
         expect(entry._query).toEqual({"include_schema": true});
