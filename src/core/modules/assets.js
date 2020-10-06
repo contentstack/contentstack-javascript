@@ -81,6 +81,18 @@ export default class Assets {
         }
     }
 
+    /**
+     * @method includeFallback
+     * @memberOf Entry
+     * @description Include the fallback locale publish content, if specified locale content is not publish.
+     * @example stack.ContentType(contentType_uid).Entry(entry_uid).includeFallback().fetch()
+     * @returns {Asset}
+     * @instance
+     */
+    includeFallback() {
+        this._query['include_fallback'] = true;
+        return this;
+    }
 
 /**
    * Fetches a particular asset based on the provided asset UID.
