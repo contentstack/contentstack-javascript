@@ -103,9 +103,11 @@ export class Asset {
     constructor();
 
     asset_uid: string
-    
-    toJSON(): Assets;
-    addParam(key: string, value: any): Assets;
+    _query: object;
+
+    toJSON(): Asset;
+    addParam(key: string, value: any): Asset;
+    includeFallback(): Asset;
     fetch(fetchOptions?: object): Promise<any>;
 }
 
@@ -135,6 +137,7 @@ export class Entry {
     includeReference(...val: string[]): Entry;
     language(language_code: string): Entry;
     addQuery(key: string, value: string): Entry;
+    includeFallback(): Entry;
 
     /**
      * @deprecated since verion 3.3.0
