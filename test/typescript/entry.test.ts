@@ -15,6 +15,7 @@ describe('Entry Test', () => {
         expect(entry.language).not.toEqual(undefined);
         expect(entry.addQuery).not.toEqual(undefined);
         expect(entry.includeSchema).not.toEqual(undefined);
+        expect(entry.includeReference).not.toEqual(undefined);
         expect(entry.includeReferenceContentTypeUID).not.toEqual(undefined);
         expect(entry.includeContentType).not.toEqual(undefined);
         expect(entry.includeOwner).not.toEqual(undefined);
@@ -103,6 +104,12 @@ describe('Entry Test', () => {
     test('Entry include reference content type test', done => {
         const entry = makeEntry().includeReferenceContentTypeUID()
         expect(entry._query).toEqual({"include_reference_content_type_uid": true});
+        done()
+    });
+
+    test('Entry include fallback test', done => {
+        const entry = makeEntry().includeFallback()
+        expect(entry._query).toEqual({"include_fallback": true});
         done()
     });
 

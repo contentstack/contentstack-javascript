@@ -8,6 +8,13 @@ describe('Asset Test', () => {
         expect(asset.asset_uid).toEqual('uid')      
         expect(asset.addParam).not.toEqual(undefined)
         expect(asset.fetch).not.toEqual(undefined)
+        expect(asset.includeFallback).not.toEqual(undefined)
+        done()
+    });
+
+    test('Entry include fallback test', done => {
+        const asset = makeAsset().includeFallback()
+        expect(asset._query).toEqual({"include_fallback": true});
         done()
     });
 
