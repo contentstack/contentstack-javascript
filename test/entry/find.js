@@ -7,6 +7,8 @@ const Contentstack = require('../../dist/node/contentstack.js');
 const init = require('../config.js');
 const Utils = require('./utils.js');
 
+const config = require('../config.json')
+Object.assign(init, config)
 const contentTypes = init.contentTypes;
 
 let Stack;
@@ -22,8 +24,6 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
 });
 
 test('default .find()', function(assert) {
-    Stack = Contentstack.Stack(init.stack);
-    Stack.setHost(init.host);
     var Query = Stack.ContentType(contentTypes.source).Query(),
         field = 'updated_at';
     Query
@@ -759,6 +759,28 @@ test('.regex()', function(assert) {
             assert.end();
         });
 });
+
+
+test('find: fallback', function(assert) {
+    var _in = ['ja-jp', 'en-us']
+    Stack.ContentType(contentTypes.source).Query().language('ja-jp')
+    .includeFallback()
+    .toJSON()
+    .find()
+    .then((entries) => {
+        assert.ok(entries[0].length, 'Entries present in the resultset');
+        if (entries && entries.length && entries[0].length) {
+            var _entries = entries[0].every(function(entry) {
+                return (_in.indexOf(entry['publish_details']['locale']) != -1);
+            });
+            assert.equal(_entries, true, "Publish content fallback");
+        }
+        assert.end();
+    }).catch((error) => {
+        assert.fail("Entries default .find() fallback catch", error.toString());
+        assert.end();
+    })
+})
 
 // includeContentType
 test('.includeContentType()', function(assert) {
