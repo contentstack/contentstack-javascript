@@ -656,6 +656,26 @@ test('.regex()', function(assert) {
 });
 
 
+test('find: fallback', function(assert) {
+    var _in = ['ja-jp', 'en-us']
+    Stack.ContentType(contentTypes.source).Query().language('ja-jp')
+    .includeFallback()
+    .find()
+    .then((entries) => {
+        assert.ok(entries[0].length, 'Entries present in the resultset');
+        if (entries && entries.length && entries[0].length) {
+            var _entries = entries[0].every(function(entry) {
+                return (_in.indexOf(entry.toJSON()['publish_details']['locale']) != -1);
+            });
+            assert.equal(_entries, true, "Publish content fallback");
+        }
+        assert.end();
+    }).catch((error) => {
+        assert.fail("Entries default .find() fallback catch", error.toString());
+        assert.end();
+    })
+})
+
 // includeReference
 test('.includeReference() - String', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query();
