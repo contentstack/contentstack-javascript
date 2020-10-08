@@ -21,6 +21,26 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
     }, 1000);
 });
 
+
+test('default .find() No fallback', function(assert) {
+    var _in = ['ja-jp']
+    Stack.Assets().Query().language('ja-jp').toJSON().find()
+        .then((assets) => {
+            assert.ok(assets[0].length, 'Assets present in the resultset');
+            assert.notok(assets[1], 'Count should not be present');
+            if (assets && assets.length && assets[0].length) {
+                var _assets = assets[0].every(function(asset) {
+                    return (_in.indexOf(asset['publish_details']['locale']) != -1);
+                });
+                assert.equal(_assets, true, "Publish content fallback" );
+            }
+            assert.end();
+        }).catch((error) => {
+            assert.fail("asset default .find() fallback catch", error.toString());
+            assert.end();
+        })
+})
+
 test('default .find() fallback', function(assert) {
     var _in = ['ja-jp', 'en-us']
     Stack.Assets().Query().language('ja-jp').includeFallback().toJSON().find()

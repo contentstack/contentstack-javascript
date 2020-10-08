@@ -412,6 +412,21 @@ test('findOne:  .regex()', function(assert) {
         });
 });
 
+
+test('findOne: without fallback', function(assert) {
+    var _in = ['ja-jp']
+    Stack.ContentType(contentTypes.source).Query().language('ja-jp')
+    .findOne()
+    .then((entry) => {
+        var _entries = (_in.indexOf(entry.toJSON()['publish_details']['locale']) != -1);
+        assert.equal(_entries, true, "Publish content fallback");
+        assert.end();
+    }).catch((error) => {
+        assert.fail("Entries default .find() fallback catch", error.toString());
+        assert.end();
+    })
+})
+
 test('findOne: fallback', function(assert) {
     var _in = ['ja-jp', 'en-us']
     Stack.ContentType(contentTypes.source).Query().language('ja-jp')

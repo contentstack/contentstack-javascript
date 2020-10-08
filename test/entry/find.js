@@ -760,6 +760,25 @@ test('.regex()', function(assert) {
         });
 });
 
+test('find: without fallback', function(assert) {
+    var _in = ['ja-jp']
+    Stack.ContentType(contentTypes.source).Query().language('ja-jp')
+    .toJSON()
+    .find()
+    .then((entries) => {
+        assert.ok(entries[0].length, 'Entries present in the resultset');
+        if (entries && entries.length && entries[0].length) {
+            var _entries = entries[0].every(function(entry) {
+                return (_in.indexOf(entry['publish_details']['locale']) != -1);
+            });
+            assert.equal(_entries, true, "Publish content fallback");
+        }
+        assert.end();
+    }).catch((error) => {
+        assert.fail("Entries default .find() fallback catch", error.toString());
+        assert.end();
+    })
+})
 
 test('find: fallback', function(assert) {
     var _in = ['ja-jp', 'en-us']
