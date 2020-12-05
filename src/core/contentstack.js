@@ -1,7 +1,7 @@
 import Stack from "./stack";
 import CacheProvider from './cache-provider/index';
 import ContentstackRegion from "./contentstackregion";
-
+import {render , renderContent} from '@contentstack/utils';
 
  /**
  * @class 
@@ -25,6 +25,10 @@ class Contentstack {
 		 */
 		this.CachePolicy = CacheProvider.policies;
 		this.Region = ContentstackRegion;
+		this.Utils = {
+				render,
+				renderContent
+			}
 	}
 /**
 
