@@ -326,6 +326,7 @@ test('.equalTo() compare boolean value (true)', function(assert) {
     var Query = Stack.Assets().Query();
 
     Query
+        .language('en-us')
         .equalTo('is_dir', false)
         .toJSON()
         .find()

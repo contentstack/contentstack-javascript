@@ -1,4 +1,4 @@
-// Type definitions for contentstack 3.11.0
+// Type definitions for contentstack 3.12.0
 // Project: https://www.contentstack.com/
 // Definitions by: Contentstack <https://github.com/contentstack>
 

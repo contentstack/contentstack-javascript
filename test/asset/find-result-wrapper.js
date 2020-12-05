@@ -152,6 +152,7 @@ test('.lessThan()', function(assert) {
         field = 'updated_at';
     Query
         .lessThan('file_size', value)
+        .language('en-us')
         .find()
         .then(function success(assets) {
             // assert.ok("assets" in result, 'assets key present in the resultset');
@@ -181,6 +182,7 @@ test('.lessThanOrEqualTo()', function(assert) {
         field = 'updated_at',
         value = 5122;
     Query
+        .language('en-us')
         .lessThanOrEqualTo('file_size', value)
         .find()
         .then(function success(assets) {
@@ -270,6 +272,7 @@ test('.notEqualTo()', function(assert) {
         value = 5122;
 
     Query
+        .language('en-us')
         .notEqualTo('file_size', value)
         .descending(field)
         .find()
@@ -351,6 +354,7 @@ test('.exists()', function(assert) {
         field = 'updated_at';
 
     Query
+        .language('en-us')
         .exists(queryField)
         .find()
         .then(function success(assets) {
@@ -664,6 +668,7 @@ test('.regex()', function(assert) {
         regexpObj = new RegExp(regex.pattern, regex.options);
 
     Query
+        .language('en-us')
         .regex(field, regex.pattern, regex.options)
         .find()
         .then(function success(assets) {
