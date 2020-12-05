@@ -1,6 +1,17 @@
-// Type definitions for contentstack 3.11.0
+// Type definitions for contentstack 3.12.0
 // Project: https://www.contentstack.com/
 // Definitions by: Contentstack <https://github.com/contentstack>
+import { EntryEmbedable, Option, RenderOption } from '@contentstack/utils'
+
+// Utils
+export class Utils {
+    static render(option: { 
+        entry: EntryEmbedable| EntryEmbedable[],
+        renderOption?: RenderOption,
+        paths?: string[]
+    }): void;
+    static renderContent(content: (string | string[]), option: Option): (string| string[]);
+}
 
 //Enum for Contentstack Region
 export enum Region {
@@ -119,32 +130,32 @@ export class Entry {
     cachePolicy: number;
     queryCachePolicy: number;
 
-    only(field_uid: string): Entry;
-    only(field_uids: string[]): Entry;
-    only(reference_field_uid:string, field_uid: string): Entry;
-    only(reference_field_uid:string, field_uids: string[]): Entry;
+    only(field_uid: string): this;
+    only(field_uids: string[]): this;
+    only(reference_field_uid:string, field_uid: string): this;
+    only(reference_field_uid:string, field_uids: string[]): this;
 
-    except(field_uid: string): Entry;
-    except(field_uids: string[]): Entry;
-    except(reference_field_uid:string, field_uid: string): Entry;
-    except(reference_field_uid:string, field_uids: string[]): Entry;
+    except(field_uid: string): this;
+    except(field_uids: string[]): this;
+    except(reference_field_uid:string, field_uid: string): this;
+    except(reference_field_uid:string, field_uids: string[]): this;
 
-    setCacheProvider(provider: object): Entry;
-    setCachePolicy(policy: number): Entry;
-    includeReference(val: string[]): Entry;
-    includeReference(...val: string[]): Entry;
-    language(language_code: string): Entry;
-    addQuery(key: string, value: string): Entry;
-    includeEmbeddedObjects(): Entry
+    setCacheProvider(provider: object): this;
+    setCachePolicy(policy: number): this;
+    includeReference(val: string[]): this;
+    includeReference(...val: string[]): this;
+    language(language_code: string): this;
+    addQuery(key: string, value: string): this;
+    includeEmbeddedObjects(): this;
     /**
      * @deprecated since verion 3.3.0
      */
-    includeSchema(): Entry;
-    includeReferenceContentTypeUID(): Entry;
-    includeContentType(): Entry;
-    includeOwner(): Entry;
-    toJSON(): Entry;
-    addParam(key: string, value: any): Entry;
+    includeSchema(): this;
+    includeReferenceContentTypeUID(): this;
+    includeContentType(): this;
+    includeOwner(): this;
+    toJSON(): this;
+    addParam(key: string, value: any): this;
     fetch(fetchOptions?: object): Promise<any>;
 }
 
