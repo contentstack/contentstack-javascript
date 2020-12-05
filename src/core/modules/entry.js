@@ -220,6 +220,18 @@ export default class Entry {
         return this;
     }
 
+    /**
+     * @method includeFallback
+     * @memberOf Entry
+     * @description Include the fallback locale publish content, if specified locale content is not publish.
+     * @example stack.ContentType(contentType_uid).Entry(entry_uid).includeFallback().fetch()
+     * @returns {Entry}
+     * @instance
+     */
+    includeFallback() {
+        this._query['include_fallback'] = true;
+        return this;
+    }
 
     /**
      * @method includeContentType
