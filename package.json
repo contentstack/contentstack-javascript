@@ -1,6 +1,6 @@
 {
   "name": "contentstack",
-  "version": "3.11.0",
+  "version": "3.12.0",
   "description": "Contentstack Javascript SDK",
   "homepage": "https://www.contentstack.com/",
   "author": {
@@ -20,8 +20,9 @@
     "buildweb": "webpack -p --config webpack/webpack.web.js",
     "buildreactnative": "webpack --config webpack/webpack.react-native.js",
     "buildnativescript": "webpack --config webpack/webpack.nativescript.js",
-    "buildall": "NODE_ENV=production&&npm run buildnode&npm run buildweb&npm run buildreactnative&npm run buildnativescript",
-    "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose"
+    "build": "NODE_ENV=production && npm run buildnode && npm run buildweb && npm run buildreactnative && npm run buildnativescript",
+    "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -94,6 +95,7 @@
     "webpack-merge": "4.1.0"
   },
   "dependencies": {
+    "@contentstack/utils": "file:contentstack-utils-1.0.0.tgz",
     "es6-promise": "4.1.1",
     "localStorage": "1.0.3",
     "node-fetch": "^2.6.1"

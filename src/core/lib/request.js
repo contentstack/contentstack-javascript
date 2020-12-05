@@ -62,7 +62,6 @@ function fetchRetry(url, headers, retryDelay = 300, retryLimit = 5, fetchOptions
     var option = Object.assign({ 
         method: 'GET',
         headers: headers,
-        timeout: 3000,                                
     }, 
     fetchOptions);
 
