@@ -9,7 +9,7 @@
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link rel="canonical" href="https://www.contentstack.com/docs/platforms/java/api-reference/">
+    <link rel="canonical" href="https://www.contentstack.com/docs/platforms/javascript-browser/api-reference/">
     <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
@@ -69,7 +69,7 @@ let errorRetry = [408, 429]
      * @param fetchOptions.timeout - Set timeout for the request.
      * @param fetchOptions.retryLimit - The number of retries before failure. Default is 5
      * @param fetchOptions.retryDelay - The number of ms to use for operation retries. Default is 300ms
-     * @param fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429, and greter than equal to 500.
+     * @param fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429.
      * @param fetchOptions.retryDelayOptions.base - The base number of milliseconds to use in the exponential backoff for operation retries.
      * @param fetchOptions.retryDelayOptions.customBackoff - A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds.
      * @example

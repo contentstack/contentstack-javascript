@@ -20,7 +20,7 @@ let errorRetry = [408, 429]
      * @param fetchOptions.timeout - Set timeout for the request.
      * @param fetchOptions.retryLimit - The number of retries before failure. Default is 5
      * @param fetchOptions.retryDelay - The number of ms to use for operation retries. Default is 300ms
-     * @param fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429, and greter than equal to 500.
+     * @param fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429.
      * @param fetchOptions.retryDelayOptions.base - The base number of milliseconds to use in the exponential backoff for operation retries.
      * @param fetchOptions.retryDelayOptions.customBackoff - A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds.
      * @example
