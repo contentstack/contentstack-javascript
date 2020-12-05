@@ -2,7 +2,10 @@
 #### Date: Desc-05-2020
 
 ##### New Features:
- - 
+ - [Entry] - Publish fallback method added
+ - [Query] - Publish fallback method added
+ - [Asset] - Publish fallback method added
+ - [Assets] - Publish fallback method added
 
 ### Version: 3.11.0
 #### Date: Sept-25-2020
