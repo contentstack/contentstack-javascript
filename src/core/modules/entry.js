@@ -195,8 +195,8 @@ export default class Entry {
      * @returns {Entry}
      * @instance
      */
-    includeEmbeddedObjects() {
-        this._query['include_embedded'] = ["BASE"];
+    includeEmbeddedItems() {
+        this._query['include_embedded_items'] = ["BASE"];
         return this;
     }
 
