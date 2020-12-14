@@ -146,7 +146,7 @@ export class Entry {
     includeReference(...val: string[]): this;
     language(language_code: string): this;
     addQuery(key: string, value: string): this;
-    includeEmbeddedObjects(): this;
+    includeEmbeddedItems(): this;
     /**
      * @deprecated since verion 3.3.0
      */
