@@ -597,12 +597,18 @@ test('findOne:  .only() - For the reference - Array', function(assert) {
         .findOne()
         .then(function success(entry) {
             var flag = false;
-            if (entry && entry.get('reference') && entry.get('reference').length) {
-                flag = entry.get('reference').every(function(reference) {
-                    return (reference && "title" in reference && "uid" in reference);
-                });
+            if (entry && entry.get('reference')) {
+                if (entry.get('reference').length) {
+                    if (entry.get('reference').length === 0){
+                        flag = true
+                    } else {
+                        flag = entry.get('reference').every(function(reference) {
+                            return (reference && "title" in reference && "uid" in reference);
+                        });
+                    }
+                }
             }
-            assert.equal(flag, false, 'Entry do not have the reference with only paramteres.');
+            assert.equal(flag, true, 'Entry do not have the reference with only paramteres.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
