@@ -761,25 +761,25 @@ test('.regex()', function(assert) {
 });
 
 
-// inlcudeEmbeddeddObjects
-test('.inlcudeEmbeddeddObjects()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+// inlcudeEmbeddedItems
+// test('.inlcudeEmbeddedItems()', function(assert) {
+//     var Query = Stack.ContentType(contentTypes.source).Query();
 
-    Query
-        .inlcudeEmbeddeddObjects()
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.ok(entries[1]['title'], 'ContentType title exists');
-            assert.ok((entries[1]['uid'] === contentTypes.source), 'ContentType uid is same as requested');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".inlcudeEmbeddeddObjects()");
-            assert.end();
-        });
-});
+//     Query
+//         .includeEmbeddedItems()
+//         .toJSON()
+//         .find()
+//         .then(function success(entries) {
+//             assert.ok(entries[0].length, 'Entries present in the resultset');
+//             assert.ok(entries[1]['title'], 'ContentType title exists');
+//             assert.ok((entries[1]['uid'] === contentTypes.source), 'ContentType uid is same as requested');
+//             assert.end();
+//         }, function error(err) {
+//             console.error("error :", err);
+//             assert.fail(".inlcudeEmbeddedItems()");
+//             assert.end();
+//         });
+// });
 
 // includeContentType
 test('.includeContentType()', function(assert) {
@@ -901,11 +901,13 @@ test('.includeSchema()', function(assert) {
             //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
             assert.ok(entries[0].length, 'Entries present in the resultset');
             assert.ok(entries[1], 'Schema present in the resultset');
-for(var i=0; i<entries[1].length; i++) {
-    if(entries[1][i].data_type === 'global_field') {
-        assert.ok(entries[1][i]['schema'], 'Global_field schema is present')                  
-    }
-}
+            for(var i=0; i<entries[1].length; i++) {
+                if(entries[1][i].data_type === 'global_field') {
+                    assert.ok(entries[1][i]['schema'], 'Global_field schema is present')   
+                    // assert.equal(entries[1][i]['schema'].length, 2, 'Global_field schema is present')                  
+               
+                }
+            }
             assert.end();
         }, function error(err) {
             console.error("error :", err);

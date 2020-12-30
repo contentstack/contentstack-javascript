@@ -1,3 +1,8 @@
 {
-    
+    "stack": {
+        "api_key": "blt0a8c4ae78c47833f",
+        "delivery_token": "cs18050d7bbce20dc5971aab0a",
+        "environment": "development"
+    },
+    "host": "dev-delivery-api.contentstack.com"
 }

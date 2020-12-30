@@ -587,12 +587,18 @@ test('findOne:  .only() - For the reference - Array', function(assert) {
         .toJSON().findOne()
         .then(function success(entry) {
             var flag = false;
-            if (entry && entry['reference'] && entry['reference'].length) {
-                flag = entry.reference.every(function(reference) {
-                    return (reference && "title" in reference && "uid" in reference);
-                });
+            if (entry && entry['reference']) {
+                if (entry['reference'].length) {
+                    if (entry['reference'].length === 0){
+                        flag = true
+                    } else {
+                        flag = entry.reference.every(function(reference) {
+                            return (reference && "title" in reference && "uid" in reference);
+                        });
+                    }
+                }
             }
-            assert.equal(flag, false, 'Entry has the reference with only paramteres.');
+            assert.equal(flag, true, 'Entry has the reference with only paramteres.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);

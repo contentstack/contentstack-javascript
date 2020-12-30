@@ -609,6 +609,27 @@ test('.query() - Raw query', function(assert) {
 });
 
 
+test('.tags()', function(assert) {
+    var Query = Stack.Assets().Query(),
+        field = 'tags',
+        tags = ["asset3"];
+
+    Query
+        .tags(tags)
+        .toJSON()
+        .find()
+        .then(function success(assets) {
+            assert.ok((assets.length >= 1), '1 or more asset/assets present in the resultset');
+            if (assets && assets.length && assets[0].length) {
+                assert.equal(assets[0].length, 0, 'Non refernce tags count should be zero');
+            }
+            assert.end();
+        }, function error(err) {
+            console.error("error :", err);
+            assert.fail(".tags()");
+            assert.end();
+        });
+});
 // tags
 test('.tags()', function(assert) {
     var Query = Stack.Assets().Query(),
