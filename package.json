@@ -95,7 +95,6 @@
     "webpack-merge": "4.1.0"
   },
   "dependencies": {
-    "@contentstack/utils": "file:contentstack-utils-1.0.0.tgz",
     "es6-promise": "4.1.1",
     "localStorage": "1.0.3",
     "node-fetch": "^2.6.1"
