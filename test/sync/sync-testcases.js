@@ -8,7 +8,8 @@ const init = require('../sync_config.js');
 const Utils = require('../entry/utils.js');
 
 const contentTypes = init.contentTypes;
-
+const config = require('../config.json')
+Object.assign(init, config)
 let Stack;
 let sync_token = "bltbb61f31a70a572e6c9506a";
 var total_count = 123;
