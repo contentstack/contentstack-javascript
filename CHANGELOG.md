@@ -1,6 +1,6 @@
 
 ### Version: 3.12.1
-#### Date: Jan-22-2020
+#### Date: Jan-22-2021
 
 ##### Bug fix:
  - Fixed Unhandled promise rejection on HTML response body.
