@@ -90,7 +90,6 @@ function fetchRetry(url, headers, retryDelay = 300, retryLimit = 5, fetchOptions
     }
     fetch(url, option)
         .then(function(response) {    
-            let body = response.text()
             let data = response.json();      
             if (response.ok && response.status === 200) {
                 resolve(data);
@@ -101,10 +100,8 @@ function fetchRetry(url, headers, retryDelay = 300, retryLimit = 5, fetchOptions
                     } else {
                         reject(json)
                     }   
-                }).catch((error) => {
-                    body.then((res) => {
-                        reject({error_message: res, status: response.status, statusText: response.statusText})
-                    })
+                }).catch(() => {
+                    reject({status: response.status, statusText: response.statusText})
                 });
             }
         }).catch((error) => {
