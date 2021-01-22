@@ -1,5 +1,11 @@
+
+### Version: 3.12.1
+#### Date: Jan-22-2021
+
+##### Bug fix:
+ - Fixed Unhandled promise rejection on HTML response body.
 ### Version: 3.12.0
-#### Date: Desc-05-2020
+#### Date: Dec-05-2020
 
 ##### New Features:
  - [Entry] - Publish fallback method added
