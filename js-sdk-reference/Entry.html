@@ -9,7 +9,7 @@
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link rel="canonical" href="https://www.contentstack.com/docs/developers/platforms/javascript/api-reference/">
+    <link rel="canonical" href="https://www.contentstack.com/docs/developers/javascript-browser/api-reference/">
     <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
     <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
@@ -460,20 +460,23 @@
 
 
 
-    <h5>Example</h5>
+    <h5>Examples</h5>
     
         <p class="code-caption"> The only function with field_uid will include the data of only the specified fields for each entry and exclude the data of all other fields. </p>
     
-    <pre class="prettyprint"><code>Stack.ContentType('contentTypeUid').Query().only('title').toJSON().find()
+    <pre class="prettyprint"><code>Stack.ContentType('contentTypeUid').Query().only('title').toJSON().find()</code></pre>
 
-&lt;caption> The only function with an array of field_uids will include multiple fields for each entry and exclude the data of all other fields.&lt;/caption>
-Stack.ContentType('contentTypeUid').Query().only(['title','description']).toJSON().find()
+        <p class="code-caption"> The only function with an array of field_uids will include multiple fields for each entry and exclude the data of all other fields.</p>
+    
+    <pre class="prettyprint"><code>Stack.ContentType('contentTypeUid').Query().only(['title','description']).toJSON().find()</code></pre>
 
-&lt;caption> In only, we have the only with a reference parameter, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter to include the data of only the specified field_uid for each entry and exclude the data of all other fields.&lt;/caption>
-Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').only('reference_field_uid','title').toJSON().find()
+        <p class="code-caption"> In only, we have the only with a reference parameter, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter to include the data of only the specified field_uid for each entry and exclude the data of all other fields.</p>
+    
+    <pre class="prettyprint"><code>Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').only('reference_field_uid','title').toJSON().find()</code></pre>
 
-&lt;caption> In only, we have the only with a reference parameter with an array, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter with an array of fields to include the data of only the specified array of field_uids for each entry and exclude the data of all other fields.&lt;/caption>
-Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').only('reference_field_uid', ['title', 'description']).toJSON().find()</code></pre>
+        <p class="code-caption"> In only, we have the only with a reference parameter with an array, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter with an array of fields to include the data of only the specified array of field_uids for each entry and exclude the data of all other fields.</p>
+    
+    <pre class="prettyprint"><code>Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').only('reference_field_uid', ['title', 'description']).toJSON().find()</code></pre>
 
 
 
