@@ -29,13 +29,13 @@ export default class Entry {
          * @example
          * <caption> The only function with field_uid will include the data of only the specified fields for each entry and exclude the data of all other fields. </caption>
          * Stack.ContentType('contentTypeUid').Query().only('title').toJSON().find()
-         * 
+         * @example
          * <caption> The only function with an array of field_uids will include multiple fields for each entry and exclude the data of all other fields.</caption>
          * Stack.ContentType('contentTypeUid').Query().only(['title','description']).toJSON().find()
-         * 
+         * @example
          * <caption> In only, we have the only with a reference parameter, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter to include the data of only the specified field_uid for each entry and exclude the data of all other fields.</caption>
          * Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').only('reference_field_uid','title').toJSON().find()
-         * 
+         * @example
          * <caption> In only, we have the only with a reference parameter with an array, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter with an array of fields to include the data of only the specified array of field_uids for each entry and exclude the data of all other fields.</caption>
          * Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').only('reference_field_uid', ['title', 'description']).toJSON().find()
          * 
