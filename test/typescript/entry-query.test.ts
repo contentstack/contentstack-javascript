@@ -255,8 +255,8 @@ describe('Entry Query Test', () => {
     });
 
     test('Entry Query where equal to test', done => {
-        const entryQuery = makeEntryQuery().where('fieldUID', 'value')
-        expect(entryQuery._query).toEqual({query:{ "fieldUID" : "value" }});
+        const entryQuery = makeEntryQuery().where('fieldUID', 'value').where('field1', 133).where('field2', false)
+        expect(entryQuery._query).toEqual({query:{ "fieldUID" : "value", 'field1': 133, 'field2': false }});
         done()
     });
 
