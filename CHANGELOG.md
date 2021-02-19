@@ -1,4 +1,13 @@
 
+### Version: 3.12.2
+#### Date: Feb-19-2021
+
+##### API timeout:
+- updated timeout to min 30 sec
+##### Enhancement Typescript:
+- boolean value support added:
+  - [Query] - where, equalTo, notEqualTo
+
 ### Version: 3.12.1
 #### Date: Jan-22-2021
 
