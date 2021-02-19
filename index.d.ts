@@ -1,4 +1,4 @@
-// Type definitions for contentstack 3.12.0
+// Type definitions for contentstack 3.12.2
 // Project: https://www.contentstack.com/
 // Definitions by: Contentstack <https://github.com/contentstack>
 
@@ -166,9 +166,9 @@ export class Query extends Entry {
 
     tags(value: string[]): Query;
 
-    where(key: string, value: (string | number)): Query;
-    equalTo(key: string, value: (string | number)): Query;
-    notEqualTo(key: string, value: (string | number)): Query;
+    where(key: string, value: (string | number | boolean)): Query;
+    equalTo(key: string, value: (string | number | boolean)): Query;
+    notEqualTo(key: string, value: (string | number | boolean)): Query;
 
     lessThan(key: string, value: (string | number)): Query;
     lessThanOrEqualTo(key: string, value: (string | number)): Query;
