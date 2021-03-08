@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Entry - Documentation</title>
+    <link rel="shortcut icon" href="./favicon.ico">
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="canonical" href="https://www.contentstack.com/docs/developers/javascript-browser/api-reference/">
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-WGP99J7');</script>
+        <!-- End Google Tag Manager -->
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WGP99J7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Contentstack.html">Contentstack</a><ul class='methods'><li data-type='method'><a href="Contentstack.html#Stack">Stack</a></li></ul></li><li><a href="Stack.html">Stack</a><ul class='methods'><li data-type='method'><a href="Stack.html#setPort">setPort</a></li><li data-type='method'><a href="Stack.html#setProtocol">setProtocol</a></li><li data-type='method'><a href="Stack.html#setHost">setHost</a></li><li data-type='method'><a href="Stack.html#setCachePolicy">setCachePolicy</a></li><li data-type='method'><a href="Stack.html#setCacheProvider">setCacheProvider</a></li><li data-type='method'><a href="Stack.html#clearByQuery">clearByQuery</a></li><li data-type='method'><a href="Stack.html#clearByContentType">clearByContentType</a></li><li data-type='method'><a href="Stack.html#clearAll">clearAll</a></li><li data-type='method'><a href="Stack.html#getCacheProvider">getCacheProvider</a></li><li data-type='method'><a href="Stack.html#ContentType">ContentType</a></li><li data-type='method'><a href="Stack.html#Assets">Assets</a></li><li data-type='method'><a href="Stack.html#Query">Query</a></li><li data-type='method'><a href="Stack.html#getLastActivites">getLastActivites</a></li><li data-type='method'><a href="Stack.html#getContentTypes">getContentTypes</a></li><li data-type='method'><a href="Stack.html#sync">sync</a></li><li data-type='method'><a href="Stack.html#imageTransform">imageTransform</a></li></ul></li><li><a href="Assets.html">Assets</a><ul class='methods'><li data-type='method'><a href="Assets.html#toJSON">toJSON</a></li><li data-type='method'><a href="Assets.html#addParam">addParam</a></li><li data-type='method'><a href="Assets.html#fetch">fetch</a></li></ul></li><li><a href="Entry.html">Entry</a><ul class='methods'><li data-type='method'><a href="Entry.html#includeFallback">includeFallback</a></li><li data-type='method'><a href="Entry.html#only">only</a></li><li data-type='method'><a href="Entry.html#except">except</a></li><li data-type='method'><a href="Entry.html#includeReference">includeReference</a></li><li data-type='method'><a href="Entry.html#language">language</a></li><li data-type='method'><a href="Entry.html#addQuery">addQuery</a></li><li data-type='method'><a href="Entry.html#includeEmbeddedObjects">includeEmbeddedObjects</a></li><li data-type='method'><a href="Entry.html#includeSchema">includeSchema</a></li><li data-type='method'><a href="Entry.html#includeReferenceContentTypeUid">includeReferenceContentTypeUid</a></li><li data-type='method'><a href="Entry.html#includeFallback">includeFallback</a></li><li data-type='method'><a href="Entry.html#includeContentType">includeContentType</a></li><li data-type='method'><a href="Entry.html#includeOwner">includeOwner</a></li><li data-type='method'><a href="Entry.html#toJSON">toJSON</a></li><li data-type='method'><a href="Entry.html#addParam">addParam</a></li><li data-type='method'><a href="Entry.html#fetch">fetch</a></li></ul></li><li><a href="Query.html">Query</a><ul class='methods'><li data-type='method'><a href="Query.html#lessThan">lessThan</a></li><li data-type='method'><a href="Query.html#lessThanOrEqualTo">lessThanOrEqualTo</a></li><li data-type='method'><a href="Query.html#greaterThan">greaterThan</a></li><li data-type='method'><a href="Query.html#greaterThanOrEqualTo">greaterThanOrEqualTo</a></li><li data-type='method'><a href="Query.html#notEqualTo">notEqualTo</a></li><li data-type='method'><a href="Query.html#containedIn">containedIn</a></li><li data-type='method'><a href="Query.html#notContainedIn">notContainedIn</a></li><li data-type='method'><a href="Query.html#exists">exists</a></li><li data-type='method'><a href="Query.html#notExists">notExists</a></li><li data-type='method'><a href="Query.html#ascending">ascending</a></li><li data-type='method'><a href="Query.html#descending">descending</a></li><li data-type='method'><a href="Query.html#beforeUid">beforeUid</a></li><li data-type='method'><a href="Query.html#afterUid">afterUid</a></li><li data-type='method'><a href="Query.html#skip">skip</a></li><li data-type='method'><a href="Query.html#limit">limit</a></li><li data-type='method'><a href="Query.html#or">or</a></li><li data-type='method'><a href="Query.html#and">and</a></li><li data-type='method'><a href="Query.html#where">where</a></li><li data-type='method'><a href="Query.html#count">count</a></li><li data-type='method'><a href="Query.html#query">query</a></li><li data-type='method'><a href="Query.html#referenceIn">referenceIn</a></li><li data-type='method'><a href="Query.html#referenceNotIn">referenceNotIn</a></li><li data-type='method'><a href="Query.html#tags">tags</a></li><li data-type='method'><a href="Query.html#includeReferenceContentTypeUid">includeReferenceContentTypeUid</a></li><li data-type='method'><a href="Query.html#includeCount">includeCount</a></li><li data-type='method'><a href="Query.html#addParam">addParam</a></li><li data-type='method'><a href="Query.html#getQuery">getQuery</a></li><li data-type='method'><a href="Query.html#regex">regex</a></li><li data-type='method'><a href="Query.html#search">search</a></li><li data-type='method'><a href="Query.html#find">find</a></li><li data-type='method'><a href="Query.html#findOne">findOne</a></li></ul></li><li><a href="Result.html">Result</a><ul class='methods'><li data-type='method'><a href="Result.html#toJSON">toJSON</a></li><li data-type='method'><a href="Result.html#get">get</a></li><li data-type='method'><a href="Result.html#getDownloadUrl">getDownloadUrl</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Entry</h1>
+    
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        Entry
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+
+    
+
+    <h4 class="name" id="Entry"><span class="type-signature"></span>new Entry<span class="signature">(uid)</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+    <p class="summary">Creates an instance of `Entry`.</p>
+    
+
+
+
+<div class="description">
+    An initializer is responsible for creating Entry object.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>uid</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">uid of the entry</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>let Entry = Stack.ContentType('example').Entry('entry_uid');</code></pre>
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="includeFallback"><span class="type-signature"></span>includeFallback<span class="signature">()</span><span class="type-signature"> &rarr; {Asset}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Include the fallback locale publish content, if specified locale content is not publish.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>stack.ContentType(contentType_uid).Entry(entry_uid).includeFallback().fetch()</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="only"><span class="type-signature"></span>only<span class="signature">(key<span class="signature-attributes">opt</span>, values)</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Displays values of only the specified fields of entries or assets in the response
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    BASE
+                
+                </td>
+            
+
+            <td class="description last">Assets: </br>
+                               <p>Retrieves specified field of asset</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code></code></td>
+            
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">Entries:</br>
+                                      <p>- retrieves default fields of the schema.</p>
+                                      <p>- referenced_content-type-uid : retrieves fields of the referred content type.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">array of fields that you want to display in the response</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+        <p class="code-caption"> The only function with field_uid will include the data of only the specified fields for each entry and exclude the data of all other fields. </p>
+    
+    <pre class="prettyprint"><code>Stack.ContentType('contentTypeUid').Query().only('title').toJSON().find()</code></pre>
+
+        <p class="code-caption"> The only function with an array of field_uids will include multiple fields for each entry and exclude the data of all other fields.</p>
+    
+    <pre class="prettyprint"><code>Stack.ContentType('contentTypeUid').Query().only(['title','description']).toJSON().find()</code></pre>
+
+        <p class="code-caption"> In only, we have the only with a reference parameter, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter to include the data of only the specified field_uid for each entry and exclude the data of all other fields.</p>
+    
+    <pre class="prettyprint"><code>Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').only('reference_field_uid','title').toJSON().find()</code></pre>
+
+        <p class="code-caption"> In only, we have the only with a reference parameter with an array, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter with an array of fields to include the data of only the specified array of field_uids for each entry and exclude the data of all other fields.</p>
+    
+    <pre class="prettyprint"><code>Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').only('reference_field_uid', ['title', 'description']).toJSON().find()</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="except"><span class="type-signature"></span>except<span class="signature">(key<span class="signature-attributes">opt</span>, values)</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Displays all data of an entries or assets excluding the data of the specified fields.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    BASE
+                
+                </td>
+            
+
+            <td class="description last">BASE (default value) - retrieves default fields of the schema.
+                                                             - referenced_content-type-uid - retrieves fields of the referred content type.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last">array of fields that you want to skip in the response</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+        <p class="code-caption"> The except function with field_uid will exclude the data of only the specified fields for each entry and includes the data of all other fields. </p>
+    
+    <pre class="prettyprint"><code>Stack.ContentType('contentTypeUid').Query().except('title').toJSON().find()</code></pre>
+
+        <p class="code-caption"> The except function with an array of field_uids will except multiple fields for each entry and include the data of all other fields.</p>
+    
+    <pre class="prettyprint"><code>Stack.ContentType('contentTypeUid').Query().except(['title','description']).toJSON().find()</code></pre>
+
+        <p class="code-caption"> In except, we have the only with a reference parameter, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter to except the data of only the specified field_uid for each entry and include the data of all other fields.</p>
+    
+    <pre class="prettyprint"><code>Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').except('reference_field_uid','title').toJSON().find()</code></pre>
+
+        <p class="code-caption"> In except, we have the only with a reference parameter with an array, where you need to enter the UID of the reference field in place of "reference_field_uid", and the second parameter with an array of fields to except the data of only the specified array of field_uids for each entry and include the data of all other fields.</p>
+    
+    <pre class="prettyprint"><code>Stack.ContentType('contentTypeUid').Query().includeReference('reference_field_uid').except('reference_field_uid', ['title', 'description']).toJSON().find()</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="includeReference"><span class="type-signature"></span>includeReference<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Fetches the entire content of referenced entry(ies). <a href='https://www.contentstack.com/docs/developers/apis/content-delivery-api/#include-reference'>Read More</a>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+        <p class="code-caption"> .includeReference with reference_field_uids as array </p>
+    
+    <pre class="prettyprint"><code>var Query = Stack.ContentType(contentTypes.source).Query();
+            Query
+                .includeReference(['reference_field_uid', 'other_reference_field_uid'])
+                .toJSON()
+                .find()
+                .then(function success(entries) {
+                    //'entries' is  an object used to retrieve data including reference entries.
+                })</code></pre>
+
+        <p class="code-caption"> .includeReference with reference_field_uids and its children reference </p>
+    
+    <pre class="prettyprint"><code>var Query = Stack.ContentType(contentTypes.source).Query();
+            Query
+                .includeReference(['reference_field_uid', 'reference_field_uid.child_reference_field_uid'])
+                .toJSON()
+                .find()
+                .then(function success(entries) {
+                    //'entries' is  an object used to retrieve data including reference entries.
+                })</code></pre>
+
+        <p class="code-caption"> .includeReference with reference_field_uids </p>
+    
+    <pre class="prettyprint"><code>var Query = Stack.ContentType(contentTypes.source).Query(); 
+     Query
+        .includeReference('reference_field_uid')
+        .toJSON()
+        .find()
+        .then(function success(entries) {
+            //'entries' is  an object used to retrieve data including particular reference using reference_uid.
+        })</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="language"><span class="type-signature"></span>language<span class="signature">(language_code)</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Sets the language code of which you want to retrieve data.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>language_code</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">language code. e.g. 'en-us', 'ja-jp', etc.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>let data = Stack.ContentType(contentTypeUid).Entry(entryUid).language('ja-jp').fetch()
+data
+     .then(function(result) {
+          // 'result' is  an object used to retrieve data of ja-jp language.
+     }, function(error) {
+          // error function
+     })
+         </code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="addQuery"><span class="type-signature"></span>addQuery<span class="signature">(key, value)</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Adds query to Entry object
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">key of the query</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">value of the query</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Stack.ContentType(contentTypeUid).Entry(entry_uid).addQuery('include_schema',true)</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="includeEmbeddedObjects"><span class="type-signature"></span>includeEmbeddedObjects<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Include Embedded Objects (Entries and Assets) along with entry/entries details.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Stack.ContentType("contentType_uid").Entry("entry_uid").includeEmbeddedObjects().fetch()</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="includeSchema"><span class="type-signature"></span>includeSchema<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Include schema of the current content type along with entry/entries details.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <dt class="important tag-deprecated">Deprecated:</dt><dd><ul class="dummy"><li>since verion 3.3.0</li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Stack.ContentType("contentType_uid").Entry("entry_uid").includeSchema().fetch()</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="includeReferenceContentTypeUid"><span class="type-signature"></span>includeReferenceContentTypeUid<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    This method also includes the content type UIDs of the referenced entries returned in the response.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>Stack.ContentType("contentType_uid").Entry("entry_uid").includeReferenceContentTypeUID().fetch()</code></pre>
+
+    <pre class="prettyprint"><code>Query = Stack.ContentType("contentType_uid").Entry("entry_uid").includeReferenceContentTypeUID().fetch()
+Query
+     .toJSON()
+     .then(function (result) {
+         let value = result.get(field_uid)
+      },function (error) {
+         // error function
+     })</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="includeFallback"><span class="type-signature"></span>includeFallback<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Include the fallback locale publish content, if specified locale content is not publish.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>stack.ContentType(contentType_uid).Entry(entry_uid).includeFallback().fetch()</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="includeContentType"><span class="type-signature"></span>includeContentType<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Include the details of the content type along with the entry/entries details.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>stack.ContentType(contentType_uid).Entry(entry_uid).includeContentType().fetch()</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="includeOwner"><span class="type-signature"></span>includeOwner<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Includes the owner details of the entry/entries
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>stack.ContentType(contentType_uid).Entry(entry_uid).includeOwner().fetch()</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="toJSON"><span class="type-signature"></span>toJSON<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Converts your response into plain JavasScript object.Supports both entry and asset queries.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Query = Stack.ContentType(contentTypeUid).Entry(entryUid).fetch()
+Query
+     .toJSON()
+     .then(function (result) {
+         let value = result.get(field_uid)
+      },function (error) {
+         // error function
+     })</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="addParam"><span class="type-signature"></span>addParam<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Entry.html">Entry</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Includes query parameters in your queries.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>var data = Stack.ContentType(contentTypeUid).Entry(entryUid).addParam('include_count', 'true').fetch()
+     data.then(function (result) {
+         // 'result' is an object which content the data including count in json object form
+      },function (error) {
+         // error function
+     })</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="fetch"><span class="type-signature"></span>fetch<span class="signature">()</span><span class="type-signature"> &rarr; {promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Fetches a particular entry based on the provided entry UID.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>Stack.ContentType(contentTypeUid).Entry(entryUid).toJSON().fetch()</code></pre>
+
+    <pre class="prettyprint"><code>Stack.ContentType(contentTypeUid).Entry(entryUid).toJSON().fetch({
+        
+     })</code></pre>
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    <div class="inner-content center">
+        <span class="copy-right"><a href="mailto:support@contentstack.com" target="_self">support@contentstack.com</a> | © 2016-2020 Contentstack. All rights reserved.</span>
+    </div>
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
