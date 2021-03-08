@@ -10,6 +10,7 @@ describe('Asset Query Test', () => {
         expect(assetQuery.setCacheProvider).not.toEqual(undefined);
         expect(assetQuery.setCachePolicy).not.toEqual(undefined);
         expect(assetQuery.includeReference).not.toEqual(undefined);
+        expect(assetQuery.includeFallback).not.toEqual(undefined);
         expect(assetQuery.language).not.toEqual(undefined);
         expect(assetQuery.addQuery).not.toEqual(undefined);
         expect(assetQuery.includeSchema).not.toEqual(undefined);
@@ -93,6 +94,12 @@ describe('Asset Query Test', () => {
     test('Asset Query include schema test', done => {
         const assetQuery = makeAssetQuery().includeSchema()
         expect(assetQuery._query).toEqual({"include_schema": true, query:{} });
+        done()
+    });
+
+    test('Entry include fallback test', done => {
+        const assetQuery = makeAssetQuery().includeFallback()
+        expect(assetQuery._query).toEqual({"include_fallback": true, query:{} });
         done()
     });
 

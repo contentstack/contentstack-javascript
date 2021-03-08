@@ -14,6 +14,7 @@ describe('Entry Query Test', () => {
         expect(entryQuery.language).not.toEqual(undefined);
         expect(entryQuery.addQuery).not.toEqual(undefined);
         expect(entryQuery.includeSchema).not.toEqual(undefined);
+        expect(entryQuery.includeReference).not.toEqual(undefined);
         expect(entryQuery.includeReferenceContentTypeUID).not.toEqual(undefined);
         expect(entryQuery.includeContentType).not.toEqual(undefined);
         expect(entryQuery.includeOwner).not.toEqual(undefined);
@@ -94,6 +95,12 @@ describe('Entry Query Test', () => {
     test('Entry Query include schema test', done => {
         const entryQuery = makeEntryQuery().includeSchema()
         expect(entryQuery._query).toEqual({"include_schema": true, query:{} });
+        done()
+    });
+
+    test('Entry include fallback test', done => {
+        const entryQuery = makeEntryQuery().includeFallback()
+        expect(entryQuery._query).toEqual({"include_fallback": true, query:{} });
         done()
     });
 
@@ -248,8 +255,8 @@ describe('Entry Query Test', () => {
     });
 
     test('Entry Query where equal to test', done => {
-        const entryQuery = makeEntryQuery().where('fieldUID', 'value')
-        expect(entryQuery._query).toEqual({query:{ "fieldUID" : "value" }});
+        const entryQuery = makeEntryQuery().where('fieldUID', 'value').where('field1', 133).where('field2', false)
+        expect(entryQuery._query).toEqual({query:{ "fieldUID" : "value", 'field1': 133, 'field2': false }});
         done()
     });
 
