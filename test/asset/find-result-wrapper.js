@@ -22,6 +22,43 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
     }, 1000);
 });
 
+
+test('default .find() no fallback', function(assert) {
+    var _in = ['ja-jp']
+    Stack.Assets().Query().language('ja-jp').find()
+        .then((assets) => {
+            assert.ok(assets[0].length, 'Assets present in the resultset');
+            assert.notok(assets[1], 'Count should not be present');
+            if (assets && assets.length && assets[0].length) {
+                var _assets = assets[0].every(function(asset) {
+                    return (_in.indexOf(asset.toJSON()['publish_details']['locale']) != -1);
+                });
+                assert.equal(_assets, true, "Publish content fallback");
+            }
+            assert.end();
+        }).catch((error) => {
+            assert.fail("asset default .find() fallback catch", error.toString());
+            assert.end();
+        })
+})
+test('default .find() fallback', function(assert) {
+    var _in = ['ja-jp', 'en-us']
+    Stack.Assets().Query().language('ja-jp').includeFallback().find()
+        .then((assets) => {
+            assert.ok(assets[0].length, 'Assets present in the resultset');
+            assert.notok(assets[1], 'Count should not be present');
+            if (assets && assets.length && assets[0].length) {
+                var _assets = assets[0].every(function(asset) {
+                    return (_in.indexOf(asset.toJSON()['publish_details']['locale']) != -1);
+                });
+                assert.equal(_assets, true, "Publish content fallback");
+            }
+            assert.end();
+        }).catch((error) => {
+            assert.fail("asset default .find() fallback catch", error.toString());
+            assert.end();
+        })
+})
 test('default .find()', function(assert) {
     var Query = Stack.Assets().Query(),
         field = 'updated_at';
@@ -115,6 +152,7 @@ test('.lessThan()', function(assert) {
         field = 'updated_at';
     Query
         .lessThan('file_size', value)
+        .language('en-us')
         .find()
         .then(function success(assets) {
             // assert.ok("assets" in result, 'assets key present in the resultset');
@@ -144,6 +182,7 @@ test('.lessThanOrEqualTo()', function(assert) {
         field = 'updated_at',
         value = 5122;
     Query
+        .language('en-us')
         .lessThanOrEqualTo('file_size', value)
         .find()
         .then(function success(assets) {
@@ -233,6 +272,7 @@ test('.notEqualTo()', function(assert) {
         value = 5122;
 
     Query
+        .language('en-us')
         .notEqualTo('file_size', value)
         .descending(field)
         .find()
@@ -314,6 +354,7 @@ test('.exists()', function(assert) {
         field = 'updated_at';
 
     Query
+        .language('en-us')
         .exists(queryField)
         .find()
         .then(function success(assets) {
@@ -647,6 +688,7 @@ test('.regex()', function(assert) {
         regexpObj = new RegExp(regex.pattern, regex.options);
 
     Query
+        .language('en-us')
         .regex(field, regex.pattern, regex.options)
         .find()
         .then(function success(assets) {

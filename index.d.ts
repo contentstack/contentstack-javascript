@@ -1,4 +1,4 @@
-// Type definitions for contentstack 3.12.0
+// Type definitions for contentstack 3.12.2
 // Project: https://www.contentstack.com/
 // Definitions by: Contentstack <https://github.com/contentstack>
 import { EntryEmbedable, Option, RenderOption } from '@contentstack/utils'
@@ -114,9 +114,11 @@ export class Asset {
     constructor();
 
     asset_uid: string
-    
-    toJSON(): Assets;
-    addParam(key: string, value: any): Assets;
+    _query: object;
+
+    toJSON(): Asset;
+    addParam(key: string, value: any): Asset;
+    includeFallback(): Asset;
     fetch(fetchOptions?: object): Promise<any>;
 }
 
@@ -147,6 +149,7 @@ export class Entry {
     language(language_code: string): this;
     addQuery(key: string, value: string): this;
     includeEmbeddedItems(): this;
+    includeFallback(): this;
     /**
      * @deprecated since verion 3.3.0
      */
@@ -174,9 +177,9 @@ export class Query extends Entry {
 
     tags(value: string[]): Query;
 
-    where(key: string, value: (string | number)): Query;
-    equalTo(key: string, value: (string | number)): Query;
-    notEqualTo(key: string, value: (string | number)): Query;
+    where(key: string, value: (string | number | boolean)): Query;
+    equalTo(key: string, value: (string | number | boolean)): Query;
+    notEqualTo(key: string, value: (string | number | boolean)): Query;
 
     lessThan(key: string, value: (string | number)): Query;
     lessThanOrEqualTo(key: string, value: (string | number)): Query;
