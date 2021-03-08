@@ -1,0 +1,2100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Stack - Documentation</title>
+    <link rel="shortcut icon" href="./favicon.ico">
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="canonical" href="https://www.contentstack.com/docs/developers/javascript-browser/api-reference/">
+    <link type="text/css" rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-WGP99J7');</script>
+        <!-- End Google Tag Manager -->
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WGP99J7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Contentstack.html">Contentstack</a><ul class='methods'><li data-type='method'><a href="Contentstack.html#Stack">Stack</a></li></ul></li><li><a href="Stack.html">Stack</a><ul class='methods'><li data-type='method'><a href="Stack.html#setPort">setPort</a></li><li data-type='method'><a href="Stack.html#setProtocol">setProtocol</a></li><li data-type='method'><a href="Stack.html#setHost">setHost</a></li><li data-type='method'><a href="Stack.html#setCachePolicy">setCachePolicy</a></li><li data-type='method'><a href="Stack.html#setCacheProvider">setCacheProvider</a></li><li data-type='method'><a href="Stack.html#clearByQuery">clearByQuery</a></li><li data-type='method'><a href="Stack.html#clearByContentType">clearByContentType</a></li><li data-type='method'><a href="Stack.html#clearAll">clearAll</a></li><li data-type='method'><a href="Stack.html#getCacheProvider">getCacheProvider</a></li><li data-type='method'><a href="Stack.html#ContentType">ContentType</a></li><li data-type='method'><a href="Stack.html#Assets">Assets</a></li><li data-type='method'><a href="Stack.html#Query">Query</a></li><li data-type='method'><a href="Stack.html#getLastActivites">getLastActivites</a></li><li data-type='method'><a href="Stack.html#getContentTypes">getContentTypes</a></li><li data-type='method'><a href="Stack.html#sync">sync</a></li><li data-type='method'><a href="Stack.html#imageTransform">imageTransform</a></li></ul></li><li><a href="Assets.html">Assets</a><ul class='methods'><li data-type='method'><a href="Assets.html#toJSON">toJSON</a></li><li data-type='method'><a href="Assets.html#addParam">addParam</a></li><li data-type='method'><a href="Assets.html#fetch">fetch</a></li></ul></li><li><a href="Entry.html">Entry</a><ul class='methods'><li data-type='method'><a href="Entry.html#includeFallback">includeFallback</a></li><li data-type='method'><a href="Entry.html#only">only</a></li><li data-type='method'><a href="Entry.html#except">except</a></li><li data-type='method'><a href="Entry.html#includeReference">includeReference</a></li><li data-type='method'><a href="Entry.html#language">language</a></li><li data-type='method'><a href="Entry.html#addQuery">addQuery</a></li><li data-type='method'><a href="Entry.html#includeEmbeddedObjects">includeEmbeddedObjects</a></li><li data-type='method'><a href="Entry.html#includeSchema">includeSchema</a></li><li data-type='method'><a href="Entry.html#includeReferenceContentTypeUid">includeReferenceContentTypeUid</a></li><li data-type='method'><a href="Entry.html#includeFallback">includeFallback</a></li><li data-type='method'><a href="Entry.html#includeContentType">includeContentType</a></li><li data-type='method'><a href="Entry.html#includeOwner">includeOwner</a></li><li data-type='method'><a href="Entry.html#toJSON">toJSON</a></li><li data-type='method'><a href="Entry.html#addParam">addParam</a></li><li data-type='method'><a href="Entry.html#fetch">fetch</a></li></ul></li><li><a href="Query.html">Query</a><ul class='methods'><li data-type='method'><a href="Query.html#lessThan">lessThan</a></li><li data-type='method'><a href="Query.html#lessThanOrEqualTo">lessThanOrEqualTo</a></li><li data-type='method'><a href="Query.html#greaterThan">greaterThan</a></li><li data-type='method'><a href="Query.html#greaterThanOrEqualTo">greaterThanOrEqualTo</a></li><li data-type='method'><a href="Query.html#notEqualTo">notEqualTo</a></li><li data-type='method'><a href="Query.html#containedIn">containedIn</a></li><li data-type='method'><a href="Query.html#notContainedIn">notContainedIn</a></li><li data-type='method'><a href="Query.html#exists">exists</a></li><li data-type='method'><a href="Query.html#notExists">notExists</a></li><li data-type='method'><a href="Query.html#ascending">ascending</a></li><li data-type='method'><a href="Query.html#descending">descending</a></li><li data-type='method'><a href="Query.html#beforeUid">beforeUid</a></li><li data-type='method'><a href="Query.html#afterUid">afterUid</a></li><li data-type='method'><a href="Query.html#skip">skip</a></li><li data-type='method'><a href="Query.html#limit">limit</a></li><li data-type='method'><a href="Query.html#or">or</a></li><li data-type='method'><a href="Query.html#and">and</a></li><li data-type='method'><a href="Query.html#where">where</a></li><li data-type='method'><a href="Query.html#count">count</a></li><li data-type='method'><a href="Query.html#query">query</a></li><li data-type='method'><a href="Query.html#referenceIn">referenceIn</a></li><li data-type='method'><a href="Query.html#referenceNotIn">referenceNotIn</a></li><li data-type='method'><a href="Query.html#tags">tags</a></li><li data-type='method'><a href="Query.html#includeReferenceContentTypeUid">includeReferenceContentTypeUid</a></li><li data-type='method'><a href="Query.html#includeCount">includeCount</a></li><li data-type='method'><a href="Query.html#addParam">addParam</a></li><li data-type='method'><a href="Query.html#getQuery">getQuery</a></li><li data-type='method'><a href="Query.html#regex">regex</a></li><li data-type='method'><a href="Query.html#search">search</a></li><li data-type='method'><a href="Query.html#find">find</a></li><li data-type='method'><a href="Query.html#findOne">findOne</a></li></ul></li><li><a href="Result.html">Result</a><ul class='methods'><li data-type='method'><a href="Result.html#toJSON">toJSON</a></li><li data-type='method'><a href="Result.html#get">get</a></li><li data-type='method'><a href="Result.html#getDownloadUrl">getDownloadUrl</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">Stack</h1>
+    
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        Stack
+        </h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+
+    
+
+    <h4 class="name" id="Stack"><span class="type-signature"></span>new Stack<span class="signature">(api_key, delivery_token, environment, region, fetchOptions)</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Initialize an instance of ‘Stack’
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>api_key</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Stack API Key.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>delivery_token</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Stack Delivery token.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>environment</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Stack Environment name.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>region</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">DB region for Stack.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fetchOptions</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Custom setting for the request.
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>timeout</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Set timeout for the request.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>retryLimit</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">The number of retries before failure. Default is 5</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>retryDelay</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">The number of ms to use for operation retries. Default is 300ms</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>retryCondition</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">A function to determine if the error can be retried. Default retry is on status codes 408, 429.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>retryDelayOptions.base</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">The base number of milliseconds to use in the exponential backoff for operation retries.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>retryDelayOptions.customBackoff</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>var Stack = Contentstack.Stack({
+     'api_key':'api_key',
+     'delivery_token':'delivery_token',
+     'environment':'environment_name',
+     'region': 'us',
+     'fetchOptions': {
+      
+     }
+});</code></pre>
+
+    <pre class="prettyprint"><code>var Stack = Contentstack.Stack('api_key', 'access_token', 'environment', {
+
+});</code></pre>
+
+    <pre class="prettyprint"><code>// For Setting the European Region:
+// If you want to set and use European region, refer to the code below:
+const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name", Contentstack.Region.EU);</code></pre>
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="setPort"><span class="type-signature"></span>setPort<span class="signature">(port)</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Sets the port of the host
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>port</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Port Number</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="setProtocol"><span class="type-signature"></span>setProtocol<span class="signature">(protocol)</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Sets the protocol for the host
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>protocol</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">http/https protocol</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="setHost"><span class="type-signature"></span>setHost<span class="signature">(host)</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Sets the host of the API server
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>host</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">valid ip or host</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="setCachePolicy"><span class="type-signature"></span>setCachePolicy<span class="signature">(key<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Allows you to set cache policies
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+        <th>Attributes</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    ONLY_NETWORK
+                
+                </td>
+            
+
+            <td class="description last">Cache policy to be applied on Stack or Query.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Stack.setCachePolicy(Contentstack.CachePolicy.IGNORE_CACHE)
+Stack.setCachePolicy(Contentstack.CachePolicy.ONLY_NETWORK)
+Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_ELSE_NETWORK)
+Stack.setCachePolicy(Contentstack.CachePolicy.NETWORK_ELSE_CACHE)
+Stack.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="setCacheProvider"><span class="type-signature"></span>setCacheProvider<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Allows you to set an object of the cache provider
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Stack
+     .setCacheProvider({
+         get: function (key, callback) {
+             // custom logic
+         },
+         set: function (key, value, callback) {
+             // custom logic
+         }
+     });</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="clearByQuery"><span class="type-signature"></span>clearByQuery<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    'clearByQuery' function to clear the query from the cache.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Stack.clearQuery(query, callback);</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="clearByContentType"><span class="type-signature"></span>clearByContentType<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    'clearByContentType' function to clear the query from the cache by specified content type.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Stack.clearByContentType(content_type_uid, callback);
+Stack.clearByContentType(content_type_uid, language_uid, callback);</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="clearAll"><span class="type-signature"></span>clearAll<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    'clearAll' function to clear all the queries from cache.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Stack.clearAll(callback);</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="getCacheProvider"><span class="type-signature"></span>getCacheProvider<span class="signature">()</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Returns the currently set object of 'CacheProvider'
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>Stack.getCacheProvider();</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="ContentType"><span class="type-signature"></span>ContentType<span class="signature">(content_type_uid<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Set the content type of which you want to retrieve the entries
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+        <th>Attributes</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>content_type_uid</code></td>
+            
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">uid of the existing content type</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>let data = Stack.ContentType('blog').Query().toJSON().find()
+     data
+     .then(function(result) {
+          // 'result' content the list of entries of particular content type blog.       
+     }, function(error) {
+          // error function
+     })</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="Assets"><span class="type-signature"></span>Assets<span class="signature">(uid)</span><span class="type-signature"> &rarr; {<a href="Assets.html">Assets</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Retrieves all assets of a stack by default. To retrieve a single asset, specify its UID.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>uid</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">uid of the asset</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>// Retrieves all assets
+let data = Stack.Assets().Query().toJSON().find()
+     data
+     .then(function(result) {
+         // All the asset with limit of 100
+         // Use skip and limit functions to paginate
+         // ‘result’ will display all assets present in stack       
+     }, function(error) {
+          // error function
+     })</code></pre>
+
+    <pre class="prettyprint"><code>let data = Stack.Assets('bltsomething123').toJSON().fetch()
+     data
+       .then(function(result) {
+          // ‘result’ is a single asset object of specified uid       
+     }, function(error) {
+          // error function
+     })</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="Query"><span class="type-signature"></span>Query<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Query.html">Query</a>}</span></h4>
+
+    
+
+
+
+<div class="description">
+    An initializer is responsible for creating Query object.Provides support for all search queries
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="getLastActivites"><span class="type-signature"></span>getLastActivites<span class="signature">()</span><span class="type-signature"> &rarr; {promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    getLastActivites get all the ContentTypes whose last activity updated.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>Stack.getLastActivites()</code></pre>
+
+    <pre class="prettyprint"><code>let data = Stack.getLastActivites().toJSON().fetch()
+     data
+     .then(function(result) {
+          // 'result' is list of contentTypes whose last activity updated.       
+     }, function(error) {
+          // error function
+     })</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="getContentTypes"><span class="type-signature"></span>getContentTypes<span class="signature">(param)</span><span class="type-signature"> &rarr; {promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    This method returns comprehensive information of all the content types of a particular stack in your account.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>param</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Query on contentTypes</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>let data = Stack.getContentTypes({"include_global_field_schema": true})
+     data
+     .then(function(result) {
+          // 'result' is list of contentTypes.       
+     }, function(error) {
+          // error function
+     })</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="sync"><span class="type-signature"></span>sync<span class="signature">(params)</span><span class="type-signature"> &rarr; {promise}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Syncs your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">params is an object that supports ‘locale’, ‘start_date’, ‘content_type_uid’, and ‘type’ queries.</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>Stack.sync({'init': true})        // For initializing sync</code></pre>
+
+    <pre class="prettyprint"><code>Stack.sync({'init': true, 'locale': 'en-us'})     //For initializing sync with entries of a specific locale</code></pre>
+
+    <pre class="prettyprint"><code>Stack.sync({'init': true, 'start_date': '2018-10-22'})    //For initializing sync with entries published after a specific date</code></pre>
+
+    <pre class="prettyprint"><code>Stack.sync({'init': true, 'content_type_uid': 'session'})   //For initializing sync with entries of a specific content type</code></pre>
+
+    <pre class="prettyprint"><code>Stack.sync({'init': true, 'type': 'entry_published'})   //Use the type parameter to get a specific type of content.Supports 'asset_published', 'entry_published', 'asset_unpublished', 'entry_unpublished', 'asset_deleted', 'entry_deleted', 'content_type_deleted'.</code></pre>
+
+    <pre class="prettyprint"><code>Stack.sync({'pagination_token': '&lt;btlsomething>'})    // For fetching the next batch of entries using pagination token</code></pre>
+
+    <pre class="prettyprint"><code>Stack.sync({'sync_token': '&lt;btlsomething>'})    // For performing subsequent sync after initial sync</code></pre>
+
+
+
+        
+            
+
+
+    
+
+    <h4 class="name" id="imageTransform"><span class="type-signature"></span>imageTransform<span class="signature">(url, params)</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+    
+
+
+
+<div class="description">
+    Performs transformations on images of mentioned url based on transformation parameters
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>url</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Image url on which transformations need to be applied.</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            
+
+            
+
+            <td class="description last">Object with transformation parameters</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>Stack.imageTransform(imageURL, {height: 100, width: 200, disable: "upscale"});</code></pre>
+
+    <pre class="prettyprint"><code>Stack.imageTransform(imageURL, {crop: "150,100"});</code></pre>
+
+    <pre class="prettyprint"><code>Stack.imageTransform(imageURL, {format: "png", crop: "150,100"});</code></pre>
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    <div class="inner-content center">
+        <span class="copy-right"><a href="mailto:support@contentstack.com" target="_self">support@contentstack.com</a> | © 2016-2020 Contentstack. All rights reserved.</span>
+    </div>
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
