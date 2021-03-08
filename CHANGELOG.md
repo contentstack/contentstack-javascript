@@ -1,8 +1,32 @@
-### Version: 3.12.0
+
+### Version: 3.13.0
 #### Date: 
 
 ##### Update API:
  - includeEmbeddedObjects method added in Entry and Query to include embedded objects
+
+### Version: 3.12.2
+#### Date: Feb-19-2021
+
+##### API timeout:
+- updated timeout to min 30 sec
+##### Enhancement Typescript:
+- boolean value support added:
+  - [Query] - where, equalTo, notEqualTo
+
+### Version: 3.12.1
+#### Date: Jan-22-2021
+
+##### Bug fix:
+ - Fixed Unhandled promise rejection on HTML response body.
+### Version: 3.12.0
+#### Date: Dec-05-2020
+
+##### New Features:
+ - [Entry] - Publish fallback method added
+ - [Query] - Publish fallback method added
+ - [Asset] - Publish fallback method added
+ - [Assets] - Publish fallback method added
 
 ### Version: 3.11.0
 #### Date: Sept-25-2020

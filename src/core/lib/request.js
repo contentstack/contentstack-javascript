@@ -57,11 +57,14 @@ function wait(retryDelay) {
         setTimeout(resolve, retryDelay)
     });
 }
-
+async function safeParseJSON(response) {
+    const body = await response.text();
+}
 function fetchRetry(url, headers, retryDelay = 300, retryLimit = 5, fetchOptions, resolve, reject) {
     var option = Object.assign({ 
         method: 'GET',
         headers: headers,
+        timeout: 30000,                                
     }, 
     fetchOptions);
 
@@ -86,7 +89,7 @@ function fetchRetry(url, headers, retryDelay = 300, retryLimit = 5, fetchOptions
         }
     }
     fetch(url, option)
-        .then(function(response) {       
+        .then(function(response) {    
             let data = response.json();      
             if (response.ok && response.status === 200) {
                 resolve(data);
@@ -97,6 +100,8 @@ function fetchRetry(url, headers, retryDelay = 300, retryLimit = 5, fetchOptions
                     } else {
                         reject(json)
                     }   
+                }).catch(() => {
+                    reject({status: response.status, statusText: response.statusText})
                 });
             }
         }).catch((error) => {
