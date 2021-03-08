@@ -12,3 +12,4 @@ webpack
 typescript-html-report
 webpack
 jest.config.js
+coverage
