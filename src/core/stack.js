@@ -410,12 +410,12 @@ export default class Stack {
     }
 
    /**
-     * @method getLastActivites
+     * @method getLastActivities
      * @memberOf Stack
-     * @description getLastActivites get all the ContentTypes whose last activity updated.
-     * @example Stack.getLastActivites()
+     * @description getLastActivities get all the ContentTypes whose last activity updated.
+     * @example Stack.getLastActivities()
      * @example 
-     * let data = Stack.getLastActivites().toJSON().fetch()
+     * let data = Stack.getLastActivities().toJSON().fetch()
      *      data
      *      .then(function(result) {
      *           // 'result' is list of contentTypes whose last activity updated.       
