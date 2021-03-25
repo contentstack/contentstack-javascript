@@ -10,8 +10,6 @@ const Utils = require('./utils.js');
 const config = require('../config.json')
 Object.assign(init, config)
 const contentTypes = init.contentTypes;
-const config = require('../config.json')
-Object.assign(init, config)
 let Stack;
 /*
  * Initalise the Contentstack Instance
