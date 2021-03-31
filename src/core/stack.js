@@ -4,7 +4,6 @@ import Entry from './modules/entry';
 import Assets from './modules/assets';
 import Query from './modules/query';
 import Request from './lib/request';
-import * as cache from './cache';
 import CacheProvider from './cache-provider/index';
 let errorRetry = [408, 429]
 
