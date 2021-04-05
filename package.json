@@ -10,7 +10,7 @@
   "main": "dist/node/contentstack.js",
   "browser": "dist/web/contentstack.js",
   "types": "./index.d.ts",
-  "_id": "contentstack@3.12.2",
+  "_id": "contentstack@3.13.0",
   "scripts": {
     "test": "npm run test:e2e && npm run test:typescript",
     "test:e2e": "istanbul cover tape test/index.js | tap-html --out ./tap-html.html",
@@ -52,14 +52,14 @@
   ],
   "dist": {
     "shasum": "a328ed07240476a26b31a23261355dc929e1da63",
-    "tarball": "https://registry.npmjs.org/contentstack/-/contentstack-3.12.2.tgz"
+    "tarball": "https://registry.npmjs.org/contentstack/-/contentstack-3.13.0.tgz"
   },
   "license": "MIT",
   "directories": {},
-  "_resolved": "https://registry.npmjs.org/contentstack/-/contentstack-3.12.2.tgz",
+  "_resolved": "https://registry.npmjs.org/contentstack/-/contentstack-3.13.0.tgz",
   "_npmOperationalInternal": {
     "host": "packages-18-east.internal.npmjs.com",
-    "tmp": "tmp/contentstack-3.12.2.tgz_1477830884275_0.9869455888401717"
+    "tmp": "tmp/contentstack-3.13.0.tgz_1477830884275_0.9869455888401717"
   },
   "devDependencies": {
     "@types/jest": "^26.0.13",
@@ -96,7 +96,7 @@
     "webpack-merge": "4.1.0"
   },
   "dependencies": {
-    "@contentstack/utils": "file:contentstack-utils-1.0.0.tgz",
+    "@contentstack/utils": "1.0.0",
     "es6-promise": "4.1.1",
     "localStorage": "1.0.3",
     "node-fetch": "^2.6.1"
