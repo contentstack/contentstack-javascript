@@ -769,8 +769,6 @@ test('.inlcudeEmbeddedItems()', function(assert) {
         .find()
         .then(function success(entries) {
             assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.ok(entries[1]['title'], 'ContentType title exists');
-            assert.ok((entries[1]['uid'] === contentTypes.source), 'ContentType uid is same as requested');
             assert.end();
         }, function error(err) {
             console.error("error :", err);
