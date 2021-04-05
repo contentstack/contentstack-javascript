@@ -3,8 +3,9 @@
 #### Date: 
 
 ##### Update API:
- - includeEmbeddedObjects method added in Entry and Query to include embedded objects
-
+ - [Query]: Added support for method includeEmbeddedItems
+ - [Entry]: Added support for method includeEmbeddedItems
+ 
 ### Version: 3.12.2
 #### Date: Feb-19-2021
 
