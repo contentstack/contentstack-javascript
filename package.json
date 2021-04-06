@@ -1,6 +1,6 @@
 {
   "name": "contentstack",
-  "version": "3.12.2",
+  "version": "3.13.0",
   "description": "Contentstack Javascript SDK",
   "homepage": "https://www.contentstack.com/",
   "author": {
@@ -10,7 +10,7 @@
   "main": "dist/node/contentstack.js",
   "browser": "dist/web/contentstack.js",
   "types": "./index.d.ts",
-  "_id": "contentstack@3.12.2",
+  "_id": "contentstack@3.13.0",
   "scripts": {
     "test": "npm run test:e2e && npm run test:typescript",
     "test:e2e": "istanbul cover tape test/index.js | tap-html --out ./tap-html.html",
@@ -20,8 +20,9 @@
     "buildweb": "webpack -p --config webpack/webpack.web.js",
     "buildreactnative": "webpack --config webpack/webpack.react-native.js",
     "buildnativescript": "webpack --config webpack/webpack.nativescript.js",
-    "buildall": "NODE_ENV=production&&npm run buildnode&npm run buildweb&npm run buildreactnative&npm run buildnativescript",
-    "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose"
+    "build": "NODE_ENV=production && npm run buildnode && npm run buildweb && npm run buildreactnative && npm run buildnativescript",
+    "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -51,14 +52,14 @@
   ],
   "dist": {
     "shasum": "a328ed07240476a26b31a23261355dc929e1da63",
-    "tarball": "https://registry.npmjs.org/contentstack/-/contentstack-3.12.2.tgz"
+    "tarball": "https://registry.npmjs.org/contentstack/-/contentstack-3.13.0.tgz"
   },
   "license": "MIT",
   "directories": {},
-  "_resolved": "https://registry.npmjs.org/contentstack/-/contentstack-3.12.2.tgz",
+  "_resolved": "https://registry.npmjs.org/contentstack/-/contentstack-3.13.0.tgz",
   "_npmOperationalInternal": {
     "host": "packages-18-east.internal.npmjs.com",
-    "tmp": "tmp/contentstack-3.12.2.tgz_1477830884275_0.9869455888401717"
+    "tmp": "tmp/contentstack-3.13.0.tgz_1477830884275_0.9869455888401717"
   },
   "devDependencies": {
     "@types/jest": "^26.0.13",
@@ -95,6 +96,7 @@
     "webpack-merge": "4.1.0"
   },
   "dependencies": {
+    "@contentstack/utils": "1.0.0",
     "es6-promise": "4.1.1",
     "localStorage": "1.0.3",
     "node-fetch": "^2.6.1"
