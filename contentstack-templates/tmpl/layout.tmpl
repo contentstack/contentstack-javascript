@@ -106,37 +106,41 @@
             <p>Once you have initialized the SDK, you can start getting content in your app.</p>
             <h4><a id="Querying_content_from_your_stack_90"></a>Querying content from your stack</h4>
             <p>To get a single entry, you need to specify the content type as well as the ID of the entry.</p>
-            <pre class="prettyprint"><code>const Query = Stack.ContentType('blog').Entry("blt123something");
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("stack_api_key", "delivery_token", "environment_name");
 
-            Query.fetch()
-            .then(function success(entry) {
-            console.log(entry.get('title')); // Retrieve field value by providing a field's uid
-            console.log(entry.toJSON()); // Convert the entry result object to JSON
-            }, function error(err) {
-            // err object
-            });
+const Query = Stack.ContentType('blog').Entry("blt123something");
+
+Query.fetch()
+.then(function success(entry) {
+    console.log(entry.get('title')); // Retrieve field value by providing a field's uid
+    console.log(entry.toJSON()); // Convert the entry result object to JSON
+}, function error(err) {
+    // err object
+});
             </code></pre>
             <p class="note"><strong>Note</strong>: We have a method on query for a specific language. For example, consider the following query:
             <pre class="prettyprint"><code>Stack.ContentType(type).Query().language('fr-fr').toJSON().find()</code></pre>
 It will provide all entries of a content type published on the French locale.</p>
             <p>To retrieve multiple entries of a content type, you need to specify the content type uid. You can also specify search parameters to filter results.</p>
-            <pre class="prettyprint"><code>const Query = Stack.ContentType('blog').Query();
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("stack_api_key", "delivery_token", "environment_name");
 
-            Query 
-            .where("title", "welcome")
-            .includeSchema()
-            .includeCount()
-            .toJSON()
-            .find()
-            .then(function success(result) {
-                // result is array where -
-                // result[0] =&amp;gt; entry objects
-                // result[result.length-1] =&amp;gt; entry objects count included only when .includeCount() is queried.
-                // result[1] =&amp;gt; schema of the content type is included when .includeSchema() is queried.
-            }, function error(err) {
-            // err object
-            });
-            </code></pre>
+const Query = Stack.ContentType('blog').Query();
+
+Query 
+.where("title", "welcome")
+.includeSchema()
+.includeCount()
+.toJSON()
+.find()
+.then(function success(result) {
+    // result is array where -
+    // result[0] =&amp;gt; entry objects
+    // result[result.length-1] =&amp;gt; entry objects count included only when .includeCount() is queried.
+    // result[1] =&amp;gt; schema of the content type is included when .includeSchema() is queried.
+}, function error(err) {
+    // err object
+});
+</code></pre>
             <p class="note"><strong>Note:</strong> Currently, the JavaScript SDK does not support multiple content types referencing in a single query. For more information on how to query entries and assets, refer the <a href="/docs/developers/apis/content-delivery-api/#queries">Queries</a> section of our Content Delivery API documentation.</p>
 
 <h4><a id="Paginating_Responses"></a>Paginating Responses</h4>
@@ -146,38 +150,42 @@ It will provide all entries of a content type published on the French locale.</p
 let blogQuery = Stack.ContentType('example').Query();
 let data = blogQuery.skip(20).limit(20).find()
 data.then(function(result) {
-            // result is array where -
-            // result[0] =&amp;gt; entry objects
-      },function (error) {
-         // error function
-     })</code></pre>
+        // result is array where -
+        // result[0] =&amp;gt; entry objects
+    },function (error) {
+        // error function
+    })</code></pre>
 
             <h4><a id="Querying_content_from_your_stack_90"></a>Querying Assets from your stack</h4>
             <p>To get a single asset, you need to specify the UID of the asset.</p>
-            <pre class="prettyprint"><code>const Asset = Stack.Asset("blt123something");
+            <pre class="prettyprint"><code>const Stack = Contentstack.Stack("stack_api_key", "delivery_token", "environment_name");
 
-            Asset.fetch()
-            .then(function success(asset) {
-            console.log(asset.get('title')); // Retrieve field value by providing a field's uid
-            console.log(asset.toJSON()); // Convert the entry result object to JSON
-            }, function error(err) {
-            // err object
-            });
+const Asset = Stack.Asset("blt123something");
+
+Asset.fetch()
+.then(function success(asset) {
+    console.log(asset.get('title')); // Retrieve field value by providing a field's uid
+    console.log(asset.toJSON()); // Convert the entry result object to JSON
+}, function error(err) {
+    // err object
+});
             </code></pre>
             <p>To retrieve multiple assets. You can also specify search parameters to filter results.</p>
-            <pre class="prettyprint"><code>const Query = Stack.Asset().Query();
+<pre class="prettyprint"><code>const Stack = Contentstack.Stack("stack_api_key", "delivery_token", "environment_name");
 
-            Query
-            .limit(20)
-            .toJSON()
-            .find()
-            .then(function success(result) {
-                // result is array where -
-                // result[0] =&amp;gt; asset objects
-            }, function error(err) {
-            // err object
-            });
-            </code></pre>
+const Query = Stack.Asset().Query();
+
+Query
+.limit(20)
+.toJSON()
+.find()
+.then(function success(result) {
+    // result is array where -
+    // result[0] =&amp;gt; asset objects
+}, function error(err) {
+// err object
+});
+</code></pre>
 
 
             <h4><a id="Cache_Policies_123"></a>Cache Policies</h4>
@@ -185,12 +193,12 @@ data.then(function(result) {
             <h5><a id="Setting_a_cache_policy_on_a_stack_127"></a>Setting a cache policy on a stack</h5>
             <p>This option allows you to globalize a cache policy. This means the cache policy you set will be applied to all the query objects of the stack.</p>
             <pre class="prettyprint"><code>//Setting a cache policy on a stack    
-            Stack.setCachePolicy(Contentstack.CachePolicy.NETWORK_ELSE_CACHE)
+Stack.setCachePolicy(Contentstack.CachePolicy.NETWORK_ELSE_CACHE)
             </code></pre>
             <h5><a id="Setting_a_cache_policy_on_a_query_object_134"></a>Setting a cache policy on a query object</h5>
             <p>This option allows you to set/override a cache policy on a specific query object.</p>
             <pre class="prettyprint"><code>// setting a cache policy on a queryobject
-            Query.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)
+Query.setCachePolicy(Contentstack.CachePolicy.CACHE_THEN_NETWORK)
             </code></pre>
             <h3><a id="Advanced_Queries_141"></a>Advanced Queries</h3>
             <p>You can query for content types, entries, assets and more using our JavaScript API Reference.</p>
@@ -199,7 +207,28 @@ data.then(function(result) {
             <p>We have introduced Image Delivery APIs that let you retrieve images and then manipulate and optimize them for your digital properties. It lets you perform a host of other actions such as crop, trim, resize, rotate, overlay, and so on.</p>
             <p>For example, if you want to crop an image (with width as 300 and height as 400), you simply need to append query parameters at the end of the image URL, such as, <a href=" https://images.contentstack.io/v3/assets/blteae40eb499811073/bltc5064f36b5855343/59e0c41ac0eddd140d5a8e3e/owl.jpg?crop=300,400"> https://images.contentstack.io/v3/assets/blteae40eb499811073/bltc5064f36b5855343/59e0c41ac0eddd140d5a8e3e/owl.jpg?crop=300,400</a>. There are several more parameters that you can use for your images.</p>
             <p><a href="https://www.contentstack.com/docs/apis/image-delivery-api/">Read Image Delivery API documentation</a>.</p>
-            <p>SDK functions for Image Delivery API coming soon.</p>
+           
+            <h5><a id="Following_are_Image_Delivery_API_examples_203"></a>Following are Image Delivery API examples</h5>
+            <p>Following are Image Delivery API examples.</p>
+            <pre class="prettyprint"><code>
+// Set the quality 100 
+const Stack = Contentstack.Stack("stack_api_key", "delivery_token", "environment_name");
+
+const imageUrl = Stack.imageTransform(imageUrl, {
+    'quality': 100
+})
+            </code></pre>
+            <pre class="prettyprint"><code>
+// set the quality to 100, auto optimization, width and height
+const Stack = Contentstack.Stack("stack_api_key", "delivery_token", "environment_name");
+
+const imageUrl = Stack.imageTransform(imageUrl, {
+    'quality': 100,
+    'auto': 'webp',
+    'width': 100,
+    'height': 100
+})
+            </code></pre>
             <h3><a id="Helpful_Links_157"></a>Helpful Links</h3>
             <ul>
             <li><a href="https://www.contentstack.com">Contentstack Website</a></li>
@@ -207,7 +236,7 @@ data.then(function(result) {
             <li><a href="https://www.contentstack.com/docs/apis/content-delivery-api/">Content Delivery API Docs</a></li>
             </ul>
             <h3><a id="The_MIT_License_MIT_163"></a>The MIT License (MIT)</h3>
-            <p>Copyright © 2016-2020 <a href="https://www.contentstack.com">Contentstack</a>. All Rights Reserved</p>
+            <p>Copyright © 2016-2021 <a href="https://www.contentstack.com">Contentstack</a>. All Rights Reserved</p>
             <p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
             <p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
             <p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>

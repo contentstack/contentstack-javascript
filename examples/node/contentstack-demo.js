@@ -15,6 +15,7 @@ class ContentstackDemo {
             //console.log("datattatata", Contentstack.Region.EUROPE)
 
         this.Stack = Contentstack.Stack(...config);
+        console.log(Contentstack.Utils.render());
     }
     
 
