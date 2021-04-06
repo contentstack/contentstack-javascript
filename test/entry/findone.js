@@ -597,6 +597,8 @@ test('findOne:  .only() - For the reference - String', function(assert) {
                 flag = entry.reference.every(function(reference) {
                     return (reference && "title" in reference && "uid" in reference);
                 });
+            } else {
+                flag = true
             }
             assert.equal(flag, true, 'Entry has the reference with only paramteres.');
             assert.end();
@@ -627,6 +629,8 @@ test('findOne:  .only() - For the reference - Array', function(assert) {
                         });
                     }
                 }
+            } else {
+                flag = true
             }
             assert.equal(flag, true, 'Entry has the reference with only paramteres.');
             assert.end();
