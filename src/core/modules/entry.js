@@ -185,6 +185,19 @@ export default class Entry {
     }
 
     /**
+     * @method includeEmbeddedItems
+     * @memberOf Entry
+     * @description Include Embedded Objects (Entries and Assets) along with entry/entries details.
+     * @example Stack.ContentType("contentType_uid").Entry("entry_uid").includeEmbeddedObjects().fetch()
+     * @returns {Entry}
+     * @instance
+     */
+    includeEmbeddedItems() {
+        this._query['include_embedded_items'] = ["BASE"];
+        return this;
+    }
+
+    /**
      * @method includeSchema
      * @memberOf Entry
      * @deprecated since verion 3.3.0

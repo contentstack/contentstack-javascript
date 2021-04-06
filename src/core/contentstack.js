@@ -1,7 +1,7 @@
 import Stack from "./stack";
 import CacheProvider from './cache-provider/index';
 import ContentstackRegion from "./contentstackregion";
-
+import {render , renderContent} from '@contentstack/utils';
 
  /**
  * @class 
@@ -25,6 +25,26 @@ class Contentstack {
 		 */
 		this.CachePolicy = CacheProvider.policies;
 		this.Region = ContentstackRegion;
+		
+		this.Utils = {
+			/**
+			 * @memberof Contentstack
+			 * @description Renders embedded objects in Rich text from Entry or Multiple Entry Object.
+			 * 
+			 * @param {EntryEmbedable| EntryEmbedable[]} entry - Objects that contains RTE with embedded objects
+			 * @param {string[]} keyPaths - Key paths for RTE contents in Entry object
+			 * @param {RenderOption?} renderOption -  Optional render options to render content
+			 */
+				render,
+			/**
+			 * @memberof Contentstack
+			 * @description Renders embedded objects in Rich text from String or String of array.
+			 * @param {string | string[]} content - RTE content to render 
+			 * @param {EntryEmbedable} options.entry - Entry object containing embedded objects
+			 * @param {RenderOption?} options.renderOption - Optional render options to render content
+			 */
+				renderContent
+			}
 	}
 /**
 

@@ -1,4 +1,11 @@
 
+### Version: 3.13.0
+#### Date: 
+
+##### Update API:
+ - [Query]: Added support for method includeEmbeddedItems
+ - [Entry]: Added support for method includeEmbeddedItems
+ 
 ### Version: 3.12.2
 #### Date: Feb-19-2021
 
