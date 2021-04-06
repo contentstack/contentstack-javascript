@@ -1,5 +1,6 @@
 import Request from './request';
 import Result from '../modules/result';
+import config from '../../../config';
 /**
  * @method addSpread
  * @description method to add the spread.
@@ -237,7 +238,9 @@ export function sendRequest(queryObject, options) {
     let tojson = (typeof self.tojson !== 'undefined') ? self.tojson : false;
     let isSingle = (self.entry_uid || self.singleEntry || self.asset_uid) ? true : false;
     let hashQuery = getHash(parseQueryFromParams(self, isSingle, tojson));
-
+    if (queryObject.requestParams.url.includes(config.urls.sync)) {
+        cachePolicy = -1;
+    }
     /**
     for new api v3
     */
