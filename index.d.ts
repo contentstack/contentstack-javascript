@@ -1,6 +1,17 @@
 // Type definitions for contentstack 3.12.2
 // Project: https://www.contentstack.com/
 // Definitions by: Contentstack <https://github.com/contentstack>
+import { EntryEmbedable, Option, RenderOption } from '@contentstack/utils'
+
+// Utils
+export class Utils {
+    static render(option: { 
+        entry: EntryEmbedable| EntryEmbedable[],
+        renderOption?: RenderOption,
+        paths?: string[]
+    }): void;
+    static renderContent(content: (string | string[]), option: Option): (string| string[]);
+}
 
 //Enum for Contentstack Region
 export enum Region {
@@ -137,8 +148,8 @@ export class Entry {
     includeReference(...val: string[]): this;
     language(language_code: string): this;
     addQuery(key: string, value: string): this;
+    includeEmbeddedItems(): this;
     includeFallback(): this;
-
     /**
      * @deprecated since verion 3.3.0
      */
