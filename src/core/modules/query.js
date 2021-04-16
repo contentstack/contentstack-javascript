@@ -757,7 +757,7 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
-        var options = Object.assign({}, this.fetchOptions, fetchOptions);
+        var options = Utils.mergeDeep({}, this.fetchOptions, fetchOptions);
         return Utils.sendRequest(this, options);
     }
 
@@ -790,7 +790,7 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
-        var options = Object.assign({}, this.fetchOptions);
+        var options = Utils.mergeDeep({}, this.fetchOptions);
         return Utils.sendRequest(this, options);
     }
 

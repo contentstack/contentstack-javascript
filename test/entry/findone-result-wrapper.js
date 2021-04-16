@@ -627,8 +627,7 @@ test('findOne:  .only() - For the reference - Array', function(assert) {
         .only('reference', ['title'])
         .findOne()
         .then(function success(entry) {
-            var flag = false;
-            if (entry && entry.get('reference')) {
+            var flag = false;            if (entry && entry.get('reference')) {
                 if (entry.get('reference').length) {
                     if (entry.get('reference').length === 0){
                         flag = true
@@ -637,7 +636,11 @@ test('findOne:  .only() - For the reference - Array', function(assert) {
                             return (reference && "title" in reference && "uid" in reference);
                         });
                     }
+                } else {
+                    flag = true
                 }
+            } else {
+                flag = true
             }
             assert.equal(flag, true, 'Entry do not have the reference with only paramteres.');
             assert.end();
