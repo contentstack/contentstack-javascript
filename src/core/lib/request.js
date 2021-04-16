@@ -61,7 +61,7 @@ async function safeParseJSON(response) {
     const body = await response.text();
 }
 function fetchRetry(url, headers, retryDelay = 300, retryLimit = 5, fetchOptions, resolve, reject) {
-    var option = Object.assign({ 
+    var option = Utils.mergeDeep({ 
         method: 'GET',
         headers: headers,
         timeout: 30000,                                
