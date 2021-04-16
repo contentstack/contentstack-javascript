@@ -1,6 +1,12 @@
 
+
+### Version: 3.13.1
+#### Date: Apr-16-2021
+##### Bug fix:
+ - IE 11 request method issue resolved
+ 
 ### Version: 3.13.0
-#### Date: 
+#### Date: Apr-05-2021
 
 ##### Update API:
  - [Query]: Added support for method includeEmbeddedItems
