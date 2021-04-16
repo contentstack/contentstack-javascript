@@ -238,9 +238,7 @@ export function sendRequest(queryObject, options) {
     let tojson = (typeof self.tojson !== 'undefined') ? self.tojson : false;
     let isSingle = (self.entry_uid || self.singleEntry || self.asset_uid) ? true : false;
     let hashQuery = getHash(parseQueryFromParams(self, isSingle, tojson));
-    if (queryObject.requestParams.url.includes(config.urls.sync)) {
-        cachePolicy = -1;
-    }
+
     /**
     for new api v3
     */
