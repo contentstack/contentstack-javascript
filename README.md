@@ -219,6 +219,7 @@ imageUrl = Stack.imageTransform(imageUrl, {
 The Sync API takes care of syncing your Contentstack data with your app and ensures that the data is always up-to-date by providing delta updates. Contentstack’s JavaScript SDK supports Sync API, which you can use to build powerful apps. Read through to understand how to use the Sync API with Contentstack JavaScript SDK.
 [Read Sync API documentation](https://www.contentstack.com/docs/platforms/javascript-browser#using-the-sync-api-with-javascript-sdk).
 
+> Note: Sync function does not support cache policy. When using the Sync function, we recommend you to set the cache policy to IGNORE_CACHE.
 ##### Initial sync
 
 The Initial Sync process performs a complete sync of your app data. It returns all the published entries and assets of the specified stack in response.
@@ -235,7 +236,8 @@ data.then(function(sync_data, err) {
     if (err) throw err
 })
 ```
-> Note: Sync function does not support CachePolicy, we prefer to keep CachePolicy to `IGNORE_CACHE` while using Sync API.
+> Note: Sync function does not support cache policy. When using the Sync function, we recommend you to set the cache policy to IGNORE_CACHE.
+
 
 The response also contains a sync token, which you need to store, since this token is used to get subsequent delta updates later, as shown in the Subsequent Sync section below.
 

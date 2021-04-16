@@ -628,6 +628,8 @@ test('findOne:  .only() - For the reference - Array', function(assert) {
                             return (reference && "title" in reference && "uid" in reference);
                         });
                     }
+                }else {
+                    flag = true
                 }
             } else {
                 flag = true
