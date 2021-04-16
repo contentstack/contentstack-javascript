@@ -57,14 +57,14 @@ export default class Stack {
                 return false
             }
          };
-        this.config = Object.assign({}, config)
+        this.config = Utils.mergeDeep({}, config)
 
         if(stack_arguments[0].region && stack_arguments[0].region !== undefined && stack_arguments[0].region !== "us") {
             this.config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
         } 
 
         if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions !== undefined) {
-            this.fetchOptions =  Object.assign(this.fetchOptions, stack_arguments[0].fetchOptions);
+            this.fetchOptions =  Utils.mergeDeep(this.fetchOptions, stack_arguments[0].fetchOptions);
         }
         
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
@@ -107,7 +107,7 @@ export default class Stack {
                     if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== undefined && stack_arguments[3] !== "us") {
                         this.config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
-                        this.fetchOptions = Object.assign(this.fetchOptions, stack_arguments[3]);
+                        this.fetchOptions = Utils.mergeDeep(this.fetchOptions, stack_arguments[3]);
                     }
                 }
                 return this;
@@ -126,11 +126,11 @@ export default class Stack {
                     if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== undefined && stack_arguments[3] !== "us") {
                         this.config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
-                        this.fetchOptions = Object.assign(this.fetchOptions, stack_arguments[3]);
+                        this.fetchOptions = Utils.mergeDeep(this.fetchOptions, stack_arguments[3]);
                     }
                 }
                 if (stack_arguments[4] && typeof stack_arguments[4] === 'object') {
-                    this.fetchOptions = Object.assign(this.fetchOptions, stack_arguments[4]);
+                    this.fetchOptions = Utils.mergeDeep(this.fetchOptions, stack_arguments[4]);
                 }
                 return this;
             default:
@@ -353,7 +353,7 @@ export default class Stack {
                 environment: this.environment
             }
         };
-        var options = Object.assign({}, this.fetchOptions, fetchOptions);
+        var options = Utils.mergeDeep({}, this.fetchOptions, fetchOptions);
         return Request(result, options);
     }
 
@@ -497,7 +497,7 @@ export default class Stack {
 
     sync(params, fetchOptions) {
         this._query = {};
-        this._query = Object.assign(this._query, params);
+        this._query = Utils.mergeDeep(this._query, params);
         this.requestParams = {
             method: 'POST',
             headers: this.headers,
@@ -507,7 +507,7 @@ export default class Stack {
                 query: this._query
             }
         }
-        var options = Object.assign({}, this.fetchOptions, fetchOptions);
+        var options = Utils.mergeDeep({}, this.fetchOptions, fetchOptions);
         return Utils.sendRequest(this, options);
     }
 
