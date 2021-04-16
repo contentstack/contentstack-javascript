@@ -236,7 +236,8 @@ data.then(function(sync_data, err) {
     if (err) throw err
 })
 ```
-> Note: Sync function does not support CachePolicy, we prefer to keep CachePolicy to `IGNORE_CACHE` while using Sync API.
+> Note: Sync function does not support cache policy. When using the Sync function, we recommend you to set the cache policy to IGNORE_CACHE.
+
 
 The response also contains a sync token, which you need to store, since this token is used to get subsequent delta updates later, as shown in the Subsequent Sync section below.
 
