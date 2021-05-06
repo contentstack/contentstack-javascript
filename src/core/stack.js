@@ -11,17 +11,18 @@ let errorRetry = [408, 429]
      * @class 
         Stack 
      * @description Initialize an instance of ‘Stack’
-     * @param api_key - Stack API Key.
-     * @param delivery_token - Stack Delivery token.
-     * @param environment - Stack Environment name.
-     * @param region - DB region for Stack.
-     * @param fetchOptions - Custom setting for the request.
-     * @param fetchOptions.timeout - Set timeout for the request.
-     * @param fetchOptions.retryLimit - The number of retries before failure. Default is 5
-     * @param fetchOptions.retryDelay - The number of ms to use for operation retries. Default is 300ms
-     * @param fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429.
-     * @param fetchOptions.retryDelayOptions.base - The base number of milliseconds to use in the exponential backoff for operation retries.
-     * @param fetchOptions.retryDelayOptions.customBackoff - A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds.
+     * @param {Object} stack - Stack Details
+     * @param {String} stack.api_key - Stack API Key.
+     * @param {String} stack.delivery_token - Stack Delivery token.
+     * @param {String} stack.environment - Stack Environment name.
+     * @param {String} stack.region - DB region for Stack.
+     * @param {Object} stack.fetchOptions - Custom setting for the request.
+     * @param {number} stack.fetchOptions.timeout - Set timeout for the request.
+     * @param {number} stack.fetchOptions.retryLimit - The number of retries before failure. Default is 5
+     * @param {number} stack.fetchOptions.retryDelay - The number of ms to use for operation retries. Default is 300ms
+     * @param {function} stack.fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429.
+     * @param {function} stack.fetchOptions.retryDelayOptions.base - The base number of milliseconds to use in the exponential backoff for operation retries.
+     * @param {function} stack.fetchOptions.retryDelayOptions.customBackoff - A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds.
      * @example
      * var Stack = Contentstack.Stack({
      *      'api_key':'api_key',
@@ -32,16 +33,6 @@ let errorRetry = [408, 429]
      *       
      *      }
      * });
-     * 
-     * @example
-     * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment', {
-     * 
-     * });
-     * 
-     * @example
-     * // For Setting the European Region:
-     * // If you want to set and use European region, refer to the code below:
-     * const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name", Contentstack.Region.EU);
      * 
      * @returns {Stack}
      * @instance
