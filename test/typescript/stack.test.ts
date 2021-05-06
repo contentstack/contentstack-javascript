@@ -143,4 +143,14 @@ describe('Stack tests', () => {
 
         done();
     });
+
+    test('Utils function test', done => {
+        const utils = Contentstack.Utils;
+        const string = '';
+        const option = {entry: {field: string,  uid: '', _embedded_items: { field: [{ uid:'',_content_type_uid: ''}]}}};
+        utils.render(option);
+        utils.renderContent(string, option);
+        expect(true).toBeTruthy();
+        done();
+    })
 });
