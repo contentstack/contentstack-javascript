@@ -64,7 +64,7 @@
 
     
 
-    <h4 class="name" id="Stack"><span class="type-signature"></span>new Stack<span class="signature">(api_key, delivery_token, environment, region, fetchOptions)</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
+    <h4 class="name" id="Stack"><span class="type-signature"></span>new Stack<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="Stack.html">Stack</a>}</span></h4>
 
     
 
@@ -105,7 +105,7 @@
 
         <tr>
             
-                <td class="name"><code>api_key</code></td>
+                <td class="name"><code>stack.api_key</code></td>
             
 
             
@@ -119,7 +119,7 @@
 
         <tr>
             
-                <td class="name"><code>delivery_token</code></td>
+                <td class="name"><code>stack.delivery_token</code></td>
             
 
             
@@ -133,7 +133,7 @@
 
         <tr>
             
-                <td class="name"><code>environment</code></td>
+                <td class="name"><code>stack.environment</code></td>
             
 
             
@@ -147,7 +147,7 @@
 
         <tr>
             
-                <td class="name"><code>region</code></td>
+                <td class="name"><code>stack.region</code></td>
             
 
             
@@ -161,7 +161,7 @@
 
         <tr>
             
-                <td class="name"><code>fetchOptions</code></td>
+                <td class="name"><code>stack.fetchOptions</code></td>
             
 
             
@@ -333,7 +333,7 @@
 
 
 
-    <h5>Examples</h5>
+    <h5>Example</h5>
     
     <pre class="prettyprint"><code>var Stack = Contentstack.Stack({
      'api_key':'api_key',
@@ -344,14 +344,6 @@
       
      }
 });</code></pre>
-
-    <pre class="prettyprint"><code>var Stack = Contentstack.Stack('api_key', 'access_token', 'environment', {
-
-});</code></pre>
-
-    <pre class="prettyprint"><code>// For Setting the European Region:
-// If you want to set and use European region, refer to the code below:
-const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name", Contentstack.Region.EU);</code></pre>
 
 
 

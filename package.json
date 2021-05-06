@@ -98,7 +98,7 @@
     "webpack-merge": "4.1.0"
   },
   "dependencies": {
-    "@contentstack/utils": "1.0.0",
+    "@contentstack/utils": "file:../contentstack-utils-javascript/contentstack-utils-1.0.0.tgz",
     "es6-promise": "4.1.1",
     "isomorphic-fetch": "^3.0.0",
     "localStorage": "1.0.3"
