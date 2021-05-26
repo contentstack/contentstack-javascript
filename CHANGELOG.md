@@ -1,5 +1,10 @@
+## Change log
 
-
+### Version: 3.13.2
+#### Date: May-26-2021
+##### Dependency:
+ - Update Utils SDK dependency version
+ 
 ### Version: 3.13.1
 #### Date: Apr-16-2021
 ##### Bug fix:
