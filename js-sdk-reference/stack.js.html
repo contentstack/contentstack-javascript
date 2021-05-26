@@ -60,17 +60,18 @@ let errorRetry = [408, 429]
      * @class 
         Stack 
      * @description Initialize an instance of ‘Stack’
-     * @param api_key - Stack API Key.
-     * @param delivery_token - Stack Delivery token.
-     * @param environment - Stack Environment name.
-     * @param region - DB region for Stack.
-     * @param fetchOptions - Custom setting for the request.
-     * @param fetchOptions.timeout - Set timeout for the request.
-     * @param fetchOptions.retryLimit - The number of retries before failure. Default is 5
-     * @param fetchOptions.retryDelay - The number of ms to use for operation retries. Default is 300ms
-     * @param fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429.
-     * @param fetchOptions.retryDelayOptions.base - The base number of milliseconds to use in the exponential backoff for operation retries.
-     * @param fetchOptions.retryDelayOptions.customBackoff - A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds.
+
+     * @param {String} stack.api_key - Stack API Key.
+     * @param {String} stack.delivery_token - Stack Delivery token.
+     * @param {String} stack.environment - Stack Environment name.
+     * @param {String} stack.region - DB region for Stack.
+     * @param {Object} stack.fetchOptions - Custom setting for the request.
+     * @param {number} stack.fetchOptions.timeout - Set timeout for the request.
+     * @param {number} stack.fetchOptions.retryLimit - The number of retries before failure. Default is 5
+     * @param {number} stack.fetchOptions.retryDelay - The number of ms to use for operation retries. Default is 300ms
+     * @param {function} stack.fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429.
+     * @param {function} stack.fetchOptions.retryDelayOptions.base - The base number of milliseconds to use in the exponential backoff for operation retries.
+     * @param {function} stack.fetchOptions.retryDelayOptions.customBackoff - A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds.
      * @example
      * var Stack = Contentstack.Stack({
      *      'api_key':'api_key',
@@ -81,16 +82,6 @@ let errorRetry = [408, 429]
      *       
      *      }
      * });
-     * 
-     * @example
-     * var Stack = Contentstack.Stack('api_key', 'access_token', 'environment', {
-     * 
-     * });
-     * 
-     * @example
-     * // For Setting the European Region:
-     * // If you want to set and use European region, refer to the code below:
-     * const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name", Contentstack.Region.EU);
      * 
      * @returns {Stack}
      * @instance
@@ -106,14 +97,14 @@ export default class Stack {
                 return false
             }
          };
-        this.config = Object.assign({}, config)
+        this.config = Utils.mergeDeep({}, config)
 
         if(stack_arguments[0].region &amp;&amp; stack_arguments[0].region !== undefined &amp;&amp; stack_arguments[0].region !== "us") {
             this.config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
         } 
 
         if (stack_arguments[0].fetchOptions &amp;&amp; stack_arguments[0].fetchOptions !== undefined) {
-            this.fetchOptions =  Object.assign(this.fetchOptions, stack_arguments[0].fetchOptions);
+            this.fetchOptions =  Utils.mergeDeep(this.fetchOptions, stack_arguments[0].fetchOptions);
         }
         
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
@@ -156,7 +147,7 @@ export default class Stack {
                     if(typeof stack_arguments[3] === "string" &amp;&amp; stack_arguments[3] !== undefined &amp;&amp; stack_arguments[3] !== "us") {
                         this.config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
-                        this.fetchOptions = Object.assign(this.fetchOptions, stack_arguments[3]);
+                        this.fetchOptions = Utils.mergeDeep(this.fetchOptions, stack_arguments[3]);
                     }
                 }
                 return this;
@@ -175,11 +166,11 @@ export default class Stack {
                     if(typeof stack_arguments[3] === "string" &amp;&amp; stack_arguments[3] !== undefined &amp;&amp; stack_arguments[3] !== "us") {
                         this.config['host'] = stack_arguments[3]+"-"+"cdn.contentstack.com";
                     } else if (typeof stack_arguments[3] === 'object') {
-                        this.fetchOptions = Object.assign(this.fetchOptions, stack_arguments[3]);
+                        this.fetchOptions = Utils.mergeDeep(this.fetchOptions, stack_arguments[3]);
                     }
                 }
                 if (stack_arguments[4] &amp;&amp; typeof stack_arguments[4] === 'object') {
-                    this.fetchOptions = Object.assign(this.fetchOptions, stack_arguments[4]);
+                    this.fetchOptions = Utils.mergeDeep(this.fetchOptions, stack_arguments[4]);
                 }
                 return this;
             default:
@@ -402,7 +393,7 @@ export default class Stack {
                 environment: this.environment
             }
         };
-        var options = Object.assign({}, this.fetchOptions, fetchOptions);
+        var options = Utils.mergeDeep({}, this.fetchOptions, fetchOptions);
         return Request(result, options);
     }
 
@@ -546,7 +537,7 @@ export default class Stack {
 
     sync(params, fetchOptions) {
         this._query = {};
-        this._query = Object.assign(this._query, params);
+        this._query = Utils.mergeDeep(this._query, params);
         this.requestParams = {
             method: 'POST',
             headers: this.headers,
@@ -556,7 +547,7 @@ export default class Stack {
                 query: this._query
             }
         }
-        var options = Object.assign({}, this.fetchOptions, fetchOptions);
+        var options = Utils.mergeDeep({}, this.fetchOptions, fetchOptions);
         return Utils.sendRequest(this, options);
     }
 
