@@ -188,7 +188,7 @@ export default class Entry {
      * @method includeEmbeddedItems
      * @memberOf Entry
      * @description Include Embedded Objects (Entries and Assets) along with entry/entries details.
-     * @example Stack.ContentType("contentType_uid").Entry("entry_uid").includeEmbeddedObjects().fetch()
+     * @example Stack.ContentType("contentType_uid").Entry("entry_uid").includeEmbeddedItems().fetch()
      * @returns {Entry}
      * @instance
      */
