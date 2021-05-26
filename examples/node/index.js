@@ -1,7 +1,7 @@
 'use strict'
 
 const ContentstackDemo = require('./contentstack-demo.js')
-const Demo = new ContentstackDemo({ 'api_key': 'blt1b0a32d0c621f844', 'delivery_token': 'csaba2e2b6a51971b00ea373ea', 'environment': 'development',  })
+const Demo = new ContentstackDemo({ 'api_key': 'blt123something', 'delivery_token': 'blt123something', 'environment': 'development',  })
 
 
     //get all the entries
