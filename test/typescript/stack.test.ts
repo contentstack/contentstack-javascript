@@ -150,6 +150,10 @@ describe('Stack tests', () => {
         const option = {entry: {field: string,  uid: '', _embedded_items: { field: [{ uid:'',_content_type_uid: ''}]}}};
         utils.render(option);
         utils.renderContent(string, option);
+        utils.jsonToHTML({
+            ...option,
+            paths: []
+        });
         expect(true).toBeTruthy();
         done();
     })
