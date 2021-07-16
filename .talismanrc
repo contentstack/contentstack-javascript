@@ -1,11 +1,9 @@
 fileignoreconfig:
-- filename: package-lock.json
-  checksum: b89941bdbdeb07c213733fef4d934e35478c5a1c6e33f2ec150e515a012b8d2d
-- filename: dist/nativescript/contentstack.js
-  checksum: ad3c75c5c18f8b396d7338f24024c6a4fb0839fa7b471bf89b5ee6d4d07284fe
 - filename: dist/react-native/contentstack.js
-  checksum: b0d9db0acc9bb46c67d104e7b28ae7429d775487efb38e5f5d25a2de9731a8f8
+  checksum: 6ec0482ba61056b8d079e776719164924e3ecd6c8123f03fd6dc01a727013d95
 - filename: dist/node/contentstack.js
-  checksum: 50b0f7d9c93c53fa5df3adadae94de74089fdbd7012778b371573a2d154a8277
+  checksum: 31877d4663fa195f8dd581279dbf4784567b5ed0a1923487ef1851cecbd5254f
+- filename: dist/nativescript/contentstack.js
+  checksum: 8acfc161d1a7fdaec02fc378e00cdd381d89dd19dedc25e7ee2b32be9a40f2a1
 - filename: dist/web/contentstack.js
-  checksum: a9d2ee09e3409142f238901afc3efc7f731628a8c239c366360c59690de2e309
+  checksum: 50454530e51fd6235680fe980cd411091ec052fb8d94b151c40dd9e1ed8c0e3f
