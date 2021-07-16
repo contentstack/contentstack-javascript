@@ -11,6 +11,11 @@ export class Utils {
         paths?: string[]
     }): void;
     static renderContent(content: (string | string[]), option: Option): (string| string[]);
+    static jsonToHTML(option: { 
+        entry: EntryEmbedable| EntryEmbedable[],
+        paths: string[],
+        renderOption?: RenderOption,
+    }): void;
 }
 
 //Enum for Contentstack Region
