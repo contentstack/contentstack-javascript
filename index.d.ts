@@ -65,10 +65,21 @@ export interface ContentTypeCollection{
     count?: number
 }
 
+export interface LivePreview {
+    host: string
+    authorization: string
+    enable: boolean
+}
+
+export interface LivePreviewQuery {
+    hash: string
+    content_type_uid: string
+}
+
 // Stack 
 export class Stack {
     constructor(config: Config);
-    constructor(api_key: string, delivery_token: string, environment_name: string, region?: Region, fetchOptions?: any);
+    constructor(api_key: string, delivery_token: string, environment_name: string, region?: Region, fetchOptions?: any, live_preview?: LivePreview);
 
     environment: string;
     cachePolicy: CachePolicy;
@@ -84,6 +95,7 @@ export class Stack {
     setHost(host: string): Stack;
     setCachePolicy(policy: CachePolicy): Stack;
     setCacheProvider(provider: object): Stack;
+    setLivePreview(query: LivePreviewQuery): void;
     clearByQuery(): Stack;
     clearByContentType(): Stack;
     clearAll(): Stack;
