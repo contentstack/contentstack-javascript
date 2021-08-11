@@ -69,6 +69,9 @@ export default class Stack {
                         access_token: stack_arguments[0].delivery_token
                     };
                     this.environment = stack_arguments[0].environment;
+                    if (typeof stack_arguments[0].live_preview == "object") {
+                        this.live_preview = stack_arguments[0].live_preview
+                    }
                     return this;
                 } else {
                     console.error("Kindly provide valid object parameters. The specified API Key, Delivery Token, or Environment Name is invalid.");
@@ -196,6 +199,12 @@ export default class Stack {
         return this;
     }
 
+    setLivePreview(query) {
+        if (this.live_preview) {
+            this.live_preview.hash = query.hash;
+            this.live_preview.content_type_uid = query.content_type_uid;
+        }
+    }
      /**
      * @method setCacheProvider
      * @memberOf Stack
