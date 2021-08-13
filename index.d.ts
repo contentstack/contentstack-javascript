@@ -95,7 +95,7 @@ export class Stack {
     setHost(host: string): Stack;
     setCachePolicy(policy: CachePolicy): Stack;
     setCacheProvider(provider: object): Stack;
-    setLivePreview(query: LivePreviewQuery): void;
+    livePreviewQuery(query: LivePreviewQuery): void;
     clearByQuery(): Stack;
     clearByContentType(): Stack;
     clearAll(): Stack;
