@@ -250,7 +250,7 @@ export function sendRequest(queryObject, options) {
         delete queryObject.requestParams.body.query;
         queryObject.requestParams.body = merge(queryObject.requestParams.body, cloneQueryObj);
 
-        if (queryObject.live_preview && queryObject.live_preview.enable === true) {
+        if (queryObject.live_preview && queryObject.live_preview.enable === true && queryObject.live_preview.hash && queryObject.live_preview.hash !== "init") {
             if(queryObject.live_preview.content_type_uid === queryObject.content_type_uid) {
                 queryObject.requestParams.body = merge(queryObject.requestParams.body, {live_preview: queryObject.live_preview.hash || "init"});
                 cachePolicy = 2; // network else cache
@@ -261,7 +261,7 @@ export function sendRequest(queryObject, options) {
                     delete queryObject.requestParams.headers['access_token'];
                 
                 queryObject.requestParams.headers['authorization'] = queryObject.config.management_token
-            } else if(livePreviewconfig.hash) {
+            } else if(queryObject.live_preview.hash) {
                 cachePolicy = 1; // cache then network
             }
         }
