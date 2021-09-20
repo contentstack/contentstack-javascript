@@ -260,7 +260,7 @@ export function sendRequest(queryObject, options) {
                 if(queryObject.requestParams.headers['access_token']) 
                     delete queryObject.requestParams.headers['access_token'];
                 
-                queryObject.requestParams.headers['authorization'] = queryObject.config.management_token
+                queryObject.requestParams.headers['authorization'] = queryObject.live_preview.management_token
             } else if(queryObject.live_preview.hash) {
                 cachePolicy = 1; // cache then network
             }
