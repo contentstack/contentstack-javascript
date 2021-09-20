@@ -201,7 +201,7 @@ export default class Stack {
 
     livePreviewQuery(query) {
         if (this.live_preview) {
-            this.live_preview.hash = query.hash;
+            this.live_preview.hash = query.live_preview;
             this.live_preview.content_type_uid = query.content_type_uid;
         }
     }
