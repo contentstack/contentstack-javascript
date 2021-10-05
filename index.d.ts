@@ -61,7 +61,7 @@ export interface StackConfig {
 
 // ContentTypeCollection
 export interface ContentTypeCollection{
-    contentTypes: Array<any>
+    content_types: Array<any>
     count?: number
 }
 
