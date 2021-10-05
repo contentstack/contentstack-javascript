@@ -7,7 +7,6 @@ const commonConfig = require('./webpack.common.js');
 module.exports = function(options) {
     return webpackMerge(commonConfig(), {
         output: {
-            library: "Contentstack",
             libraryTarget: "commonjs2",
             path: path.join(__dirname, "../dist/node"),
             filename: "contentstack.js"
@@ -29,12 +28,12 @@ module.exports = function(options) {
                 exclude: '/node_modules/',
                 use: [{
                     loader: 'string-replace-loader',
-                    query: {
+                    options: {
                         search: '{{PLATFORM}}',
                         replace: 'nodejs'
                     }
                 }],
             }]
-        }
+        },
     });
 }
