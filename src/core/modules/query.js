@@ -777,7 +777,7 @@ export default class Query extends Entry {
      * @instance
      */
     findOne() {
-        const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version
+        let host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version
         if(this.type && this.type !== 'asset' && this.live_preview && this.live_preview.enable === true && this.live_preview.content_type_uid === this.content_type_uid ) {
             host = this.config.protocol + "://" + this.live_preview.host + '/' + this.config.version
         }
