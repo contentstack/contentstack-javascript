@@ -73,6 +73,7 @@
     "babel-preset-es2016": "6.24.1",
     "babel-preset-stage-1": "6.24.1",
     "babel-runtime": "6.26.0",
+    "clean-webpack-plugin": "^4.0.0",
     "compression-webpack-plugin": "1.0.1",
     "es3ify-loader": "0.2.0",
     "fetch-mock-jest": "^1.3.0",
@@ -81,8 +82,8 @@
     "jest": "^26.4.2",
     "jest-html-reporters": "^2.1.6",
     "jsdoc": "^3.6.7",
-    "jshint": "^2.13.0",
-    "nodemailer": "^6.6.3",
+    "jshint": "^2.13.1",
+    "nodemailer": "^6.6.5",
     "request": "^2.88.2",
     "string-replace-loader": "1.3.0",
     "string-replace-webpack-plugin": "0.1.3",
@@ -90,16 +91,16 @@
     "tap-json": "1.0.0",
     "tape": "4.8.0",
     "ts-jest": "^26.5.6",
-    "typescript": "^4.3.5",
+    "typescript": "^4.4.3",
     "uglify-js": "2.8.29",
-    "webpack": "^5.44.0",
+    "webpack": "^5.56.1",
     "webpack-cli": "^3.3.12",
     "webpack-md5-hash": "0.0.5",
     "webpack-merge": "4.1.0"
   },
   "dependencies": {
     "@contentstack/utils": "^1.0.2",
-    "es6-promise": "4.1.1",
+    "es6-promise": "^4.1.1",
     "isomorphic-fetch": "^3.0.0",
     "localStorage": "1.0.3"
   }
