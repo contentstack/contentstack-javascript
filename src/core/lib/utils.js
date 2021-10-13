@@ -1,6 +1,6 @@
 import Request from './request';
 import Result from '../modules/result';
-import config from '../../../config';
+
 /**
  * @method addSpread
  * @description method to add the spread.
@@ -175,21 +175,6 @@ export function resultWrapper(result) {
     return result;
 };
 
-// // spread the result object
-// export function spreadResult(result) {
-//     let _results = [];
-//     if (result && Object.keys(result).length) {
-//         if (typeof result.entries !== 'undefined') _results.push(result.entries);
-//         if (typeof result.assets !== 'undefined') _results.push(result.assets);
-//         if (typeof result.content_type !== 'undefined' || typeof result.schema !== 'undefined') _results.push(result.content_type || result.schema);
-//         if (typeof result.count !== 'undefined') _results.push(result.count);
-//         if (typeof result.entry !== 'undefined') _results = result.entry;
-//         if (typeof result.asset !== 'undefined') _results = result.asset;
-//         if (typeof result.items !== 'undefined') _results.push(result);
-//     }
-//     return _results;
-// };
-
 // spread the result object
 export function spreadResult(result) {
     let _results = [];
@@ -233,7 +218,6 @@ export function sendRequest(queryObject, options) {
     }
 
     let self = queryObject;
-    let continueFlag = false;
     let cachePolicy = (typeof self.queryCachePolicy !== 'undefined') ? self.queryCachePolicy : self.cachePolicy;
     let tojson = (typeof self.tojson !== 'undefined') ? self.tojson : false;
     let isSingle = (self.entry_uid || self.singleEntry || self.asset_uid) ? true : false;
@@ -271,7 +255,7 @@ export function sendRequest(queryObject, options) {
         return function(err, entries) {
             return new Promise(function(resolve, reject) {
                 try {
-                    if (err) throw err;
+                    if (err) reject(err);
                     if (!tojson) entries = resultWrapper(entries);
                     resolve(spreadResult(entries));
                 } catch (e) {
@@ -303,10 +287,10 @@ export function sendRequest(queryObject, options) {
                             } else {
                                 if (cachePolicy === 2 && self.provider !== null) {
                                     self.provider.get(hashQuery, getCacheCallback());
+                                    return
                                 } else {
                                     return reject({ error_code: 141, error_message: 'The requested entry doesn\'t exist.' });
                                 }
-                                return;
                             }
                         } 
                         else if(data.items) {
@@ -323,7 +307,7 @@ export function sendRequest(queryObject, options) {
                         if (cachePolicy !== -1 && self.provider !== null) {
                             self.provider.set(hashQuery, entries, function(err) {
                                 try {
-                                    if (err) throw err;
+                                    if (err) reject(err);
                                     if (!tojson) entries = resultWrapper(entries);
                                     return resolve(spreadResult(entries));
                                 } catch (e) {
@@ -377,7 +361,6 @@ export function sendRequest(queryObject, options) {
                 }
                 
             });
-            break;
         case 2:
         case 0:
         case undefined:
@@ -395,7 +378,6 @@ export function sendRequest(queryObject, options) {
                         try {
                             if (err || !_data) {
                                  reject(err);
-                                //reject(Error("It broke"));
                             } else {
                                 if (!tojson) _data = resultWrapper(_data);
                                  resolve(spreadResult(_data));
@@ -408,14 +390,13 @@ export function sendRequest(queryObject, options) {
             });
 
         return promise.then(function() {
-            return new Promise(function(resolve, reject) {
+                return new Promise(function(resolve, reject) {
                     callback(true, resolve, reject);
                 });
               }).catch((error) => {
-            return new Promise(function(resolve, reject) {
+                return new Promise(function(resolve, reject) {
                     callback(true, resolve, reject);
                 });
-                  console.error(error)
               })
     }
 };
