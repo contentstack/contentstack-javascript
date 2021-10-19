@@ -1,6 +1,6 @@
 {
   "name": "contentstack",
-  "version": "3.13.3",
+  "version": "3.14.0",
   "description": "Contentstack Javascript SDK",
   "homepage": "https://www.contentstack.com/",
   "author": {
@@ -10,14 +10,14 @@
   "main": "dist/node/contentstack.js",
   "browser": "dist/web/contentstack.js",
   "types": "./index.d.ts",
-  "_id": "contentstack@3.13.2",
+  "_id": "contentstack@3.14.0",
   "scripts": {
     "test": "npm run test:e2e && npm run test:typescript",
     "test:e2e": "istanbul cover tape test/index.js | tap-html --out ./tap-html.html",
     "test:typescript": "jest --testPathPattern=test/typescript",
     "automate": "node test.js",
     "build:node": "webpack --config webpack/webpack.node.js",
-    "build:web": "webpack -p --config webpack/webpack.web.js",
+    "build:web": "webpack --config webpack/webpack.web.js",
     "build:react-native": "webpack --config webpack/webpack.react-native.js",
     "build:native-script": "webpack --config webpack/webpack.nativescript.js",
     "build": "NODE_ENV=production && npm run build:node && npm run build:web && npm run build:react-native && npm run build:native-script",
@@ -54,14 +54,14 @@
   ],
   "dist": {
     "shasum": "a328ed07240476a26b31a23261355dc929e1da63",
-    "tarball": "https://registry.npmjs.org/contentstack/-/contentstack-3.13.2.tgz"
+    "tarball": "https://registry.npmjs.org/contentstack/-/contentstack-3.14.0.tgz"
   },
   "license": "MIT",
   "directories": {},
-  "_resolved": "https://registry.npmjs.org/contentstack/-/contentstack-3.13.2.tgz",
+  "_resolved": "https://registry.npmjs.org/contentstack/-/contentstack-3.14.0.tgz",
   "_npmOperationalInternal": {
     "host": "packages-18-east.internal.npmjs.com",
-    "tmp": "tmp/contentstack-3.13.2.tgz_1477830884275_0.9869455888401717"
+    "tmp": "tmp/contentstack-3.14.0.tgz_1477830884275_0.9869455888401717"
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
@@ -73,16 +73,17 @@
     "babel-preset-es2016": "6.24.1",
     "babel-preset-stage-1": "6.24.1",
     "babel-runtime": "6.26.0",
+    "clean-webpack-plugin": "^4.0.0",
     "compression-webpack-plugin": "1.0.1",
     "es3ify-loader": "0.2.0",
     "fetch-mock-jest": "^1.3.0",
     "http-proxy-agent": "^3.0.0",
     "istanbul": "^0.4.5",
-    "jest": "^26.4.2",
+    "jest": "^27.2.5",
     "jest-html-reporters": "^2.1.6",
     "jsdoc": "^3.6.7",
-    "jshint": "^2.13.0",
-    "nodemailer": "^6.6.3",
+    "jshint": "^2.13.1",
+    "nodemailer": "^6.6.5",
     "request": "^2.88.2",
     "string-replace-loader": "1.3.0",
     "string-replace-webpack-plugin": "0.1.3",
@@ -90,16 +91,16 @@
     "tap-json": "1.0.0",
     "tape": "4.8.0",
     "ts-jest": "^26.5.6",
-    "typescript": "^4.3.5",
+    "typescript": "^4.4.3",
     "uglify-js": "2.8.29",
-    "webpack": "^5.44.0",
-    "webpack-cli": "^3.3.12",
+    "webpack": "^5.56.1",
+    "webpack-cli": "^4.9.0",
     "webpack-md5-hash": "0.0.5",
     "webpack-merge": "4.1.0"
   },
   "dependencies": {
     "@contentstack/utils": "^1.0.2",
-    "es6-promise": "4.1.1",
+    "es6-promise": "^4.1.1",
     "isomorphic-fetch": "^3.0.0",
     "localStorage": "1.0.3"
   }
