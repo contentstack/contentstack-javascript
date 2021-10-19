@@ -1,6 +1,5 @@
 *.DS_Store
-examples/*
-node_modules/*
+**/node_modules/*
 .idea/*
 reports/*
 apidocs-templates/*
@@ -11,3 +10,4 @@ test/report.json/*
 tap-html.html
 *html-report
 coverage
+.env
