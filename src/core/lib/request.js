@@ -43,11 +43,11 @@ export default function Request(options, fetchOptions) {
 
         return fetchRetry(url + '?' + queryParams, 
                             headers, 
-                            fetchOptions.retryDelay, 
-                            fetchOptions.retryLimit, 
                             fetchOptions, 
                             resolve, 
-                            reject)
+                            reject, 
+                            fetchOptions.retryDelay, 
+                            fetchOptions.retryLimit)
         
     });
 }
@@ -57,10 +57,8 @@ function wait(retryDelay) {
         setTimeout(resolve, retryDelay)
     });
 }
-async function safeParseJSON(response) {
-    const body = await response.text();
-}
-function fetchRetry(url, headers, retryDelay = 300, retryLimit = 5, fetchOptions, resolve, reject) {
+
+function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 300, retryLimit = 5) {
     var option = Utils.mergeDeep({ 
         method: 'GET',
         headers: headers,

@@ -1,7 +1,7 @@
 'use strict';
 
 const webpack = require('webpack');
-const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 const Package = require('./../package.json');
 
@@ -28,7 +28,7 @@ module.exports = function(options) {
                     },
                     {
                         loader: 'string-replace-loader',
-                        query: {
+                        options: {
                             search: '{{VERSION}}',
                             replace: Package.version
                         }
@@ -37,7 +37,13 @@ module.exports = function(options) {
             }]
         },
         plugins: [
-            new webpack.IgnorePlugin(/vertx/),
+            new webpack.WatchIgnorePlugin({
+                paths: [/vertx/]
+              }),
+            new CleanWebpackPlugin({
+                protectWebpackAssets: false,
+                cleanAfterEveryBuildPatterns: ['*.LICENSE.txt']
+            })
         ]
     };
 }
