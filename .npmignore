@@ -13,3 +13,5 @@ typescript-html-report
 webpack
 jest.config.js
 coverage
+CODEOWNERS
+.talismanrc
