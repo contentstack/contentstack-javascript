@@ -29,7 +29,7 @@ module.exports = function(options) {
                 exclude: '/node_modules/',
                 use: [{
                     loader: 'string-replace-loader',
-                    query: {
+                    options: {
                         search: '{{PLATFORM}}',
                         replace: 'web'
                     }
