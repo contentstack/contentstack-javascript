@@ -67,7 +67,6 @@ test('.ascending()', function(assert) {
             if (entries && entries.length && entries[0].length) {
                 var prev = entries[0][0][field];
                 var _entries = entries[0].every(function(entry) {
-                    var flag = (entry[field] <= prev);
                     prev = entry[field];
                     return (entry[field] >= prev);
                 });
@@ -217,7 +216,7 @@ test('.greaterThan()', function(assert) {
                 assert.equal(_entries, true, "entries sorted ascending on '" + field + "' field");
             }
             assert.end();
-        }, function error(err) {
+        }, function error() {
             assert.fail(".greaterThan()");
             assert.end();
         });
@@ -1134,8 +1133,7 @@ test('.includeSchema() and .includeContentType()', function(assert) {
 
 // only
 test('.only() - Single String Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'updated_at';
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .only('title')
@@ -1156,8 +1154,7 @@ test('.only() - Single String Parameter', function(assert) {
 });
 
 test('.only() - Multiple String Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'updated_at';
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .only('BASE', 'title')
@@ -1209,19 +1206,6 @@ test('.only() - For the reference - String', function(assert) {
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
-            var flag = entries[0].every(function(entry) {
-                var _flag = true;
-                if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
-                    _flag = true;
-                    _flag = entry.reference.every(function(reference) {
-                        // console.log("==", reference && Object.keys(reference).length === 2 && "title" in reference && "url" in reference && "uid" in reference);
-                        return (reference && Object.keys(reference).length === 2 && "title" in reference && "uid" in reference);
-                    });
-                } else {
-                    _flag = false;
-                }
-                return (_flag && entry && Object.keys(entry).length === 2 && "reference" in entry && "uid" in entry);
-            });
             assert.end();
         }, function error(err) {
             console.error("error :", err);
@@ -1231,8 +1215,7 @@ test('.only() - For the reference - String', function(assert) {
 });
 
 test('.only() - For the reference - Array', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'updated_at';
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .includeReference('reference')
@@ -1242,19 +1225,6 @@ test('.only() - For the reference - Array', function(assert) {
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
-            var flag = entries[0].every(function(entry) {
-                var _flag = true;
-                if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
-                    _flag = true;
-                    _flag = entry.reference.every(function(reference) {
-                        // console.log("==", reference && Object.keys(reference).length === 2 && "title" in reference && "url" in reference && "uid" in reference);
-                        return (reference && Object.keys(reference).length === 2 && "title" in reference && "uid" in reference);
-                    });
-                } else {
-                    _flag = false;
-                }
-                return (_flag && entry && Object.keys(entry).length === 2 && "reference" in entry && "uid" in entry);
-            });
             assert.end();
         }, function error(err) {
             console.error("error :", err);
@@ -1360,8 +1330,7 @@ test('.except() - For the reference - String', function(assert) {
 });
 
 test('.except() - For the reference - Array', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'updated_at';
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .includeReference('reference')

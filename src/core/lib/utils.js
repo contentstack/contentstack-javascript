@@ -119,7 +119,7 @@ export function parseQueryFromParams(queryObject, single, toJSON) {
     }
 };
 
-// returrn the hash value of the query
+// return the hash value of the query
 export function getHash(query) {
     try {
         let hashValue = generateHash(JSON.stringify(query)),
@@ -321,8 +321,9 @@ export function sendRequest(queryObject, options) {
                             return resolve(syncstack);
                         }
                             
-                        if (!tojson) 
+                        if (!tojson) {
                             entries = resultWrapper(entries);
+                        }
                             return resolve(spreadResult(entries));
 
                     } catch (e) {
@@ -349,7 +350,9 @@ export function sendRequest(queryObject, options) {
                             if (err || !_data) {
                                 callback(true, resolve, reject);
                             } else {
-                                if (!tojson) _data = resultWrapper(_data);
+                                if (!tojson) {
+                                    _data = resultWrapper(_data);
+                                } 
                                 return resolve(spreadResult(_data));
                             }
                         } catch (e) {
@@ -379,7 +382,9 @@ export function sendRequest(queryObject, options) {
                             if (err || !_data) {
                                  reject(err);
                             } else {
-                                if (!tojson) _data = resultWrapper(_data);
+                                if (!tojson) {
+                                    _data = resultWrapper(_data);
+                                }
                                  resolve(spreadResult(_data));
                             }
                         } catch (e) {

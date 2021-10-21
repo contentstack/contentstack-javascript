@@ -71,7 +71,6 @@ test('default .find()', function(assert) {
                 var prev = assets[0][0].get(field);
                 var _assets = assets[0].every(function(asset) {
                     asset = asset.toJSON();
-                    var flag = (asset[field] <= prev);
                     prev = asset[field];
                     return (asset.updated_at <= prev);
                 });
@@ -101,7 +100,6 @@ test('.ascending()', function(assert) {
                 var prev = assets[0][0].get(field);
                 var _assets = assets[0].every(function(asset) {
                     asset = asset.toJSON();
-                    var flag = (asset[field] <= prev);
                     prev = asset[field];
                     return (asset[field] >= prev);
                 });
@@ -128,7 +126,6 @@ test('.descending()', function(assert) {
                 var prev = assets[0][0].get(field);
                 var _assets = assets[0].every(function(asset) {
                     asset = asset.toJSON();
-                    var flag = (asset[field] <= prev);
                     prev = asset[field];
                     return (asset[field] >= prev);
                 });
@@ -427,7 +424,7 @@ test('.skip()', function(assert) {
                         allassets[0] = allassets[0].slice(1);
                         //var prev = assets[0][0].get(field);
                         var prev = assets[0][0][field];
-                        var _assets = assets[0].every(function(asset, idx) {
+                        var _assets = assets[0].every(function(asset) {
                             var flag = (asset[field] <= prev);
                             prev = asset[field];
                             return flag;
@@ -510,8 +507,7 @@ test('.count()', function(assert) {
 test('.or() - Query Objects', function(assert) {
     var Query1 = Stack.Assets().Query().containedIn('title', ['image1', 'image2']);
     var Query2 = Stack.Assets().Query().where('is_dir', true);
-    var Query = Stack.Assets().Query(),
-        field = 'updated_at';
+    var Query = Stack.Assets().Query();
 
     Query
         .or(Query1, Query2)
@@ -614,7 +610,6 @@ test('.query() - Raw query', function(assert) {
 
 test('Non reference .tags() ', function(assert) {
     var Query = Stack.Assets().Query(),
-        field = 'tags',
         tags = ["asset3"];
 
     Query

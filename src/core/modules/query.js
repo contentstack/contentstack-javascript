@@ -764,7 +764,7 @@ export default class Query extends Entry {
      /**
      * @method findOne
      * @memberOf Query
-     * @deprecated since verion 3.3.0
+     * @deprecated since version 3.3.0
      * @description Retrieve a single entry from the result
      * @example let blogQuery = Stack().ContentType('example').Query().findOne();
      *          blogQuery.then(function(result) {

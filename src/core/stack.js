@@ -455,7 +455,7 @@ export default class Stack {
                 environment: this.environment
             }
         };
-        if(param && param !== undefined) {
+        if(param) {
             for( var key in param) {
                 query.body[key] = param[key]    
             }

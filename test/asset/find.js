@@ -101,7 +101,6 @@ test('.ascending()', function(assert) {
             if (assets && assets.length && assets[0].length) {
                 var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
-                    var flag = (asset[field] <= prev);
                     prev = asset[field];
                     return (asset[field] >= prev);
                 });
@@ -191,8 +190,7 @@ test('.lessThan()', function(assert) {
 
 test('.lessThanOrEqualTo()', function(assert) {
     var Query = Stack.Assets().Query(),
-        field = 'updated_at',
-        value = 5122;
+        field = 'updated_at';
     Query
         .lessThanOrEqualTo('file_size', 5122)
         .toJSON()
@@ -240,7 +238,7 @@ test('.greaterThan()', function(assert) {
                 assert.equal(_assets, true, "assets sorted ascending on '" + field + "' field");
             }
             assert.end();
-        }, function error(err) {
+        }, function error() {
             assert.fail(".greaterThan()");
             assert.end();
         });
@@ -651,7 +649,6 @@ test('.query() - Raw query', function(assert) {
 
 test('.tags()', function(assert) {
     var Query = Stack.Assets().Query(),
-        field = 'tags',
         tags = ["asset3"];
 
     Query
@@ -765,8 +762,7 @@ test('.includeCount()', function(assert) {
 
 // only
 test('.only() - Single String Parameter', function(assert) {
-    var Query = Stack.Assets().Query(),
-        field = 'updated_at';
+    var Query = Stack.Assets().Query();
 
     Query
         .only('title')
@@ -787,8 +783,7 @@ test('.only() - Single String Parameter', function(assert) {
 });
 
 test('.only() - Multiple String Parameter', function(assert) {
-    var Query = Stack.Assets().Query(),
-        field = 'updated_at';
+    var Query = Stack.Assets().Query();
 
     Query
         .only('BASE', 'title')
