@@ -50,21 +50,19 @@ export function transform(type) {
 export function _type(val) {
     let _typeof,
         __typeof = typeof val;
-    switch (__typeof) {
-        case 'object':
-            _typeof = __typeof;
-            if (Array.isArray(val)) {
-                __typeof = 'array';
-            }
-            break;
-        default:
-            _typeof = __typeof;
+    if (__typeof === "object") {
+        _typeof = __typeof;
+        if (Array.isArray(val)) {
+            __typeof = 'array';
+        }
+    } else {
+        _typeof = __typeof;
     }
     return __typeof;
-};
+}
 
 // merge two objects
-export function mergeDeep(target, source) {
+export function mergeDeep(destination, sourceVar) {
     let self = this;
     let _merge_recursive = function(target, source) {
         for (let key in source) {
@@ -77,9 +75,9 @@ export function mergeDeep(target, source) {
             }
         }
     };
-    _merge_recursive(target, source);
-    return target;
-};
+    _merge_recursive(destination, sourceVar);
+    return destination;
+}
 
 // merge two objects
 export function merge(target, source) {
@@ -89,12 +87,12 @@ export function merge(target, source) {
         }
     }
     return target;
-};
+}
 
 // return true if process is running in browser else false
 export function isBrowser() {
     return (typeof window !== "undefined" && typeof process === "object" && process.title === "browser");
-};
+}
 
 
 // return the query from the params
@@ -117,7 +115,7 @@ export function parseQueryFromParams(queryObject, single, toJSON) {
             api_key: (queryObject.requestParams.headers) ? queryObject.requestParams.headers.api_key : ""
         };
     }
-};
+}
 
 // return the hash value of the query
 export function getHash(query) {
@@ -131,7 +129,7 @@ export function getHash(query) {
         keyArray.push(hashValue);
         return keyArray.join('.');
     } catch (e) {}
-};
+}
 
 // return the hash value of the string
 export function generateHash(str) {
@@ -144,7 +142,7 @@ export function generateHash(str) {
         hash |= 0; // Convert to 32bit integer
     }
     return ((hash < -1) ? hash * -1 : hash);
-};
+}
 
 // generate the Result object
 export function resultWrapper(result) {
@@ -173,7 +171,7 @@ export function resultWrapper(result) {
     }
 
     return result;
-};
+}
 
 // spread the result object
 export function spreadResult(result) {
@@ -201,7 +199,7 @@ export function spreadResult(result) {
         if (typeof result.items !== 'undefined') _results.push(result);
     }
     return _results;
-};
+}
 
 export function sendRequest(queryObject, options) {
 
@@ -263,7 +261,7 @@ export function sendRequest(queryObject, options) {
                 }
             });
         }
-    };
+    }
 
     let callback = function(continueFlag, resolve, reject) {
         if (continueFlag) {
@@ -340,7 +338,7 @@ export function sendRequest(queryObject, options) {
                     }
                 });
         }
-    };
+    }
     switch (cachePolicy) {
         case 1:
             return new Promise(function(resolve, reject) {
@@ -371,7 +369,7 @@ export function sendRequest(queryObject, options) {
             return new Promise(function(resolve, reject) {
                 callback(true, resolve, reject);
             })
-    };
+    }
 
     if (cachePolicy === 3) {
 
@@ -404,4 +402,4 @@ export function sendRequest(queryObject, options) {
                 });
               })
     }
-};
+}
