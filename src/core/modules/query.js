@@ -1,4 +1,3 @@
-import Request from '../lib/request';
 import * as Utils from '../lib/utils.js';
 import Entry from './entry';
 
