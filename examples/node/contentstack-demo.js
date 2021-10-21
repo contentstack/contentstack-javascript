@@ -35,8 +35,8 @@ class ContentstackDemo {
      * @params       : contentTypeUid {string} - Content-Type from which entries to be retrieved
      * @return       : Result {Promise}
      */
-    getLastActivities() {
-        //contentTypeUid = contentTypeUid || 'source'
+    getLastActivities(contentTypeUid) {
+        contentTypeUid = contentTypeUid || 'source'
         return this.Stack.getLastActivities()
     }
 
@@ -46,7 +46,7 @@ class ContentstackDemo {
      * @params       : contentTypeUid {string} - Content-Type from which entries to be retrieved
      * @return       : Result {Promise}
      */
-    getContentTypedemo() {
+    getContentTypedemo(contentTypeUid) {
         contentTypeUid = contentTypeUid || 'source'
         return this.Stack.ContentType(contentTypeUid).fetch()
     }
