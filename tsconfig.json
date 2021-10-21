@@ -7,7 +7,8 @@
         "strictNullChecks": true,
         "types": ["jest"],
         "noEmit": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+        "allowJs": true
     },
     "files": ["index.d.ts"]
 }
