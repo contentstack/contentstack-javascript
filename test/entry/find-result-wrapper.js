@@ -4,7 +4,6 @@
  */
 const test = require('tape');
 const Contentstack = require('../../dist/node/contentstack.js');
-const _ = require('lodash');
 const init = require('../config.js');
 const Utils = require('./utils.js');
 
@@ -37,7 +36,6 @@ test('default .find()', function(assert) {
                 var prev = entries[0][0].get(field);
                 var _entries = entries[0].every(function(entry) {
                     entry = entry.toJSON();
-                    var flag = (entry[field] <= prev);
                     prev = entry[field];
                     return (entry.updated_at <= prev);
                 });
@@ -68,7 +66,6 @@ test('.ascending()', function(assert) {
                 var prev = entries[0][0].get(field);
                 var _entries = entries[0].every(function(entry) {
                     entry = entry.toJSON();
-                    var flag = (entry[field] <= prev);
                     prev = entry[field];
                     return (entry[field] >= prev);
                 });
@@ -96,7 +93,6 @@ test('.descending()', function(assert) {
                 var prev = entries[0][0].get(field);
                 var _entries = entries[0].every(function(entry) {
                     entry = entry.toJSON();
-                    var flag = (entry[field] <= prev);
                     prev = entry[field];
                     return (entry[field] >= prev);
                 });
@@ -384,7 +380,7 @@ test('.skip()', function(assert) {
                 .skip(1)
                 .toJSON()
                 .find()
-                .then(function success(entries) {
+                .then(function result(entries) {
                     // assert.ok("entries" in result, 'Entries key present in the resultset');
                     assert.ok((entries[0].length >= 2), '2 or more Entries present in the resultset');
                     assert.deepEqual(allEntries[0].slice(1), entries[0], 'All elements matched.');
@@ -392,7 +388,7 @@ test('.skip()', function(assert) {
                         allEntries[0] = allEntries[0].slice(1);
                         //var prev = entries[0][0].get(field);
                         var prev = entries[0][0][field];
-                        var _entries = entries[0].every(function(entry, idx) {
+                        var _entries = entries[0].every(function(entry) {
                             var flag = (entry[field] <= prev);
                             prev = entry[field];
                             return flag;
@@ -427,7 +423,7 @@ test('.limit()', function(assert) {
                 .limit(2)
                 .toJSON()
                 .find()
-                .then(function success(entries) {
+                .then(function result(entries) {
                     // assert.ok("entries" in result, 'Entries key present in the resultset');
                     assert.ok(entries[0].length, 'Entries present in the resultset');
                     assert.deepEqual(allEntries[0].slice(0, 2), entries[0], 'All elements matched.');
@@ -476,8 +472,7 @@ test('.count()', function(assert) {
 test('.or() - Query Objects', function(assert) {
     var Query1 = Stack.ContentType(contentTypes.source).Query().containedIn('title', ['source1', 'source2']);
     var Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', true);
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'updated_at';
+    var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
         .or(Query1, Query2)
@@ -565,11 +560,7 @@ test('.query() - Raw query', function(assert) {
             if (entries && entries.length && entries[0].length) {
                 var _entries = entries[0].every(function(entry) {
                     entry = entry.toJSON();
-                    if (entry.title === 'source1' || entry.boolean === true) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    return (entry.title === 'source1' || entry.boolean === true) 
                 });
                 assert.ok(_entries, '$OR condition satisfied');
             }
@@ -965,20 +956,6 @@ test('.only() - For the reference - String', function(assert) {
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
-            var flag = entries[0].every(function(entry) {
-                entry = entry.toJSON();
-                var _flag = true;
-                if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
-                    _flag = true;
-                    _flag = entry.reference.every(function(reference) {
-                        // console.log("==", reference && Object.keys(reference).length === 2 && "title" in reference && "url" in reference && "uid" in reference);
-                        return (reference && Object.keys(reference).length === 4 && "title" in reference && "uid" in reference && "url" in reference);
-                    });
-                } else {
-                    _flag = false;
-                }
-                return (_flag && entry && Object.keys(entry).length === 3 && "reference" in entry && "uid" in entry && "url" in entry);
-            });
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
@@ -997,20 +974,6 @@ test('.only() - For the reference - Array', function(assert) {
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
-            var flag = entries[0].every(function(entry) {
-                entry = entry.toJSON();
-                var _flag = true;
-                if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
-                    _flag = true;
-                    _flag = entry.reference.every(function(reference) {
-                        console.log("==", reference && Object.keys(reference).length === 2 && "title" in reference && "url" in reference && "uid" in reference);
-                        return (reference && Object.keys(reference).length === 2 && "title" in reference && "uid" in reference);
-                    });
-                } else {
-                    _flag = false;
-                }
-                return (_flag && entry && Object.keys(entry).length === 3 && "reference" in entry && "uid" in entry && "url" in entry);
-            });
             assert.end();
         }, function error(err) {
             console.error("Error :", err);

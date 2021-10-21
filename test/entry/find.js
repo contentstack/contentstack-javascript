@@ -662,12 +662,7 @@ test('.query() - Raw query', function(assert) {
             assert.ok(entries[0].length, 2, 'two entries present in the resultset');
             if (entries && entries.length && entries[0].length) {
                 var _entries = entries[0].every(function(entry) {
-                    if (entry.title === 'source2' || entry.boolean === false) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                    // return (entry.reference.indexOf('blt1ce8bb666a834bfb') || entry.other_reference.indexOf('blted2d2fa1f02c4981') ? true : false);
+                    return (entry.title === 'source2' || entry.boolean === false)
                 });
                 assert.ok(_entries, '$OR condition satisfied');
             }

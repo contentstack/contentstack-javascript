@@ -592,11 +592,7 @@ test('.query() - Raw query', function(assert) {
             if (assets && assets.length && assets[0].length) {
                 var _assets = assets[0].every(function(asset) {
                     asset = asset.toJSON();
-                    if (asset.title === 'image1' || asset.is_dir === true) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    return (asset.title === 'image1' || asset.is_dir === true) 
                 });
                 assert.ok(_assets, '$OR condition satisfied');
             }

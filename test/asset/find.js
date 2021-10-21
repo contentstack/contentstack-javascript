@@ -629,12 +629,7 @@ test('.query() - Raw query', function(assert) {
             assert.ok(assets[0].length, 1, 'one asset present in the resultset');
             if (assets && assets.length && assets[0].length) {
                 var _assets = assets[0].every(function(asset) {
-                    if (asset.title === 'image2' || asset.is_dir === false) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                    // return (asset.reference.indexOf('blt1ce8bb666a834bfb') || asset.other_reference.indexOf('blted2d2fa1f02c4981') ? true : false);
+                    return (asset.title === 'image2' || asset.is_dir === false) 
                 });
                 assert.ok(_assets, '$OR condition satisfied');
             }

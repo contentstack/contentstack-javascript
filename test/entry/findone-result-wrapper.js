@@ -271,7 +271,7 @@ test('findOne:  .skip()', function(assert) {
                 .Query()
                 .skip(1)
                 .findOne()
-                .then(function success(entry) {
+                .then(function result(entry) {
                     assert.deepEqual(allEntries[0][1].toJSON(), entry.toJSON(), 'Element matched.');
                     assert.end();
                 }, function error(err) {
