@@ -168,7 +168,7 @@ export class Entry {
     includeEmbeddedItems(): this;
     includeFallback(): this;
     /**
-     * @deprecated since verion 3.3.0
+     * @deprecated since version 3.3.0
      */
     includeSchema(): this;
     includeReferenceContentTypeUID(): this;

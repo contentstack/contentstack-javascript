@@ -200,7 +200,7 @@ export default class Entry {
     /**
      * @method includeSchema
      * @memberOf Entry
-     * @deprecated since verion 3.3.0
+     * @deprecated since version 3.3.0
      * @description  Include schema of the current content type along with entry/entries details.
      * @example Stack.ContentType("contentType_uid").Entry("entry_uid").includeSchema().fetch()
      * @returns {Entry}
