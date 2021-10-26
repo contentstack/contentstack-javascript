@@ -67,7 +67,7 @@ export interface ContentTypeCollection{
 
 export interface LivePreview {
     host: string
-    authorization: string
+    management_token: string
     enable: boolean
 }
 
