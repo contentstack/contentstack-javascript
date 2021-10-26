@@ -11,18 +11,21 @@ let errorRetry = [408, 429]
      * @class 
         Stack 
      * @description Initialize an instance of ‘Stack’
-     * @param {Object} stack - Stack Details
-     * @param {String} stack.api_key - Stack API Key.
-     * @param {String} stack.delivery_token - Stack Delivery token.
-     * @param {String} stack.environment - Stack Environment name.
-     * @param {String} stack.region - DB region for Stack.
-     * @param {Object} stack.fetchOptions - Custom setting for the request.
-     * @param {number} stack.fetchOptions.timeout - Set timeout for the request.
-     * @param {number} stack.fetchOptions.retryLimit - The number of retries before failure. Default is 5
-     * @param {number} stack.fetchOptions.retryDelay - The number of ms to use for operation retries. Default is 300ms
-     * @param {function} stack.fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429.
-     * @param {function} stack.fetchOptions.retryDelayOptions.base - The base number of milliseconds to use in the exponential backoff for operation retries.
-     * @param {function} stack.fetchOptions.retryDelayOptions.customBackoff - A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds.
+     * @param param - Stack configuration.
+     * @param param.api_key - Stack API Key.
+     * @param param.delivery_token - Stack Delivery token.
+     * @param param.environment - Stack Environment name.
+     * @param param.region - DB region for Stack.
+     * @param param.branch - Name of the branch you want to fetch data from
+     * @param param.live_preview - Live preview configuration.
+     * @param param.fetchOptions - Custom setting for the request.
+     * @param param.fetchOptions.timeout - Set timeout for the request.
+     * @param param.fetchOptions.retryLimit - The number of retries before failure. Default is 5
+     * @param param.fetchOptions.retryDelay - The number of ms to use for operation retries. Default is 300ms
+     * @param param.fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429.
+     * @param param.fetchOptions.retryDelayOptions.base - The base number of milliseconds to use in the exponential backoff for operation retries.
+     * @param param.fetchOptions.retryDelayOptions.customBackoff - A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds.
+     * 
      * @example
      * var Stack = Contentstack.Stack({
      *      'api_key':'api_key',
@@ -71,12 +74,16 @@ export default class Stack {
                     if (typeof stack_arguments[0].live_preview == "object") {
                         this.live_preview =  Utils.mergeDeep(this.config.live_preview , stack_arguments[0].live_preview)
                     }
+                    if (typeof stack_arguments[0].branch === "string" && stack_arguments[0].branch !== undefined) {
+                        this.headers.branch = stack_arguments[0].branch
+                    }
                     this.environment = stack_arguments[0].environment;
                     return this;
                 } else {
                     console.error("Kindly provide valid object parameters. The specified API Key, Delivery Token, or Environment Name is invalid.");
                 }
             case 3:
+                console.warn("WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
@@ -88,6 +95,7 @@ export default class Stack {
                     console.error("Kindly provide valid string parameters.");
                 }
             case 4:
+                console.warn("WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
@@ -106,6 +114,7 @@ export default class Stack {
                 }
                 return this;
             case 5:
+                console.warn("WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
