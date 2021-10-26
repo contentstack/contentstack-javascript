@@ -1,4 +1,10 @@
 ## Change log
+### Version: 3.15.0
+#### Date: Oct-29-2021
+#####  New Features:
+ - Content branching feature support added
+
+
 ### Version: 3.14.0
 #### Date: Oct-19-2021
 #####  New Features:
