@@ -49,6 +49,7 @@ export interface Config {
     delivery_token: string;
     environment: string;
     region?: Region;
+    branch?: string;
     fetchOptions?: object;
 }
 // Stack Config
@@ -79,6 +80,9 @@ export interface LivePreviewQuery {
 // Stack 
 export class Stack {
     constructor(config: Config);
+    /**
+     * @deprecated since version 3.15.0
+     */
     constructor(api_key: string, delivery_token: string, environment_name: string, region?: Region, fetchOptions?: any, live_preview?: LivePreview);
 
     environment: string;
@@ -100,7 +104,7 @@ export class Stack {
     clearByContentType(): Stack;
     clearAll(): Stack;
     getCacheProvider(): object;
-    getLastActivites(): Promise<any>;;
+    getLastActivities(): Promise<any>;;
     getContentTypes(param?: object): Promise<ContentTypeCollection>;
     sync(params: object): Promise<SyncResult>;
     imageTransform(url: string, params: any): string;
