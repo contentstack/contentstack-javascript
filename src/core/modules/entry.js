@@ -246,6 +246,19 @@ export default class Entry {
     }
 
     /**
+     * @method includeBranch
+     * @memberOf Entry
+     * @description Include the Branch for publish content.
+     * @example stack.ContentType(contentType_uid).Entry(entry_uid).includeBranch().fetch()
+     * @returns {Entry}
+     * @instance
+     */
+     includeBranch() {
+        this._query['include_branch'] = true;
+        return this;
+    }
+    
+    /**
      * @method includeContentType
      * @memberOf Entry
      * @description Include the details of the content type along with the entry/entries details.
