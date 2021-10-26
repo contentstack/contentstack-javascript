@@ -129,7 +129,7 @@ Once you have initialized the SDK, you can start getting content in your app.
 To get a single entry, you need to specify the content type as well as the ID of the entry.
 
 ```javascript
-const Query = Stack.ContentType('blog').Entry("blt123something");
+const Query = Stack.ContentType('blog').Entry("<entry_uid>");
 
 Query.fetch()
 .then(function success(entry) {

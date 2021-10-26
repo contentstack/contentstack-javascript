@@ -108,7 +108,7 @@
             <p>To get a single entry, you need to specify the content type as well as the ID of the entry.</p>
             <pre class="prettyprint"><code>const Stack = Contentstack.Stack("stack_api_key", "delivery_token", "environment_name");
 
-const Query = Stack.ContentType('blog').Entry("blt123something");
+const Query = Stack.ContentType('blog').Entry("entry_uid");
 
 Query.fetch()
 .then(function success(entry) {
@@ -160,7 +160,7 @@ data.then(function(result) {
             <p>To get a single asset, you need to specify the UID of the asset.</p>
             <pre class="prettyprint"><code>const Stack = Contentstack.Stack("stack_api_key", "delivery_token", "environment_name");
 
-const Asset = Stack.Asset("blt123something");
+const Asset = Stack.Asset("<asset_uid>");
 
 Asset.fetch()
 .then(function success(asset) {

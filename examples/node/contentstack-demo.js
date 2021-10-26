@@ -10,7 +10,7 @@ const Contentstack = require('../../dist/node/contentstack.js');
 
 class ContentstackDemo {
     constructor(...config) {
-        config = config || { 'api_key': 'blt123something', 'delivery_token': 'blt123something', 'environment': 'development',  }
+        config = config || {}
        
         this.Stack = Contentstack.Stack(...config);
     }
@@ -25,7 +25,6 @@ class ContentstackDemo {
     getEntries(contentTypeUid) {
         contentTypeUid = contentTypeUid || 'source'
         return this.Stack.ContentType(contentTypeUid).Query().includeContentType().toJSON().find()
-        //return this.Stack.getContentTypes(contentTypeUid)
     
     }
 
@@ -71,7 +70,7 @@ class ContentstackDemo {
      */
     getEntry(contentTypeUid, entryUid) {
             contentTypeUid = contentTypeUid || 'source'
-            entryUid = entryUid || 'blt123something'
+            entryUid = entryUid || ''
             return this.Stack.ContentType(contentTypeUid).Entry(entryUid).language('ja-jp').fetch()
         }
 
@@ -92,7 +91,7 @@ class ContentstackDemo {
      * @return       : Result {Promise}
      */
     getAsset(assetUid) {
-        assetUid = assetUid || 'blt123something'
+        assetUid = assetUid || ''
         return this.Stack.Assets(assetUid).addParam('include_dimension', 'true').fetch()
     }
 
@@ -104,7 +103,7 @@ class ContentstackDemo {
      * @return       : Result {Promise}
      */
     getSyncApi(params) {
-        params = params || 'blt123something'
+        params = params || ''
         return this.Stack.sync(params);
     }
 
