@@ -68,6 +68,9 @@ export default class Stack {
                         api_key: stack_arguments[0].api_key,
                         access_token: stack_arguments[0].delivery_token
                     };
+                    if (typeof stack_arguments[0].live_preview == "object") {
+                        this.live_preview =  Utils.mergeDeep(this.config.live_preview , stack_arguments[0].live_preview)
+                    }
                     this.environment = stack_arguments[0].environment;
                     return this;
                 } else {
@@ -194,6 +197,14 @@ export default class Stack {
             console.error("Kindly provide the valid policy");
         }
         return this;
+    }
+
+
+    livePreviewQuery(query) {
+        if (this.live_preview) {
+            this.live_preview.live_preview = query.live_preview;
+            this.live_preview.content_type_uid = query.content_type_uid;
+        }
     }
 
      /**

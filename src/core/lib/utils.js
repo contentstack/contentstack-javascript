@@ -232,9 +232,9 @@ export function sendRequest(queryObject, options) {
         delete queryObject.requestParams.body.query;
         queryObject.requestParams.body = merge(queryObject.requestParams.body, cloneQueryObj);
 
-        if (queryObject.live_preview && queryObject.live_preview.enable === true && queryObject.live_preview.hash && queryObject.live_preview.hash !== "init") {
+        if (queryObject.live_preview && queryObject.live_preview.enable === true && queryObject.live_preview.live_preview && queryObject.live_preview.live_preview !== "init") {
             if(queryObject.live_preview.content_type_uid === queryObject.content_type_uid) {
-                queryObject.requestParams.body = merge(queryObject.requestParams.body, {live_preview: queryObject.live_preview.hash || "init"});
+                queryObject.requestParams.body = merge(queryObject.requestParams.body, {live_preview: queryObject.live_preview.live_preview || "init"});
                 cachePolicy = 2; // network else cache
                 if(queryObject.requestParams.body['environment']) {
                     delete queryObject.requestParams.body['environment'];
@@ -243,7 +243,7 @@ export function sendRequest(queryObject, options) {
                     delete queryObject.requestParams.headers['access_token'];
                 
                 queryObject.requestParams.headers['authorization'] = queryObject.live_preview.management_token
-            } else if(queryObject.live_preview.hash) {
+            } else if(queryObject.live_preview.live_preview) {
                 cachePolicy = 1; // cache then network
             }
         }
@@ -322,8 +322,7 @@ export function sendRequest(queryObject, options) {
                         if (!tojson) {
                             entries = resultWrapper(entries);
                         }
-                            return resolve(spreadResult(entries));
-
+                        return resolve(spreadResult(entries));
                     } catch (e) {
                         return reject({
                             message: e.message
