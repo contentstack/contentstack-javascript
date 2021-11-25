@@ -73,7 +73,7 @@ export interface LivePreview {
 }
 
 export interface LivePreviewQuery {
-    hash: string
+    live_preview: string
     content_type_uid: string
 }
 
