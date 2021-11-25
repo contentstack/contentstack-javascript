@@ -20,7 +20,7 @@
     "build:web": "webpack --config webpack/webpack.web.js",
     "build:react-native": "webpack --config webpack/webpack.react-native.js",
     "build:native-script": "webpack --config webpack/webpack.nativescript.js",
-    "build": "NODE_ENV=production && npm run build:node && npm run build:web && npm run build:react-native && npm run build:native-script",
+    "build": "npm run build:node && npm run build:web && npm run build:react-native && npm run build:native-script",
     "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose",
     "prepare": "npm run build",
     "pretest": "npm run build"

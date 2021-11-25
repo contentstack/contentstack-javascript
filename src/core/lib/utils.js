@@ -1,5 +1,5 @@
 import Request from './request';
-import Result from '../modules/result';
+import * as Result from '../modules/result';
 
 /**
  * @method addSpread
