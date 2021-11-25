@@ -50,6 +50,7 @@ export interface Config {
     environment: string;
     region?: Region;
     branch?: string;
+    live_preview?: LivePreview;
     fetchOptions?: object;
 }
 // Stack Config
@@ -111,6 +112,9 @@ export class Stack {
 }
 
 export function Stack(config: Config): Stack;
+/**
+ * @deprecated since version 3.15.0
+ */
 export function Stack(api_key: string, access_token: string, environment_name: string, region?: string, fetchOptions?: object): Stack;
 
 export class ContentType {
