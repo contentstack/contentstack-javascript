@@ -14,4 +14,3 @@ webpack
 jest.config.js
 coverage
 CODEOWNERS
-.talismanrc
