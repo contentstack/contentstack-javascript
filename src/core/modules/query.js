@@ -698,6 +698,7 @@ export default class Query extends Entry {
     /**
      * @method search
      * @memberOf Query
+     * @deprecated since version 3.15.0
      * @description Retrieve entries that have fields which match the provided search value.
      * @param {string} value - value to search in entries
      * @example blogQuery.search('Welcome to demo')

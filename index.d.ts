@@ -235,6 +235,9 @@ export class Query extends Entry {
 
     regex(key: string, value: string, options?: string): Query;
     
+    /**
+     * @deprecated since version 3.15.0
+     */
     search(value: string): Query;
 
     find(fetchOptions?: object): Promise<any>;
