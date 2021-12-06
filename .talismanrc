@@ -1,9 +1,3 @@
 fileignoreconfig:
-- filename: dist/react-native/contentstack.js
-  checksum: 6ec0482ba61056b8d079e776719164924e3ecd6c8123f03fd6dc01a727013d95
-- filename: dist/node/contentstack.js
-  checksum: 31877d4663fa195f8dd581279dbf4784567b5ed0a1923487ef1851cecbd5254f
-- filename: dist/nativescript/contentstack.js
-  checksum: 8acfc161d1a7fdaec02fc378e00cdd381d89dd19dedc25e7ee2b32be9a40f2a1
-- filename: dist/web/contentstack.js
-  checksum: 50454530e51fd6235680fe980cd411091ec052fb8d94b151c40dd9e1ed8c0e3f
+- filename: test/automation-script.js
+  checksum: dd31ccc9f78dbcfb48eafa5d7ab80d480776c70bc36d6a10eb86229fb79443af
