@@ -1,5 +1,5 @@
 import Request from './request';
-import Result from '../modules/result';
+import * as Result from '../modules/result';
 
 /**
  * @method addSpread
@@ -50,21 +50,19 @@ export function transform(type) {
 export function _type(val) {
     let _typeof,
         __typeof = typeof val;
-    switch (__typeof) {
-        case 'object':
-            _typeof = __typeof;
-            if (Array.isArray(val)) {
-                __typeof = 'array';
-            }
-            break;
-        default:
-            _typeof = __typeof;
+    if (__typeof === "object") {
+        _typeof = __typeof;
+        if (Array.isArray(val)) {
+            __typeof = 'array';
+        }
+    } else {
+        _typeof = __typeof;
     }
     return __typeof;
-};
+}
 
 // merge two objects
-export function mergeDeep(target, source) {
+export function mergeDeep(destination, sourceVar) {
     let self = this;
     let _merge_recursive = function(target, source) {
         for (let key in source) {
@@ -77,9 +75,9 @@ export function mergeDeep(target, source) {
             }
         }
     };
-    _merge_recursive(target, source);
-    return target;
-};
+    _merge_recursive(destination, sourceVar);
+    return destination;
+}
 
 // merge two objects
 export function merge(target, source) {
@@ -89,12 +87,12 @@ export function merge(target, source) {
         }
     }
     return target;
-};
+}
 
 // return true if process is running in browser else false
 export function isBrowser() {
     return (typeof window !== "undefined" && typeof process === "object" && process.title === "browser");
-};
+}
 
 
 // return the query from the params
@@ -117,9 +115,9 @@ export function parseQueryFromParams(queryObject, single, toJSON) {
             api_key: (queryObject.requestParams.headers) ? queryObject.requestParams.headers.api_key : ""
         };
     }
-};
+}
 
-// returrn the hash value of the query
+// return the hash value of the query
 export function getHash(query) {
     try {
         let hashValue = generateHash(JSON.stringify(query)),
@@ -131,7 +129,7 @@ export function getHash(query) {
         keyArray.push(hashValue);
         return keyArray.join('.');
     } catch (e) {}
-};
+}
 
 // return the hash value of the string
 export function generateHash(str) {
@@ -144,7 +142,7 @@ export function generateHash(str) {
         hash |= 0; // Convert to 32bit integer
     }
     return ((hash < -1) ? hash * -1 : hash);
-};
+}
 
 // generate the Result object
 export function resultWrapper(result) {
@@ -173,7 +171,7 @@ export function resultWrapper(result) {
     }
 
     return result;
-};
+}
 
 // spread the result object
 export function spreadResult(result) {
@@ -201,7 +199,7 @@ export function spreadResult(result) {
         if (typeof result.items !== 'undefined') _results.push(result);
     }
     return _results;
-};
+}
 
 export function sendRequest(queryObject, options) {
 
@@ -234,9 +232,9 @@ export function sendRequest(queryObject, options) {
         delete queryObject.requestParams.body.query;
         queryObject.requestParams.body = merge(queryObject.requestParams.body, cloneQueryObj);
 
-        if (queryObject.live_preview && queryObject.live_preview.enable === true && queryObject.live_preview.hash && queryObject.live_preview.hash !== "init") {
+        if (queryObject.live_preview && queryObject.live_preview.enable === true && queryObject.live_preview.live_preview && queryObject.live_preview.live_preview !== "init") {
             if(queryObject.live_preview.content_type_uid === queryObject.content_type_uid) {
-                queryObject.requestParams.body = merge(queryObject.requestParams.body, {live_preview: queryObject.live_preview.hash || "init"});
+                queryObject.requestParams.body = merge(queryObject.requestParams.body, {live_preview: queryObject.live_preview.live_preview || "init"});
                 cachePolicy = 2; // network else cache
                 if(queryObject.requestParams.body['environment']) {
                     delete queryObject.requestParams.body['environment'];
@@ -245,7 +243,7 @@ export function sendRequest(queryObject, options) {
                     delete queryObject.requestParams.headers['access_token'];
                 
                 queryObject.requestParams.headers['authorization'] = queryObject.live_preview.management_token
-            } else if(queryObject.live_preview.hash) {
+            } else if(queryObject.live_preview.live_preview) {
                 cachePolicy = 1; // cache then network
             }
         }
@@ -263,7 +261,7 @@ export function sendRequest(queryObject, options) {
                 }
             });
         }
-    };
+    }
 
     let callback = function(continueFlag, resolve, reject) {
         if (continueFlag) {
@@ -321,10 +319,10 @@ export function sendRequest(queryObject, options) {
                             return resolve(syncstack);
                         }
                             
-                        if (!tojson) 
+                        if (!tojson) {
                             entries = resultWrapper(entries);
-                            return resolve(spreadResult(entries));
-
+                        }
+                        return resolve(spreadResult(entries));
                     } catch (e) {
                         return reject({
                             message: e.message
@@ -339,7 +337,7 @@ export function sendRequest(queryObject, options) {
                     }
                 });
         }
-    };
+    }
     switch (cachePolicy) {
         case 1:
             return new Promise(function(resolve, reject) {
@@ -349,7 +347,9 @@ export function sendRequest(queryObject, options) {
                             if (err || !_data) {
                                 callback(true, resolve, reject);
                             } else {
-                                if (!tojson) _data = resultWrapper(_data);
+                                if (!tojson) {
+                                    _data = resultWrapper(_data);
+                                } 
                                 return resolve(spreadResult(_data));
                             }
                         } catch (e) {
@@ -368,7 +368,7 @@ export function sendRequest(queryObject, options) {
             return new Promise(function(resolve, reject) {
                 callback(true, resolve, reject);
             })
-    };
+    }
 
     if (cachePolicy === 3) {
 
@@ -379,7 +379,9 @@ export function sendRequest(queryObject, options) {
                             if (err || !_data) {
                                  reject(err);
                             } else {
-                                if (!tojson) _data = resultWrapper(_data);
+                                if (!tojson) {
+                                    _data = resultWrapper(_data);
+                                }
                                  resolve(spreadResult(_data));
                             }
                         } catch (e) {
@@ -399,4 +401,4 @@ export function sendRequest(queryObject, options) {
                 });
               })
     }
-};
+}

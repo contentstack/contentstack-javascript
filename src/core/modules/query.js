@@ -1,4 +1,3 @@
-import Request from '../lib/request';
 import * as Utils from '../lib/utils.js';
 import Entry from './entry';
 
@@ -699,6 +698,7 @@ export default class Query extends Entry {
     /**
      * @method search
      * @memberOf Query
+     * @deprecated since version 3.15.0
      * @description Retrieve entries that have fields which match the provided search value.
      * @param {string} value - value to search in entries
      * @example blogQuery.search('Welcome to demo')
@@ -764,7 +764,7 @@ export default class Query extends Entry {
      /**
      * @method findOne
      * @memberOf Query
-     * @deprecated since verion 3.3.0
+     * @deprecated since version 3.3.0
      * @description Retrieve a single entry from the result
      * @example let blogQuery = Stack().ContentType('example').Query().findOne();
      *          blogQuery.then(function(result) {

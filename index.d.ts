@@ -49,6 +49,8 @@ export interface Config {
     delivery_token: string;
     environment: string;
     region?: Region;
+    branch?: string;
+    live_preview?: LivePreview;
     fetchOptions?: object;
 }
 // Stack Config
@@ -67,18 +69,21 @@ export interface ContentTypeCollection{
 
 export interface LivePreview {
     host: string
-    authorization: string
+    management_token: string
     enable: boolean
 }
 
 export interface LivePreviewQuery {
-    hash: string
+    live_preview: string
     content_type_uid: string
 }
 
 // Stack 
 export class Stack {
     constructor(config: Config);
+    /**
+     * @deprecated since version 3.15.0
+     */
     constructor(api_key: string, delivery_token: string, environment_name: string, region?: Region, fetchOptions?: any, live_preview?: LivePreview);
 
     environment: string;
@@ -100,13 +105,16 @@ export class Stack {
     clearByContentType(): Stack;
     clearAll(): Stack;
     getCacheProvider(): object;
-    getLastActivites(): Promise<any>;;
+    getLastActivities(): Promise<any>;;
     getContentTypes(param?: object): Promise<ContentTypeCollection>;
     sync(params: object): Promise<SyncResult>;
     imageTransform(url: string, params: any): string;
 }
 
 export function Stack(config: Config): Stack;
+/**
+ * @deprecated since version 3.15.0
+ */
 export function Stack(api_key: string, access_token: string, environment_name: string, region?: string, fetchOptions?: object): Stack;
 
 export class ContentType {
@@ -168,7 +176,7 @@ export class Entry {
     includeEmbeddedItems(): this;
     includeFallback(): this;
     /**
-     * @deprecated since verion 3.3.0
+     * @deprecated since version 3.3.0
      */
     includeSchema(): this;
     includeReferenceContentTypeUID(): this;
@@ -227,6 +235,9 @@ export class Query extends Entry {
 
     regex(key: string, value: string, options?: string): Query;
     
+    /**
+     * @deprecated since version 3.15.0
+     */
     search(value: string): Query;
 
     find(fetchOptions?: object): Promise<any>;
