@@ -35,5 +35,5 @@
   "skip": 100,
   "limit": 100,
   "total_count": 300,
-  "pagination_token": "blt1223444455657"
+  "pagination_token": "page_tkn"
 }

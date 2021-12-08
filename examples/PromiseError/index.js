@@ -30,14 +30,14 @@ interceptor.use((req) => {
 });
 
 const Stack = Contentstack.Stack(
-    process.env.CONTENTSTACK_API_KEY,
-    process.env.CONTENTSTACK_DELIVERY_TOKEN,
-    process.env.CONTENTSTACK_ENVIRONMENT,
+    process.env.API_KEY,
+    process.env.DELIVERY_TOKEN,
+    process.env.ENVIRONMENT,
     { timeout: 5000,
         retryCondition: () => true
      });
 
-Stack.setHost('dev15-api.contentstack.com');
+Stack.setHost('api.contentstack.io');
 
 const Query = Stack
     .ContentType(process.env.CONTENTSTACK_CONTENT_TYPE)

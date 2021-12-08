@@ -23,7 +23,7 @@
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WGP99J7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><iframe title="Google Tag Manager"  src="https://www.googletagmanager.com/ns.html?id=GTM-WGP99J7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <input type="checkbox" id="nav-trigger" class="nav-trigger" />
 <label for="nav-trigger" class="navicon-button x">
@@ -826,8 +826,12 @@ export default class Query extends Entry {
      * @instance
      */
     findOne() {
-        const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-            url = (this.type &amp;&amp; this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
+        let host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version
+        if(this.type &amp;&amp; this.type !== 'asset' &amp;&amp; this.live_preview &amp;&amp; this.live_preview.enable === true &amp;&amp; this.live_preview.content_type_uid === this.content_type_uid ) {
+            host = this.config.protocol + "://" + this.live_preview.host + '/' + this.config.version
+        }
+        const url = (this.type &amp;&amp; this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
+        
         this.singleEntry = true;
         this._query.limit = 1;
         this.requestParams = {

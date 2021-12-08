@@ -23,7 +23,7 @@
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WGP99J7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><iframe title="Google Tag Manager"  src="https://www.googletagmanager.com/ns.html?id=GTM-WGP99J7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <input type="checkbox" id="nav-trigger" class="nav-trigger" />
 <label for="nav-trigger" class="navicon-button x">
@@ -118,10 +118,14 @@ export default class Stack {
                         access_token: stack_arguments[0].delivery_token
                     };
                     this.environment = stack_arguments[0].environment;
+                    if (typeof stack_arguments[0].live_preview == "object") {
+                        this.live_preview = stack_arguments[0].live_preview
+                    }
                     return this;
                 } else {
                     console.error("Kindly provide valid object parameters. The specified API Key, Delivery Token, or Environment Name is invalid.");
                 }
+                break;
             case 3:
                 if (typeof stack_arguments[0] === "string" &amp;&amp; typeof stack_arguments[1] === "string" &amp;&amp; typeof stack_arguments[2] === "string") {
                     this.headers = {
@@ -133,6 +137,7 @@ export default class Stack {
                 } else {
                     console.error("Kindly provide valid string parameters.");
                 }
+                break;
             case 4:
                 if (typeof stack_arguments[0] === "string" &amp;&amp; typeof stack_arguments[1] === "string" &amp;&amp; typeof stack_arguments[2] === "string") {
                     this.headers = {
@@ -245,6 +250,12 @@ export default class Stack {
         return this;
     }
 
+    livePreviewQuery(query) {
+        if (this.live_preview) {
+            this.live_preview.hash = query.live_preview;
+            this.live_preview.content_type_uid = query.content_type_uid;
+        }
+    }
      /**
      * @method setCacheProvider
      * @memberOf Stack

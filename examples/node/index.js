@@ -1,11 +1,15 @@
 'use strict'
+const path = require('path')
+const dotenv = require('dotenv').config({
+    path: path.join(__dirname, '.env')
+})
 
 const ContentstackDemo = require('./contentstack-demo.js')
-const Demo = new ContentstackDemo({ 'api_key': 'blt123something', 'delivery_token': 'blt123something', 'environment': 'development',  })
+const Demo = new ContentstackDemo({ 'api_key': process.env.API_KEY, 'delivery_token': process.env.DELIVERY_TOKEN, 'environment': process.env.ENVIRONMENT,  })
 
 
     //get all the entries
-Demo.getEntries()
+Demo.getEntries(process.env.CONTENT_TYPE)
     .then(function(result, err) {
        // console.log("Result>>>>>>>>>>>>>>>")   
         try {

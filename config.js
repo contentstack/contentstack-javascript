@@ -9,6 +9,10 @@ const config = {
         entries: "/entries/",
         assets: "/assets/",
         environments: "/environments/"
+    },
+    live_preview: {
+        enable: false,
+        host: 'api.contentstack.io'
     }
 };
 

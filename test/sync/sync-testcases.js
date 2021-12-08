@@ -5,15 +5,13 @@
 const sync_testcase = require('tape');
 const Contentstack = require('../../dist/node/contentstack.js');
 const init = require('../sync_config.js');
-const Utils = require('../entry/utils.js');
 
-const contentTypes = init.contentTypes;
 const config = require('../config.json')
 Object.assign(init, config)
 let Stack;
-let sync_token = "bltbb61f31a70a572e6c9506a";
+let sync_token = "";
 var total_count = 123;
-var pagination_token = "bltcec0534f81e9550f0b2d7b";
+var pagination_token = "";
 
 
 /*
@@ -81,7 +79,6 @@ sync_testcase('default .pagination_token()', function(assert) {
 
 
 sync_testcase('default .contentTypeUid()', function(assert) {
-    var contenttype_count = 29;
     Stack
          .sync({"init": true, "content_type_uid": "session"})
          .then(function success(data) {

@@ -24,14 +24,14 @@ To use the JavaScript SDK, download it from [here](https://contentstack.com/docs
 To initialize the SDK, you will need to specify the API Key, Delivery Token, and Environment Name of your stack.
 
 ```javascript
-    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name");
+    const Stack = Contentstack.Stack({ "api_key": "api_key", "delivery_token": "delivery_token", "environment": "environment" });
 ```
 
 For Setting the European Region:
 If you want to set and use European region, refer to the code below:
 
 ```javascript
-    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name", Contentstack.Region.EU);
+    const Stack = Contentstack.Stack({ "api_key": "api_key", "delivery_token": "delivery_token", "environment": "environment", "region": Contentstack.Region.EU });
 ```
 
 #### For Node.js
@@ -45,13 +45,13 @@ npm i contentstack
 To import the SDK in your project, use the following command:
 
 ```javascript
-import contentstack from ‘contentstack’
+import Contentstack from ‘contentstack’
 ```
 
 To initialize the SDK, you will need to specify the API Key, Delivery Token, and Environment Name of your stack.
 
 ```javascript
-    const Stack = contentstack.Stack("api_key","delivery_token","environment_name");
+    const Stack = Contentstack.Stack({ "api_key": "api_key", "delivery_token": "delivery_token", "environment": "environment" });
 ```
 
 For Setting the European Region: 
@@ -59,7 +59,7 @@ For Setting the European Region:
 If you want to set and use European region, refer to the code below:
 
 ```javascript
-    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name", Contentstack.Region.EU);
+    const Stack = Contentstack.Stack({ "api_key": "api_key", "delivery_token": "delivery_token", "environment": "environment", "region": Contentstack.Region.EU });
 ```
 
 #### For React Native
@@ -73,13 +73,13 @@ npm i contentstack
 To import the SDK in your project, use the following command:
 
 ```javascript
-import contentstack from `contentstack/react-native`
+import Contentstack from `contentstack/react-native`
 ```
 
 To initialize the SDK, you will need to specify the API Key, Delivery Token, and Environment Name of your stack.
 
 ```javascript
-    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name");
+    const Stack = Contentstack.Stack({ "api_key": "api_key", "delivery_token": "delivery_token", "environment": "environment" });
 ```
 
 For Setting the European Region:
@@ -87,7 +87,7 @@ For Setting the European Region:
 If you want to set and use European region, refer to the code below:
 
 ```javascript
-    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name", Contentstack.Region.EU);
+    const Stack = Contentstack.Stack({ "api_key": "api_key", "delivery_token": "delivery_token", "environment": "environment" "region": Contentstack.Region.EU });
 ```
 
 ### Key Concepts for using Contentstack
@@ -119,7 +119,7 @@ A publishing environment corresponds to one or more deployment servers or a cont
 You will need to specify the API key, Delivery Token, and Environment Name of your stack to initialize the SDK:
 
 ```javascript
-    const Stack = Contentstack.Stack("api_key", "delivery_token", "environment_name");
+    const Stack = Contentstack.Stack({ "api_key": "api_key", "delivery_token": "delivery_token", "environment": "environment" });
 ```
 
 Once you have initialized the SDK, you can start getting content in your app.
@@ -129,7 +129,7 @@ Once you have initialized the SDK, you can start getting content in your app.
 To get a single entry, you need to specify the content type as well as the ID of the entry.
 
 ```javascript
-const Query = Stack.ContentType('blog').Entry("blt123something");
+const Query = Stack.ContentType('blog').Entry("<entry_uid>");
 
 Query.fetch()
 .then(function success(entry) {

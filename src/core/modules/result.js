@@ -7,13 +7,13 @@ import * as Utils  from '../lib/utils'
  * @param {Object} object - API result object
  * @example
  * blogEntry.then(function (result) {
- *      // sucess function
+ *      // success function
  * },function (error) {
  *      // error function
  * })
  * @example
  * assetQuery.then(function (result) {
- *      // sucess function
+ *      // success function
  * },function (error) {
  *      // error function
  * })

@@ -23,7 +23,7 @@
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WGP99J7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><iframe title="Google Tag Manager"  src="https://www.googletagmanager.com/ns.html?id=GTM-WGP99J7" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 <input type="checkbox" id="nav-trigger" class="nav-trigger" />
 <label for="nav-trigger" class="navicon-button x">
@@ -380,11 +380,15 @@ export default class Entry {
      * @instance
      */
     fetch(fetchOptions) {
+        var host = this.config.host + ':' + this.config.port
+        if(this.live_preview &amp;&amp; this.live_preview.enable === true &amp;&amp; this.live_preview.content_type_uid === this.content_type_uid ) {
+            host = this.live_preview.host
+        }
         if (this.entry_uid) {
             this.requestParams = {
                 method: 'POST',
                 headers: this.headers,
-                url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries + this.entry_uid,
+                url: this.config.protocol + "://" + host + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries + this.entry_uid,
                 body: {
                     _method: 'GET',
                     query: this._query

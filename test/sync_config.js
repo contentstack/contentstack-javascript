@@ -8,6 +8,11 @@ module.exports = {
     },
     host: "",
     url: "",
+     runscope: {
+         url: "",
+         username: "",
+         password: ""
+     },
     contentTypes: {
         source: "source",
         numbers_content_type: "numbers_content_type"
@@ -17,8 +22,8 @@ module.exports = {
         port: 465,
         secure: true,
         auth: {
-            user: '<USERNAME>',
-            pass: '<PASSWORD>'
+            user: '',
+            pass: ''
         }
     }
 }
