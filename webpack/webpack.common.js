@@ -5,11 +5,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 const Package = require('./../package.json');
 
-const PROD = process.env.NODE_ENV === 'production'
-
 module.exports = function(options) {
     return {
-        mode: PROD ? 'production' : 'development',
+        mode: 'production',
         entry: {
             contentstack: "./src/core/contentstack",
         },
