@@ -8,8 +8,8 @@
     "url": "https://www.contentstack.com/"
   },
   "main": "dist/node/contentstack.js",
-  "react-native": "dist/react-native/contentstack.js",
   "browser": "dist/web/contentstack.js",
+  "react-native": "dist/react-native/contentstack.js",
   "types": "./index.d.ts",
   "_id": "contentstack@3.15.0",
   "scripts": {
