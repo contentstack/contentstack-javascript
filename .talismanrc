@@ -1,3 +1,1 @@
-fileignoreconfig:
-- filename: test/automation-script.js
-  checksum: dd31ccc9f78dbcfb48eafa5d7ab80d480776c70bc36d6a10eb86229fb79443af
+threshold: medium
