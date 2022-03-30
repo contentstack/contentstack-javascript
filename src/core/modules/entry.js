@@ -357,7 +357,7 @@ export default class Entry {
                     query: this._query
                 }
             };
-            var options = Utils.mergeDeep({}, this.fetchOptions, fetchOptions);
+            var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
             return Utils.sendRequest(this, options);
         } else {
             console.error("Kindly provide an entry uid. e.g. .Entry('asset_uid')");

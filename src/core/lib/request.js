@@ -17,7 +17,7 @@ export default function Request(options, fetchOptions) {
                     str.push(prefix + '[]=' + obj[i]);
                 }
             } else {
-                for (p in obj) {
+                for (const p in obj) {
                     let k = prefix ? prefix + "[" + p + "]" : p,
                         v = obj[p];
                     str.push((v !== null && typeof v === "object" && p !== 'query') ?
@@ -82,6 +82,9 @@ function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 30
             }
             wait(msDelay)
                 .then(() => {
+                    return fetchRetry(url, headers, retryDelay, retryLimit, fetchOptions, resolve, reject)
+                })
+                .catch(() => {
                     return fetchRetry(url, headers, retryDelay, retryLimit, fetchOptions, resolve, reject)
                 })
         }
