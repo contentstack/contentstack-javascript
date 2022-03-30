@@ -11,3 +11,4 @@ tap-html.html
 *html-report
 coverage
 .env
+.dccache
