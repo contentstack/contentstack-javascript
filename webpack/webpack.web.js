@@ -4,6 +4,7 @@ const path = require('path');
 const webpackMerge = require('webpack-merge');
 
 const commonConfig = require('./webpack.common.js');
+const webpack = require('webpack');
 
 module.exports = function(options) {
     return webpackMerge(commonConfig(), {
@@ -35,6 +36,14 @@ module.exports = function(options) {
                     }
                 }],
             }]
-        }
+        },
+        node: {
+            global: false
+          },
+          plugins: [
+            new webpack.ProvidePlugin({
+                global: require.resolve('./../global.js')
+              })
+        ]
     });
 }

@@ -14,3 +14,8 @@ webpack
 jest.config.js
 coverage
 CODEOWNERS
+src
+.env
+*.tgz
+.talismanrc
+tap-html.html 

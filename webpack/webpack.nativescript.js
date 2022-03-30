@@ -2,16 +2,21 @@
 
 const path = require('path');
 const webpackMerge = require('webpack-merge');
+var nodeExternals = require('webpack-node-externals');
 
 const commonConfig = require('./webpack.common.js');
 
 module.exports = function(options) {
     return webpackMerge(commonConfig(), {
         output: {
-            library: "Contentstack",
             libraryTarget: "commonjs2",
             path: path.join(__dirname, "../dist/nativescript"),
             filename: "contentstack.js"
+        },
+        target: "node",
+        externals: [nodeExternals()], 
+        externalsPresets: {
+            node: true
         },
         resolve: {
             alias: {
