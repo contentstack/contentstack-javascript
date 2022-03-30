@@ -1,6 +1,7 @@
 'use strict';
 const path = require('path');
 const webpackMerge = require('webpack-merge');
+var nodeExternals = require('webpack-node-externals');
 
 const commonConfig = require('./webpack.common.js');
 
@@ -12,6 +13,10 @@ module.exports = function(options) {
             filename: "contentstack.js"
         },
         target: "node",
+        externals: [nodeExternals()], 
+        externalsPresets: {
+            node: true
+        },
         resolve: {
             alias: {
                 runtime: path.resolve(__dirname, '../src/runtime/node')

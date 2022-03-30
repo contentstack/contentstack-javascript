@@ -2,13 +2,14 @@
 
 const path = require('path');
 const webpackMerge = require('webpack-merge');
+const TerserPlugin = require("terser-webpack-plugin");
+var nodeExternals = require('webpack-node-externals');
 
 const commonConfig = require('./webpack.common.js');
 
 module.exports = function(options) {
     return webpackMerge(commonConfig(), {
         output: {
-            library: "Contentstack",
             libraryTarget: "commonjs2",
             path: path.join(__dirname, "../dist/react-native"),
             filename: "contentstack.js"
@@ -23,6 +24,17 @@ module.exports = function(options) {
                 'node_modules',
             ]
         },
+        target: 'node', 
+        externals: [nodeExternals()],
+        externalsPresets: {
+            node: true
+        },
+        optimization: {
+            minimize: true,
+            minimizer: [new TerserPlugin({
+                terserOptions: { output: { ascii_only: true } }
+            })],
+          },
         module: {
             rules: [{
                 test: /\.js?$/,
