@@ -364,7 +364,7 @@ export default class Stack {
                 environment: this.environment
             }
         };
-        var options = Utils.mergeDeep({}, this.fetchOptions, fetchOptions);
+        var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
         return Request(result, options);
     }
 
@@ -518,7 +518,7 @@ export default class Stack {
                 query: this._query
             }
         }
-        var options = Utils.mergeDeep({}, this.fetchOptions, fetchOptions);
+        var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
         return Utils.sendRequest(this, options);
     }
 

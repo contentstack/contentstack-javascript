@@ -116,7 +116,7 @@ export default class Assets {
                     query: this._query
                 }
             }
-            var options = Utils.mergeDeep({}, this.fetchOptions, fetchOptions);
+            var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
             return Utils.sendRequest(this, options);
         } else {
             console.error("Kindly provide an asset uid. e.g. .Assets('asset_uid')");
