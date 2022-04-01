@@ -1,6 +1,7 @@
 const ContentstackRegion = {
     EU: "eu",
-    US: "us"
+    US: "us",
+    AZURE_NA: "azure-na"
 };
 
 export default ContentstackRegion;
