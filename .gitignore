@@ -12,3 +12,4 @@ tap-html.html
 coverage
 .env
 .dccache
+dist/*
