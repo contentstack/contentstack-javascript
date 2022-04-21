@@ -21,7 +21,8 @@ export class Utils {
 //Enum for Contentstack Region
 export enum Region {
     US = "us",
-    EU = "eu"
+    EU = "eu",
+    AZURE_NA = "azure-na"
 }
 
 //Enum for Contentstack CachePolicy
