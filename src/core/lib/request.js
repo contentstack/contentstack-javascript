@@ -82,10 +82,10 @@ function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 30
             }
             wait(msDelay)
                 .then(() => {
-                    return fetchRetry(url, headers, retryDelay, retryLimit, fetchOptions, resolve, reject)
+                    return fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay, retryLimit)
                 })
                 .catch(() => {
-                    return fetchRetry(url, headers, retryDelay, retryLimit, fetchOptions, resolve, reject)
+                    return fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay, retryLimit)
                 })
         }
     }
