@@ -1,4 +1,14 @@
 ## Change log
+### Version: 3.15.2
+#### Date: May-03-2022
+#####  New Features:
+ - Live preview with reference entry issue resolved
+
+### Version: 3.15.1
+#### Date: Apr-21-2022
+#####  New Features:
+ - Azure Na region and packages updates
+
 ### Version: 3.15.0
 #### Date: Oct-29-2021
 #####  New Features:
