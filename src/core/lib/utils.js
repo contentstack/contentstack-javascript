@@ -340,17 +340,74 @@ export function sendRequest(queryObject, options) {
     }
     switch (cachePolicy) {
         case 1:
-            return new Promise(function(resolve, reject) {
+            return new Promise(async function(resolve, reject) {
                 if (self.provider !== null) {
-                    self.provider.get(hashQuery, function(err, _data) {
+                    await self.provider.get(hashQuery, async function(err, _data) {
                         try {
                             if (err || !_data) {
                                 callback(true, resolve, reject);
                             } else {
-                                if (!tojson) {
-                                    _data = resultWrapper(_data);
-                                } 
-                                return resolve(spreadResult(_data));
+                                try {
+
+                                    const doesQueryRequestForReferences =
+                                        queryObject._query &&
+                                        Array.isArray(
+                                            queryObject._query.include
+                                        ) &&
+                                        queryObject._query.include.length > 0;
+
+                                    if (doesQueryRequestForReferences) {
+                                        const referencesToBeResolved =
+                                            queryObject._query.include;
+
+                                        const referencesToBeResolvedMap =
+                                            generateReferenceMap(
+                                                referencesToBeResolved
+                                            );
+
+                                        if (isSingle) {
+                                            await updateLivePreviewReferenceEntry(
+                                                referencesToBeResolvedMap,
+                                                _data.entry,
+                                                queryObject.live_preview,
+                                                queryObject.requestParams,
+                                                options
+                                            );
+                                        } else {
+                                            _data.entries.forEach(async (entry) => {
+                                                await updateLivePreviewReferenceEntry(
+                                                    referencesToBeResolvedMap,
+                                                    entry,
+                                                    queryObject.live_preview,
+                                                    queryObject.requestParams,
+                                                    options
+                                                   
+                                                );
+                                            })
+                                        }
+                                        
+                                    }
+                                } catch (error) {
+                                }
+
+                                await self.provider.set(
+                                    hashQuery,
+                                    _data,
+                                    function (err) {
+                                        try {
+
+                                            if (err) reject(err);
+                                            if (!tojson)
+                                                _data =
+                                                    resultWrapper(_data);
+                                            return resolve(
+                                                spreadResult(_data)
+                                            );
+                                        } catch (e) {
+                                            return reject(e);
+                                        }
+                                    }
+                                );
                             }
                         } catch (e) {
                             return reject(e);
@@ -401,4 +458,110 @@ export function sendRequest(queryObject, options) {
                 });
               })
     }
+}
+
+
+function generateReferenceMap (references) {
+    const map = {};
+
+    function mapSingleReference(reference) {
+        reference = reference.replace(/[\[]/gm, ".").replace(/[\]]/gm, ""); //to accept [index]
+        let keys = reference.split("."),
+            last = keys.pop();
+
+        keys.reduce(function (o, k) {
+            return (o[k] = o[k] || {});
+        }, map)[last] = { };
+    }
+
+    references.forEach(function (reference) {
+        mapSingleReference(reference);
+    });
+
+    return map;
+};
+
+async function updateLivePreviewReferenceEntry(referenceMap, entry, livePreview, requestParams, options, handlerOptions) {
+    const { content_type_uid: livePreviewContentTypeUid, management_token } = livePreview;
+
+
+    async function findReferenceAndFetchEntry(referenceMap, entry, setReference) {
+        if ( typeof entry === "undefined")
+            return;
+        if (Array.isArray(entry)) {
+            await Promise.all(entry.map((subEntry, i) => {
+                const setReference = (val) => {
+                    entry[i] = val;
+                }
+                return findReferenceAndFetchEntry(referenceMap, subEntry, setReference)
+            }));
+        } else {
+            if (entry._content_type_uid === livePreviewContentTypeUid) {
+
+                try {
+                    const referenceRequestParam = JSON.parse(JSON.stringify(requestParams));
+                    
+                    const includeReference = getIncludeParamForReference(referenceMap)
+                    referenceRequestParam.body.include = includeReference
+                    referenceRequestParam.body.live_preview = livePreview.hash
+                    referenceRequestParam.body.content_type_uid = livePreviewContentTypeUid
+
+                    const livePreviewUrl = livePreview.host.match(
+                        /^((http[s]?):(\/\/)?)?(.+)$/
+                    );
+
+                    const livePreviewHost =
+                        (livePreviewUrl[1] || "https://") + livePreviewUrl[4];
+                        const entryUid = entry.uid;
+
+                    const url = `${livePreviewHost}/v3/content_types/${entry._content_type_uid}/entries/${entryUid}`;
+                    referenceRequestParam.url = url
+                    referenceRequestParam.method = "GET"
+ 
+                    delete referenceRequestParam.headers.access_token
+                    referenceRequestParam.headers.authorization = management_token
+
+                    const data = await Request(referenceRequestParam, options);
+                    data.entry._content_type_uid = livePreviewContentTypeUid;
+                    data.entry.uid = entryUid;
+                    setReference(data.entry);
+                   
+                } catch (err) {
+                }
+            } else {
+                
+               await Promise.all(Object.entries(referenceMap).map(async function ([
+                    currentRefFieldKey,
+                    subReferenceMap,
+                ]) {
+                    // recurse
+                    const setRef = (val) => {
+                        entry[currentRefFieldKey] = val;
+                    }
+                     await findReferenceAndFetchEntry(subReferenceMap, entry[currentRefFieldKey], () => {});
+                }));
+            }
+        }
+    }
+
+    await findReferenceAndFetchEntry(referenceMap, entry, () => {});
+
+}
+
+function getIncludeParamForReference(referenceMap) {
+    const newRefences = [];
+
+    function buildParamStringRecursively(currentReferenceMap, includeParamTillNow) {
+        if (Object.keys(currentReferenceMap).length === 0) {
+            newRefences.push(includeParamTillNow.substring(1));
+        } else {
+
+            Object.entries(currentReferenceMap).forEach(([referenceFieldKey, subReferenceMap]) => {
+                buildParamStringRecursively(subReferenceMap, [includeParamTillNow, referenceFieldKey].join("."));
+            });
+        }
+    }
+
+    buildParamStringRecursively(referenceMap, "");
+    return newRefences.filter((currentReference) =>  currentReference !== "");
 }
