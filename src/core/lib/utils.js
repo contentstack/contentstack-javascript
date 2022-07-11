@@ -374,7 +374,7 @@ export function sendRequest(queryObject, options) {
                                                 options
                                             );
                                         } else {
-                                            _data.entries.forEach(async (entry) => {
+                                            await Promise.all(_data.entries.map(async (entry) => {
                                                 await updateLivePreviewReferenceEntry(
                                                     referencesToBeResolvedMap,
                                                     entry,
@@ -383,7 +383,7 @@ export function sendRequest(queryObject, options) {
                                                     options
                                                    
                                                 );
-                                            })
+                                            }))
                                         }
                                         
                                     }
