@@ -81,6 +81,7 @@ export default class Stack {
                     return this;
                 } else {
                     console.error("Kindly provide valid object parameters. The specified API Key, Delivery Token, or Environment Name is invalid.");
+                    break;
                 }
             case 3:
                 console.warn("WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
@@ -93,6 +94,7 @@ export default class Stack {
                     return this;
                 } else {
                     console.error("Kindly provide valid string parameters.");
+                    break;
                 }
             case 4:
                 console.warn("WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
@@ -138,6 +140,7 @@ export default class Stack {
                 return this;
             default:
                 console.error("Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
+                break;
         }
 
     }
