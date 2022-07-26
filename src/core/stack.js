@@ -140,6 +140,7 @@ export default class Stack {
                 return this;
             default:
                 console.error("Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
+                break;
         }
 
     }
