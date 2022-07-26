@@ -374,7 +374,7 @@ export function sendRequest(queryObject, options) {
                                                 options
                                             );
                                         } else {
-                                            _data.entries.forEach(async (entry) => {
+                                            await Promise.all(_data.entries.map(async (entry) => {
                                                 await updateLivePreviewReferenceEntry(
                                                     referencesToBeResolvedMap,
                                                     entry,
@@ -383,7 +383,7 @@ export function sendRequest(queryObject, options) {
                                                     options
                                                    
                                                 );
-                                            })
+                                            }))
                                         }
                                         
                                     }
@@ -503,7 +503,7 @@ async function updateLivePreviewReferenceEntry(referenceMap, entry, livePreview,
                     
                     const includeReference = getIncludeParamForReference(referenceMap)
                     referenceRequestParam.body.include = includeReference
-                    referenceRequestParam.body.live_preview = livePreview.hash
+                    referenceRequestParam.body.live_preview = livePreview.live_preview
                     referenceRequestParam.body.content_type_uid = livePreviewContentTypeUid
 
                     const livePreviewUrl = livePreview.host.match(
@@ -527,6 +527,7 @@ async function updateLivePreviewReferenceEntry(referenceMap, entry, livePreview,
                     setReference(data.entry);
                    
                 } catch (err) {
+                    console.log("errror", err)
                 }
             } else {
                 
