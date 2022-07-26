@@ -213,6 +213,7 @@ export default class Stack {
         if (this.live_preview) {
             this.live_preview.live_preview = query.live_preview;
             this.live_preview.content_type_uid = query.content_type_uid;
+            this.live_preview.entry_uid = query.entry_uid
         }
     }
 
