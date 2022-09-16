@@ -106,6 +106,6 @@
     "@contentstack/utils": "^1.1.1",
     "es6-promise": "^4.1.1",
     "isomorphic-fetch": "^3.0.0",
-    "localStorage": "1.0.3"
+    "localStorage": "1.0.4"
   }
 }
