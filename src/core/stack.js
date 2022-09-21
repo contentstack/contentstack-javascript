@@ -214,7 +214,7 @@ export default class Stack {
 
     livePreviewQuery(query) {
         if (this.live_preview) {
-            this.live_preview.live_preview = query.live_preview;
+            this.live_preview.live_preview = query.live_preview || 'init';
             this.live_preview.content_type_uid = query.content_type_uid;
             this.live_preview.entry_uid = query.entry_uid
         }
@@ -523,7 +523,7 @@ export default class Stack {
             }
         }
         var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
-        return Utils.sendRequest(this, options);
+        return Utils.sendRequest(Utils.mergeDeep({}, this), options);
     }
 
     /**

@@ -762,7 +762,7 @@ export default class Query extends Entry {
             }
         };
         var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
-        return Utils.sendRequest(this, options);
+        return Utils.sendRequest(Utils.mergeDeep({}, this), options);
     }
 
      /**
@@ -799,7 +799,7 @@ export default class Query extends Entry {
             }
         };
         var options = Utils.mergeDeep({}, this.fetchOptions);
-        return Utils.sendRequest(this, options);
+        return Utils.sendRequest(Utils.mergeDeep({}, this), options);
     }
 
 }
