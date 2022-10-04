@@ -83,7 +83,7 @@ export default class Entry {
                 this.queryCachePolicy = policy;
             }
         } else {
-            console.error("Kindly provide the valid policy");
+            this.fetchOptions.logHandler('error', "Kindly provide the valid policy");
         }
         return this;
     }
@@ -135,7 +135,7 @@ export default class Entry {
             }
             return this;
         } else {
-            console.error("Argument should be a String or an Array.");
+            this.fetchOptions.logHandler('error', "Argument should be a String or an Array.");
         }
     }
 
@@ -160,7 +160,7 @@ export default class Entry {
             this._query['locale'] = language_code;
             return this;
         } else {
-            console.error("Argument should be a String.");
+            this.fetchOptions.logHandler('error', "Argument should be a String.");
         }
     }
 
@@ -179,7 +179,7 @@ export default class Entry {
             this._query[key] = value;
             return this;
         } else {
-            console.error("First argument should be a String.");
+            this.fetchOptions.logHandler('error', "First argument should be a String.");
         }
     }
 
@@ -323,7 +323,7 @@ export default class Entry {
                 this._query[key] = value;
                 return this;
         } else {
-            console.error("Kindly provide valid parameters.");
+            this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
         }
     }
 
@@ -360,7 +360,7 @@ export default class Entry {
             var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
             return Utils.sendRequest(this, options);
         } else {
-            console.error("Kindly provide an entry uid. e.g. .Entry('asset_uid')");
+            this.fetchOptions.logHandler('error', "Kindly provide an entry uid. e.g. .Entry('asset_uid')");
         }
     }
 }

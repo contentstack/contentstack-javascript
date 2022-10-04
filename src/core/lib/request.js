@@ -92,7 +92,7 @@ function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 30
     fetchOptions.logHandler('info', { url: url, option: option});
     fetch(url, option)
         .then(function(response) {    
-            fetchOptions.logHandler('info', data);
+            fetchOptions.logHandler('info', response);
             let data = response.json();      
             if (response.ok && response.status === 200) {
                 resolve(data);
