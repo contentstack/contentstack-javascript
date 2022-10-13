@@ -68,6 +68,7 @@ function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 30
 
     function onError (error) {
         if (retryLimit === 0) {
+            fetchOptions.logHandler('error', error);
             reject(error);
         }else {
             var msDelay = retryDelay
@@ -101,9 +102,11 @@ function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 30
                     if (fetchOptions.retryCondition && fetchOptions.retryCondition(response)) {
                         onError(json)
                     } else {
+                        fetchOptions.logHandler('error', json);
                         reject(json)
                     }   
                 }).catch(() => {
+                    fetchOptions.logHandler('error', {status: response.status, statusText: response.statusText});
                     reject({status: response.status, statusText: response.statusText})
                 });
             }
