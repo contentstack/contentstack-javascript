@@ -75,7 +75,7 @@ export default class Assets {
             this._query[key] = value;
             return this;
         } else {
-            console.error("Kindly provide a valid parameters.");
+            this.fetchOptions.logHandler('error',"Kindly provide a valid parameters.");
         }
     }
 
@@ -119,7 +119,7 @@ export default class Assets {
             var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
             return Utils.sendRequest(Utils.mergeDeep({}, this), options);
         } else {
-            console.error("Kindly provide an asset uid. e.g. .Assets('asset_uid')");
+            fetchOptions.logHandler('error', "Kindly provide an asset uid. e.g. .Assets('asset_uid')");
         }
     }
 }
