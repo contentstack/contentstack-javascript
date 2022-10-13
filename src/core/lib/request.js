@@ -89,15 +89,17 @@ function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 30
                 })
         }
     }
+    fetchOptions.logHandler('info', { url: url, option: option});
     fetch(url, option)
         .then(function(response) {    
+            fetchOptions.logHandler('info', response);
             let data = response.json();      
             if (response.ok && response.status === 200) {
                 resolve(data);
             } else {
                 data.then((json) => {
                     if (fetchOptions.retryCondition && fetchOptions.retryCondition(response)) {
-                        onError(json)     
+                        onError(json)
                     } else {
                         reject(json)
                     }   
@@ -106,6 +108,7 @@ function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 30
                 });
             }
         }).catch((error) => {
+            fetchOptions.logHandler('error', error);
             reject(error)
         });
 }
