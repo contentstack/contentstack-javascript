@@ -25,6 +25,7 @@ let errorRetry = [408, 429]
      * @param param.fetchOptions.retryCondition - A function to determine if the error can be retried. Default retry is on status codes 408, 429.
      * @param param.fetchOptions.retryDelayOptions.base - The base number of milliseconds to use in the exponential backoff for operation retries.
      * @param param.fetchOptions.retryDelayOptions.customBackoff - A custom function that accepts a retry count and error and returns the amount of time to delay in milliseconds.
+     * @param param.fetchOptions.logHandler - A function for logging of requests, responses and errors
      * 
      * @example
      * var Stack = Contentstack.Stack({
@@ -33,7 +34,7 @@ let errorRetry = [408, 429]
      *      'environment':'environment_name',
      *      'region': 'us',
      *      'fetchOptions': {
-     *       
+     *          
      *      }
      * });
      * 
@@ -49,6 +50,18 @@ export default class Stack {
                     return true;
                 }
                 return false
+            },
+            logHandler: (level, data) => {
+                if (level === 'error' && data) {
+                  console.error(`[error] ${data}`)
+                  return
+                } else if (level === 'warning' && data) {
+                    console.warn(`[warning] ${data}`)
+                    return
+                } else if (level === 'info' && data) {
+                    console.info(`[info] ${data}`)
+                    return
+                }
             }
          };
         this.config = Utils.mergeDeep({}, config)
@@ -80,10 +93,10 @@ export default class Stack {
                     this.environment = stack_arguments[0].environment;
                     return this;
                 } else {
-                    console.error("Kindly provide valid object parameters. The specified API Key, Delivery Token, or Environment Name is invalid.");
+                    this.fetchOptions.logHandler('error', "Kindly provide valid object parameters. The specified API Key, Delivery Token, or Environment Name is invalid.");
                 }
             case 3:
-                console.warn("WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
+                this.fetchOptions.logHandler('warning', "WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
@@ -92,10 +105,10 @@ export default class Stack {
                     this.environment = stack_arguments[2];
                     return this;
                 } else {
-                    console.error("Kindly provide valid string parameters.");
+                    this.fetchOptions.logHandler('error', "Kindly provide valid string parameters.");
                 }
             case 4:
-                console.warn("WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
+                this.fetchOptions.logHandler('warning', "WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
@@ -103,7 +116,7 @@ export default class Stack {
                     };
                     this.environment = stack_arguments[2];
                 } else {
-                    console.error("Kindly provide valid string parameters.");
+                    this.fetchOptions.logHandler('error', "Kindly provide valid string parameters.");
                 }
                 if (stack_arguments[3]) {                    
                     if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== undefined && stack_arguments[3] !== "us") {
@@ -114,7 +127,7 @@ export default class Stack {
                 }
                 return this;
             case 5:
-                console.warn("WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
+                this.fetchOptions.logHandler('warning', "WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
@@ -122,7 +135,7 @@ export default class Stack {
                     };
                     this.environment = stack_arguments[2];
                 } else {
-                    console.error("Kindly provide valid string parameters.");
+                    this.fetchOptions.logHandler('error', "Kindly provide valid string parameters.");
                 }
 
                 if (stack_arguments[3]) {
@@ -137,7 +150,7 @@ export default class Stack {
                 }
                 return this;
             default:
-                console.error("Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
+                this.fetchOptions.logHandler('error', "Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
         }
 
     }
@@ -203,7 +216,7 @@ export default class Stack {
                 this.queryCachePolicy = policy;
             }
         } else {
-            console.error("Kindly provide the valid policy");
+            this.fetchOptions.logHandler('error', "Kindly provide the valid policy");
         }
         return this;
     }
@@ -211,7 +224,7 @@ export default class Stack {
 
     livePreviewQuery(query) {
         if (this.live_preview) {
-            this.live_preview.live_preview = query.live_preview;
+            this.live_preview.live_preview = query.live_preview || 'init';
             this.live_preview.content_type_uid = query.content_type_uid;
             this.live_preview.entry_uid = query.entry_uid
         }
@@ -520,7 +533,7 @@ export default class Stack {
             }
         }
         var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
-        return Utils.sendRequest(this, options);
+        return Utils.sendRequest(Utils.mergeDeep({}, this), options);
     }
 
     /**
