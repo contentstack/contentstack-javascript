@@ -1,6 +1,10 @@
 import * as Contentstack from '../..';
 
-const stack = Contentstack.Stack({ api_key: 'api_key', delivery_token: 'delivery_token', environment: 'environment'});
+const stack = Contentstack.Stack({ api_key: 'api_key', delivery_token: 'delivery_token', environment: 'environment', fetchOptions: {
+    logHandler: () => {
+
+    }
+}});
 describe('ContentType Test', () => {
     test('ContentType UID', done => {
         const contentType = stack.ContentType('uid');
