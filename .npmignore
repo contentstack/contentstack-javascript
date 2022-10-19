@@ -19,3 +19,4 @@ src
 *.tgz
 .talismanrc
 tap-html.html 
+.github

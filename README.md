@@ -195,7 +195,7 @@ We have introduced Image Delivery APIs that let you retrieve images and then man
 
 For example, if you want to crop an image (with width as 300 and height as 400), you simply need to append query parameters at the end of the image URL, such as,  https://images.contentstack.io/owl.jpg?crop=300,400. There are several more parameters that you can use for your images.
 
-[Read Image Delivery API documentation](https://www.contentstack.com/docs/apis/image-delivery-api/).
+[Read Image Delivery API documentation](https://www.contentstack.com/docs/developers/apis/image-delivery-api/).
 
 Following are Image Delivery API examples.
 

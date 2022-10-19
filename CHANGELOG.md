@@ -1,4 +1,9 @@
 ## Change log
+
+### Version: 3.15.3
+#### Date: July-26-2022
+#####  New Features:
+ - Live preview with reference in entry on SSR web app issue resolved
 ### Version: 3.15.2
 #### Date: May-03-2022
 #####  New Features:

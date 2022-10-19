@@ -68,6 +68,7 @@ function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 30
 
     function onError (error) {
         if (retryLimit === 0) {
+            fetchOptions.logHandler('error', error);
             reject(error);
         }else {
             var msDelay = retryDelay
@@ -89,23 +90,28 @@ function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 30
                 })
         }
     }
+    fetchOptions.logHandler('info', { url: url, option: option});
     fetch(url, option)
         .then(function(response) {    
+            fetchOptions.logHandler('info', response);
             let data = response.json();      
             if (response.ok && response.status === 200) {
                 resolve(data);
             } else {
                 data.then((json) => {
                     if (fetchOptions.retryCondition && fetchOptions.retryCondition(response)) {
-                        onError(json)     
+                        onError(json)
                     } else {
+                        fetchOptions.logHandler('error', json);
                         reject(json)
                     }   
                 }).catch(() => {
+                    fetchOptions.logHandler('error', {status: response.status, statusText: response.statusText});
                     reject({status: response.status, statusText: response.statusText})
                 });
             }
         }).catch((error) => {
+            fetchOptions.logHandler('error', error);
             reject(error)
         });
 }

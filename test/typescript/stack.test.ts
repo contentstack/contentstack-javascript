@@ -41,7 +41,10 @@ describe('Stack tests', () => {
 
     test('Stack initialization with fetchOptions test', done => {
         const stack = Contentstack.Stack({ api_key: 'api_key', delivery_token: 'delivery_token', environment: 'environment', fetchOptions:{
-            timeout: 2000
+            timeout: 2000,
+            logHandler: () => {
+
+            }
         }});
         expect(stack.cachePolicy).toEqual(Contentstack.CachePolicy.IGNORE_CACHE);
         expect(stack.environment).toEqual('environment');
@@ -79,7 +82,10 @@ describe('Stack tests', () => {
             fetchOptions:{
                 timeout: 2000,
                 retryLimit: 4,
-                retryDelay: 40
+                retryDelay: 40,
+                logHandler: () => {
+
+                }
             }
         };
         const stack = Contentstack.Stack(config);
@@ -104,7 +110,10 @@ describe('Stack tests', () => {
             fetchOptions:{
                 timeout: 2000,
                 retryLimit: 4,
-                retryDelay: 40
+                retryDelay: 40,
+                logHandler: () => {
+
+                }
             }
         };
         const stack = Contentstack.Stack(config);
@@ -139,7 +148,10 @@ describe('Stack tests', () => {
             fetchOptions:{
                 timeout: 2000,
                 retryLimit: 4,
-                retryDelay: 40
+                retryDelay: 40,
+                logHandler: () => {
+
+                }
             }
         };
         const stack = Contentstack.Stack(config);
@@ -167,7 +179,10 @@ describe('Stack tests', () => {
 
     test('Stack initialization with region EU and fetchOptions test', done => {
         const stack = Contentstack.Stack('api_key', 'delivery_token', 'environment', Contentstack.Region.EU, {
-            timeout: 2000
+            timeout: 2000,
+            logHandler: () => {
+
+            }
         });
         expect(stack.cachePolicy).toEqual(Contentstack.CachePolicy.IGNORE_CACHE);
         expect(stack.environment).toEqual('environment');
