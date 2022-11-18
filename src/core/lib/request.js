@@ -68,7 +68,7 @@ function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 30
 
     function onError (error) {
         if (retryLimit === 0) {
-            if (fetchOptions.debugger)  fetchOptions.logHandler('error', error);
+            if (fetchOptions.debug)  fetchOptions.logHandler('error', error);
             reject(error);
         }else {
             var msDelay = retryDelay
@@ -90,10 +90,10 @@ function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 30
                 })
         }
     }
-    if (fetchOptions.debugger)  fetchOptions.logHandler('info', { url: url, option: option});
+    if (fetchOptions.debug)  fetchOptions.logHandler('info', { url: url, option: option});
     fetch(url, option)
         .then(function(response) {    
-            if (fetchOptions.debugger)  fetchOptions.logHandler('info', response);
+            if (fetchOptions.debug)  fetchOptions.logHandler('info', response);
             let data = response.json();      
             if (response.ok && response.status === 200) {
                 resolve(data);
@@ -102,16 +102,16 @@ function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 30
                     if (fetchOptions.retryCondition && fetchOptions.retryCondition(response)) {
                         onError(json)
                     } else {
-                        if (fetchOptions.debugger)  fetchOptions.logHandler('error', json);
+                        if (fetchOptions.debug)  fetchOptions.logHandler('error', json);
                         reject(json)
                     }   
                 }).catch(() => {
-                    if (fetchOptions.debugger)  fetchOptions.logHandler('error', {status: response.status, statusText: response.statusText});
+                    if (fetchOptions.debug)  fetchOptions.logHandler('error', {status: response.status, statusText: response.statusText});
                     reject({status: response.status, statusText: response.statusText})
                 });
             }
         }).catch((error) => {
-            if (fetchOptions.debugger)  fetchOptions.logHandler('error', error);
+            if (fetchOptions.debug)  fetchOptions.logHandler('error', error);
             reject(error)
         });
 }
