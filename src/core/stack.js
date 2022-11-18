@@ -19,6 +19,7 @@ let errorRetry = [408, 429]
      * @param param.branch - Name of the branch you want to fetch data from
      * @param param.live_preview - Live preview configuration.
      * @param param.fetchOptions - Custom setting for the request.
+     * @param param.fetchOptions.debug - This will enable debug log. Default is false
      * @param param.fetchOptions.timeout - Set timeout for the request.
      * @param param.fetchOptions.retryLimit - The number of retries before failure. Default is 5
      * @param param.fetchOptions.retryDelay - The number of ms to use for operation retries. Default is 300ms
@@ -51,7 +52,7 @@ export default class Stack {
                 }
                 return false
             },
-            debugger: false,
+            debug: false,
             logHandler: (level, data) => {
                 if (level === 'error' && data) {
                   console.error(`[error] ${data}`)
@@ -94,10 +95,10 @@ export default class Stack {
                     this.environment = stack_arguments[0].environment;
                     return this;
                 } else {
-                    if (this.fetchOptions.debugger) this.fetchOptions.logHandler('error', "Kindly provide valid object parameters. The specified API Key, Delivery Token, or Environment Name is invalid.");
+                    if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', "Kindly provide valid object parameters. The specified API Key, Delivery Token, or Environment Name is invalid.");
                 }
             case 3:
-                if (this.fetchOptions.debugger) this.fetchOptions.logHandler('warning', "WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
+                if (this.fetchOptions.debug) this.fetchOptions.logHandler('warning', "WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
@@ -106,10 +107,10 @@ export default class Stack {
                     this.environment = stack_arguments[2];
                     return this;
                 } else {
-                    if (this.fetchOptions.debugger) this.fetchOptions.logHandler('error', "Kindly provide valid string parameters.");
+                    if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', "Kindly provide valid string parameters.");
                 }
             case 4:
-                if (this.fetchOptions.debugger) this.fetchOptions.logHandler('warning', "WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
+                if (this.fetchOptions.debug) this.fetchOptions.logHandler('warning', "WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
@@ -117,7 +118,7 @@ export default class Stack {
                     };
                     this.environment = stack_arguments[2];
                 } else {
-                    if (this.fetchOptions.debugger) this.fetchOptions.logHandler('error', "Kindly provide valid string parameters.");
+                    if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', "Kindly provide valid string parameters.");
                 }
                 if (stack_arguments[3]) {                    
                     if(typeof stack_arguments[3] === "string" && stack_arguments[3] !== undefined && stack_arguments[3] !== "us") {
@@ -128,7 +129,7 @@ export default class Stack {
                 }
                 return this;
             case 5:
-                if (this.fetchOptions.debugger) this.fetchOptions.logHandler('warning', "WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
+                if (this.fetchOptions.debug) this.fetchOptions.logHandler('warning', "WARNING! Obsolete function called. Function 'Contentstack.Stack(api_key, delivery_token, environment)' has been deprecated, please use 'Contentstack.Stack({api_key, delivery_token, environment, region, branch, fetchOptions})' function instead!");
                 if (typeof stack_arguments[0] === "string" && typeof stack_arguments[1] === "string" && typeof stack_arguments[2] === "string") {
                     this.headers = {
                         api_key: stack_arguments[0],
@@ -136,7 +137,7 @@ export default class Stack {
                     };
                     this.environment = stack_arguments[2];
                 } else {
-                    if (this.fetchOptions.debugger) this.fetchOptions.logHandler('error', "Kindly provide valid string parameters.");
+                    if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', "Kindly provide valid string parameters.");
                 }
 
                 if (stack_arguments[3]) {
@@ -151,7 +152,7 @@ export default class Stack {
                 }
                 return this;
             default:
-                if (this.fetchOptions.debugger) this.fetchOptions.logHandler('error', "Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
+                if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', "Kindly provide valid parameters to initialize the Contentstack javascript-SDK Stack.");
         }
 
     }
@@ -217,7 +218,7 @@ export default class Stack {
                 this.queryCachePolicy = policy;
             }
         } else {
-            if (this.fetchOptions.debugger) this.fetchOptions.logHandler('error', "Kindly provide the valid policy");
+            if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', "Kindly provide the valid policy");
         }
         return this;
     }
