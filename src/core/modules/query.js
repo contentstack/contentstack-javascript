@@ -9,7 +9,7 @@ const _extend = {
                 this._query['query'][key][type] = value;
                 return this;
             } else {
-                this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
             }
         };
     },
@@ -22,7 +22,7 @@ const _extend = {
                 this._query['query'][key][type] = this._query['query'][key][type].concat(value);
                 return this;
             } else {
-                this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
             }
         };
     },
@@ -33,7 +33,7 @@ const _extend = {
                 this._query['query'][key]['$exists'] = bool;
                 return this;
             } else {
-                this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
             }
         };
     },
@@ -61,7 +61,7 @@ const _extend = {
                 this._query[type] = key;
                 return this;
             } else {
-                this.fetchOptions.logHandler('error', "Argument should be a string.");
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Argument should be a string.");
             }
         };
     },
@@ -71,7 +71,7 @@ const _extend = {
                 this._query[type] = value;
                 return this;
             } else {
-                this.fetchOptions.logHandler('error', "Argument should be a number.");
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Argument should be a number.");
             }
         }
     }
@@ -395,7 +395,7 @@ export default class Query extends Entry {
 
             return this;
         } else {
-            this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
         }
     }
 
@@ -420,7 +420,7 @@ export default class Query extends Entry {
             this._query['query'][key] = value;
             return this;
         } else {
-            this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
         }
     }
 
@@ -476,7 +476,7 @@ export default class Query extends Entry {
             this._query['query'] = Utils.mergeDeep(this._query['query'], query);
             return this;
         } else {
-            this.fetchOptions.logHandler('error', "Kindly provide valid parameters");
+            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters");
         }
     }
 
@@ -587,7 +587,7 @@ export default class Query extends Entry {
             this._query['tags'] = values;
             return this;
         } else {
-            this.fetchOptions.logHandler('error', "Kindly provide valid parameters");
+            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters");
         }
     }
 
@@ -651,7 +651,7 @@ export default class Query extends Entry {
                 this._query[key] = value;
                 return this;
         } else {
-            this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
         }
     }
 
@@ -691,7 +691,7 @@ export default class Query extends Entry {
             if (options) this._query['query'][key]['$options'] = options;
             return this;
         } else {
-            this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
         }
     }
 
@@ -717,7 +717,7 @@ export default class Query extends Entry {
             this._query['typeahead'] = value;
             return this;
         } else {
-            this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
         }
     }
 
