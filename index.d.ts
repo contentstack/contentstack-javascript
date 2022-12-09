@@ -52,7 +52,7 @@ export interface Config {
     region?: Region;
     branch?: string;
     live_preview?: LivePreview;
-    fetchOptions?: object;
+    fetchOptions?: FetchOptions;
 }
 // Stack Config
 export interface StackConfig {
@@ -79,13 +79,28 @@ export interface LivePreviewQuery {
     content_type_uid: string
 }
 
+export interface RetryDelayOption {
+    base?: number
+    customBackoff?: (retryCount: number, error: Error) => number
+}
+export interface FetchOptions {
+    [propName: string]: any
+    debug?: boolean
+    timeout?: number
+    retryLimit?: number
+    retryDelay?: number
+    retryCondition?: (error: any) => boolean
+    logHandler?: (level: string, data: any) => void
+    retryDelayOptions?: RetryDelayOption
+}
+
 // Stack 
 export class Stack {
     constructor(config: Config);
     /**
      * @deprecated since version 3.15.0
      */
-    constructor(api_key: string, delivery_token: string, environment_name: string, region?: Region, fetchOptions?: any, live_preview?: LivePreview);
+    constructor(api_key: string, delivery_token: string, environment_name: string, region?: Region, fetchOptions?: FetchOptions, live_preview?: LivePreview);
 
     environment: string;
     cachePolicy: CachePolicy;
@@ -116,7 +131,7 @@ export function Stack(config: Config): Stack;
 /**
  * @deprecated since version 3.15.0
  */
-export function Stack(api_key: string, access_token: string, environment_name: string, region?: string, fetchOptions?: object): Stack;
+export function Stack(api_key: string, access_token: string, environment_name: string, region?: string, fetchOptions?: FetchOptions): Stack;
 
 export class ContentType {
     constructor();
