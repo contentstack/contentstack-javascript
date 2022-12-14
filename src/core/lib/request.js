@@ -110,7 +110,6 @@ function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDela
 
             if (response.ok && response.status === 200) {
                 data.then(json => {
-                    if (plugins) json.plugins = [];
                     for (let index = 0; index < plugins.length; index++) {
                         json =  plugins[index].onResponse(stack, {url, option}, response, json)
                     }
