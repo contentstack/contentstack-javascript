@@ -68,6 +68,7 @@ export default class Stack {
             }
         };
         this.config = Utils.mergeDeep({}, config)
+        this.plugins = []
 
         if(stack_arguments[0].region && stack_arguments[0].region !== undefined && stack_arguments[0].region !== "us") {
             this.config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
@@ -78,7 +79,7 @@ export default class Stack {
         }
 
         if (stack_arguments[0].plugins && stack_arguments[0].plugins !== undefined) {
-            this.plugins = []
+            
             stack_arguments[0].plugins.forEach(pluginObj => {
                 this.plugins.push(pluginObj)
             });
@@ -96,6 +97,7 @@ export default class Stack {
                     };
                     if (typeof stack_arguments[0].live_preview == "object") {
                         this.live_preview =  Utils.mergeDeep(this.config.live_preview , stack_arguments[0].live_preview)
+                        console.log(this.live_preview);
                     }
                     if (typeof stack_arguments[0].branch === "string" && stack_arguments[0].branch !== undefined) {
                         this.headers.branch = stack_arguments[0].branch
@@ -461,7 +463,7 @@ export default class Stack {
      * @instance
      */
     getLastActivities() {
-        let query = {
+        this.requestParams = {
             method: 'POST',
             headers: this.headers,
             url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
@@ -471,7 +473,7 @@ export default class Stack {
                 environment: this.environment
             }
         };
-        return Request(query, this.fetchOptions);
+        return Request(this, this.fetchOptions);
     }
 
      /**
@@ -491,7 +493,7 @@ export default class Stack {
      * @instance
      */
     getContentTypes(param = {}) { 
-        let query = {
+        this.requestParams = {
             method: 'POST',
             headers: this.headers,
             url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
@@ -502,10 +504,10 @@ export default class Stack {
         };
         if(param) {
             for( var key in param) {
-                query.body[key] = param[key]    
+                this.requestParams.body[key] = param[key]    
             }
         }
-        return Request(query, this.fetchOptions);
+        return Request(this, this.fetchOptions);
     }
 
     /**
