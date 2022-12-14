@@ -265,7 +265,7 @@ export function sendRequest(queryObject, options) {
 
     let callback = function(continueFlag, resolve, reject) {
         if (continueFlag) {
-            Request(queryObject.requestParams, options)
+            Request(queryObject, options)
                 .then(function(data) {
                     try {
                         self.entry_uid = self.asset_uid = self.tojson = self.queryCachePolicy = undefined;

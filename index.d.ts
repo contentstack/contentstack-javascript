@@ -100,7 +100,7 @@ export class Stack {
     /**
      * @deprecated since version 3.15.0
      */
-    constructor(api_key: string, delivery_token: string, environment_name: string, region?: Region, fetchOptions?: FetchOptions, live_preview?: LivePreview);
+    constructor(api_key: string, delivery_token: string, environment_name: string, region?: Region, fetchOptions?: FetchOptions, live_preview?: LivePreview, plugins?: Plugins[]);
 
     environment: string;
     cachePolicy: CachePolicy;
