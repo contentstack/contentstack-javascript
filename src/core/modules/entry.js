@@ -271,14 +271,6 @@ export default class Entry {
         return this;
     }
 
-   /**
-     * @method includeOwner
-     * @memberOf Entry 
-     * @description Includes the owner details of the entry/entries
-     * @example stack.ContentType(contentType_uid).Entry(entry_uid).includeOwner().fetch()
-     * @returns {Entry}
-     * @instance
-     */
     includeOwner() {
         this._query['include_owner'] = true;
         return this;
