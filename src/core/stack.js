@@ -18,6 +18,7 @@ let errorRetry = [408, 429]
      * @param param.region - DB region for Stack.
      * @param param.branch - Name of the branch you want to fetch data from
      * @param param.live_preview - Live preview configuration.
+     * @param param.plugins - List of plugins objects.
      * @param param.fetchOptions - Custom setting for the request.
      * @param param.fetchOptions.debug - This will enable debug log. Default is false
      * @param param.fetchOptions.timeout - Set timeout for the request.
@@ -65,7 +66,7 @@ export default class Stack {
                     return
                 }
             }
-         };
+        };
         this.config = Utils.mergeDeep({}, config)
 
         if(stack_arguments[0].region && stack_arguments[0].region !== undefined && stack_arguments[0].region !== "us") {
@@ -74,6 +75,13 @@ export default class Stack {
 
         if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions !== undefined) {
             this.fetchOptions =  Utils.mergeDeep(this.fetchOptions, stack_arguments[0].fetchOptions);
+        }
+
+        if (stack_arguments[0].plugins && stack_arguments[0].plugins !== undefined) {
+            this.plugins = []
+            stack_arguments[0].plugins.forEach(pluginObj => {
+                this.plugins.push(pluginObj)
+            });
         }
         
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
@@ -371,9 +379,10 @@ export default class Stack {
      * @instance 
      */
     fetch(fetchOptions) {
-        let result = {
+        this.requestParams = {
             method: 'POST',
             headers: this.headers,
+            plugins: this.plugins,
             url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid,
             body: {
                 _method: 'GET',
@@ -381,7 +390,7 @@ export default class Stack {
             }
         };
         var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
-        return Request(result, options);
+        return Request(this, options);
     }
 
   /**
