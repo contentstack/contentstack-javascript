@@ -480,7 +480,7 @@ function generateReferenceMap (references) {
 };
 
 async function updateLivePreviewReferenceEntry(referenceMap, entry, stack, options, handlerOptions) {
-    const {livePreview, requestParams} = stack;
+    const {live_preview:livePreview, requestParams} = stack;
     const { content_type_uid: livePreviewContentTypeUid, management_token } = livePreview;
 
 

@@ -53,6 +53,7 @@ export interface Config {
     branch?: string;
     live_preview?: LivePreview;
     fetchOptions?: FetchOptions;
+    plugins?: ContentstackPlugin[];
 }
 // Stack Config
 export interface StackConfig {
@@ -94,13 +95,19 @@ export interface FetchOptions {
     retryDelayOptions?: RetryDelayOption
 }
 
+//Plugins
+export interface ContentstackPlugin {
+    onRequest(stack: Stack, request:any): void;
+    onResponse(stack: Stack, request: {url:string, headers: object}, response: any, data: any): any;
+}
+
 // Stack 
 export class Stack {
     constructor(config: Config);
     /**
      * @deprecated since version 3.15.0
      */
-    constructor(api_key: string, delivery_token: string, environment_name: string, region?: Region, fetchOptions?: FetchOptions, live_preview?: LivePreview, plugins?: Plugins[]);
+    constructor(api_key: string, delivery_token: string, environment_name: string, region?: Region, fetchOptions?: FetchOptions, live_preview?: LivePreview);
 
     environment: string;
     cachePolicy: CachePolicy;
