@@ -1,4 +1,4 @@
-// Type definitions for contentstack 3.12.2
+// Type definitions for contentstack v3.12.2 and above
 // Project: https://www.contentstack.com/
 // Definitions by: Contentstack <https://github.com/contentstack>
 import { EntryEmbedable, Option, RenderOption } from '@contentstack/utils'
@@ -52,8 +52,8 @@ export interface Config {
     region?: Region;
     branch?: string;
     live_preview?: LivePreview;
-    fetchOptions?: FetchOptions;
     plugins?: ContentstackPlugin[];
+    fetchOptions?: FetchOptions;
 }
 // Stack Config
 export interface StackConfig {
@@ -64,7 +64,7 @@ export interface StackConfig {
 }
 
 // ContentTypeCollection
-export interface ContentTypeCollection{
+export interface ContentTypeCollection {
     content_types: Array<any>
     count?: number
 }
@@ -97,8 +97,13 @@ export interface FetchOptions {
 
 //Plugins
 export interface ContentstackPlugin {
-    onRequest(stack: Stack, request:any): void;
-    onResponse(stack: Stack, request: {url:string, headers: object}, response: any, data: any): any;
+    onRequest(stack: Stack, request: ContentstackPlugin): void;
+    onResponse(stack: Stack, request: ContentstackPlugin, response: any, data: any): any;
+}
+
+export interface ContentstackRequest {
+    url: string;
+    headers: object;
 }
 
 // Stack 

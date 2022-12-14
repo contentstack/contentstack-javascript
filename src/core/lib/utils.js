@@ -347,6 +347,7 @@ export function sendRequest(queryObject, options) {
                             if (err || !_data) {
                                 callback(true, resolve, reject);
                             } else {
+                                const originalData = JSON.parse(JSON.stringify(_data));
                                 try {
 
                                     const doesQueryRequestForReferences =
@@ -390,7 +391,7 @@ export function sendRequest(queryObject, options) {
 
                                 await self.provider.set(
                                     hashQuery,
-                                    _data,
+                                    originalData,
                                     function (err) {
                                         try {
 
