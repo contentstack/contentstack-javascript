@@ -97,8 +97,8 @@ export interface FetchOptions {
 
 //Plugins
 export interface ContentstackPlugin {
-    onRequest(stack: Stack, request: ContentstackPlugin): void;
-    onResponse(stack: Stack, request: ContentstackPlugin, response: any, data: any): any;
+    onRequest?(stack: Stack, request: ContentstackPlugin): void;
+    onResponse?(stack: Stack, request: ContentstackPlugin, response: any, data: any): any;
 }
 
 export interface ContentstackRequest {
