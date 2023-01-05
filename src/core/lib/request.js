@@ -98,7 +98,7 @@ function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDela
     var plugins = stack.plugins;
     if (plugins && plugins != undefined)
     plugins.forEach(pluginObj => {
-        pluginObj.onRequest(stack, {url, option})
+        if (typeof pluginObj.onRequest == 'function') pluginObj.onRequest(stack, {url, option})
     });
     
     fetch(url, option)
@@ -111,7 +111,8 @@ function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDela
             if (response.ok && response.status === 200) {
                 data.then(json => {
                     for (let index = 0; index < plugins.length; index++) {
-                        json =  plugins[index].onResponse(stack, {url, option}, response, json)
+                        if (typeof plugins[index].onResponse == 'function')
+                            json =  plugins[index].onResponse(stack, {url, option}, response, json)
                     }
                     resolve(json);
                 })
