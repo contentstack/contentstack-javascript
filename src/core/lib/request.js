@@ -96,14 +96,20 @@ function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDela
     if (fetchOptions.debug)  fetchOptions.logHandler('info', { url: url, option: option});
 
     var plugins = stack.plugins;
-    if (plugins && plugins != undefined)
-    plugins.forEach(pluginObj => {
-        if (typeof pluginObj.onRequest == 'function') pluginObj.onRequest(stack, {url, option})
-    });
+    if (plugins && plugins != undefined) {
+
+        let request = {url, option};    
+        for (let index = 0; index < plugins.length; index++) {
+
+            if (typeof plugins[index].onRequest == 'function') {
+                request = plugins[index].onRequest(stack, request)
+            }
+        }
+    }
+
     
     fetch(url, option)
-        .then( function(response) {    
-
+        .then( function(response) {
             
             if (fetchOptions.debug)  fetchOptions.logHandler('info', response);
             let data = response.json();
