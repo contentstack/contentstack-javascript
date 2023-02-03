@@ -97,7 +97,6 @@ export default class Stack {
                     };
                     if (typeof stack_arguments[0].live_preview == "object") {
                         this.live_preview =  Utils.mergeDeep(this.config.live_preview , stack_arguments[0].live_preview)
-                        console.log(this.live_preview);
                     }
                     if (typeof stack_arguments[0].branch === "string" && stack_arguments[0].branch !== undefined) {
                         this.headers.branch = stack_arguments[0].branch
