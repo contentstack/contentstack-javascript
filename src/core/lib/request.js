@@ -95,10 +95,11 @@ function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDela
 
     if (fetchOptions.debug)  fetchOptions.logHandler('info', { url: url, option: option});
 
+    let request = {url, option};
+
     var plugins = stack.plugins;
     if (plugins && plugins != undefined) {
 
-        let request = {url, option};    
         for (let index = 0; index < plugins.length; index++) {
 
             if (typeof plugins[index].onRequest == 'function') {
@@ -108,7 +109,7 @@ function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDela
     }
 
     
-    fetch(url, option)
+    fetch(request)
         .then( function(response) {
             
             if (fetchOptions.debug)  fetchOptions.logHandler('info', response);
@@ -118,7 +119,7 @@ function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDela
                 data.then(json => {
                     for (let index = 0; index < plugins.length; index++) {
                         if (typeof plugins[index].onResponse == 'function')
-                            json =  plugins[index].onResponse(stack, {url, option}, response, json)
+                            json =  plugins[index].onResponse(stack, request, response, json)
                     }
                     resolve(json);
                 })
