@@ -97,7 +97,7 @@ function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDela
 
     let request = {url, option};
 
-    var plugins = stack.plugins;
+    let plugins = stack.plugins;
     if (plugins && plugins != undefined) {
 
         for (let index = 0; index < plugins.length; index++) {
@@ -109,7 +109,7 @@ function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDela
     }
 
     
-    fetch(request)
+    fetch(request.url, request.option)
         .then( function(response) {
             
             if (fetchOptions.debug)  fetchOptions.logHandler('info', response);
