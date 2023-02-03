@@ -103,7 +103,7 @@ export interface ContentstackPlugin {
 
 export interface ContentstackRequest {
     url: string;
-    headers: object;
+    option: object;
 }
 
 // Stack 
