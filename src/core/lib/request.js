@@ -58,10 +58,10 @@ function wait(retryDelay) {
 }
 
 function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDelay = 300, retryLimit = 5) {
-    let requestParams = stack.requestParams,
+    const requestParams = stack.requestParams,
         url = requestParams.url + '?' + queryParams,
         headers = requestParams.headers
-    var option = Utils.mergeDeep({ 
+    const option = Utils.mergeDeep({ 
         method: 'GET',
         headers: headers,
         timeout: 30000,                                
@@ -98,11 +98,11 @@ function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDela
     let request = {url, option};
 
     let plugins = stack.plugins;
-    if (plugins && plugins != undefined) {
+    if (plugins && plugins !== undefined) {
 
         for (let index = 0; index < plugins.length; index++) {
 
-            if (typeof plugins[index].onRequest == 'function') {
+            if (typeof plugins[index].onRequest === 'function') {
                 request = plugins[index].onRequest(stack, request)
             }
         }
@@ -113,14 +113,13 @@ function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDela
         .then( function(response) {
             
             if (fetchOptions.debug)  fetchOptions.logHandler('info', response);
-            let data = response.json();
+            const data = response.json();
 
             if (response.ok && response.status === 200) {
                 data.then(json => {
-                    for (let index = 0; index < plugins.length; index++) {
-                        if (typeof plugins[index].onResponse == 'function')
-                            json =  plugins[index].onResponse(stack, request, response, json)
-                    }
+                    for (let index = 0;  index < plugins.length && typeof plugins[index].onResponse === 'function'; index++)
+                        json =  plugins[index].onResponse(stack, request , response, json)
+
                     resolve(json);
                 })
 
