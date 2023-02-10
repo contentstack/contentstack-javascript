@@ -5,7 +5,8 @@ import fetch from "runtime/http.js";
 let version = '{{VERSION}}';
 let environment,
     api_key;
-export default function Request(options, fetchOptions) {
+export default function Request(stack, fetchOptions) {
+    let requestParams = stack.requestParams;
     return new Promise(function(resolve, reject) {
         let queryParams;
         let serialize = function(obj, prefix) {
@@ -28,21 +29,19 @@ export default function Request(options, fetchOptions) {
             return str.join("&");
         };
 
-        let url = options.url,
-            headers = options.headers;
+        
 
         // setting headers
-        headers['Content-Type'] = 'application/json; charset=UTF-8';
-        headers['X-User-Agent'] = 'contentstack-{{PLATFORM}}/' + version;
+        requestParams.headers['Content-Type'] = 'application/json; charset=UTF-8';
+        requestParams.headers['X-User-Agent'] = 'contentstack-{{PLATFORM}}/' + version;
 
-        if (options.body && typeof options.body === 'object') {
-            delete options.body._method;
-            if (typeof options.body.query === "object" && Object.keys(options.body.query).length === 0) delete options.body.query;
-            queryParams = serialize(options.body);
+        if (requestParams.body && typeof requestParams.body === 'object') {
+            delete requestParams.body._method;
+            if (typeof requestParams.body.query === "object" && Object.keys(requestParams.body.query).length === 0) delete requestParams.body.query;
+            queryParams = serialize(requestParams.body);
         }
 
-        return fetchRetry(url + '?' + queryParams, 
-                            headers, 
+        return fetchRetry(stack, queryParams, 
                             fetchOptions, 
                             resolve, 
                             reject, 
@@ -58,8 +57,11 @@ function wait(retryDelay) {
     });
 }
 
-function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 300, retryLimit = 5) {
-    var option = Utils.mergeDeep({ 
+function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDelay = 300, retryLimit = 5) {
+    const requestParams = stack.requestParams,
+        url = requestParams.url + '?' + queryParams,
+        headers = requestParams.headers
+    const option = Utils.mergeDeep({ 
         method: 'GET',
         headers: headers,
         timeout: 30000,                                
@@ -83,20 +85,44 @@ function fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay = 30
             }
             wait(msDelay)
                 .then(() => {
-                    return fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay, retryLimit)
+                    return fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDelay, retryLimit)
                 })
                 .catch(() => {
-                    return fetchRetry(url, headers, fetchOptions, resolve, reject, retryDelay, retryLimit)
+                    return fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDelay, retryLimit)
                 })
         }
     }
+
     if (fetchOptions.debug)  fetchOptions.logHandler('info', { url: url, option: option});
-    fetch(url, option)
-        .then(function(response) {    
+
+    let request = {url, option};
+
+    let plugins = stack.plugins;
+    if (plugins && plugins !== undefined) {
+
+        for (let index = 0; index < plugins.length; index++) {
+
+            if (typeof plugins[index].onRequest === 'function') {
+                request = plugins[index].onRequest(stack, request)
+            }
+        }
+    }
+
+    
+    fetch(request.url, request.option)
+        .then( function(response) {
+            
             if (fetchOptions.debug)  fetchOptions.logHandler('info', response);
-            let data = response.json();      
+            const data = response.json();
+
             if (response.ok && response.status === 200) {
-                resolve(data);
+                data.then(json => {
+                    for (let index = 0;  index < plugins.length && typeof plugins[index].onResponse === 'function'; index++)
+                        json =  plugins[index].onResponse(stack, request , response, json)
+
+                    resolve(json);
+                })
+
             } else {
                 data.then((json) => {
                     if (fetchOptions.retryCondition && fetchOptions.retryCondition(response)) {
