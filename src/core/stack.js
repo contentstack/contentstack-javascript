@@ -18,6 +18,7 @@ let errorRetry = [408, 429]
      * @param param.region - DB region for Stack.
      * @param param.branch - Name of the branch you want to fetch data from
      * @param param.live_preview - Live preview configuration.
+     * @param param.plugins - List of plugins objects.
      * @param param.fetchOptions - Custom setting for the request.
      * @param param.fetchOptions.debug - This will enable debug log. Default is false
      * @param param.fetchOptions.timeout - Set timeout for the request.
@@ -65,8 +66,9 @@ export default class Stack {
                     return
                 }
             }
-         };
+        };
         this.config = Utils.mergeDeep({}, config)
+        this.plugins = []
 
         if(stack_arguments[0].region && stack_arguments[0].region !== undefined && stack_arguments[0].region !== "us") {
             this.config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
@@ -74,6 +76,13 @@ export default class Stack {
 
         if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions !== undefined) {
             this.fetchOptions =  Utils.mergeDeep(this.fetchOptions, stack_arguments[0].fetchOptions);
+        }
+
+        if (stack_arguments[0].plugins && stack_arguments[0].plugins !== undefined) {
+            
+            stack_arguments[0].plugins.forEach(pluginObj => {
+                this.plugins.push(pluginObj)
+            });
         }
         
         this.cachePolicy = CacheProvider.policies.IGNORE_CACHE;
@@ -371,9 +380,10 @@ export default class Stack {
      * @instance 
      */
     fetch(fetchOptions) {
-        let result = {
+        this.requestParams = {
             method: 'POST',
             headers: this.headers,
+            plugins: this.plugins,
             url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid,
             body: {
                 _method: 'GET',
@@ -381,7 +391,7 @@ export default class Stack {
             }
         };
         var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
-        return Request(result, options);
+        return Request(this, options);
     }
 
   /**
@@ -452,7 +462,7 @@ export default class Stack {
      * @instance
      */
     getLastActivities() {
-        let query = {
+        this.requestParams = {
             method: 'POST',
             headers: this.headers,
             url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
@@ -462,7 +472,7 @@ export default class Stack {
                 environment: this.environment
             }
         };
-        return Request(query, this.fetchOptions);
+        return Request(this, this.fetchOptions);
     }
 
      /**
@@ -482,7 +492,7 @@ export default class Stack {
      * @instance
      */
     getContentTypes(param = {}) { 
-        let query = {
+        this.requestParams = {
             method: 'POST',
             headers: this.headers,
             url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
@@ -493,10 +503,10 @@ export default class Stack {
         };
         if(param) {
             for( var key in param) {
-                query.body[key] = param[key]    
+                this.requestParams.body[key] = param[key]    
             }
         }
-        return Request(query, this.fetchOptions);
+        return Request(this, this.fetchOptions);
     }
 
     /**

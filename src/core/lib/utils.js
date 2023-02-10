@@ -265,7 +265,7 @@ export function sendRequest(queryObject, options) {
 
     let callback = function(continueFlag, resolve, reject) {
         if (continueFlag) {
-            Request(queryObject.requestParams, options)
+            Request(queryObject, options)
                 .then(function(data) {
                     try {
                         self.entry_uid = self.asset_uid = self.tojson = self.queryCachePolicy = undefined;
@@ -347,6 +347,7 @@ export function sendRequest(queryObject, options) {
                             if (err || !_data) {
                                 callback(true, resolve, reject);
                             } else {
+                                const originalData = JSON.parse(JSON.stringify(_data));
                                 try {
 
                                     const doesQueryRequestForReferences =
@@ -369,8 +370,7 @@ export function sendRequest(queryObject, options) {
                                             await updateLivePreviewReferenceEntry(
                                                 referencesToBeResolvedMap,
                                                 _data.entry,
-                                                queryObject.live_preview,
-                                                queryObject.requestParams,
+                                                queryObject,
                                                 options
                                             );
                                         } else {
@@ -378,8 +378,7 @@ export function sendRequest(queryObject, options) {
                                                 await updateLivePreviewReferenceEntry(
                                                     referencesToBeResolvedMap,
                                                     entry,
-                                                    queryObject.live_preview,
-                                                    queryObject.requestParams,
+                                                    queryObject,
                                                     options
                                                    
                                                 );
@@ -392,7 +391,7 @@ export function sendRequest(queryObject, options) {
 
                                 await self.provider.set(
                                     hashQuery,
-                                    _data,
+                                    originalData,
                                     function (err) {
                                         try {
 
@@ -481,7 +480,8 @@ function generateReferenceMap (references) {
     return map;
 };
 
-async function updateLivePreviewReferenceEntry(referenceMap, entry, livePreview, requestParams, options, handlerOptions) {
+async function updateLivePreviewReferenceEntry(referenceMap, entry, stack, options, handlerOptions) {
+    const {live_preview:livePreview, requestParams} = stack;
     const { content_type_uid: livePreviewContentTypeUid, management_token } = livePreview;
 
 
@@ -499,12 +499,12 @@ async function updateLivePreviewReferenceEntry(referenceMap, entry, livePreview,
             if (entry._content_type_uid === livePreviewContentTypeUid) {
 
                 try {
-                    const referenceRequestParam = JSON.parse(JSON.stringify(requestParams));
+                    stack.requestParams = JSON.parse(JSON.stringify(requestParams));
                     
                     const includeReference = getIncludeParamForReference(referenceMap)
-                    referenceRequestParam.body.include = includeReference
-                    referenceRequestParam.body.live_preview = livePreview.live_preview
-                    referenceRequestParam.body.content_type_uid = livePreviewContentTypeUid
+                    stack.requestParams.body.include = includeReference
+                    stack.requestParams.body.live_preview = livePreview.live_preview
+                    stack.requestParams.body.content_type_uid = livePreviewContentTypeUid
 
                     const livePreviewUrl = livePreview.host.match(
                         /^((http[s]?):(\/\/)?)?(.+)$/
@@ -515,13 +515,13 @@ async function updateLivePreviewReferenceEntry(referenceMap, entry, livePreview,
                         const entryUid = entry.uid;
 
                     const url = `${livePreviewHost}/v3/content_types/${entry._content_type_uid}/entries/${entryUid}`;
-                    referenceRequestParam.url = url
-                    referenceRequestParam.method = "GET"
+                    stack.requestParams.url = url
+                    stack.requestParams.method = "GET"
  
-                    delete referenceRequestParam.headers.access_token
-                    referenceRequestParam.headers.authorization = management_token
+                    delete stack.requestParams.headers.access_token
+                    stack.requestParams.headers.authorization = management_token
 
-                    const data = await Request(referenceRequestParam, options);
+                    const data = await Request(stack, options);
                     data.entry._content_type_uid = livePreviewContentTypeUid;
                     data.entry.uid = entryUid;
                     setReference(data.entry);
