@@ -14,11 +14,16 @@ You need Node.js version 4.4.7 or later installed to use the Contentstack JavaSc
 ### Setup and Installation
 
 #### For JavaScript (Browser)
+For browsers, we recommend to download the library via npm or yarn to ensure 100% availability.
 
-To use the JavaScript SDK, download it from [here](https://contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest) and include it in the &lt;script&gt; tag:
+If you'd like to use a standalone built file you can use the following script tag or download it from [jsDelivr](https://www.jsdelivr.com/package/npm/contentstack), under the `dist` directory:
 
 ```html
-<script type="text/javascript" src="/path/to/contentstack.min.js"></script>;
+<script src="https://cdn.jsdelivr.net/npm/contentstack@latest/dist/web/contentstack.min.js"></script>
+```
+You can also specify a specific version number.
+```html
+<script src="https://cdn.jsdelivr.net/npm/contentstack@3.16.0/dist/web/contentstack.min.js"></script>
 ```
 
 To initialize the SDK, you will need to specify the API Key, Delivery Token, and Environment Name of your stack.
@@ -36,7 +41,7 @@ If you want to set and use European region, refer to the code below:
 
 #### For Node.js
 
-Node.js uses the Javascript SDK to create apps. To use the JavaScript SDK, download it from [here](https://contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest), OR install it via npm:
+Node.js uses the Javascript SDK to create apps. To use the JavaScript SDK, install it via npm:
 
 ```bash
 npm i contentstack
@@ -64,7 +69,7 @@ If you want to set and use European region, refer to the code below:
 
 #### For React Native
 
-React Native uses the Javascript SDK to create apps. To use the JavaScript SDK, download it from [here](https://contentstack.com/docs/platforms/javascript-browser/javascript_sdk_latest), OR install ist via npm:
+React Native uses the Javascript SDK to create apps. To use the JavaScript SDK, install it via npm:
 
 ```bash
 npm i contentstack
@@ -73,7 +78,7 @@ npm i contentstack
 To import the SDK in your project, use the following command:
 
 ```javascript
-import Contentstack from `contentstack/react-native`
+import Contentstack from `contentstack`
 ```
 
 To initialize the SDK, you will need to specify the API Key, Delivery Token, and Environment Name of your stack.
