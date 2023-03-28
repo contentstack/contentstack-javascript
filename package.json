@@ -108,6 +108,6 @@
     "es6-promise": "^4.1.1",
     "isomorphic-fetch": "^3.0.0",
     "localStorage": "1.0.4",
-    "qs": "^6.11.0"
+    "qs": "^6.11.1"
   }
 }
