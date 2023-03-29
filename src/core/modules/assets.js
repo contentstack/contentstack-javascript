@@ -81,9 +81,9 @@ export default class Assets {
 
     /**
      * @method includeFallback
-     * @memberOf Entry
+     * @memberOf Asset
      * @description Include the fallback locale publish content, if specified locale content is not publish.
-     * @example stack.ContentType(contentType_uid).Entry(entry_uid).includeFallback().fetch()
+     * @example stack.ContentType(contentType_uid).Assets(assetUid).includeFallback().fetch()
      * @returns {Asset}
      * @instance
      */
@@ -91,7 +91,18 @@ export default class Assets {
         this._query['include_fallback'] = true;
         return this;
     }
-
+    /**
+     * @method includeMetadata
+     * @memberOf Asset
+     * @description Include the metadata for getting metadata content for the asset.
+     * @example stack.ContentType(contentType_uid).Assets(assetUid).includeMetadata().fetch()
+     * @returns {Asset}
+     * @instance
+     */
+    includeMetadata() {
+        this._query['include_metadata'] = true;
+        return this;
+    }
 /**
    * Fetches a particular asset based on the provided asset UID.
    * @memberOf Assets

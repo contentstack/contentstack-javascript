@@ -124,16 +124,19 @@ function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDela
                 })
 
             } else {
+                const {status, statusText} = response
                 data.then((json) => {
+                    const {error_message, error_code, errors} = json
+                    const errorDetails = { error_message, error_code, errors, status, statusText }
                     if (fetchOptions.retryCondition && fetchOptions.retryCondition(response)) {
-                        onError(json)
+                        onError(errorDetails)
                     } else {
-                        if (fetchOptions.debug)  fetchOptions.logHandler('error', json);
-                        reject(json)
+                        if (fetchOptions.debug)  fetchOptions.logHandler('error', errorDetails);
+                        reject(errorDetails)
                     }   
                 }).catch(() => {
-                    if (fetchOptions.debug)  fetchOptions.logHandler('error', {status: response.status, statusText: response.statusText});
-                    reject({status: response.status, statusText: response.statusText})
+                    if (fetchOptions.debug)  fetchOptions.logHandler('error', {status, statusText});
+                    reject({status, statusText})
                 });
             }
         }).catch((error) => {
