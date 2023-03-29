@@ -257,6 +257,19 @@ export default class Entry {
         this._query['include_branch'] = true;
         return this;
     }
+
+    /**
+     * @method includeMetadata
+     * @memberOf Entry
+     * @description Include the metadata for getting metadata content for the entry.
+     * @example stack.ContentType(contentType_uid).Entry(entry_uid).includeMetadata().fetch()
+     * @returns {Entry}
+     * @instance
+     */
+    includeMetadata() {
+        this._query['include_metadata'] = true;
+        return this;
+    }
     
     /**
      * @method includeContentType
