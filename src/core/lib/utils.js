@@ -347,7 +347,6 @@ export function sendRequest(queryObject, options) {
                             if (err || !_data) {
                                 callback(true, resolve, reject);
                             } else {
-                                const originalData = JSON.parse(JSON.stringify(_data));
                                 try {
 
                                     const doesQueryRequestForReferences =
@@ -388,25 +387,16 @@ export function sendRequest(queryObject, options) {
                                     }
                                 } catch (error) {
                                 }
-
-                                await self.provider.set(
-                                    hashQuery,
-                                    originalData,
-                                    function (err) {
-                                        try {
-
-                                            if (err) reject(err);
-                                            if (!tojson)
-                                                _data =
-                                                    resultWrapper(_data);
-                                            return resolve(
-                                                spreadResult(_data)
-                                            );
-                                        } catch (e) {
-                                            return reject(e);
-                                        }
-                                    }
-                                );
+                                try {
+                                    if (!tojson)
+                                        _data =
+                                            resultWrapper(_data);
+                                    return resolve(
+                                        spreadResult(_data)
+                                    );
+                                } catch (e) {
+                                    return reject(e);
+                                }
                             }
                         } catch (e) {
                             return reject(e);
