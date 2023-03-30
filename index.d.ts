@@ -22,7 +22,8 @@ export class Utils {
 export enum Region {
     US = "us",
     EU = "eu",
-    AZURE_NA = "azure-na"
+    AZURE_NA = "azure-na",
+    AZURE_EU = "azure-eu"
 }
 
 //Enum for Contentstack CachePolicy
@@ -37,11 +38,11 @@ export enum CachePolicy {
 // Sync Result 
 export interface SyncResult {
     items: Array<any>;
-    paginationToken?: string;
-    syncToken?: string;
+    pagination_token?: string;
+    sync_token?: string;
     skip: number;
     limit: number;
-    totalCount: number;
+    total_count: number;
 }
 
 // Contentstack Config 
@@ -209,6 +210,9 @@ export class Entry {
     includeSchema(): this;
     includeReferenceContentTypeUID(): this;
     includeContentType(): this;
+    /**
+     * @deprecated since version 3.3.0
+     */
     includeOwner(): this;
     toJSON(): this;
     addParam(key: string, value: any): this;
