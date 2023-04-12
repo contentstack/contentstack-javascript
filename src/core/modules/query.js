@@ -445,7 +445,7 @@ export default class Query extends Entry {
         this._query['count'] = true;
         this.requestParams = {
             method: 'POST',
-            headers: this.headers,
+            headers: Utils.mergeDeep({}, this.headers),
             url: url,
             body: {
                 _method: 'GET',
@@ -754,7 +754,7 @@ export default class Query extends Entry {
             url = (this.type && this.type === 'asset') ? baseURL + this.config.urls.assets : baseURL + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
         this.requestParams = {
             method: 'POST',
-            headers: this.headers,
+            headers: Utils.mergeDeep({}, this.headers),
             url: url,
             body: {
                 _method: 'GET',
@@ -791,7 +791,7 @@ export default class Query extends Entry {
         this._query.limit = 1;
         this.requestParams = {
             method: 'POST',
-            headers: this.headers,
+            headers: Utils.mergeDeep({}, this.headers),
             url: url,
             body: {
                 _method: 'GET',
