@@ -355,7 +355,7 @@ export default class Entry {
         if (this.entry_uid) {
             this.requestParams = {
                 method: 'POST',
-                headers: this.headers,
+                headers: Utils.mergeDeep({}, this.headers),
                 url: this.config.protocol + "://" + host + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries + this.entry_uid,
                 body: {
                     _method: 'GET',
