@@ -120,7 +120,7 @@ export default class Assets {
         if (this.asset_uid) {
             this.requestParams = {
                 method: 'POST',
-                headers: this.headers,
+                headers: Utils.mergeDeep({}, this.headers),
                 url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.assets + this.asset_uid,
                 body: {
                     _method: 'GET',
