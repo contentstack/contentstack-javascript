@@ -1,5 +1,19 @@
 ## Change log
 
+### Version: 3.17.1
+#### Date: April-18-2023
+##### Bug fix:
+ - Access token for header issue resolved
+
+### Version: 3.17.0
+#### Date: March-30-2023
+##### Bug fix:
+ - Cache set issue resolved
+ - Type-definition for SyncResult updated
+
+### Version: 3.16.1
+#### Date: February-28-2023
+ - Package dependency updated
 ### Version: 3.16.0
 #### Date: February-10-2023
 #####  New Features:

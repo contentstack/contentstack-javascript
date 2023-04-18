@@ -18,16 +18,6 @@
             "src/core/cache.js"
         ]
     },
-    "templates": 
-    {
-        "default": 
-        {
-            "staticFiles": 
-            {
-                "include": [ "./contentstack-templates/favicon.ico"]
-            }
-        }
-    },
     "tags": {
         "dictionaries": ["jsdoc", "closure"],
         "allowUnknownTags": true

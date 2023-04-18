@@ -382,7 +382,7 @@ export default class Stack {
     fetch(fetchOptions) {
         this.requestParams = {
             method: 'POST',
-            headers: this.headers,
+            headers: Utils.mergeDeep({}, this.headers),
             plugins: this.plugins,
             url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types + this.content_type_uid,
             body: {
@@ -464,7 +464,7 @@ export default class Stack {
     getLastActivities() {
         this.requestParams = {
             method: 'POST',
-            headers: this.headers,
+            headers: Utils.mergeDeep({}, this.headers),
             url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
             body: {
                 _method: 'GET',
@@ -494,7 +494,7 @@ export default class Stack {
     getContentTypes(param = {}) { 
         this.requestParams = {
             method: 'POST',
-            headers: this.headers,
+            headers: Utils.mergeDeep({}, this.headers),
             url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.content_types,
             body: {
                 _method: 'GET',
@@ -537,7 +537,7 @@ export default class Stack {
         this._query = Utils.mergeDeep(this._query, params);
         this.requestParams = {
             method: 'POST',
-            headers: this.headers,
+            headers: Utils.mergeDeep({}, this.headers),
             url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.sync,
             body: {
                 _method: 'GET',
