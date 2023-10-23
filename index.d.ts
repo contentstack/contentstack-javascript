@@ -72,7 +72,7 @@ export interface ContentTypeCollection {
 
 export interface LivePreview {
     host: string
-    management_token: string
+    preview_token: string
     enable: boolean
 }
 

@@ -72,6 +72,10 @@ export default class Stack {
 
         if(stack_arguments[0].region && stack_arguments[0].region !== undefined && stack_arguments[0].region !== "us") {
             this.config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
+            this.config["live_preview"]["host"] =
+                stack_arguments[0].region +
+                "-" +
+                "rest-preview.contentstack.com";
         } 
 
         if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions !== undefined) {
