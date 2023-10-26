@@ -472,7 +472,7 @@ function generateReferenceMap (references) {
 
 async function updateLivePreviewReferenceEntry(referenceMap, entry, stack, options, handlerOptions) {
     const {live_preview:livePreview, requestParams} = stack;
-    const { content_type_uid: livePreviewContentTypeUid, preview_token } =
+    const { content_type_uid: livePreviewContentTypeUid, preview_token, management_token } =
         livePreview;
 
 
@@ -510,7 +510,7 @@ async function updateLivePreviewReferenceEntry(referenceMap, entry, stack, optio
                     stack.requestParams.method = "GET"
  
                     delete stack.requestParams.headers.access_token
-                    stack.requestParams.headers.authorization = preview_token;
+                    stack.requestParams.headers.authorization = preview_token || management_token;
 
                     const data = await Request(stack, options);
                     data.entry._content_type_uid = livePreviewContentTypeUid;
