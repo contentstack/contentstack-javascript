@@ -119,6 +119,7 @@ export class Stack {
     cachePolicy: CachePolicy;
     config: StackConfig;
     fetchOptions: any;
+    live_preview: { enable: boolean, host: string, management_token: string }
 
     ContentType(uid: string): ContentType;
     Assets(uid: string): Asset;

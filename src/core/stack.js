@@ -67,7 +67,7 @@ export default class Stack {
                 }
             }
         };
-        this.config = Utils.mergeDeep({}, config)
+        this.config = JSON.parse(JSON.stringify(config));
         this.plugins = []
 
         if(stack_arguments[0].region && stack_arguments[0].region !== undefined && stack_arguments[0].region !== "us") {
@@ -348,7 +348,7 @@ export default class Stack {
         return this;
     }
 
- /**
+    /**
      * @method Entry
      * @memberOf ContentType
      * @param {String} uid - uid of the entry 
@@ -364,7 +364,7 @@ export default class Stack {
         return Utils.merge(entry, this);
     }
 
-     /**
+    /**
      * @method fetch
      * @memberOf ContentType
      * @description This method returns the complete information of a specific content type.
@@ -394,7 +394,7 @@ export default class Stack {
         return Request(this, options);
     }
 
-  /**
+    /**
      * @method Assets
      * @memberOf Stack
      * @param {String} uid - uid of the asset 
@@ -433,7 +433,7 @@ export default class Stack {
         return this;
     }
 
- /**
+    /**
      * @method Query
      * @memberOf Stack
      * @description An initializer is responsible for creating Query object.Provides support for all search queries
@@ -445,7 +445,7 @@ export default class Stack {
         return Utils.merge(query, this);
     }
 
-   /**
+    /**
      * @method getLastActivities
      * @memberOf Stack
      * @description getLastActivities get all the ContentTypes whose last activity updated.
@@ -475,7 +475,7 @@ export default class Stack {
         return Request(this, this.fetchOptions);
     }
 
-     /**
+    /**
      * @method getContentTypes
      * @memberOf Stack
      * @param {String} param - Query on contentTypes
