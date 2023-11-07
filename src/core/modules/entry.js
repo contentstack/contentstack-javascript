@@ -290,9 +290,11 @@ export default class Entry {
      * @description Include the owner details along with the entry/entries details.
      * @example stack.ContentType(contentType_uid).Entry(entry_uid).includeOwner().fetch()
      * @returns {Entry}
+     * @deprecated The includeOwner function is deprecated.
      * @instance
      */
     includeOwner() {
+        console.warn("The includeOwner function is deprecated.")
         this._query['include_owner'] = true;
         return this;
     }
@@ -371,6 +373,7 @@ export default class Entry {
                 }
             };
             var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
+            console.log('🚀 ~ file: entry.js:376 ~ Entry ~ fetch ~ this:', this)
             return Utils.sendRequest(Utils.mergeDeep({}, this), options);
         } else {
             if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide an entry uid. e.g. .Entry('asset_uid')");
