@@ -241,8 +241,15 @@ export function sendRequest(queryObject, options) {
                 }
                 if(queryObject.requestParams.headers['access_token']) 
                     delete queryObject.requestParams.headers['access_token'];
+                delete queryObject.requestParams.headers['authorization'];
+                delete queryObject.requestParams.headers['preview_token'];
+
+                if (queryObject.live_preview.preview_token) {
+                    queryObject.requestParams.headers['preview_token'] = queryObject.live_preview.preview_token;
+                } else if (queryObject.live_preview.management_token) {
+                    queryObject.requestParams.headers['authorization'] = queryObject.live_preview.management_token;
+                }
                 
-                queryObject.requestParams.headers['authorization'] = queryObject.live_preview.preview_token || queryObject.live_preview.management_token;
             } else if(queryObject.live_preview.live_preview) {
                 cachePolicy = 1; // cache then network
             }
@@ -510,7 +517,15 @@ async function updateLivePreviewReferenceEntry(referenceMap, entry, stack, optio
                     stack.requestParams.method = "GET"
  
                     delete stack.requestParams.headers.access_token
-                    stack.requestParams.headers.authorization = preview_token || management_token;
+                    delete stack.requestParams.headers.preview_token
+                    delete stack.requestParams.headers.access_token
+
+                    if (preview_token) {
+                        stack.requestParams.headers.preview_token = preview_token;
+                    } else if (management_token) {
+                        stack.requestParams.headers.authorization =
+                            management_token;
+                    }
 
                     const data = await Request(stack, options);
                     data.entry._content_type_uid = livePreviewContentTypeUid;
