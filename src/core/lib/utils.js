@@ -246,6 +246,7 @@ export function sendRequest(queryObject, options) {
 
                 if (queryObject.live_preview.preview_token) {
                     queryObject.requestParams.headers['preview_token'] = queryObject.live_preview.preview_token;
+                    queryObject.requestParams.headers['live_preview'] = queryObject.live_preview.live_preview;
                 } else if (queryObject.live_preview.management_token) {
                     queryObject.requestParams.headers['authorization'] = queryObject.live_preview.management_token;
                 }
@@ -522,6 +523,7 @@ async function updateLivePreviewReferenceEntry(referenceMap, entry, stack, optio
 
                     if (preview_token) {
                         stack.requestParams.headers.preview_token = preview_token;
+                        stack.requestParams.headers.live_preview = livePreview.live_preview;
                     } else if (management_token) {
                         stack.requestParams.headers.authorization =
                             management_token;
