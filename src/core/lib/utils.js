@@ -244,7 +244,6 @@ export function sendRequest(queryObject, options) {
                 delete queryObject.requestParams.headers['authorization'];
                 delete queryObject.requestParams.headers['preview_token'];
 
-                console.log("james", JSON.stringify(queryObject.live_preview, null, 2))
                 if (queryObject.live_preview.preview_token) {
                     queryObject.requestParams.headers['preview_token'] = queryObject.live_preview.preview_token;
                 } else if (queryObject.live_preview.management_token) {

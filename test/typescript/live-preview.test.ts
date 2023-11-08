@@ -163,7 +163,6 @@ describe("Live preview realtime URL switch", () => {
             tester.mock.calls[0][0].option.headers.authorization
         ).toBeUndefined();
 
-        console.log("checkin", JSON.stringify(stack, null, 2))
         //@ts-expect-error
         delete stack.live_preview.preview_token;
     });
@@ -200,7 +199,6 @@ describe("Live preview realtime URL switch", () => {
         expect(tester).toBeCalledTimes(1);
         expect(tester.mock.calls[0][0].url).toContain("api.contentstack.io");
 
-        console.log(JSON.stringify(tester.mock.calls, null, 2));
         expect(tester.mock.calls[0][0].option.headers.authorization).toBe(
             "management_token"
         );
