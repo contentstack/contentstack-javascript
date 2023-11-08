@@ -239,8 +239,19 @@ export function sendRequest(queryObject, options) {
                 if(queryObject.requestParams.body['environment']) {
                     delete queryObject.requestParams.body['environment'];
                 }
+                
                 if(queryObject.requestParams.headers['access_token']) 
                     delete queryObject.requestParams.headers['access_token'];
+                
+                delete queryObject.requestParams.headers['authorization'];
+                delete queryObject.requestParams.headers['preview_token'];
+
+                if (queryObject.live_preview.preview_token) {
+                    queryObject.requestParams.headers['preview_token'] = queryObject.live_preview.preview_token;
+                    queryObject.requestParams.headers['live_preview'] = queryObject.live_preview.live_preview;
+                } else if (queryObject.live_preview.management_token) {
+                    queryObject.requestParams.headers['authorization'] = queryObject.live_preview.management_token;
+                }
                 
                 queryObject.requestParams.headers['authorization'] = queryObject.live_preview.preview_token || queryObject.live_preview.management_token;
             } else if(queryObject.live_preview.live_preview) {
@@ -510,7 +521,15 @@ async function updateLivePreviewReferenceEntry(referenceMap, entry, stack, optio
                     stack.requestParams.method = "GET"
  
                     delete stack.requestParams.headers.access_token
-                    stack.requestParams.headers.authorization = preview_token || management_token;
+                    delete stack.requestParams.headers.preview_token
+
+                    if (preview_token) {
+                        stack.requestParams.headers.preview_token = preview_token;
+                        stack.requestParams.headers.live_preview = livePreview.live_preview;
+                    } else if (management_token) {
+                        stack.requestParams.headers.authorization =
+                            management_token;
+                    }
 
                     const data = await Request(stack, options);
                     data.entry._content_type_uid = livePreviewContentTypeUid;
