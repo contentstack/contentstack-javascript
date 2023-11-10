@@ -55,7 +55,7 @@ export interface Config {
     live_preview?: LivePreview;
     plugins?: ContentstackPlugin[];
     fetchOptions?: FetchOptions;
-    early_access_headers?: string[]
+    early_access?: string[]
 }
 // Stack Config
 export interface StackConfig {

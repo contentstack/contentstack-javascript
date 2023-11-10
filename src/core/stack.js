@@ -101,8 +101,8 @@ export default class Stack {
                     if (typeof stack_arguments[0].branch === "string" && stack_arguments[0].branch !== undefined) {
                         this.headers.branch = stack_arguments[0].branch
                     }
-                    if (typeof stack_arguments[0].ea_headers == "object" && Array.isArray(stack_arguments[0].ea_headers) && stack_arguments[0].ea_headers.length > 0) {
-                        this.headers['x-header-ea'] = stack_arguments[0].ea_headers.join(',')
+                    if (typeof stack_arguments[0].early_access == "object" && Array.isArray(stack_arguments[0].early_access) && stack_arguments[0].early_access.length > 0) {
+                        this.headers['x-header-ea'] = stack_arguments[0].early_access.join(',')
                     }
                     this.environment = stack_arguments[0].environment;
                     return this;
