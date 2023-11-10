@@ -12,6 +12,7 @@ describe('Stack tests', () => {
         expect(stack.clearAll).not.toEqual(undefined)
         expect(stack.getContentTypes).not.toEqual(undefined)
         expect(stack.imageTransform).not.toEqual(undefined)
+        expect(stack.livePreviewQuery).not.toEqual(undefined)
 
         expect(stack.cachePolicy).toEqual(Contentstack.CachePolicy.IGNORE_CACHE);
         expect(stack.environment).toEqual('environment');

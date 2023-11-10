@@ -88,7 +88,7 @@ export default class Entry {
         return this;
     }
 
- /**
+    /**
      * @method includeReference
      * @memberOf Entry
      * @description Fetches the entire content of referenced entry(ies). <a href='https://www.contentstack.com/docs/developers/apis/content-delivery-api/#include-reference'>Read More</a>
@@ -253,7 +253,7 @@ export default class Entry {
      * @returns {Entry}
      * @instance
      */
-     includeBranch() {
+    includeBranch() {
         this._query['include_branch'] = true;
         return this;
     }
@@ -284,7 +284,17 @@ export default class Entry {
         return this;
     }
 
+    /**
+     * @method includeOwner
+     * @memberOf Entry
+     * @description Include the owner details along with the entry/entries details.
+     * @example stack.ContentType(contentType_uid).Entry(entry_uid).includeOwner().fetch()
+     * @returns {Entry}
+     * @deprecated The includeOwner function is deprecated.
+     * @instance
+     */
     includeOwner() {
+        console.warn("The includeOwner function is deprecated.")
         this._query['include_owner'] = true;
         return this;
     }
@@ -333,7 +343,7 @@ export default class Entry {
     }
 
 
-     /**
+    /**
      * @method fetch
      * @memberOf Entry 
      * @description Fetches a particular entry based on the provided entry UID.

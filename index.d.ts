@@ -55,6 +55,7 @@ export interface Config {
     live_preview?: LivePreview;
     plugins?: ContentstackPlugin[];
     fetchOptions?: FetchOptions;
+    early_access?: string[]
 }
 // Stack Config
 export interface StackConfig {
@@ -119,6 +120,7 @@ export class Stack {
     cachePolicy: CachePolicy;
     config: StackConfig;
     fetchOptions: any;
+    live_preview: { enable: boolean, host: string, management_token: string }
 
     ContentType(uid: string): ContentType;
     Assets(uid: string): Asset;
