@@ -1,5 +1,13 @@
 ## Change log
 
+### Version: 3.17.2
+#### Date: November-15-2023
+##### Bug fix:
+ - Same management token in Live Preview in different stack object fixed
+ - X-User-Agent updated 
+##### New Features
+ - Early Access added to stack config
+
 ### Version: 3.17.1
 #### Date: April-18-2023
 ##### Bug fix:
