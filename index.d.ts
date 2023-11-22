@@ -75,7 +75,7 @@ export interface ContentTypeCollection {
 export type LivePreview = {
     host?: string
     enable: boolean
-} & (LivePreivewConfigWithManagementToken | LivePreivewConfigWithPreviewToken)
+} & (LivePreivewConfigWithManagementToken | LivePreviewConfigWithPreviewToken)
 
 export interface LivePreivewConfigWithManagementToken {
     /**
@@ -85,7 +85,7 @@ export interface LivePreivewConfigWithManagementToken {
     management_token: string;
 }
 
-export interface LivePreivewConfigWithPreviewToken {
+export interface LivePreviewConfigWithPreviewToken {
     preview_token: string;
 }
 
