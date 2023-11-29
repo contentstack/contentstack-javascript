@@ -9,7 +9,7 @@ const config = {
         entries: "/entries/",
         assets: "/assets/",
         environments: "/environments/",
-        taxonomy: "/taxonomies/"
+        taxonomies: "/taxonomies/"
     },
     live_preview: {
         enable: false,

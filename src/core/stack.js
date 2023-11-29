@@ -352,6 +352,18 @@ export default class Stack {
     }
 
     /**
+     * [Taxonomies description]
+     * @param {[type]} uid [description]
+     */
+    Taxonomies(uid) {
+        if (uid && typeof uid === 'string') {
+            this.taxonomy_uid = uid;
+            this.type = "taxonomy"
+        }
+        return this;
+    }
+
+    /**
      * @method Entry
      * @memberOf ContentType
      * @param {String} uid - uid of the entry 
