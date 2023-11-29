@@ -12,6 +12,6 @@ describe("Taxonomy Tests", () => {
     })
 })
 
-function createTaxonomyQuery() {
-    return stack.taxonomies()
-}
+// function createTaxonomyQuery() {
+//     return stack.taxonomies()
+// }
