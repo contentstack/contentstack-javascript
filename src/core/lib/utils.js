@@ -556,3 +556,79 @@ function getIncludeParamForReference(referenceMap) {
     buildParamStringRecursively(referenceMap, "");
     return newRefences.filter((currentReference) =>  currentReference !== "");
 }
+
+export const _extend = {
+    compare: function(type) {
+        return function(key, value) {
+            if (key && value && typeof key === 'string' && typeof value !== 'undefined') {
+                this._query['query'][key] = this._query['query']['file_size'] || {};
+                this._query['query'][key][type] = value;
+                return this;
+            } else {
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+            }
+        };
+    },
+    contained: function(bool) {
+        let type = (bool) ? '$in' : '$nin';
+        return function(key, value) {
+            if (key && value && typeof key === 'string' && Array.isArray(value)) {
+                this._query['query'][key] = this._query['query'][key] || {};
+                this._query['query'][key][type] = this._query['query'][key][type] || [];
+                this._query['query'][key][type] = this._query['query'][key][type].concat(value);
+                return this;
+            } else {
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+            }
+        };
+    },
+    exists: function(bool) {
+        return function(key) {
+            if (key && typeof key === 'string') {
+                this._query['query'][key] = this._query['query'][key] || {};
+                this._query['query'][key]['$exists'] = bool;
+                return this;
+            } else {
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+            }
+        };
+    },
+    logical: function(type) {
+        return function() {
+            let _query = [];
+            for (let i = 0, _i = arguments.length; i < _i; i++) {
+                if (arguments[i] instanceof Query && arguments[i]._query.query) {
+                    _query.push(arguments[i]._query.query);
+                } else if (typeof arguments[i] === "object") {
+                    _query.push(arguments[i]);
+                }
+            }
+            if (this._query['query'][type]) {
+                this._query['query'][type] = this._query['query'][type].concat(_query);
+            } else {
+                this._query['query'][type] = _query;
+            }
+            return this;
+        };
+    },
+    sort: function(type) {
+        return function(key) {
+            if (key && typeof key === 'string') {
+                this._query[type] = key;
+                return this;
+            } else {
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Argument should be a string.");
+            }
+        };
+    },
+    pagination: function(type) {
+        return function(value) {
+            if (typeof value === 'number') {
+                this._query[type] = value;
+                return this;
+            } else {
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Argument should be a number.");
+            }
+        }
+    }
+};
