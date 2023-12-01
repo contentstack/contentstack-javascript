@@ -3,6 +3,7 @@ import * as Utils from './lib/utils';
 import Entry from './modules/entry';
 import Assets from './modules/assets';
 import Query from './modules/query';
+import TaxonomyQuery from './modules/taxonomy';
 import Request from './lib/request';
 import CacheProvider from './cache-provider/index';
 let errorRetry = [408, 429]
@@ -355,11 +356,8 @@ export default class Stack {
      * [Taxonomies description]
      * @param {[type]} uid [description]
      */
-    Taxonomies(uid) {
-        if (uid && typeof uid === 'string') {
-            this.taxonomy_uid = uid;
-            this.type = "taxonomy"
-        }
+    Taxonomies() {
+        this.type = "taxonomy"
         return this;
     }
 
@@ -456,7 +454,9 @@ export default class Stack {
      * @instance  
      */
     Query() {
-        let query = new Query();
+        let query = (this.type === "taxonomy" || this.type === "contentType") ?
+        new TaxonomyQuery() :
+        new Query();
         return Utils.merge(query, this);
     }
 
