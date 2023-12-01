@@ -40,7 +40,7 @@ const Stack = Contentstack.Stack(
 Stack.setHost('api.contentstack.io');
 
 const Query = Stack
-    .ContentType(process.env.CONTENTSTACK_CONTENT_TYPE)
+    .ContentType(process.env.CONTENT_TYPE)
     .Query({})
     .language("en-us")
     .includeCount();
