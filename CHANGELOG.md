@@ -1,5 +1,9 @@
 ## Change log
 
+### Version: 4.0.0
+#### Date: December-15-2023
+ - Initial release of Typescript SDK
+
 ### Version: 3.17.2
 #### Date: November-15-2023
 ##### Bug fix:

@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../dist/esm",
+    "module": "esnext"
+  },
+  "include": ["../src/**/*.ts"], // Adjust this path based on your project structure
+  "exclude": ["../dist/esm"]
+}
