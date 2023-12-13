@@ -1,5 +1,9 @@
 threshold: medium
 fileignoreconfig:
+- filename: test/unit/image-transform.spec.ts
+  checksum: 7beabdd07bd35d620668fcd97e1a303b9cbc40170bf3008a376d75ce0895de2a
+- filename: test/utils/mocks.ts
+  checksum: a1cb4b1890a584f1facd30f2a0974c97a66f91417022be79d00516338e244227
 - filename: package-lock.json
-  checksum: 0dbf56c1fd0eda1145d69b718de5b7d419650556492851c343fab05867e233a2
+  checksum: c836dacebd78b36e1264e1f99d0e70be665b34b31c03b4f46d272d0581146311
 version: ""
