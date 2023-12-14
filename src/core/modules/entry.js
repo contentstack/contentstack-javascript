@@ -359,7 +359,7 @@ export default class Entry {
      */
     fetch(fetchOptions) {
         var host = this.config.host + ':' + this.config.port
-        if(this.live_preview && this.live_preview.enable === true && this.live_preview.content_type_uid === this.content_type_uid ) {
+        if(this.live_preview && this.live_preview.enable === true && this.live_preview.live_preview !== "init" ) {
             host = this.live_preview.host
         }
         if (this.entry_uid) {
