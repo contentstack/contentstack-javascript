@@ -1,7 +1,81 @@
 import * as Utils from '../lib/utils.js';
 import Entry from './entry';
 
-const _extend = Utils._extend;
+const _extend = {
+    compare: function(type) {
+        return function(key, value) {
+            if (key && value && typeof key === 'string' && typeof value !== 'undefined') {
+                this._query['query'][key] = this._query['query']['file_size'] || {};
+                this._query['query'][key][type] = value;
+                return this;
+            } else {
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+            }
+        };
+    },
+    contained: function(bool) {
+        let type = (bool) ? '$in' : '$nin';
+        return function(key, value) {
+            if (key && value && typeof key === 'string' && Array.isArray(value)) {
+                this._query['query'][key] = this._query['query'][key] || {};
+                this._query['query'][key][type] = this._query['query'][key][type] || [];
+                this._query['query'][key][type] = this._query['query'][key][type].concat(value);
+                return this;
+            } else {
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+            }
+        };
+    },
+    exists: function(bool) {
+        return function(key) {
+            if (key && typeof key === 'string') {
+                this._query['query'][key] = this._query['query'][key] || {};
+                this._query['query'][key]['$exists'] = bool;
+                return this;
+            } else {
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+            }
+        };
+    },
+    logical: function(type) {
+        return function() {
+            let _query = [];
+            for (let i = 0, _i = arguments.length; i < _i; i++) {
+                if (arguments[i] instanceof Query && arguments[i]._query.query) {
+                    _query.push(arguments[i]._query.query);
+                } else if (typeof arguments[i] === "object") {
+                    _query.push(arguments[i]);
+                }
+            }
+            if (this._query['query'][type]) {
+                this._query['query'][type] = this._query['query'][type].concat(_query);
+            } else {
+                this._query['query'][type] = _query;
+            }
+            return this;
+        };
+    },
+    sort: function(type) {
+        return function(key) {
+            if (key && typeof key === 'string') {
+                this._query[type] = key;
+                return this;
+            } else {
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Argument should be a string.");
+            }
+        };
+    },
+    pagination: function(type) {
+        return function(value) {
+            if (typeof value === 'number') {
+                this._query[type] = value;
+                return this;
+            } else {
+                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Argument should be a number.");
+            }
+        }
+    }
+};
 
 /**
  * @function getRequestUrl
@@ -9,7 +83,8 @@ const _extend = Utils._extend;
  * @param  {Object} this `this` variable from Query class
  * @return {string} returns the url that will be used to make API calls
  */
-function getRequestUrl(type, config, baseURL) {
+function getRequestUrl(type, config, content_type_uid, baseURL) {
+    let url;
     switch(type) {
         case 'asset':
             url = baseURL + config.urls.assets;
@@ -390,7 +465,7 @@ export default class Query extends Entry {
      */
     count() {
         const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-            url = getRequestUrl(this.type, this.config, host);
+            url = getRequestUrl(this.type, this.config, this.content_type_uid, host);
         this._query['count'] = true;
         this.requestParams = {
             method: 'POST',
@@ -700,7 +775,7 @@ export default class Query extends Entry {
             host = this.live_preview.host;
         }
         const baseURL = this.config.protocol + "://" + host + '/' + this.config.version
-        const url = getRequestUrl(this.type, this.config, baseURL)
+        const url = getRequestUrl(this.type, this.config, this.content_type_uid, baseURL)
         
 
         this.requestParams = {
@@ -736,7 +811,7 @@ export default class Query extends Entry {
         if(this.type && this.type !== 'asset' && this.live_preview && this.live_preview.enable === true && this.live_preview.content_type_uid === this.content_type_uid ) {
             host = this.config.protocol + "://" + this.live_preview.host + '/' + this.config.version
         }
-        const url = getRequestUrl(this.type, this.config, host)
+        const url = getRequestUrl(this.type, this.config, this.content_type_uid, host)
         
         this.singleEntry = true;
         this._query.limit = 1;
