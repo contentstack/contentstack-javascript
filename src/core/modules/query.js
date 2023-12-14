@@ -747,7 +747,7 @@ export default class Query extends Entry {
      */
     find(fetchOptions) {
         var host = this.config.host + ':' + this.config.port
-        if (this.type && this.type !== 'asset' && this.live_preview && this.live_preview.enable === true) {
+        if (this.type && this.type !== 'asset' && this.live_preview && this.live_preview.enable === true && this.live_preview.live_preview && this.live_preview.live_preview !== "init") {
             host = this.live_preview.host;
         }
         const baseURL = this.config.protocol + "://" + host + '/' + this.config.version,
@@ -782,7 +782,7 @@ export default class Query extends Entry {
      */
     findOne() {
         let host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version
-        if(this.type && this.type !== 'asset' && this.live_preview && this.live_preview.enable === true ) {
+        if(this.type && this.type !== 'asset' && this.live_preview && this.live_preview.enable === true && this.live_preview.live_preview && this.live_preview.live_preview !== "init" ) {
             host = this.config.protocol + "://" + this.live_preview.host + '/' + this.config.version
         }
         const url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
