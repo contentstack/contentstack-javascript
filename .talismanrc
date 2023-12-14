@@ -4,7 +4,9 @@ fileignoreconfig:
 - filename: test/typescript/taxonomy.test.ts
   checksum: e4bdf633e147fd60d929d379f20c814eed5f68b11421d7b53ec8826e9142de37
 - filename: src/core/modules/taxonomy.js
-  checksum: d9406f41360c036cb14b8ba2ec2edb265bd5d47de0060c4f4593e4750ee2e322
+  checksum: 84589be9805c1be5fd6c56021c41d18365126cf82059ad2cbef1d418c70d08e0
 - filename: src/core/lib/utils.js
   checksum: 6018f9f13fa32b724d09b9cdf5f78cf030a6332ca549651e1e35fe91e8c7e0e7
+- filename: src/core/modules/query.js
+  checksum: c88b336f9a271397ffedcf8c5085941ceb0bd1cd7e25ed9ada3acd8ce4f8970c
 version: ""
