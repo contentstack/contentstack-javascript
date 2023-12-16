@@ -45,7 +45,7 @@ export default defineConfig({
         }
       ]
     }),
-    // terser()
+    terser()
   ],
   context: 'window',
   external: [
