@@ -20,8 +20,7 @@
     "build:node": "rollup -c ./rollup/node.config.mjs",
     "build:web": "rollup -c ./rollup/web.config.mjs",
     "build:react-native": "rollup -c ./rollup/react-native.config.mjs",
-    "build:native-script": "rollup -c ./rollup/nativescript.config.mjs",
-    "build": "npm run build:node && npm run build:web && npm run build:react-native && npm run build:native-script",
+    "build": "npm run build:node && npm run build:web && npm run build:react-native",
     "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose",
     "prepare": "npm run build"
   },
