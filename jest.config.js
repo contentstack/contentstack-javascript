@@ -7,13 +7,6 @@ module.exports = {
     "^.+\\.(ts|tsx|js|jsx)$": "babel-jest"
   },
   reporters: [
-    "default",
-    ["jest-html-reporters", 
-      {
-        "publicPath": "./typescript-html-report",
-        "filename": "report.html",
-        "expand": true
-      }
-    ]
+    "default"
   ],
 };
