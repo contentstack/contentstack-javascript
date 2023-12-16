@@ -13,7 +13,7 @@
   "types": "./index.d.ts",
   "_id": "contentstack@3.16.1",
   "scripts": {
-    "test": "npm run test:typescript",
+    "test": "npm run test:e2e && npm run test:typescript",
     "test:e2e": "tape test/index.js | tap-html --out ./tap-html.html",
     "test:typescript": "jest --config jest.config.js --testPathPattern=test/typescript",
     "automate": "node test.js",
