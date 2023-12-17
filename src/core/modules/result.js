@@ -108,6 +108,6 @@ class Result {
      }    
 }
 
-module.exports = function(object) {
+export default function(object) {
     return new Result(object);
 };
