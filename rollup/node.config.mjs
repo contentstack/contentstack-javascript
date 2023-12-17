@@ -2,14 +2,15 @@ import { fileURLToPath } from 'node:url'
 import { builtinModules } from 'module';
 import { defineConfig } from 'rollup';
 
-import { babel } from '@rollup/plugin-babel';
 import commonJs from '@rollup/plugin-commonjs';
+import swc from '@rollup/plugin-swc';
 import nodeExternals from 'rollup-plugin-node-externals'
 import alias from '@rollup/plugin-alias';
 import replace from '@rollup/plugin-replace';
 import terser from '@rollup/plugin-terser';
 
 import pkg from '../package.json' assert { type: 'json' };
+
 
 
 export default defineConfig({
@@ -21,13 +22,13 @@ export default defineConfig({
   plugins: [
     nodeExternals(),
     commonJs(),
-    babel({
+    swc({
       exclude: 'node_modules/**',
-      presets: [
-        ['@babel/preset-env', {
-          modules: false
-        }]
-      ]
+      swc: {
+        jsc: {
+          target: 'es2015'
+        }
+      }
     }),
     replace({
       values: {

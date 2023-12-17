@@ -2,7 +2,7 @@ import { fileURLToPath } from 'node:url'
 import { builtinModules } from 'module';
 import { defineConfig } from 'rollup';
 
-import { babel } from '@rollup/plugin-babel';
+import swc from '@rollup/plugin-swc';
 import commonJs from '@rollup/plugin-commonjs';
 import nodeExternals from 'rollup-plugin-node-externals'
 import alias from '@rollup/plugin-alias';
@@ -21,13 +21,13 @@ export default defineConfig({
   plugins: [
     nodeExternals(),
     commonJs(),
-    babel({
+    swc({
       exclude: 'node_modules/**',
-      presets: [
-        ['@babel/preset-env', {
-          modules: false
-        }]
-      ]
+      swc: {
+        jsc: {
+          target: 'es2015'
+        }
+      }
     }),
     replace({
       values: {
