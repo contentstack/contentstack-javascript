@@ -20,7 +20,7 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
     }, 1000);
 });
 
-test.only('early_access in stack initialization', function (t) {
+test('early_access in stack initialization', function (t) {
     const stack = Contentstack.Stack({ ...init.stack, early_access: ['newCDA', 'taxonomy'] });
     t.equal(stack.headers['x-header-ea'], 'newCDA,taxonomy', 'Early access headers should be added');
     t.end();
