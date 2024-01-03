@@ -90,7 +90,7 @@ function getRequestUrl(type, config, content_type_uid, baseURL) {
             url = baseURL + config.urls.assets;
             break;
         case 'taxonomy':
-            url = baseURL + config.urls.taxonomies + config.urls.entries;
+            url = baseURL + config.urls.taxonomies;
             break;
         case 'contentType':
         default:

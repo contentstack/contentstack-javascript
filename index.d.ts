@@ -125,6 +125,7 @@ export class Stack {
     ContentType(uid: string): ContentType;
     Assets(uid: string): Asset;
     Assets(): Assets;
+    Taxonomies(): Taxonomies;
 
     setPort(port: number): Stack;
     setProtocol(protocol: string): Stack;
@@ -152,7 +153,14 @@ export class ContentType {
     constructor();
     content_type_uid: string
     
-    Query(): Query;
+    Query(): TaxonomyQuery;
+    Entry(uid: string): Entry;
+    fetch(fetchOptions?: object): Promise<any>;
+}
+
+export class Taxonomies {
+    constructor();
+    Query(): TaxonomyQuery;
     Entry(uid: string): Entry;
     fetch(fetchOptions?: object): Promise<any>;
 }
@@ -276,4 +284,12 @@ export class Query extends Entry {
 
     find(fetchOptions?: object): Promise<any>;
     findOne(): Promise<any>;
+}
+
+export class TaxonomyQuery extends Query {
+    constructor();
+    above(key: string, value: string, levels?: number): Query;
+    equalAndAbove(key: string, value: string, levels?: number): Query;
+    below(key: string, value: string, levels?: number): Query;
+    equalAndBelow(key: string, value: string, levels?: number): Query;
 }
