@@ -353,8 +353,10 @@ export default class Stack {
     }
 
     /**
-     * [Taxonomies description]
-     * @param {[type]} uid [description]
+     * @method Taxonomies
+     * @memberof Stack
+     * @description A method to set base url to taxonomies endpoint
+     * @returns {Stack}
      */
     Taxonomies() {
         this.type = "taxonomy"
