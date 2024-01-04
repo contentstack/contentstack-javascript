@@ -23,7 +23,8 @@ export enum Region {
     US = "us",
     EU = "eu",
     AZURE_NA = "azure-na",
-    AZURE_EU = "azure-eu"
+    AZURE_EU = "azure-eu",
+    GCP_NA = "gcp-na",
 }
 
 //Enum for Contentstack CachePolicy
