@@ -454,19 +454,6 @@ describe('Entry Query Test', () => {
         expect(query._query).toEqual({"query": {"taxonomies.taxonomy_uid": {"$above": "term_uid", "levels": 4 }}});
         done();
     });
-
-    // test('Taxonomy Query: Get All Entries With Taxonomy For One Content type', done => {
-    //     const query = makeEntryQuery().where("taxonomies.taxonomy_uid", "term_uid").where("_content_type", "ct1");
-    //     expect(query._query).toEqual({"query": {"taxonomies.taxonomy_uid": "term_uid", "_content_type": "ct1"}});
-    //     done();
-    // });
-
-    // test('Taxonomy Query: Get All Entries With Taxonomy For Multiple Content types', done => {
-    //     const query = makeEntryQuery().where("taxonomies.taxonomy_uid", "term_uid").containedIn("_content_type", ["ct1", "ct2"]);
-    //     expect(query._query).toEqual({"query": {"taxonomies.taxonomy_uid": "term_uid", "_content_type": {$in: ["ct1", "ct2"]}}});
-    //     done();
-    // });
-
 });
 
 function makeEntryQuery() {
