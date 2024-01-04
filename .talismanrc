@@ -9,4 +9,6 @@ fileignoreconfig:
   checksum: 6018f9f13fa32b724d09b9cdf5f78cf030a6332ca549651e1e35fe91e8c7e0e7
 - filename: src/core/modules/query.js
   checksum: c88b336f9a271397ffedcf8c5085941ceb0bd1cd7e25ed9ada3acd8ce4f8970c
+- filename: test/typescript/stack.test.ts
+  checksum: bbb3c425f8e1a63d4793f69ee9eaba9559294ff53f163a28f70ae54b1792276a
 version: ""
