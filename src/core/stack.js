@@ -3,7 +3,7 @@ import * as Utils from './lib/utils';
 import Entry from './modules/entry';
 import Assets from './modules/assets';
 import Query from './modules/query';
-import TaxonomyQuery from './modules/taxonomy';
+import Taxonomy from './modules/taxonomy';
 import Request from './lib/request';
 import CacheProvider from './cache-provider/index';
 let errorRetry = [408, 429]
@@ -360,7 +360,7 @@ export default class Stack {
      */
     Taxonomies() {
         this.type = "taxonomy"
-        return this;
+        return Utils.merge(new Taxonomy(), this);
     }
 
     /**
@@ -456,8 +456,11 @@ export default class Stack {
      * @instance  
      */
     Query() {
-        let query = (this.type === "taxonomy" || this.type === "contentType") ?
-        new TaxonomyQuery() :
+        // Taxonomy is a class that extends Query class and adds 4 more helper methods that use levels.
+        // These 4 methods also work on contentType base url, hence Taxonomy instance is returned
+        // Taxonomy instance is Regular Query instance + 4 additional methods (below, eq_below, above, eq_above)
+        let query = (this.type === "contentType") ?
+        new Taxonomy() :
         new Query();
         return Utils.merge(query, this);
     }

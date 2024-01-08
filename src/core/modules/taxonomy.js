@@ -18,7 +18,7 @@ const _extend = {
   }
 }
 
-export default class TaxonomyQuery extends Query {
+export default class Taxonomy extends Query {
   constructor() {
     super();
     /**
