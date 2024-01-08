@@ -403,13 +403,13 @@ describe('Entry Query Test', () => {
         done();
     });
 
-    test('Taxonomy Query: Get entries with any term ($in)', done => {
+    test('CT Taxonomy Query: Get entries with any term ($in)', done => {
         const query = makeEntryQuery().containedIn("taxonomies.taxonomy_uid", ["term_uid1", "term_uid2"]);
         expect(query._query).toEqual({"query": {"taxonomies.taxonomy_uid": { "$in": ["term_uid1", "term_uid2"] }}});
         done();
     });
 
-    test('Taxonomy Query: Get entries with any term ($or)', done => {
+    test('CT Taxonomy Query: Get entries with any term ($or)', done => {
         const query1 = makeEntryQuery().where("taxonomies.taxonomy_uid1", "term_uid1");
         const query2 = makeEntryQuery().where("taxonomies.taxonomy_uid2", "term_uid2");
         const query = makeEntryQuery().or(query1, query2);
@@ -417,7 +417,7 @@ describe('Entry Query Test', () => {
         done();
     });
 
-    test('Taxonomy Query: Get entries with all term ($and)', done => {
+    test('CT Taxonomy Query: Get entries with all term ($and)', done => {
         const query1 = makeEntryQuery().where("taxonomies.taxonomy_uid1", "term_uid1");
         const query2 = makeEntryQuery().where("taxonomies.taxonomy_uid2", "term_uid2");
         const query = makeEntryQuery().and(query1, query2);
@@ -425,34 +425,38 @@ describe('Entry Query Test', () => {
         done();
     });
 
-    test('Taxonomy Query: Get entries with any taxonomy terms ($exists)', done => {
+    test('CT Taxonomy Query: Get entries with any taxonomy terms ($exists)', done => {
         const query = makeEntryQuery().exists("taxonomies.taxonomy_uid");
         expect(query._query).toEqual({"query": {"taxonomies.taxonomy_uid": {$exists: true}}});
         done();
     });
 
-    test('Taxonomy Query: Get entries with taxonomy terms and also matching its children terms ($eq_below, level)', done => {
+    test('CT Taxonomy Query: Get entries with taxonomy terms and also matching its children terms ($eq_below, level)', done => {
         const query = makeEntryQuery().equalAndBelow("taxonomies.taxonomy_uid", "term_uid", 4);
         expect(query._query).toEqual({"query": {"taxonomies.taxonomy_uid": {"$eq_below": "term_uid", "levels": 4 }}});
         done();
     });
 
-    test('Taxonomy Query: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level) ', done => {
+    test('CT Taxonomy Query: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level) ', done => {
         const query = makeEntryQuery().below("taxonomies.taxonomy_uid", "term_uid");
         expect(query._query).toEqual({"query": {"taxonomies.taxonomy_uid": {"$below": "term_uid" }}});
         done();
     });
 
-    test('Taxonomy Query: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)', done => {
+    test('CT Taxonomy Query: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)', done => {
         const query = makeEntryQuery().equalAndAbove("taxonomies.taxonomy_uid", "term_uid", 4);
         expect(query._query).toEqual({"query": {"taxonomies.taxonomy_uid": {"$eq_above": "term_uid", "levels": 4 }}});
         done();
     });
 
-    test('Taxonomy Query: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)', done => {
+    test('CT Taxonomy Query: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)', done => {
         const query = makeEntryQuery().above("taxonomies.taxonomy_uid", "term_uid", 4);
         expect(query._query).toEqual({"query": {"taxonomies.taxonomy_uid": {"$above": "term_uid", "levels": 4 }}});
         done();
+    });
+
+    test('Taxonomy find test', done => {
+        makeTaxonomyQuery().find().then((response) => done()).catch((error) => done());
     });
 });
 
@@ -461,5 +465,5 @@ function makeEntryQuery() {
 }
 
 function makeTaxonomyQuery() {
-    return stack.Taxonomies().Query()
+    return stack.Taxonomies()
 }
