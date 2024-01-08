@@ -14,6 +14,10 @@ describe('Query API tests', () => {
     const query = await makeQuery('blog_post').where('_version', QueryOperation.IS_LESS_THAN, 3).find<TEntries>();
     expect(query.entries[0].title).toEqual('The future of business with AI');
   });
+  it('should add a where filter to the query parameters when object is passed to query method', async () => {
+    const query = await makeQuery('blog_post', {'_version': { '$lt': 3 }}).find<TEntries>();
+    expect(query.entries[0].title).toEqual('The future of business with AI');
+  });
   it('should add a where-in filter to the query parameters', async () => {
     const query = await makeQuery('blog_post')
       .whereIn('author', makeQuery('author').where('uid', QueryOperation.EQUALS, 'blt09f7d2d46afe6dc6'))
@@ -46,8 +50,9 @@ describe('Query API tests', () => {
     expect(query.entries[0].publish_details).not.toEqual(undefined);
   });
 });
-function makeQuery(ctUid: string) {
-  const query = stack.ContentType(ctUid).Entry().query();
+function makeQuery(ctUid: string, queryObj?: { [key: string]: any }) {
+  const entryInstance = stack.ContentType(ctUid).Entry();
 
-  return query;
+  if (queryObj) return entryInstance.query(queryObj);
+  return entryInstance.query();
 }

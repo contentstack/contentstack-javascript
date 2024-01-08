@@ -20,11 +20,8 @@ describe('Query class', () => {
   });
 
   it('should set a parameter correctly', () => {
-    query.query({ key1: 'value1' });
-    expect(query._parameters).toEqual({ key1: 'value1' });
-
-    query.query({ key2: 'value2' });
-    expect(query._parameters).toEqual({ key1: 'value1', key2: 'value2' });
+    const _query = getQueryObject(client, 'contentTypeUid', { key1: 'value1' })
+    expect(_query._parameters).toEqual({ key1: 'value1' });
   });
 
   it('should add an equality parameter to _parameters when queryOperation is EQUALS', () => {
@@ -92,6 +89,8 @@ describe('Query class', () => {
   });
 });
 
-function getQueryObject(client: AxiosInstance, uid: string) {
+function getQueryObject(client: AxiosInstance, uid: string, queryObj?: { [key: string]: any }) {
+  if (queryObj) return new Query(client, uid, queryObj);
+
   return new Query(client, uid);
 }
