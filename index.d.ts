@@ -154,17 +154,12 @@ export class ContentType {
     constructor();
     content_type_uid: string
     
-    Query(): TaxonomyQuery;
+    Query(): Taxonomy;
     Entry(uid: string): Entry;
     fetch(fetchOptions?: object): Promise<any>;
 }
 
-export class Taxonomies {
-    constructor();
-    Query(): TaxonomyQuery;
-    Entry(uid: string): Entry;
-    fetch(fetchOptions?: object): Promise<any>;
-}
+export class Taxonomies extends Taxonomy {}
 
 export class Assets {
     constructor();
@@ -287,7 +282,7 @@ export class Query extends Entry {
     findOne(): Promise<any>;
 }
 
-export class TaxonomyQuery extends Query {
+export class Taxonomy extends Query {
     constructor();
     above(key: string, value: string, levels?: number): Query;
     equalAndAbove(key: string, value: string, levels?: number): Query;

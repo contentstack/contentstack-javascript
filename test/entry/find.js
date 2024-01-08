@@ -1364,7 +1364,7 @@ test('.except() - For the reference - Array', function(assert) {
 
 // Taxonomies Endpoint
 test('Taxonomies Endpoint: Get Entries With One Term', function(assert) {
-    let Query = Stack.Taxonomies().Query();
+    let Query = Stack.Taxonomies();
     Query
         .where('taxonomies.one', 'term_one')
         .toJSON()
@@ -1380,7 +1380,7 @@ test('Taxonomies Endpoint: Get Entries With One Term', function(assert) {
 });
 
 test('Taxonomies Endpoint: Get Entries With Any Term ($in)', function(assert) {
-    let Query = Stack.Taxonomies().Query();
+    let Query = Stack.Taxonomies();
     Query
         .containedIn('taxonomies.one', ['term_one', 'term_two'])
         .toJSON()
@@ -1396,9 +1396,9 @@ test('Taxonomies Endpoint: Get Entries With Any Term ($in)', function(assert) {
 })
 
 test('Taxonomies Endpoint: Get Entries With Any Term ($or)', function(assert) {
-    let Query = Stack.Taxonomies().Query();
-    let Query1 = Stack.Taxonomies().Query().where('taxonomies.one', 'term_one');
-    let Query2 = Stack.Taxonomies().Query().where('taxonomies.two', 'term_two');
+    let Query = Stack.Taxonomies();
+    let Query1 = Stack.Taxonomies().where('taxonomies.one', 'term_one');
+    let Query2 = Stack.Taxonomies().where('taxonomies.two', 'term_two');
     Query
         .or(Query1, Query2)
         .toJSON()
@@ -1414,9 +1414,9 @@ test('Taxonomies Endpoint: Get Entries With Any Term ($or)', function(assert) {
 })
 
 test('Taxonomies Endpoint: Get Entries With All Terms ($and)', function(assert) {
-    let Query1 = Stack.Taxonomies().Query().where('taxonomies.one', 'term_one');
-    let Query2 = Stack.Taxonomies().Query().where('taxonomies.two', 'term_two');
-    let Query = Stack.Taxonomies().Query();
+    let Query1 = Stack.Taxonomies().where('taxonomies.one', 'term_one');
+    let Query2 = Stack.Taxonomies().where('taxonomies.two', 'term_two');
+    let Query = Stack.Taxonomies();
     Query
         .and(Query1, Query2)
         .toJSON()
@@ -1432,7 +1432,7 @@ test('Taxonomies Endpoint: Get Entries With All Terms ($and)', function(assert) 
 })
 
 test('Taxonomies Endpoint: Get Entries With Any Taxonomy Terms ($exists)', function(assert) {
-    let Query = Stack.Taxonomies().Query();
+    let Query = Stack.Taxonomies();
     Query
         .exists('taxonomies.one')
         .toJSON()
@@ -1448,7 +1448,7 @@ test('Taxonomies Endpoint: Get Entries With Any Taxonomy Terms ($exists)', funct
 })
 
 test('Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its Children Term ($eq_below, level)', function(assert) {
-    let Query = Stack.Taxonomies().Query();
+    let Query = Stack.Taxonomies();
     Query
         .equalAndBelow('taxonomies.one', 'term_one')
         .toJSON()
@@ -1464,7 +1464,7 @@ test('Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its
 })
 
 test('Taxonomies Endpoint: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level)', function(assert) {
-    let Query = Stack.Taxonomies().Query();
+    let Query = Stack.Taxonomies();
     Query
         .below('taxonomies.one', 'term_one')
         .toJSON()
@@ -1480,7 +1480,7 @@ test('Taxonomies Endpoint: Get Entries With Taxonomy Terms Children\'s and Exclu
 })
 
 test('Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)', function(assert) {
-    let Query = Stack.Taxonomies().Query();
+    let Query = Stack.Taxonomies();
     Query
         .equalAndAbove('taxonomies.one', 'term_one')
         .toJSON()
@@ -1496,7 +1496,7 @@ test('Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its
 })
 
 test('Taxonomies Endpoint: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)', function(assert) {
-    let Query = Stack.Taxonomies().Query();
+    let Query = Stack.Taxonomies();
     Query
         .above('taxonomies.one', 'term_one_child')
         .toJSON()
