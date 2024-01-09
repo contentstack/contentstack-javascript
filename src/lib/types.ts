@@ -7,6 +7,7 @@ export enum Region {
   EU = 'eu',
   AZURE_NA = 'azure-na',
   AZURE_EU = 'azure-eu',
+  GCP_NA = 'gcp-na',
 }
 export interface StackConfig extends HttpClientParams {
   host?: string;
@@ -128,6 +129,10 @@ export enum QueryOperation {
   IS_GREATER_THAN_OR_EQUAL = '$gte',
   EXISTS = '$exists',
   MATCHES = '$regex',
+  ABOVE = '$above',
+  BELOW = '$below',
+  EQ_ABOVE = '$eq_above',
+  EQ_BELOW = '$eq_below',
 }
 
 export type BaseQueryParameters = {
