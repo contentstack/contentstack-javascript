@@ -4,10 +4,11 @@ import { stackInstance } from '../utils/stack-instance';
 import { TEntry } from './types';
 
 const stack = stackInstance();
+const entryUid = process.env.ENTRY_UID;
 
 describe('Entry API tests', () => {
   it('should check for entry is defined', async () => {
-    const result = await makeEntry('blt09f7d2d46afe6dc6').fetch<TEntry>();
+    const result = await makeEntry(entryUid).fetch<TEntry>();
     expect(result.entry).toBeDefined();
     expect(result.entry._version).toBeDefined();
     expect(result.entry.locale).toEqual('en-us');
@@ -21,20 +22,20 @@ describe('Entry API tests', () => {
       bio: string;
       age: string;
     }
-    const result = await makeEntry('blt09f7d2d46afe6dc6').fetch<MyEntry>();
+    const result = await makeEntry(entryUid).fetch<MyEntry>();
 
     console.log('🚀 ~ file: entry.spec.ts:25 ~ it ~ result:', result);
     expect(result.entry).toBeDefined();
   });
   it('should check for include branch', async () => {
-    const result = await makeEntry('blt09f7d2d46afe6dc6').includeBranch().fetch<TEntry>();
+    const result = await makeEntry(entryUid).includeBranch().fetch<TEntry>();
     expect(result.entry._branch).not.toEqual(undefined);
     expect(result.entry.uid).toBeDefined();
     expect(result.entry.created_by).toBeDefined();
     expect(result.entry.updated_by).toBeDefined();
   });
   it('should check for locale', async () => {
-    const result = await makeEntry('blt09f7d2d46afe6dc6').locale('fr-fr').fetch<TEntry>();
+    const result = await makeEntry(entryUid).locale('fr-fr').fetch<TEntry>();
     expect(result.entry).toBeDefined();
     expect(result.entry._version).toBeDefined();
     expect(result.entry.publish_details.locale).toEqual('fr-fr');
@@ -43,7 +44,7 @@ describe('Entry API tests', () => {
     expect(result.entry.updated_by).toBeDefined();
   });
   it('should check for include fallback', async () => {
-    const result = await makeEntry('blt09f7d2d46afe6dc6').includeFallback().fetch<TEntry>();
+    const result = await makeEntry(entryUid).includeFallback().fetch<TEntry>();
     expect(result.entry).toBeDefined();
     expect(result.entry._version).toBeDefined();
     expect(result.entry.locale).toEqual('en-us');
