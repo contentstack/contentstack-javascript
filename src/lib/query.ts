@@ -4,11 +4,15 @@ import { BaseQueryParameters, QueryOperation, QueryOperator } from './types';
 export class Query extends BaseQuery {
   private _contentTypeUid?: string;
 
-  constructor(client: AxiosInstance, uid: string) {
+  constructor(client: AxiosInstance, uid: string, queryObj?: { [key: string]: any }) {
     super();
     this._client = client;
     this._contentTypeUid = uid;
     this._urlPath = `/content_types/${this._contentTypeUid}/entries`;
+
+    if (queryObj) {
+      this._parameters = { ...this._parameters, ...queryObj };
+    }
   }
 
   /**
@@ -133,27 +137,6 @@ export class Query extends BaseQuery {
       paramsList.push(queryItem._parameters);
     }
     this._parameters[queryType] = paramsList;
-
-    return this;
-  }
-
-  /**
-   * @method query
-   * @memberof Query
-   * @description Adds multiple query parameters to the query.
-   * @example
-   * import contentstack from '@contentstack/typescript'
-   *
-   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
-   * const query = stack.contentType("contentTypeUid").entry().query();
-   * const result = await query.query({'brand': {'$nin_query': {'title': 'Apple Inc.'}}}).find()
-   * // OR
-   * const asset = await stack.asset().query({'brand': {'$nin_query': {'title': 'Apple Inc.'}}}).find()
-   *
-   * @returns {Query}
-   */
-  query(queryObj: { [key: string]: any }): Query {
-    this._parameters = { ...this._parameters, ...queryObj };
 
     return this;
   }
