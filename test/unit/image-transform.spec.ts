@@ -121,7 +121,7 @@ describe('ImageTransform class', () => {
   });
 
   it('should return valid object when overlay method is called with valid params', () => {
-    const overlayImgURL = '/v3/assets/blteae40eb499811073/bltb21dacdd20d0e24c/59e0c401462a293417405f34/circle.png';
+    const overlayImgURL = '/v3/assets/circle.png';
     expect(getBuild(new ImageTransform().overlay({ relativeURL: overlayImgURL }))).toEqual({ overlay: overlayImgURL });
     expect(getBuild(new ImageTransform().overlay({ relativeURL: overlayImgURL, align: OverlayAlign.BOTTOM }))).toEqual({
       overlay: overlayImgURL,
