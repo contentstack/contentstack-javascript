@@ -70,6 +70,50 @@ export class BaseQuery extends Pagination {
   }
 
   /**
+   * @method limit
+   * @memberof BaseQuery
+   * @description Returns a specific number of entries based on the set limit
+   * @example
+   * import contentstack from '@contentstack/typescript'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType("contentTypeUid").entry().query();
+   * const result = await query.limit("limit_value").find()
+   * // OR
+   * const asset = await stack.asset().limit(5).find()
+   *
+   * @returns {BaseQuery}
+   */
+  limit(key: number): BaseQuery {
+    this._queryParams.limit = key;
+
+    return this;
+  }
+
+  /**
+   * @method skip
+   * @memberof BaseQuery
+   * @description Skips at specific number of entries.
+   * @example
+   * import contentstack from '@contentstack/typescript'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType("contentTypeUid").entry().query();
+   * const result = await query.skip("skip_value").find()
+   * // OR
+   * const asset = await stack.asset().skip(5).find()
+   *
+   * @returns {BaseQuery}
+   */
+  skip(key: number): BaseQuery {
+    this._queryParams.skip = key;
+
+    return this;
+  }
+
+
+
+  /**
    * @method param
    * @memberof BaseQuery
    * @description Adds query parameters to the URL.

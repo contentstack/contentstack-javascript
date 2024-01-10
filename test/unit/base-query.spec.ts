@@ -26,6 +26,18 @@ describe('BaseQuery class', () => {
     expect(baseQuery._queryParams.desc).toBe('date');
   });
 
+  it("should add 'limit' parameter with the specified key to the query parameters", () => {
+    baseQuery.limit(5);
+
+    expect(baseQuery._queryParams.limit).toBe(5);
+  });
+
+  it("should add 'skip' parameter with the specified key to the query parameters", () => {
+    baseQuery.skip(5);
+
+    expect(baseQuery._queryParams.skip).toBe(5);
+  });
+
   it('should add the specified key-value pair to the query parameters', () => {
     baseQuery.param('category', 'books');
 

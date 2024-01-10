@@ -7,6 +7,7 @@ export enum Region {
   EU = 'eu',
   AZURE_NA = 'azure-na',
   AZURE_EU = 'azure-eu',
+  GCP_NA= "gcp-na",
 }
 export interface StackConfig extends HttpClientParams {
   host?: string;
