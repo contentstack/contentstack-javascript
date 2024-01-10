@@ -13,10 +13,10 @@ export * as Utils from '@contentstack/utils';
  * @param {StackConfig} config - config object for stack with apiKey, deliveryToken and environment as required fields
  *
  * @example
- * import contentstack from '@contentstack/typescript'
+ * import contentstack from '@contentstack/delivery'
  * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
  * @example
- * import contentstack from '@contentstack/typescript'
+ * import contentstack from '@contentstack/delivery'
  * const stack = contentstack.Stack({
  *   apiKey: "apiKey",
  *   deliveryToken: "deliveryToken",

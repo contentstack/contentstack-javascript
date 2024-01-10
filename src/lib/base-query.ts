@@ -11,7 +11,7 @@ export class BaseQuery extends Pagination {
    * @memberof BaseQuery
    * @description Retrieve count and data of objects in result
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
@@ -32,7 +32,7 @@ export class BaseQuery extends Pagination {
    * @memberof BaseQuery
    * @description Sorts the results in ascending order based on the specified field UID.
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
@@ -53,7 +53,7 @@ export class BaseQuery extends Pagination {
    * @memberof BaseQuery
    * @description Sorts the results in descending order based on the specified key.
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
@@ -74,7 +74,7 @@ export class BaseQuery extends Pagination {
    * @memberof BaseQuery
    * @description Returns a specific number of entries based on the set limit
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
@@ -95,7 +95,7 @@ export class BaseQuery extends Pagination {
    * @memberof BaseQuery
    * @description Skips at specific number of entries.
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
@@ -118,7 +118,7 @@ export class BaseQuery extends Pagination {
    * @memberof BaseQuery
    * @description Adds query parameters to the URL.
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
@@ -139,7 +139,7 @@ export class BaseQuery extends Pagination {
    * @memberof BaseQuery
    * @description Adds a query parameter to the query.
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
@@ -160,7 +160,7 @@ export class BaseQuery extends Pagination {
    * @memberof BaseQuery
    * @description Removes a query parameter from the query.
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
@@ -182,17 +182,17 @@ export class BaseQuery extends Pagination {
    * @description The assets of the stack will be fetched
    * @returns {Collection}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.asset().find();
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType("contentType1Uid").entry().query().find();
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.asset(asset_uid).fetch();

@@ -19,7 +19,7 @@ export class Asset {
    * @description When an entry is not published in a specific language, content can be fetched from its fallback language
    * @returns {Asset}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.asset('asset_uid').includeFallback().fetch();
@@ -36,7 +36,7 @@ export class Asset {
    * @description Include the metadata for getting metadata content for the entry.
    * @returns {Entries}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.asset('asset_uid').includeMetadata().fetch();
@@ -53,7 +53,7 @@ export class Asset {
    * @description Includes the dimensions (height and width) of the image in result
    * @returns {Asset}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.asset('asset_uid').includeDimension().fetch();
@@ -70,7 +70,7 @@ export class Asset {
    * @description Includes the branch in result
    * @returns {Asset}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.asset('asset_uid').includeBranch().fetch();
@@ -87,7 +87,7 @@ export class Asset {
    * @description Includes the relative URLs of the asset in result
    * @returns {Asset}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.asset('asset_uid').relativeUrls().fetch();
@@ -104,7 +104,7 @@ export class Asset {
    * @description Retrieve a specific version of an asset in result
    * @returns {Asset}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.asset('asset_uid').version(1).fetch();
@@ -121,7 +121,7 @@ export class Asset {
    * @description The assets published in the locale will be fetched
    * @returns {Asset}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.asset('asset_uid').locale('en-us').fetch();
@@ -138,7 +138,7 @@ export class Asset {
    * @description Fetches the asset data on the basis of the asset uid
    * @returns {Asset}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.asset('asset_uid').fetch();

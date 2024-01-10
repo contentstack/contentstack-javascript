@@ -20,7 +20,7 @@ export class Query extends BaseQuery {
    * @memberof Query
    * @description Filters the results based on the specified criteria.
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
@@ -28,7 +28,7 @@ export class Query extends BaseQuery {
    * // OR
    * const asset = await stack.asset().where("field_UID", QueryOperation.IS_LESS_THAN, ["field1", "field2"]).find()
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
@@ -51,7 +51,7 @@ export class Query extends BaseQuery {
    * @memberof Query
    * @description Retrieve entries that match the provided regular expressions
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
@@ -146,7 +146,7 @@ export class Query extends BaseQuery {
    * @memberof Query
    * @description Returns the raw (JSON) query based on the filters applied on Query object.
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();

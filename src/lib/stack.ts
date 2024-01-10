@@ -22,7 +22,7 @@ export class Stack {
    *
    * @returns {Asset}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const asset = stack.asset() // For collection of asset
@@ -46,7 +46,7 @@ export class Stack {
    *
    * @returns {ContentType}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const contentType = stack.contentType() // For collection of contentType
@@ -68,7 +68,7 @@ export class Stack {
    * @param {String} locale - valid locale e.g. fr-fr
    * @return {Stack}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * stack.setLocale('en-155');

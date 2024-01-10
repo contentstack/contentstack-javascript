@@ -24,7 +24,7 @@ export class ContentType {
    * @description Creates entry object of the passed entry uid.
    * @returns {Entry}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const entry = stack.contentType("contentTypeUid").entry("entryUid");
@@ -43,7 +43,7 @@ export class ContentType {
    * @description Fetches the contentType data on the basis of the contentType uid
    * @returns {ContentType}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(asset_uid).fetch();

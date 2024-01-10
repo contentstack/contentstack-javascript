@@ -23,7 +23,7 @@ export class Entry {
    * @description When an entry is not published in a specific language, content can be fetched from its fallback language
    * @returns {Entry}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(contentType_uid).entry(entry_uid).includeFallback().fetch();
@@ -40,7 +40,7 @@ export class Entry {
    * @description Include the metadata for getting metadata content for the entry.
    * @returns {Entry}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(contentType_uid).entry(entry_uid).includeMetadata().fetch();
@@ -57,7 +57,7 @@ export class Entry {
    * @description Include Embedded Objects (Entry and Assets) along with entry/entries details.
    * @returns {Entry}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(contentType_uid).entry(entry_uid).includeEmbeddedItems().fetch();
@@ -74,7 +74,7 @@ export class Entry {
    * @description IInclude the details of the content type along with the entries details
    * @returns {Entry}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(contentType_uid).entry(entry_uid).includeContentType().fetch();
@@ -91,7 +91,7 @@ export class Entry {
    * @description Includes the branch in result
    * @returns {Entry}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(contentType_uid).entry(entry_uid).includeBranch().fetch();
@@ -108,7 +108,7 @@ export class Entry {
    * @description The assets published in the locale will be fetched
    * @returns {Entry}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.assetQuery().locale('en-us').fetch();
@@ -125,7 +125,7 @@ export class Entry {
    * @description Fetches the entry data on the basis of the entry uid
    * @returns {Collection}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(contentType_uid).entry(entry_uid).fetch();

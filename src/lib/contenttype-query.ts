@@ -15,7 +15,7 @@ export class ContentTypeQuery {
    * @description The assets published in the locale will be fetched
    * @returns {ContentTypeQuery}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const contentTypeQuery = stack.contentType();
@@ -32,7 +32,7 @@ export class ContentTypeQuery {
    * @description Fetches all contentTypes of the stack
    * @returns {ContentTypeQuery}
    * @example
-   * import contentstack from '@contentstack/typescript'
+   * import contentstack from '@contentstack/delivery'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const contentTypeQuery = stack.contentType();
