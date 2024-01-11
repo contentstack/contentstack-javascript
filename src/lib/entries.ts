@@ -179,7 +179,9 @@ export class Entries extends EntryQueryable {
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType("contentTypeUid").entry().query();
    */
-  query() {
+  query(queryObj?: { [key: string]: any }) {
+    if (queryObj) return new Query(this._client, this._contentTypeUid, queryObj);
+
     return new Query(this._client, this._contentTypeUid);
   }
 }
