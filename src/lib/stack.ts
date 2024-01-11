@@ -5,6 +5,7 @@ import { AssetQuery } from './asset-query';
 import { ContentType } from './content-type';
 import { ContentTypeQuery } from './contenttype-query';
 import { synchronization } from './synchronization';
+import TaxonomyQuery from './taxonomy-query';
 
 export class Stack {
   readonly config: StackConfig;
@@ -60,6 +61,22 @@ export class Stack {
 
     return new ContentTypeQuery(this._client);
   }
+
+  /**
+   * @method Taxonomy
+   * @memberOf Stack
+   * @description Sets the url to /taxonomies/entries. Pass a query to fetch entries with taxonomies
+   *
+   * @returns {TaxonomyQuery}
+   * @example
+   * import contentstack from '@contentstack/typescript'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const taxonomy = stack.Taxonomy() // For taxonomy query object
+   */
+  Taxonomy(): TaxonomyQuery {
+    return new TaxonomyQuery(this._client)
+  };
 
   /**
    * @method setLocale
