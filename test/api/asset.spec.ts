@@ -3,9 +3,12 @@
 import { Asset } from '../../src/lib/asset';
 import { stackInstance } from '../utils/stack-instance';
 import { TAsset } from './types';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const stack = stackInstance();
-const assetUid = 'blt122ea52c5d4ddf19';
+const assetUid = process.env.ASSET_UID;
 describe('Asset API tests', () => {
   it('should check for asset is defined', async () => {
     const result = await makeAsset(assetUid).fetch<TAsset>();
