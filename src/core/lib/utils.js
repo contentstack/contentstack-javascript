@@ -352,7 +352,7 @@ export function sendRequest(queryObject, options) {
                             } else {
                                 if (!tojson) {
                                     _data = resultWrapper(_data);
-                                } 
+                                }
                                 return resolve(spreadResult(_data));
                             }
                         } catch (e) {
@@ -362,7 +362,7 @@ export function sendRequest(queryObject, options) {
                 }else {
                     callback(true, resolve, reject);
                 }
-                
+
             });
         case 2:
         case 0:
