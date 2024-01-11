@@ -56,6 +56,23 @@ describe('Entries API test cases', () => {
     expect(result.entries[0].uid).toBeDefined();
     expect(result.entries[0].author).toBeDefined();
   });
+  it('should check for limit', async () => {
+    const query = makeEntries('blog_post');
+    const result = await query.limit(2).find<TEntries>();
+    expect(query._queryParams).toEqual({limit: 2});
+    expect(result.entries[0]._version).toBeDefined();
+    expect(result.entries[0].locale).toEqual('en-us');
+    expect(result.entries[0].uid).toBeDefined();
+    expect(result.entries[0].title).toBeDefined();
+  });
+  it.only('should check for skip', async () => {
+    const query = makeEntries('blog_post');
+    const result = await query.skip(2).find<TEntries>();
+    expect(query._queryParams).toEqual({skip: 2});
+    expect(result.entries[0]._version).toBeDefined();
+    expect(result.entries[0].uid).toBeDefined();
+    expect(result.entries[0].title).toBeDefined();
+  });
 });
 function makeEntries(contentTypeUid = ''): Entries {
   const entries = stack.ContentType(contentTypeUid).Entry();
