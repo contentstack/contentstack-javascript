@@ -85,7 +85,7 @@ describe('AssetQuery API tests', () => {
     expect(result.assets[0].created_by).toBeDefined();
     expect(result.assets[0].updated_by).toBeDefined();
   });
-  it.only('should check for skip', async () => {
+  it('should check for skip', async () => {
     const query = makeAssetQuery();
     const result = await query.skip(2).find<TAssets>();
     expect(query._queryParams).toEqual({skip: 2});
