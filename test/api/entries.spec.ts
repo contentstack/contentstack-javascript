@@ -65,7 +65,7 @@ describe('Entries API test cases', () => {
     expect(result.entries[0].uid).toBeDefined();
     expect(result.entries[0].title).toBeDefined();
   });
-  it.only('should check for skip', async () => {
+  it('should check for skip', async () => {
     const query = makeEntries('blog_post');
     const result = await query.skip(2).find<TEntries>();
     expect(query._queryParams).toEqual({skip: 2});
