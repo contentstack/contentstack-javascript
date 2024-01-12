@@ -29,13 +29,13 @@ test('entries as first argument', function(assert) {
 
     Query
         .limit(1)
+        .toJSON()
         .find()
         .spread(function success(entries) {
             assert.ok(entries.length, 'Entries exists as first parameter');
             if (entries && entries.length) {
-                var prev = entries[0].get(field);
+                var prev = entries[0][field];
                 var _entries = entries.every(function(entry) {
-                    entry = entry.toJSON();
                     prev = entry[field];
                     return (entry[field] <= prev);
                 });
@@ -52,14 +52,14 @@ test('with entries and count argument', function(assert) {
         field = 'updated_at';
     Query
         .includeCount()
+        .toJSON()
         .find()
         .spread(function success(entries, count) {
             assert.ok(entries.length, 'Entries exists as first parameter');
             assert.ok(count, 'Count exists as second parameter');
             if (entries && entries.length) {
-                var prev = entries[0].get(field);
+                var prev = entries[0][field];
                 var _entries = entries.every(function(entry) {
-                    entry = entry.toJSON();
                     prev = entry[field];
                     return (entry[field] <= prev);
                 });
@@ -77,15 +77,15 @@ test('with entries, schema and count argument', function(assert) {
     Query
         .includeSchema()
         .includeCount()
+        .toJSON()
         .find()
         .spread(function success(entries, schema, count) {
             assert.ok(entries.length, 'Entries exists as first parameter');
             assert.ok(schema, 'Schema exists as second parameter');
             assert.ok(count, 'Count exists as third parameter');
             if (entries && entries.length) {
-                var prev = entries[0].get(field);
+                var prev = entries[0][field];
                 var _entries = entries.every(function(entry) {
-                    entry = entry.toJSON();
                     prev = entry[field];
                     return (entry[field] <= prev);
                 });
@@ -103,15 +103,15 @@ test('with entries, schema and count argument', function(assert) {
     Query
         .includeCount()
         .includeSchema()
+        .toJSON()
         .find()
         .spread(function success(entries, schema, count) {
             assert.ok(entries.length, 'Entries exists as first parameter');
             assert.ok(schema, 'Schema exists as second parameter');
             assert.ok(count, 'Count exists as third parameter');
             if (entries && entries.length) {
-                var prev = entries[0].get(field);
+                var prev = entries[0][field];
                 var _entries = entries.every(function(entry) {
-                    entry = entry.toJSON();
                     prev = entry[field];
                     return (entry[field] <= prev);
                 });
@@ -130,6 +130,7 @@ test('with entries, content_type and count argument', function(assert) {
     Query
         .includeContentType()
         .includeCount()
+        .toJSON()
         .find()
         .spread(function success(entries, contentType, count) {
             assert.ok(entries.length, 'Entries exists as first parameter');
@@ -137,9 +138,8 @@ test('with entries, content_type and count argument', function(assert) {
             assert.ok((contentType.uid === contentTypes.source), 'ContentType exists as second parameter');
             assert.ok(count, 'Count exists as third parameter');
             if (entries && entries.length) {
-                var prev = entries[0].get(field);
+                var prev = entries[0][field];
                 var _entries = entries.every(function(entry) {
-                    entry = entry.toJSON();
                     prev = entry[field];
                     return (entry[field] <= prev);
                 });
@@ -157,6 +157,7 @@ test('with entries, content_type and count argument', function(assert) {
     Query
         .includeCount()
         .includeContentType()
+        .toJSON()
         .find()
         .spread(function success(entries, contentType, count) {
             assert.ok(entries.length, 'Entries exists as first parameter');
@@ -164,9 +165,8 @@ test('with entries, content_type and count argument', function(assert) {
             assert.ok((contentType.uid === contentTypes.source), 'ContentType exists as second parameter');
             assert.ok(count, 'Count exists as third parameter');
             if (entries && entries.length) {
-                var prev = entries[0].get(field);
+                var prev = entries[0][field];
                 var _entries = entries.every(function(entry) {
-                    entry = entry.toJSON();
                     prev = entry[field];
                     return (entry[field] <= prev);
                 });
@@ -186,6 +186,7 @@ test('with entries, content_type|schema and count argument', function(assert) {
         .includeCount()
         .includeSchema()
         .includeContentType()
+        .toJSON()
         .find()
         .spread(function success(entries, contentType, count) {
             assert.ok(entries.length, 'Entries exists as first parameter');
@@ -193,9 +194,8 @@ test('with entries, content_type|schema and count argument', function(assert) {
             assert.ok((contentType.uid === contentTypes.source), 'ContentType exists as second parameter');
             assert.ok(count, 'Count exists as third parameter');
             if (entries && entries.length) {
-                var prev = entries[0].get(field);
+                var prev = entries[0][field];
                 var _entries = entries.every(function(entry) {
-                    entry = entry.toJSON();
                     prev = entry[field];
                     return (entry[field] <= prev);
                 });

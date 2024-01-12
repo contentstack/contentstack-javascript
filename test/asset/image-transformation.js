@@ -26,6 +26,7 @@ test('Get All Assets', function(assert) {
     Stack
         .Assets()
         .Query()
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'Assets present in the resultset');
@@ -42,7 +43,7 @@ test('Valid URL: single parameter testing', function(assert) {
     const Params = {
         quality: 50
     }
-    const URL = Asset.get('url');
+    const URL = Asset['url'];
     const Image = Stack.imageTransform(URL, Params);
     console.log("URL : ", Image, Image.match(Regexp));
     assert.ok((Image.match(Regexp).length === 1), "Valid URL is generated");
@@ -59,7 +60,7 @@ test('Valid URL: multiple parameter testing', function(assert) {
         auto: 'webp',
         format: 'jpg'
     }
-    const URL = Asset.get('url');
+    const URL = Asset['url'];
     const Image = Stack.imageTransform(URL, Params);
     assert.ok((Image.match(Regexp).length === 1), "Valid URL is generated");
     for (var key in Params) {
@@ -73,7 +74,7 @@ test('Invalid URL: single parameter testing', function(assert) {
     const Params = {
         quality: 50
     }
-    const URL = Asset.get('url') + '?';
+    const URL = Asset['url'] + '?';
     const Image = Stack.imageTransform(URL, Params);
     assert.ok((Image.match(Regexp).length === 1), "Valid URL is generated");
     for (var key in Params) {
@@ -89,7 +90,7 @@ test('Invalid URL: multiple parameter testing', function(assert) {
         auto: 'webp',
         format: 'jpg'
     }
-    const URL = Asset.get('url') + '?';
+    const URL = Asset['url'] + '?';
     const Image = Stack.imageTransform(URL, Params);
     assert.ok((Image.match(Regexp).length === 1), "Valid URL is generated");
     for (var key in Params) {
