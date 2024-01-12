@@ -35,11 +35,16 @@ export class Query extends BaseQuery {
    * const result = await query.where("field_UID", QueryOperation.MATCHES, ["field1", "field2"]).find()
    * @returns {Query}
    */
-  where(fieldUid: string, queryOperation: QueryOperation, fields: string | string[] | number | number[] | object): Query {
+  where(
+    fieldUid: string, 
+    queryOperation: QueryOperation, 
+    fields: string | string[] | number | number[] | object | boolean,
+    additionalData?: object
+  ): Query {
     if (queryOperation == QueryOperation.EQUALS) {
       this._parameters[fieldUid] = fields;
     } else {
-      const parameterValue: { [key in QueryOperation]?: string | string[] } = { [queryOperation]: fields };
+      const parameterValue: { [key in QueryOperation]?: string | string[] } = { [queryOperation]: fields, ...additionalData };
       this._parameters[fieldUid] = parameterValue;
     }
 
