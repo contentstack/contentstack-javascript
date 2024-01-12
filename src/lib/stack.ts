@@ -5,7 +5,7 @@ import { AssetQuery } from './asset-query';
 import { ContentType } from './content-type';
 import { ContentTypeQuery } from './contenttype-query';
 import { synchronization } from './synchronization';
-import TaxonomyQuery from './taxonomy-query';
+import {TaxonomyQuery} from './taxonomy-query';
 
 export class Stack {
   readonly config: StackConfig;
