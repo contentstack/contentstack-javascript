@@ -5,5 +5,5 @@ fileignoreconfig:
 - filename: test/utils/mocks.ts
   checksum: a1cb4b1890a584f1facd30f2a0974c97a66f91417022be79d00516338e244227
 - filename: package-lock.json
-  checksum: c836dacebd78b36e1264e1f99d0e70be665b34b31c03b4f46d272d0581146311
+  checksum: 2ff3b3b65202c8337fdd9332e4361868b0c6501c297c8b264917dd7cef4531c9
 version: ""
