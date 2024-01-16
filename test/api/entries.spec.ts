@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable promise/always-return */
+import { QueryOperation, QueryOperator } from '../../src/lib/types';
 import { Entries } from '../../src/lib/entries';
 import { stackInstance } from '../utils/stack-instance';
 import { TEntries } from './types';
@@ -56,6 +57,65 @@ describe('Entries API test cases', () => {
     expect(result.entries[0].uid).toBeDefined();
     expect(result.entries[0].author).toBeDefined();
   });
+
+  // //Content Type end point
+    it('CT Taxonomies Query: Get Entries With One Term', async () => {
+        let Query = makeEntries('source').query().where('taxonomies.one', QueryOperation.EQUALS, 'term_one');
+        const data = await Query.find<TEntries>();
+        return expect(data.entries.length).toBeGreaterThan(0);
+    });
+    
+    it('CT Taxonomies Query: Get Entries With Any Term ($in)', async () => {
+        let Query = makeEntries('source').query().where('taxonomies.one', QueryOperation.INCLUDES, ['term_one', 'term_two']);
+        const data = await Query.find<TEntries>();
+        return expect(data.entries.length).toBeGreaterThan(0);
+    })
+    
+    it('CT Taxonomies Query: Get Entries With Any Term ($or)', async () => {
+      let Query1 = makeEntries('source').query().where('taxonomies.one', QueryOperation.EQUALS, 'term_one');
+      let Query2 = makeEntries('source').query().where('taxonomies.two', QueryOperation.EQUALS, 'term_two');
+      let Query = makeEntries('source').query().queryOperator(QueryOperator.OR, Query1, Query2);
+      const data = await Query.find<TEntries>();
+      return expect(data.entries.length).toBeGreaterThan(0);
+    })
+    
+    it('CT Taxonomies Query: Get Entries With All Terms ($and)', async () => {
+        let Query1 = makeEntries('source').query().where('taxonomies.one', QueryOperation.EQUALS, 'term_one');
+        let Query2 = makeEntries('source').query().where('taxonomies.two', QueryOperation.EQUALS, 'term_two');
+        let Query = makeEntries('source').query().queryOperator(QueryOperator.AND, Query1, Query2);
+        const data = await Query.find<TEntries>();
+        return expect(data.entries.length).toBeGreaterThan(0);
+    })
+    
+    it('CT Taxonomies Query: Get Entries With Any Taxonomy Terms ($exists)', async () => {
+        let Query = makeEntries('source').query().where('taxonomies.one', QueryOperation.EXISTS, true);
+        const data = await Query.find<TEntries>();
+        return expect(data.entries.length).toBeGreaterThan(0);
+    })
+    
+    it('CT Taxonomies Query: Get Entries With Taxonomy Terms and Also Matching Its Children Term ($eq_below, level)', async () => {
+        let Query = makeEntries('source').query().where('taxonomies.one', QueryOperation.EQ_BELOW, 'term_one', {"levels": 1});
+        const data = await Query.find<TEntries>();
+        return expect(data.entries.length).toBeGreaterThan(0);
+    })
+    
+    it('CT Taxonomies Query: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level)', async () => {
+        let Query = makeEntries('source').query().where('taxonomies.one', QueryOperation.BELOW, 'term_one', {"levels": 1});
+        const data = await Query.find<TEntries>();
+        return expect(data.entries.length).toBeGreaterThan(0);
+    })
+    
+    it('CT Taxonomies Query: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)', async () => {
+        let Query = makeEntries('source').query().where('taxonomies.one', QueryOperation.EQ_ABOVE, 'term_one', {"levels": 1});
+        const data = await Query.find<TEntries>();
+        return expect(data.entries.length).toBeGreaterThan(0);
+    })
+    
+    it('CT Taxonomies Query: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)', async () => {
+        let Query = makeEntries('source').query().where('taxonomies.one', QueryOperation.ABOVE, 'term_one_child', {"levels": 1});
+        const data = await Query.find<TEntries>();
+        return expect(data.entries.length).toBeGreaterThan(0);
+    })
 });
 function makeEntries(contentTypeUid = ''): Entries {
   const entries = stack.ContentType(contentTypeUid).Entry();
