@@ -2,15 +2,40 @@ import exp = require('constants');
 import * as core from '@contentstack/core';
 import * as Contentstack from '../../src/lib/contentstack';
 import { Stack } from '../../src/lib/stack';
-import { Region, StackConfig } from '../../src/lib/types';
+import { Policy, Region, StackConfig } from '../../src/lib/types';
 import { DUMMY_URL, HOST_EU_REGION, HOST_URL } from '../utils/constant';
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 jest.mock('@contentstack/core');
 const createHttpClientMock = <jest.Mock<typeof core.httpClient>>(<unknown>core.httpClient);
 
+const reqInterceptor = jest.fn();
+const resInterceptor = jest.fn();
+
 describe('Contentstack', () => {
+  beforeEach(() =>
+    createHttpClientMock.mockReturnValue({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      defaults: {
+        host: HOST_URL,
+      },
+      interceptors: {
+        request: {
+          use: reqInterceptor,
+        },
+        response: {
+          use: resInterceptor,
+        },
+      },
+    })
+  );
+  afterEach(() => {
+    createHttpClientMock.mockReset();
+  });
+
   const createStackInstance = (config: StackConfig) => Contentstack.Stack(config);
+
   it('should throw error when api key is empty', (done) => {
     const config = {
       apiKey: '',
@@ -142,25 +167,26 @@ describe('Contentstack', () => {
     done();
   });
 
-  it('should add plugins onRequest and onResponse as req and res interceptors when plugin is passed', (done) => {
-    const reqInterceptor = jest.fn();
-    const resInterceptor = jest.fn();
+  it('should add logHandler', async () => {
+    const mockLogHandler = jest.fn();
+    const config = {
+      apiKey: 'apiKey',
+      deliveryToken: 'delivery',
+      environment: 'env',
+      region: Region.AZURE_NA,
+      logHandler: mockLogHandler,
+      cacheOptions: {
+        policy: Policy.IGNORE_CACHE
+      }
+    };
 
-    createHttpClientMock.mockReturnValue({
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      defaults: {
-        host: HOST_URL,
-      },
-      interceptors: {
-        request: {
-          use: reqInterceptor,
-        },
-        response: {
-          use: resInterceptor,
-        },
-      },
-    })
+    const stackInstance = createStackInstance(config);
+    expect(stackInstance).toBeInstanceOf(Stack);
+    expect(mockLogHandler).not.toHaveBeenCalled();
+    mockLogHandler.mockReset();
+  });
+
+  it('should add plugins onRequest and onResponse as req and res interceptors when plugin is passed', (done) => {
 
     const mockPlugin = {
       onRequest: jest.fn((request) => request),
