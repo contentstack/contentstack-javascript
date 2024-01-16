@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable promise/always-return */
-import { QueryOperation, QueryOperator } from '../../src/lib/types';
+import { QueryOperation, QueryOperator, TaxonomyQueryOperation } from '../../src/lib/types';
 import { Entries } from '../../src/lib/entries';
 import { stackInstance } from '../utils/stack-instance';
 import { TEntries } from './types';
@@ -94,25 +94,25 @@ describe('Entries API test cases', () => {
     })
     
     it('CT Taxonomies Query: Get Entries With Taxonomy Terms and Also Matching Its Children Term ($eq_below, level)', async () => {
-        let Query = makeEntries('source').query().where('taxonomies.one', QueryOperation.EQ_BELOW, 'term_one', {"levels": 1});
+        let Query = makeEntries('source').query().where('taxonomies.one', TaxonomyQueryOperation.EQ_BELOW, 'term_one', {"levels": 1});
         const data = await Query.find<TEntries>();
         return expect(data.entries.length).toBeGreaterThan(0);
     })
     
     it('CT Taxonomies Query: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level)', async () => {
-        let Query = makeEntries('source').query().where('taxonomies.one', QueryOperation.BELOW, 'term_one', {"levels": 1});
+        let Query = makeEntries('source').query().where('taxonomies.one', TaxonomyQueryOperation.BELOW, 'term_one', {"levels": 1});
         const data = await Query.find<TEntries>();
         return expect(data.entries.length).toBeGreaterThan(0);
     })
     
     it('CT Taxonomies Query: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)', async () => {
-        let Query = makeEntries('source').query().where('taxonomies.one', QueryOperation.EQ_ABOVE, 'term_one', {"levels": 1});
+        let Query = makeEntries('source').query().where('taxonomies.one', TaxonomyQueryOperation.EQ_ABOVE, 'term_one', {"levels": 1});
         const data = await Query.find<TEntries>();
         return expect(data.entries.length).toBeGreaterThan(0);
     })
     
     it('CT Taxonomies Query: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)', async () => {
-        let Query = makeEntries('source').query().where('taxonomies.one', QueryOperation.ABOVE, 'term_one_child', {"levels": 1});
+        let Query = makeEntries('source').query().where('taxonomies.one', TaxonomyQueryOperation.ABOVE, 'term_one_child', {"levels": 1});
         const data = await Query.find<TEntries>();
         return expect(data.entries.length).toBeGreaterThan(0);
     })

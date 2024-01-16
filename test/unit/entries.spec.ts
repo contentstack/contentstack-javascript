@@ -4,7 +4,7 @@ import { Entries } from '../../src/lib/entries';
 import MockAdapter from 'axios-mock-adapter';
 import { entryFetchMock, entryFindMock } from '../utils/mocks';
 import { Query } from '../../src/lib/query';
-import { QueryOperation, QueryOperator } from '../../src/lib/types';
+import { QueryOperation, QueryOperator, TaxonomyQueryOperation } from '../../src/lib/types';
 
 describe('Entries class', () => {
   let entry: Entries;
@@ -118,22 +118,22 @@ describe('Entries class', () => {
     });
 
     test('CT Taxonomy Query: Get entries with taxonomy terms and also matching its children terms ($eq_below, level)', () => {
-      const query = entry.query().where("taxonomies.taxonomy_uid", QueryOperation.EQ_BELOW, "term_uid", {"levels": 4});
+      const query = entry.query().where("taxonomies.taxonomy_uid", TaxonomyQueryOperation.EQ_BELOW, "term_uid", {"levels": 4});
       expect(query._parameters).toEqual({"taxonomies.taxonomy_uid": {"$eq_below": "term_uid", "levels": 4 }});
     });
 
     test('CT Taxonomy Query: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level) ', () => {
-      const query = entry.query().where("taxonomies.taxonomy_uid", QueryOperation.BELOW, "term_uid");
+      const query = entry.query().where("taxonomies.taxonomy_uid", TaxonomyQueryOperation.BELOW, "term_uid");
       expect(query._parameters).toEqual({"taxonomies.taxonomy_uid": {"$below": "term_uid" }});
     });
 
     test('CT Taxonomy Query: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)', () => {
-      const query = entry.query().where("taxonomies.taxonomy_uid", QueryOperation.EQ_ABOVE, "term_uid", {"levels": 4});
+      const query = entry.query().where("taxonomies.taxonomy_uid", TaxonomyQueryOperation.EQ_ABOVE, "term_uid", {"levels": 4});
       expect(query._parameters).toEqual({"taxonomies.taxonomy_uid": {"$eq_above": "term_uid", "levels": 4 }});
     });
 
     test('CT Taxonomy Query: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)', () => {
-      const query = entry.query().where("taxonomies.taxonomy_uid", QueryOperation.ABOVE, "term_uid", {"levels": 4});
+      const query = entry.query().where("taxonomies.taxonomy_uid", TaxonomyQueryOperation.ABOVE, "term_uid", {"levels": 4});
       expect(query._parameters).toEqual({"taxonomies.taxonomy_uid": {"$above": "term_uid", "levels": 4 }});
     });
 });
