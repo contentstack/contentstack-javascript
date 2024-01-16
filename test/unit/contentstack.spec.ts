@@ -4,32 +4,12 @@ import * as Contentstack from '../../src/lib/contentstack';
 import { Stack } from '../../src/lib/stack';
 import { Region, StackConfig } from '../../src/lib/types';
 import { DUMMY_URL, HOST_EU_REGION, HOST_URL } from '../utils/constant';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 jest.mock('@contentstack/core');
 const createHttpClientMock = <jest.Mock<typeof core.httpClient>>(<unknown>core.httpClient);
 
 describe('Contentstack', () => {
-  beforeEach(() =>
-    createHttpClientMock.mockReturnValue({
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      defaults: {
-        host: HOST_URL,
-      },
-      interceptors: {
-        request: {
-          use: jest.fn(),
-        },
-        response: {
-          use: jest.fn(),
-        },
-      },
-    })
-  );
-  afterEach(() => {
-    createHttpClientMock.mockReset();
-  });
-
   const createStackInstance = (config: StackConfig) => Contentstack.Stack(config);
   it('should throw error when api key is empty', (done) => {
     const config = {
@@ -159,6 +139,46 @@ describe('Contentstack', () => {
 
     const stackInstance = createStackInstance(config);
     expect(stackInstance).toBeInstanceOf(Stack);
+    done();
+  });
+
+  it('should add plugins onRequest and onResponse as req and res interceptors when plugin is passed', (done) => {
+    const reqInterceptor = jest.fn();
+    const resInterceptor = jest.fn();
+
+    createHttpClientMock.mockReturnValue({
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      defaults: {
+        host: HOST_URL,
+      },
+      interceptors: {
+        request: {
+          use: reqInterceptor,
+        },
+        response: {
+          use: resInterceptor,
+        },
+      },
+    })
+
+    const mockPlugin = {
+      onRequest: jest.fn((request) => request),
+      onResponse: jest.fn((response) => response),
+    };
+
+    const stackInstance = createStackInstance({
+      apiKey: 'apiKey',
+      deliveryToken: 'delivery',
+      environment: 'env',
+      plugins: [mockPlugin],
+    });
+
+    expect(stackInstance).toBeInstanceOf(Stack);
+    expect(reqInterceptor).toHaveBeenCalledWith(expect.any(Function));
+    expect(resInterceptor).toHaveBeenCalledWith(expect.any(Function));
+
+    createHttpClientMock.mockReset();
     done();
   });
 });
