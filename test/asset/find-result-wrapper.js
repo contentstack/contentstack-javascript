@@ -22,13 +22,13 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
 
 test('default .find() no fallback', function(assert) {
     var _in = ['ja-jp']
-    Stack.Assets().Query().language('ja-jp').find()
+    Stack.Assets().Query().language('ja-jp').toJSON().find()
         .then((assets) => {
             assert.ok(assets[0].length, 'Assets present in the resultset');
             assert.notok(assets[1], 'Count should not be present');
             if (assets && assets.length && assets[0].length) {
                 var _assets = assets[0].every(function(asset) {
-                    return (_in.indexOf(asset.toJSON()['publish_details']['locale']) != -1);
+                    return (_in.indexOf(asset['publish_details']['locale']) != -1);
                 });
                 assert.equal(_assets, true, "Publish content fallback");
             }
@@ -40,13 +40,13 @@ test('default .find() no fallback', function(assert) {
 })
 test('default .find() fallback', function(assert) {
     var _in = ['ja-jp', 'en-us']
-    Stack.Assets().Query().language('ja-jp').includeFallback().find()
+    Stack.Assets().Query().language('ja-jp').includeFallback().toJSON().find()
         .then((assets) => {
             assert.ok(assets[0].length, 'Assets present in the resultset');
             assert.notok(assets[1], 'Count should not be present');
             if (assets && assets.length && assets[0].length) {
                 var _assets = assets[0].every(function(asset) {
-                    return (_in.indexOf(asset.toJSON()['publish_details']['locale']) != -1);
+                    return (_in.indexOf(asset['publish_details']['locale']) != -1);
                 });
                 assert.equal(_assets, true, "Publish content fallback");
             }
@@ -60,14 +60,14 @@ test('default .find()', function(assert) {
     var Query = Stack.Assets().Query(),
         field = 'updated_at';
     Query
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             assert.ok(!assets[1], 'Count should not present in the result');
             if (assets && assets.length && assets[0].length) {
-                var prev = assets[0][0].get(field);
+                var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
-                    asset = asset.toJSON();
                     prev = asset[field];
                     return (asset.updated_at <= prev);
                 });
@@ -90,13 +90,13 @@ test('.ascending()', function(assert) {
 
     Query
         .ascending(field)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             if (assets && assets.length && assets[0].length) {
-                var prev = assets[0][0].get(field);
+                var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
-                    asset = asset.toJSON();
                     prev = asset[field];
                     return (asset[field] >= prev);
                 });
@@ -116,13 +116,13 @@ test('.descending()', function(assert) {
 
     Query
         .descending(field)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             if (assets && assets.length && assets[0].length) {
-                var prev = assets[0][0].get(field);
+                var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
-                    asset = asset.toJSON();
                     prev = asset[field];
                     return (asset[field] >= prev);
                 });
@@ -147,16 +147,16 @@ test('.lessThan()', function(assert) {
     Query
         .lessThan('file_size', value)
         .language('en-us')
+        .toJSON()
         .find()
         .then(function success(assets) {
             // assert.ok("assets" in result, 'assets key present in the resultset');
             assert.ok(assets[0].length, 'assets present in the resultset');
             assert.equal(assets[0].length, 1, 'one asset present in the resultset')
             if (assets && assets.length && assets[0].length) {
-                var prev = assets[0][0].get(field);
+                var prev = assets[0][0][field];
                 var _assets = true;
                 _assets = assets[0].slice(1).every(function(asset) {
-                    asset = asset.toJSON();
                     var flag = (asset[field] < value);
                     prev = asset[field];
                     return flag;
@@ -178,14 +178,14 @@ test('.lessThanOrEqualTo()', function(assert) {
     Query
         .language('en-us')
         .lessThanOrEqualTo('file_size', value)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             assert.equal(assets[0].length, 2, 'two assets present in the resultset');
             if (assets && assets.length && assets[0].length) {
-                var prev = assets[0][0].get(field);
+                var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
-                    asset = asset.toJSON();
                     var flag = (asset[field] <= prev);
                     prev = asset[field];
                     return flag;
@@ -208,14 +208,14 @@ test('.greaterThan()', function(assert) {
     Query
         .greaterThan('file_size', value)
         .ascending(field)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             assert.equal(assets[0].length, 3, 'three assets present in the resultset');
             if (assets && assets.length && assets[0].length) {
-                var prev = assets[0][0].get(field);
+                var prev = assets[0][0][field];
                 var _assets = assets[0].slice(1).every(function(asset) {
-                    asset = asset.toJSON();
                     var flag = (asset[field] > value);
                     prev = asset[field];
                     return flag;
@@ -238,14 +238,14 @@ test('.greaterThanOrEqualTo()', function(assert) {
     Query
         .greaterThanOrEqualTo('file_size', value)
         .descending(field)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             assert.equal(assets[0].length, 4, 'four assets present in the resultset');
             if (assets && assets.length && assets[0].length) {
-                var prev = assets[0][0].get(field);
+                var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
-                    asset = asset.toJSON();
                     var flag = (asset[field] >= value);
                     prev = asset[field];
                     return flag;
@@ -269,14 +269,14 @@ test('.notEqualTo()', function(assert) {
         .language('en-us')
         .notEqualTo('file_size', value)
         .descending(field)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             assert.equal(assets[0].length, 4, 'four assets present in the resultset');
             if (assets && assets.length && assets[0].length) {
-                var prev = assets[0][0].get(field);
+                var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
-                    asset = asset.toJSON();
                     var flag = (asset[field] != value);
                     prev = asset[field];
                     return flag;
@@ -302,13 +302,14 @@ test('.containedIn()', function(assert) {
 
     Query
         .containedIn('title', _in)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             assert.equal(assets[0].length, 2, 'two assets present in the resultset');
             if (assets && assets.length && assets[0].length) {
                 var _assets = assets[0].every(function(asset) {
-                    return (_in.indexOf(asset.get('title')) != -1);
+                    return (_in.indexOf(asset['title']) != -1);
                 });
                 assert.equal(_assets, true, "assets sorted descending on '" + field + "' field");
             }
@@ -326,6 +327,7 @@ test('.notContainedIn()', function(assert) {
 
     Query
         .notContainedIn('title', _in)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'No asset present in the resultset');
@@ -350,15 +352,16 @@ test('.exists()', function(assert) {
     Query
         .language('en-us')
         .exists(queryField)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets should not be present in the resultset');
             assert.equal(assets[0].length, 5, 'five assets present in the resultset');
             if (assets && assets.length && assets[0].length) {
-                var prev = assets[0][0].get(field);
+                var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
-                    var flag = (asset.get(field) <= prev);
-                    prev = asset.get(field);
+                    var flag = (asset[field] <= prev);
+                    prev = asset[field];
                     return flag;
                 });
                 assert.equal(_assets, true, "assets sorted descending on '" + field + "' field");
@@ -378,13 +381,14 @@ test('.notExists()', function(assert) {
 
     Query
         .notExists(queryField)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.notok(assets[0].length, 'No asset present in the resultset');
             if (assets && assets.length && assets[0].length) {
-                var prev = assets[0][0].get(field);
+                var prev = assets[0][0][field];
                 var _assets = assets[0].every(function(asset) {
-                    return (asset.get(field) <= prev);
+                    return (asset[field] <= prev);
                 });
                 assert.equal(_assets, true, "assets sorted descending on '" + field + "' field");
             }
@@ -419,7 +423,6 @@ test('.skip()', function(assert) {
                     assert.deepEqual(allassets[0].slice(1), assets[0], 'All elements matched.');
                     if (assets && assets.length && assets[0].length) {
                         allassets[0] = allassets[0].slice(1);
-                        //var prev = assets[0][0].get(field);
                         var prev = assets[0][0][field];
                         var _assets = assets[0].every(function(asset) {
                             var flag = (asset[field] <= prev);
@@ -487,6 +490,7 @@ test('.count()', function(assert) {
 
     Query
         .count()
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0], 'assets count present in the resultset');
@@ -508,6 +512,7 @@ test('.or() - Query Objects', function(assert) {
 
     Query
         .or(Query1, Query2)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
@@ -532,12 +537,12 @@ test('.and() - Query Objects', function(assert) {
 
     Query
         .and(Query1, Query2)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.notok(assets[0].length, 'asset not present in the resultset');
             if (assets && assets.length && assets[0].length) {
                 var _assets = assets[0].every(function(asset) {
-                    asset = asset.toJSON();
                     return (~(asset.title === 'image1' && asset.is_dir === true));
                 });
                 assert.ok(_assets, '$AND condition satisfied');
@@ -557,12 +562,12 @@ test('.and() - Raw queries', function(assert) {
 
     Query
         .and(Query1, Query2)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.notok(assets[0].length, 'asset not present in the resultset');
             if (assets && assets.length && assets[0].length) {
                 var _assets = assets[0].every(function(asset) {
-                    asset = asset.toJSON();
                     return ((asset.title === 'image1' && asset.is_dir === true));
                 });
                 assert.ok(_assets, '$AND condition satisfied');
@@ -582,13 +587,13 @@ test('.query() - Raw query', function(assert) {
 
     Query
         .query({ "$or": [{ "title": "image1" }, { "is_dir": "true" }] })
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, 'assets present in the resultset');
             assert.equal(assets[0].length, 1, 'one asset present in resultset');
             if (assets && assets.length && assets[0].length) {
                 var _assets = assets[0].every(function(asset) {
-                    asset = asset.toJSON();
                     return (asset.title === 'image1' || asset.is_dir === true) 
                 });
                 assert.ok(_assets, '$OR condition satisfied');
@@ -607,6 +612,7 @@ test('Non reference .tags() ', function(assert) {
 
     Query
         .tags(tags)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok((assets.length >= 1), '1 or more asset/assets present in the resultset');
@@ -629,12 +635,13 @@ test('.tags()', function(assert) {
 
     Query
         .tags(tags)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok((assets.length >= 1), '1 or more asset/assets present in the resultset');
             if (assets && assets.length && assets[0].length) {
                 var _assets = assets[0].every(function(asset) {
-                    return (Utils.arrayPresentInArray(tags, asset.get(field)));
+                    return (Utils.arrayPresentInArray(tags, asset[field]));
                 });
                 assert.equal(_assets, true, 'Tags specified are found in result set');
             }
@@ -653,6 +660,7 @@ test('.search()', function(assert) {
 
     Query
         .search('image1')
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok(assets[0].length, '1 or more asset present in the resultset');
@@ -678,12 +686,13 @@ test('.regex()', function(assert) {
     Query
         .language('en-us')
         .regex(field, regex.pattern, regex.options)
+        .toJSON()
         .find()
         .then(function success(assets) {
             assert.ok((assets.length >= 1), '1 or more asset/assets present in the resultset');
             assert.equal(assets[0].length, 5, '5 assets present in resultset');
             var flag = assets[0].every(function(asset) {
-                return regexpObj.test(asset.get(field));
+                return regexpObj.test(asset[field]);
             });
             assert.ok(flag, "regexp satisfied for all the assets in the resultset");
             assert.end();
@@ -722,10 +731,10 @@ test('.only() - Single String Parameter', function(assert) {
 
     Query
         .only('title')
+        .toJSON()
         .find()
         .then(function success(assets) {
             var flag = assets[0].every(function(asset) {
-                asset = asset.toJSON();
                 return (asset && Object.keys(asset).length === 5 && "title" in asset && "uid" in asset && 'url' in asset);
             });
             assert.ok(flag, 'assets with the field title in the resultset');
@@ -742,10 +751,10 @@ test('.only() - Multiple String Parameter', function(assert) {
 
     Query
         .only('BASE', 'title')
+        .toJSON()
         .find()
         .then(function success(assets) {
             var flag = assets[0].every(function(asset) {
-                asset = asset.toJSON();
                 return (asset && Object.keys(asset).length === 5 && "title" in asset && "uid" in asset && 'url' in asset);
             });
             assert.ok(flag, 'assets with the field title in the resultset');
@@ -762,10 +771,10 @@ test('.only() - Array Parameter', function(assert) {
 
     Query
         .only(['title', 'filename'])
+        .toJSON()
         .find()
         .then(function success(assets) {
             var flag = assets[0].every(function(asset) {
-                asset = asset.toJSON();
                 return (asset && Object.keys(asset).length === 5 && "title" in asset && "filename" in asset && "uid" in asset && 'url' in asset);
             });
             assert.ok(flag, 'assets with the field title,url in the resultset');

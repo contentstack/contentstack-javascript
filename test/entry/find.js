@@ -20,7 +20,7 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
     }, 1000);
 });
 
-test.only('early_access in stack initialization', function (t) {
+test('early_access in stack initialization', function (t) {
     const stack = Contentstack.Stack({ ...init.stack, early_access: ['newCDA', 'taxonomy'] });
     t.equal(stack.headers['x-header-ea'], 'newCDA,taxonomy', 'Early access headers should be added');
     t.end();
@@ -1361,3 +1361,301 @@ test('.except() - For the reference - Array', function(assert) {
             assert.end();
         });
 });
+
+// Taxonomies Endpoint
+test('Taxonomies Endpoint: Get Entries With One Term', function(assert) {
+    let Query = Stack.Taxonomies();
+    Query
+        .where('taxonomies.one', 'term_one')
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("Taxonomies Endpoint: Get Entries With One Term");
+            assert.end();
+        })
+});
+
+test('Taxonomies Endpoint: Get Entries With Any Term ($in)', function(assert) {
+    let Query = Stack.Taxonomies();
+    Query
+        .containedIn('taxonomies.one', ['term_one', 'term_two'])
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("Taxonomies Endpoint: Get Entries With Any Term ($in)");
+            assert.end();
+        })
+})
+
+test('Taxonomies Endpoint: Get Entries With Any Term ($or)', function(assert) {
+    let Query = Stack.Taxonomies();
+    let Query1 = Stack.Taxonomies().where('taxonomies.one', 'term_one');
+    let Query2 = Stack.Taxonomies().where('taxonomies.two', 'term_two');
+    Query
+        .or(Query1, Query2)
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("Taxonomies Endpoint: Get Entries With Any Term ($or)");
+            assert.end();
+        })
+})
+
+test('Taxonomies Endpoint: Get Entries With All Terms ($and)', function(assert) {
+    let Query1 = Stack.Taxonomies().where('taxonomies.one', 'term_one');
+    let Query2 = Stack.Taxonomies().where('taxonomies.two', 'term_two');
+    let Query = Stack.Taxonomies();
+    Query
+        .and(Query1, Query2)
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("Taxonomies Endpoint: Get Entries With All Terms ($and)");
+            assert.end();
+        })
+})
+
+test('Taxonomies Endpoint: Get Entries With Any Taxonomy Terms ($exists)', function(assert) {
+    let Query = Stack.Taxonomies();
+    Query
+        .exists('taxonomies.one')
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("Taxonomies Endpoint: Get Entries With Any Taxonomy Terms ($exists)");
+            assert.end();
+        })
+})
+
+test('Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its Children Term ($eq_below, level)', function(assert) {
+    let Query = Stack.Taxonomies();
+    Query
+        .equalAndBelow('taxonomies.one', 'term_one')
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its Children Term ($eq_below, level)");
+            assert.end();
+        })
+})
+
+test('Taxonomies Endpoint: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level)', function(assert) {
+    let Query = Stack.Taxonomies();
+    Query
+        .below('taxonomies.one', 'term_one')
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("Taxonomies Endpoint: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level)");
+            assert.end();
+        })
+})
+
+test('Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)', function(assert) {
+    let Query = Stack.Taxonomies();
+    Query
+        .equalAndAbove('taxonomies.one', 'term_one')
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)");
+            assert.end();
+        })
+})
+
+test('Taxonomies Endpoint: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)', function(assert) {
+    let Query = Stack.Taxonomies();
+    Query
+        .above('taxonomies.one', 'term_one_child')
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("Taxonomies Endpoint: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)");
+            assert.end();
+        })
+})
+
+//Content Type end point
+test('CT Taxonomies Query: Get Entries With One Term', function(assert) {
+    let Query = Stack.ContentType('source').Query();
+    Query
+        .where('taxonomies.one', 'term_one')
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("CT Taxonomies Query: Get Entries With One Term");
+            assert.end();
+        })
+});
+
+test('CT Taxonomies Query: Get Entries With Any Term ($in)', function(assert) {
+    let Query = Stack.ContentType('source').Query();
+    Query
+        .containedIn('taxonomies.one', ['term_one', 'term_two'])
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("CT Taxonomies Query: Get Entries With Any Term ($in)");
+            assert.end();
+        })
+})
+
+test('CT Taxonomies Query: Get Entries With Any Term ($or)', function(assert) {
+    let Query = Stack.ContentType('source').Query();
+    let Query1 = Stack.ContentType('source').Query().where('taxonomies.one', 'term_one');
+    let Query2 = Stack.ContentType('source').Query().where('taxonomies.two', 'term_two');
+    Query
+        .or(Query1, Query2)
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("CT Taxonomies Query: Get Entries With Any Term ($or)");
+            assert.end();
+        })
+})
+
+test('CT Taxonomies Query: Get Entries With All Terms ($and)', function(assert) {
+    let Query1 = Stack.ContentType('source').Query().where('taxonomies.one', 'term_one');
+    let Query2 = Stack.ContentType('source').Query().where('taxonomies.two', 'term_two');
+    let Query = Stack.ContentType('source').Query();
+    Query
+        .and(Query1, Query2)
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("CT Taxonomies Query: Get Entries With All Terms ($and)");
+            assert.end();
+        })
+})
+
+test('CT Taxonomies Query: Get Entries With Any Taxonomy Terms ($exists)', function(assert) {
+    let Query = Stack.ContentType('source').Query();
+    Query
+        .exists('taxonomies.one')
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("CT Taxonomies Query: Get Entries With Any Taxonomy Terms ($exists)");
+            assert.end();
+        })
+})
+
+test('CT Taxonomies Query: Get Entries With Taxonomy Terms and Also Matching Its Children Term ($eq_below, level)', function(assert) {
+    let Query = Stack.ContentType('source').Query();
+    Query
+        .equalAndBelow('taxonomies.one', 'term_one')
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("CT Taxonomies Query: Get Entries With Taxonomy Terms and Also Matching Its Children Term ($eq_below, level)");
+            assert.end();
+        })
+})
+
+test('CT Taxonomies Query: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level)', function(assert) {
+    let Query = Stack.ContentType('source').Query();
+    Query
+        .below('taxonomies.one', 'term_one')
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("CT Taxonomies Query: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level)");
+            assert.end();
+        })
+})
+
+test('CT Taxonomies Query: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)', function(assert) {
+    let Query = Stack.ContentType('source').Query();
+    Query
+        .equalAndAbove('taxonomies.one', 'term_one')
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("CT Taxonomies Query: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)");
+            assert.end();
+        })
+})
+
+test('CT Taxonomies Query: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)', function(assert) {
+    let Query = Stack.ContentType('source').Query();
+    Query
+        .above('taxonomies.one', 'term_one_child')
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("CT Taxonomies Query: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)");
+            assert.end();
+        })
+})
