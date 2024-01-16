@@ -1,5 +1,14 @@
-threshold: medium
 fileignoreconfig:
 - filename: package-lock.json
-  checksum: 0dbf56c1fd0eda1145d69b718de5b7d419650556492851c343fab05867e233a2
+  checksum: b55c22a1b5dca347c79fea4cac3a0a3ea7487180cb21e4e3d5b2bbdf1981cebe
+- filename: test/typescript/taxonomy.test.ts
+  checksum: e4bdf633e147fd60d929d379f20c814eed5f68b11421d7b53ec8826e9142de37
+- filename: src/core/modules/taxonomy.js
+  checksum: 84589be9805c1be5fd6c56021c41d18365126cf82059ad2cbef1d418c70d08e0
+- filename: src/core/lib/utils.js
+  checksum: 6018f9f13fa32b724d09b9cdf5f78cf030a6332ca549651e1e35fe91e8c7e0e7
+- filename: src/core/modules/query.js
+  checksum: c88b336f9a271397ffedcf8c5085941ceb0bd1cd7e25ed9ada3acd8ce4f8970c
+- filename: test/typescript/stack.test.ts
+  checksum: bbb3c425f8e1a63d4793f69ee9eaba9559294ff53f163a28f70ae54b1792276a
 version: ""
