@@ -129,10 +129,13 @@ export enum QueryOperation {
   IS_GREATER_THAN_OR_EQUAL = '$gte',
   EXISTS = '$exists',
   MATCHES = '$regex',
+}
+
+export enum TaxonomyQueryOperation {
   ABOVE = '$above',
   BELOW = '$below',
   EQ_ABOVE = '$eq_above',
-  EQ_BELOW = '$eq_below',
+  EQ_BELOW = '$eq_below'
 }
 
 export type BaseQueryParameters = {
