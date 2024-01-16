@@ -1,8 +1,7 @@
-import { QueryOperation, QueryOperator } from "../../src/lib/types";
-import {TaxonomyQuery} from "../../src/lib/taxonomy-query";
+import { QueryOperation, QueryOperator, TaxonomyQueryOperation } from "../../src/lib/types";
 import { stackInstance } from "../utils/stack-instance";
 import dotenv from "dotenv"
-import { TEntries, TEntry } from "./types";
+import { TEntries } from "./types";
 
 dotenv.config();
 jest.setTimeout(60000);
@@ -45,25 +44,25 @@ describe('Taxonomy API test cases', () => {
     })
     
     test('Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its Children Term ($eq_below, level)', async () => {
-        let taxonomy = stack.Taxonomy().where('taxonomies.one', QueryOperation.EQ_BELOW, 'term_one', {"levels": 1})
+        let taxonomy = stack.Taxonomy().where('taxonomies.one', TaxonomyQueryOperation.EQ_BELOW, 'term_one', {"levels": 1})
         const data = await taxonomy.find<TEntries>();
         return expect(data.entries.length).toBeGreaterThan(0);
     })
     
     test('Taxonomies Endpoint: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level)', async () => {
-        let taxonomy = stack.Taxonomy().where('taxonomies.one', QueryOperation.BELOW, 'term_one', {"levels": 1})
+        let taxonomy = stack.Taxonomy().where('taxonomies.one', TaxonomyQueryOperation.BELOW, 'term_one', {"levels": 1})
         const data = await taxonomy.find<TEntries>();
         return expect(data.entries.length).toBeGreaterThan(0);
     })
     
     test('Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)', async () => {
-        let taxonomy = stack.Taxonomy().where('taxonomies.one', QueryOperation.EQ_ABOVE, 'term_one', {"levels": 1})
+        let taxonomy = stack.Taxonomy().where('taxonomies.one', TaxonomyQueryOperation.EQ_ABOVE, 'term_one', {"levels": 1})
         const data = await taxonomy.find<TEntries>();
         return expect(data.entries.length).toBeGreaterThan(0);
     })
     
     test('Taxonomies Endpoint: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)', async () => {
-        let taxonomy = stack.Taxonomy().where('taxonomies.one', QueryOperation.ABOVE, 'term_one_child', {"levels": 1})
+        let taxonomy = stack.Taxonomy().where('taxonomies.one', TaxonomyQueryOperation.ABOVE, 'term_one_child', {"levels": 1})
         const data = await taxonomy.find<TEntries>();
         return expect(data.entries.length).toBeGreaterThan(0);
     })

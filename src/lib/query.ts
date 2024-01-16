@@ -1,6 +1,6 @@
 import { AxiosInstance } from '@contentstack/core';
 import { BaseQuery } from './base-query';
-import { BaseQueryParameters, QueryOperation, QueryOperator } from './types';
+import { BaseQueryParameters, QueryOperation, QueryOperator, TaxonomyQueryOperation } from './types';
 export class Query extends BaseQuery {
   private _contentTypeUid?: string;
 
@@ -37,7 +37,7 @@ export class Query extends BaseQuery {
    */
   where(
     fieldUid: string, 
-    queryOperation: QueryOperation, 
+    queryOperation: QueryOperation | TaxonomyQueryOperation, 
     fields: string | string[] | number | number[] | object | boolean,
     additionalData?: object
   ): Query {
