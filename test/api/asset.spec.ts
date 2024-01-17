@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable promise/always-return */
+import { BaseAsset } from 'src';
 import { Asset } from '../../src/lib/asset';
 import { stackInstance } from '../utils/stack-instance';
 import { TAsset } from './types';
@@ -11,81 +12,94 @@ const stack = stackInstance();
 const assetUid = process.env.ASSET_UID;
 describe('Asset API tests', () => {
   it('should check for asset is defined', async () => {
-    const result = await makeAsset(assetUid).fetch<TAsset>();
-    expect(result.asset).toBeDefined();
-    expect(result.asset._version).toBeDefined();
-    expect(result.asset.uid).toBeDefined();
-    expect(result.asset.url).toBeDefined();
-    expect(result.asset.filename).toBeDefined();
-    expect(result.asset.created_by).toBeDefined();
-    expect(result.asset.updated_by).toBeDefined();
+    const result = await makeAsset(assetUid).fetch<BaseAsset>();
+    expect(result).toBeDefined();
+    expect(result._version).toBeDefined();
+    expect(result.uid).toBeDefined();
+    expect(result.url).toBeDefined();
+    expect(result.filename).toBeDefined();
+    expect(result.created_by).toBeDefined();
+    expect(result.updated_by).toBeDefined();
   });
   it('should check for include dimension', async () => {
-    const result = await makeAsset(assetUid).includeDimension().fetch<TAsset>();
-    expect(result.asset.dimension).not.toEqual(undefined);
-    expect(result.asset._version).toBeDefined();
-    expect(result.asset.uid).toBeDefined();
-    expect(result.asset.url).toBeDefined();
-    expect(result.asset.filename).toBeDefined();
-    expect(result.asset.created_by).toBeDefined();
-    expect(result.asset.updated_by).toBeDefined();
+    interface AssetWithDimension extends BaseAsset {
+      dimension: {
+        height: number;
+        width: number;
+      }
+    }
+    const result = await makeAsset(assetUid).includeDimension().fetch<AssetWithDimension>();
+    expect(result.dimension).not.toEqual(undefined);
+    expect(result._version).toBeDefined();
+    expect(result.uid).toBeDefined();
+    expect(result.url).toBeDefined();
+    expect(result.filename).toBeDefined();
+    expect(result.created_by).toBeDefined();
+    expect(result.updated_by).toBeDefined();
   });
   it('should check for include branch', async () => {
-    const result = await makeAsset(assetUid).includeBranch().fetch<TAsset>();
-    expect(result.asset._branch).not.toEqual(undefined);
-    expect(result.asset._version).toBeDefined();
-    expect(result.asset.uid).toBeDefined();
-    expect(result.asset.url).toBeDefined();
-    expect(result.asset.filename).toBeDefined();
-    expect(result.asset.created_by).toBeDefined();
-    expect(result.asset.updated_by).toBeDefined();
+    interface AssetWithBranch extends BaseAsset {
+      _branch: string;
+    }
+    const result = await makeAsset(assetUid).includeBranch().fetch<AssetWithBranch>();
+    expect(result._branch).not.toEqual(undefined);
+    expect(result._version).toBeDefined();
+    expect(result.uid).toBeDefined();
+    expect(result.url).toBeDefined();
+    expect(result.filename).toBeDefined();
+    expect(result.created_by).toBeDefined();
+    expect(result.updated_by).toBeDefined();
   });
   it('should check for include fallback', async () => {
-    const result = await makeAsset(assetUid).includeFallback().fetch<TAsset>();
-    expect(result.asset._version).toBeDefined();
-    expect(result.asset.publish_details.locale).toEqual('en-us');
-    expect(result.asset.uid).toBeDefined();
-    expect(result.asset.url).toBeDefined();
-    expect(result.asset.filename).toBeDefined();
-    expect(result.asset.created_by).toBeDefined();
-    expect(result.asset.updated_by).toBeDefined();
+    const result = await makeAsset(assetUid).includeFallback().fetch<BaseAsset>();
+    expect(result._version).toBeDefined();
+    expect(result.publish_details?.locale).toEqual('en-us');
+    expect(result.uid).toBeDefined();
+    expect(result.url).toBeDefined();
+    expect(result.filename).toBeDefined();
+    expect(result.created_by).toBeDefined();
+    expect(result.updated_by).toBeDefined();
   });
 
   it('should check for relative urls', async () => {
-    const result = await makeAsset(assetUid).relativeUrls().fetch<TAsset>();
-    expect(result.asset.url).not.toEqual(undefined);
-    expect(result.asset._version).toBeDefined();
-    expect(result.asset.uid).toBeDefined();
-    expect(result.asset.url).toBeDefined();
-    expect(result.asset.filename).toBeDefined();
-    expect(result.asset.created_by).toBeDefined();
-    expect(result.asset.updated_by).toBeDefined();
+    const result = await makeAsset(assetUid).relativeUrls().fetch<BaseAsset>();
+    expect(result.url).not.toEqual(undefined);
+    expect(result._version).toBeDefined();
+    expect(result.uid).toBeDefined();
+    expect(result.url).toBeDefined();
+    expect(result.filename).toBeDefined();
+    expect(result.created_by).toBeDefined();
+    expect(result.updated_by).toBeDefined();
   });
   it('should check for version of asset', async () => {
-    const result = await makeAsset(assetUid).version(1).fetch<TAsset>();
-    expect(result.asset._version).toEqual(1);
-    expect(result.asset.uid).toBeDefined();
-    expect(result.asset.url).toBeDefined();
-    expect(result.asset.filename).toBeDefined();
-    expect(result.asset.created_by).toBeDefined();
-    expect(result.asset.updated_by).toBeDefined();
+    const result = await makeAsset(assetUid).version(1).fetch<BaseAsset>();
+    expect(result._version).toEqual(1);
+    expect(result.uid).toBeDefined();
+    expect(result.url).toBeDefined();
+    expect(result.filename).toBeDefined();
+    expect(result.created_by).toBeDefined();
+    expect(result.updated_by).toBeDefined();
   });
   it('should check for include metadata', async () => {
-    const result = await makeAsset(assetUid).includeMetadata().fetch<TAsset>();
-    expect(result.asset._metadata).not.toEqual(undefined);
-    expect(result.asset._version).toBeDefined();
-    expect(result.asset.uid).toBeDefined();
-    expect(result.asset.content_type).toBeDefined();
-    expect(result.asset.created_by).toBeDefined();
-    expect(result.asset.updated_by).toBeDefined();
+
+    interface AssetWithMetadata extends BaseAsset {
+      _metadata: string;
+    }
+    const result = await makeAsset(assetUid).includeMetadata().fetch<AssetWithMetadata>();
+    expect(result._metadata).not.toEqual(undefined);
+    expect(result._version).toBeDefined();
+    expect(result.uid).toBeDefined();
+    expect(result.content_type).toBeDefined();
+    expect(result.created_by).toBeDefined();
+    expect(result.updated_by).toBeDefined();
   });
   it('should check for locale', async () => {
-    const result = await makeAsset(assetUid).locale('en-us').fetch<TAsset>();
-    expect(result.asset._version).toEqual(1);
-    expect(result.asset.uid).toBeDefined();
-    expect(result.asset.content_type).toBeDefined();
-    expect(result.asset.created_by).toBeDefined();
-    expect(result.asset.updated_by).toBeDefined();
+    const result = await makeAsset(assetUid).locale('en-us').fetch<BaseAsset>();
+    expect(result._version).toEqual(1);
+    expect(result.uid).toBeDefined();
+    expect(result.content_type).toBeDefined();
+    expect(result.created_by).toBeDefined();
+    expect(result.updated_by).toBeDefined();
   });
 });
 function makeAsset(uid = ''): Asset {
