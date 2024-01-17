@@ -21,13 +21,13 @@ describe("Taxonomy-query class", () => {
     })
 
     it('Taxonomy Query: Get entries with one term', () => {
-        const query = taxonomyQuery.where("taxonomies.taxonomy_uid", QueryOperation.EQUALS, "term_uid").getQuery({});
-        expect(query._parameters).toEqual({"taxonomies.taxonomy_uid": "term_uid"});
+        const query = taxonomyQuery.where("taxonomies.taxonomy_uid", QueryOperation.EQUALS, "term_uid").getQuery();
+        expect(query).toEqual({"taxonomies.taxonomy_uid": "term_uid"});
     });
 
     it('Taxonomy Query: Get entries with any term ($in)', () => {
-        const query = taxonomyQuery.where("taxonomies.taxonomy_uid", QueryOperation.INCLUDES, ["term_uid1", "term_uid2"]).getQuery({});
-        expect(query._parameters).toEqual({"taxonomies.taxonomy_uid": { "$in": ["term_uid1", "term_uid2"] }});
+        const query = taxonomyQuery.where("taxonomies.taxonomy_uid", QueryOperation.INCLUDES, ["term_uid1", "term_uid2"]).getQuery();
+        expect(query).toEqual({"taxonomies.taxonomy_uid": { "$in": ["term_uid1", "term_uid2"] }});
     });
 
     it('Taxonomy Query: Get entries with any term ($or)', () => {
