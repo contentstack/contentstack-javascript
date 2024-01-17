@@ -48,9 +48,11 @@ export class ContentType {
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(asset_uid).fetch();
    */
-  async fetch<T>(): Promise<ContentTypeResponse<T>> {
+  async fetch<T>(): Promise<T> {
     const response = await getData(this._client, this._urlPath);
 
-    return response as ContentTypeResponse<T>;
+    if (response.content_type) return response.content_type as T;
+
+    return response;
   }
 }

@@ -1,5 +1,4 @@
 import { BaseQuery } from '../../src/lib/base-query';
-import { QueryOperation } from '../../src/lib/types';
 
 describe('BaseQuery class', () => {
   let baseQuery: BaseQuery;
