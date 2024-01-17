@@ -1,5 +1,6 @@
 import { AxiosInstance, getData } from '@contentstack/core';
 import { Pagination } from './pagination';
+import { FindResponse } from './types';
 
 export class BaseQuery extends Pagination {
   _parameters: { [key: string]: any } = {}; // Params of query class ?query={}
@@ -154,12 +155,12 @@ export class BaseQuery extends Pagination {
    * const result = await stack.asset(asset_uid).fetch();
    */
 
-  async find<T>(): Promise<T> {
+  async find<T>(): Promise<FindResponse<T>> {
     let requestParams: { [key: string]: any } = this._queryParams;
     if (Object.keys(this._parameters)) requestParams = { ...this._queryParams, query: { ...this._parameters } };
 
     const response = await getData(this._client, this._urlPath, requestParams);
 
-    return response as T;
+    return response as FindResponse<T>;
   }
 }
