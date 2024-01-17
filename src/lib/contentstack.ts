@@ -80,25 +80,25 @@ export function Stack(config: StackConfig): StackClass {
   client.interceptors.request.use(retryRequestHandler);
   client.interceptors.response.use(retryResponseHandler, errorHandler);
 
-  // if (config.plugins) {
-  //   client.interceptors.request.use((reqConfig: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
-  //     if (config && config.plugins)
-  //       config.plugins.forEach((pluginInstance) => {
-  //         reqConfig = pluginInstance.onRequest(reqConfig);
-  //       });
+  if (config.plugins) {
+    client.interceptors.request.use((reqConfig: InternalAxiosRequestConfig): InternalAxiosRequestConfig => {
+      if (config && config.plugins)
+        config.plugins.forEach((pluginInstance) => {
+          reqConfig = pluginInstance.onRequest(reqConfig);
+        });
+      
+      return reqConfig;
+    });
 
-  //     return reqConfig;
-  //   });
+    client.interceptors.response.use((response: AxiosResponse) => {
+      if (config && config.plugins)
+        config.plugins.forEach((pluginInstance) => {
+          response = pluginInstance.onResponse(response.request, response, response.data);
+        });
 
-  //   client.interceptors.response.use((response: AxiosResponse) => {
-  //     if (config && config.plugins)
-  //       config.plugins.forEach((pluginInstance) => {
-  //         response = pluginInstance.onResponse(response.request, response, response.data);
-  //       });
-
-  //     return response;
-  //   });
-  // }
+      return response;
+    });
+  }
 
   return new StackClass(client, config);
 }

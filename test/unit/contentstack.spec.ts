@@ -2,11 +2,15 @@ import exp = require('constants');
 import * as core from '@contentstack/core';
 import * as Contentstack from '../../src/lib/contentstack';
 import { Stack } from '../../src/lib/stack';
-import { Region, StackConfig } from '../../src/lib/types';
+import { Policy, Region, StackConfig } from '../../src/lib/types';
 import { DUMMY_URL, HOST_EU_REGION, HOST_URL } from '../utils/constant';
+import { AxiosRequestConfig, AxiosResponse } from 'axios';
 
 jest.mock('@contentstack/core');
 const createHttpClientMock = <jest.Mock<typeof core.httpClient>>(<unknown>core.httpClient);
+
+const reqInterceptor = jest.fn();
+const resInterceptor = jest.fn();
 
 describe('Contentstack', () => {
   beforeEach(() =>
@@ -18,10 +22,10 @@ describe('Contentstack', () => {
       },
       interceptors: {
         request: {
-          use: jest.fn(),
+          use: reqInterceptor,
         },
         response: {
-          use: jest.fn(),
+          use: resInterceptor,
         },
       },
     })
@@ -31,6 +35,7 @@ describe('Contentstack', () => {
   });
 
   const createStackInstance = (config: StackConfig) => Contentstack.Stack(config);
+
   it('should throw error when api key is empty', (done) => {
     const config = {
       apiKey: '',
@@ -159,6 +164,47 @@ describe('Contentstack', () => {
 
     const stackInstance = createStackInstance(config);
     expect(stackInstance).toBeInstanceOf(Stack);
+    done();
+  });
+
+  it('should add logHandler', async () => {
+    const mockLogHandler = jest.fn();
+    const config = {
+      apiKey: 'apiKey',
+      deliveryToken: 'delivery',
+      environment: 'env',
+      region: Region.AZURE_NA,
+      logHandler: mockLogHandler,
+      cacheOptions: {
+        policy: Policy.IGNORE_CACHE
+      }
+    };
+
+    const stackInstance = createStackInstance(config);
+    expect(stackInstance).toBeInstanceOf(Stack);
+    expect(mockLogHandler).not.toHaveBeenCalled();
+    mockLogHandler.mockReset();
+  });
+
+  it('should add plugins onRequest and onResponse as req and res interceptors when plugin is passed', (done) => {
+
+    const mockPlugin = {
+      onRequest: jest.fn((request) => request),
+      onResponse: jest.fn((response) => response),
+    };
+
+    const stackInstance = createStackInstance({
+      apiKey: 'apiKey',
+      deliveryToken: 'delivery',
+      environment: 'env',
+      plugins: [mockPlugin],
+    });
+
+    expect(stackInstance).toBeInstanceOf(Stack);
+    expect(reqInterceptor).toHaveBeenCalledWith(expect.any(Function));
+    expect(resInterceptor).toHaveBeenCalledWith(expect.any(Function));
+
+    createHttpClientMock.mockReset();
     done();
   });
 });

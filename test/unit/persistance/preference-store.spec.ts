@@ -1,6 +1,6 @@
-import { PersistanceStore } from '../../src/persistance/persistance-store';
-import { StorageType } from '../../src/persistance/types/storage-type';
-import { memoryStorage } from '../../src/persistance/storages/memory-storage';
+import { PersistanceStore } from '../../../src/persistance/persistance-store';
+import { StorageType } from '../../../src/persistance/types/storage-type';
+import { memoryStorage } from '../../../src/persistance/storages/memory-storage';
 describe('persistance store intiialization test', () => {
   it('should initialize default persistance ', () => {
     const persistance = new PersistanceStore();
