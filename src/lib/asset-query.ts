@@ -1,5 +1,5 @@
 import { BaseQuery } from './base-query';
-import { AxiosInstance, getData } from '@contentstack/core';
+import { AxiosInstance } from '@contentstack/core';
 
 export class AssetQuery extends BaseQuery {
   constructor(client: AxiosInstance) {
