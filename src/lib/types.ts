@@ -244,19 +244,13 @@ export interface BaseContentType {
   last_activity: any;
   maintain_revisions: boolean;
   _version: number;
+  schema: any;
 }
 
-export interface FindEntry<T> {
-  entries: T[];
-  count?: number;
-}
-
-export interface FindContentType<T> {
-  content_types: T[];
-  count?: number;
-}
-
-export interface FindAsset<T> {
-  assets: T[];
-  count?: number;
+export interface FindResponse<T> {
+  entries?: T[];
+  content_types?: T[];
+  assets?: T[];
+  global_fields?: T[];
+  count?: number
 }

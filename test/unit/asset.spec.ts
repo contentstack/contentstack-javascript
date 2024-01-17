@@ -57,6 +57,6 @@ describe('Asset class', () => {
   it('should add "fetch" in _queryParams when fetch method is called', async () => {
     mockClient.onGet(`/assets/assetUid`).reply(200, assetFetchDataMock);
     const returnedValue = await asset.fetch();
-    expect(returnedValue).toEqual(assetFetchDataMock);
+    expect(returnedValue).toEqual(assetFetchDataMock.asset);
   });
 });
