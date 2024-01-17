@@ -38,6 +38,6 @@ describe('ContentType class', () => {
     mockClient.onGet('/content_types/contentTypeUid').reply(200, contentTypeResponseMock);
 
     const response = await contentType.fetch();
-    expect(response).toEqual(contentTypeResponseMock);
+    expect(response).toEqual(contentTypeResponseMock.content_type);
   });
 });

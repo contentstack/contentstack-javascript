@@ -94,8 +94,8 @@ describe('Entries class', () => {
     });
 
     test('CT Taxonomy Query: Get entries with any term ($in)', () => {
-      const query = entry.query().where("taxonomies.taxonomy_uid", QueryOperation.INCLUDES, ["term_uid1", "term_uid2"]).getQuery({});
-      expect(query._parameters).toEqual({"taxonomies.taxonomy_uid": { "$in": ["term_uid1", "term_uid2"] }});
+      const query = entry.query().where("taxonomies.taxonomy_uid", QueryOperation.INCLUDES, ["term_uid1", "term_uid2"]).getQuery();
+      expect(query).toEqual({"taxonomies.taxonomy_uid": { "$in": ["term_uid1", "term_uid2"] }});
     });
 
     test('CT Taxonomy Query: Get entries with any term ($or)', () => {

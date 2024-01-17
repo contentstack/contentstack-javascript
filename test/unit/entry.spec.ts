@@ -58,6 +58,7 @@ describe('Entry class', () => {
   it('should get the API response when fetch method is called', async () => {
     mockClient.onGet(`/content_types/contentTypeUid/entries/entryUid`).reply(200, entryFetchMock);
     const returnedValue = await entry.fetch();
-    expect(returnedValue).toEqual(entryFetchMock);
+    
+    expect(returnedValue).toEqual(entryFetchMock.entry);
   });
 });

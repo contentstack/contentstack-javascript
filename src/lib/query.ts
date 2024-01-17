@@ -161,9 +161,7 @@ export class Query extends BaseQuery {
    *
    * @returns {Query}
    */
-  getQuery(queryObj: { [key: string]: any }): Query {
-    this._parameters = { ...this._parameters, ...queryObj };
-
-    return this;
+  getQuery(): { [key: string]: any } {
+    return this._parameters;
   }
 }
