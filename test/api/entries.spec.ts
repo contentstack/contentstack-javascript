@@ -58,7 +58,24 @@ describe('Entries API test cases', () => {
     expect(result.entries[0].author).toBeDefined();
   });
 
-  // //Content Type end point
+  it('should check for limit', async () => {
+    const query = makeEntries('blog_post');
+    const result = await query.limit(2).find<TEntries>();
+    expect(query._queryParams).toEqual({limit: 2});
+    expect(result.entries[0]._version).toBeDefined();
+    expect(result.entries[0].locale).toEqual('en-us');
+    expect(result.entries[0].uid).toBeDefined();
+    expect(result.entries[0].title).toBeDefined();
+  });
+  it('should check for skip', async () => {
+    const query = makeEntries('blog_post');
+    const result = await query.skip(2).find<TEntries>();
+    expect(query._queryParams).toEqual({skip: 2});
+    expect(result.entries[0]._version).toBeDefined();
+    expect(result.entries[0].uid).toBeDefined();
+    expect(result.entries[0].title).toBeDefined();
+  });
+
     it('CT Taxonomies Query: Get Entries With One Term', async () => {
         let Query = makeEntries('source').query().where('taxonomies.one', QueryOperation.EQUALS, 'term_one');
         const data = await Query.find<TEntries>();
