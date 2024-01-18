@@ -5,6 +5,9 @@ import { AssetQuery } from './asset-query';
 import { ContentType } from './content-type';
 import { ContentTypeQuery } from './contenttype-query';
 import { synchronization } from './synchronization';
+import {TaxonomyQuery} from './taxonomy-query';
+import { GlobalFieldQuery } from './global-field-query';
+import { GlobalField } from './global-field';
 
 export class Stack {
   readonly config: StackConfig;
@@ -59,6 +62,41 @@ export class Stack {
     if (uid) return new ContentType(this._client, uid);
 
     return new ContentTypeQuery(this._client);
+  }
+
+  /**
+   * @method Taxonomy
+   * @memberOf Stack
+   * @description Sets the url to /taxonomies/entries. Pass a query to fetch entries with taxonomies
+   *
+   * @returns {TaxonomyQuery} * @example
+   * import contentstack from '@contentstack/typescript'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+
+   * const taxonomy = stack.Taxonomy() // For taxonomy query object
+   */
+  Taxonomy(): TaxonomyQuery {
+    return new TaxonomyQuery(this._client)
+  };
+
+  /**
+   * @method GlobalField
+   * @memberOf Stack
+   * @param {String} uid - uid of the asset
+   * @description Retrieves all contentTypes of a stack by default. To retrieve a single asset, specify its UID.
+   *
+   * @returns {ContentType}
+   * const contentType = stack.contentType() // For collection of contentType
+   * // OR
+   * const contentType = stack.contentType('contentTypeUid') // For a single contentType with uid 'contentTypeUid'
+   */
+  GlobalField(): GlobalFieldQuery;
+  GlobalField(uid: string): GlobalField;
+  GlobalField(uid?: string): GlobalField | GlobalFieldQuery {
+    if (uid) return new GlobalField(this._client, uid);
+
+    return new GlobalFieldQuery(this._client);
   }
 
   /**

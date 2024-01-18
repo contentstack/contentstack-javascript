@@ -1,4 +1,5 @@
 import { AxiosInstance, getData } from '@contentstack/core';
+import { FindResponse } from './types';
 
 export class ContentTypeQuery {
   private _client: AxiosInstance;
@@ -38,9 +39,9 @@ export class ContentTypeQuery {
    * const contentTypeQuery = stack.contentType();
    * const result = await contentTypeQuery.find();
    */
-  async find<T>(): Promise<T> {
+  async find<T>(): Promise<FindResponse<T>> {
     const response = await getData(this._client, this._urlPath, this._queryParams);
 
-    return response as T;
+    return response as FindResponse<T>;
   }
 }

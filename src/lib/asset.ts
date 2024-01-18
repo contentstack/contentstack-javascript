@@ -1,8 +1,5 @@
 import { AxiosInstance, getData } from '@contentstack/core';
 
-interface AssetResponse<T> {
-  asset: T;
-}
 export class Asset {
   private _client: AxiosInstance;
   private _urlPath: string;
@@ -143,9 +140,11 @@ export class Asset {
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.asset('asset_uid').fetch();
    */
-  async fetch<T>(): Promise<AssetResponse<T>> {
+  async fetch<T>(): Promise<T> {
     const response = await getData(this._client, this._urlPath, this._queryParams);
 
-    return response as AssetResponse<T>;
+    if (response.asset) return response.asset as T;
+
+    return response;
   }
 }

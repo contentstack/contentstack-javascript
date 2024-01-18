@@ -130,9 +130,11 @@ export class Entry {
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(contentType_uid).entry(entry_uid).fetch();
    */
-  async fetch<T>(): Promise<EntryResponse<T>> {
+  async fetch<T>(): Promise<T> {
     const response = await getData(this._client, this._urlPath, this._queryParams);
 
-    return response as EntryResponse<T>;
+    if (response.entry) return response.entry as T;
+
+    return response;
   }
 }

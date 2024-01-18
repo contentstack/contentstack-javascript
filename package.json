@@ -19,9 +19,10 @@
     "build:types": "node tools/cleanup types && tsc -p config/tsconfig.types.json"
   },
   "dependencies": {
-    "@contentstack/core": "^1.0.0",
+    "@contentstack/core": "^1.0.1",
     "@contentstack/utils": "^1.3.1",
     "@types/humps": "^2.0.6",
+
     "dotenv": "^16.3.1",
     "humps": "^2.0.1"
   },
@@ -42,5 +43,6 @@
     "ts-jest": "^29.1.1",
     "ts-loader": "^9.5.1",
     "ts-node": "10.9.2"
+    "webpack-cli": "^5.1.4"
   }
 }
