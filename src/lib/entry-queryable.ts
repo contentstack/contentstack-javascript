@@ -7,7 +7,7 @@ export class EntryQueryable extends BaseQuery {
    * @memberof EntryQueryable
    * @description Selects specific field/fields of an entry
    * @example
-   * import contentstack from '@contentstack/delivery'
+   * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType("contentTypeUid").entry().only("fieldUID").find()
@@ -26,7 +26,7 @@ export class EntryQueryable extends BaseQuery {
    * @memberof EntryQueryable
    * @description Excludes specific field/fields of an entry
    * @example
-   * import contentstack from '@contentstack/delivery'
+   * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType("contentTypeUid").entry().except("fieldUID").find()

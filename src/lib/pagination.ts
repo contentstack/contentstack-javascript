@@ -9,7 +9,7 @@ export class Pagination {
    * @param {baseQuery} object of class BaseQUery
    * @param {paginationObj} object to send skip and limit values
    * @example
-   * import contentstack from '@contentstack/delivery'
+   * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
@@ -44,7 +44,7 @@ export class Pagination {
    * @memberof Pagination
    * @description Go to next set of response values - skips the current num of responses and shows next responses
    * @example
-   * import contentstack from '@contentstack/delivery'
+   * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
@@ -79,7 +79,7 @@ export class Pagination {
    * @memberof Pagination
    * @description Go to previous set of response values - skips the current num of responses and shows previous responses
    * @example
-   * import contentstack from '@contentstack/delivery'
+   * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();

@@ -18,7 +18,7 @@ export class Entries extends EntryQueryable {
    * @description When an entry is not published in a specific language, content can be fetched from its fallback language
    * @returns {Entries}
    * @example
-   * import contentstack from '@contentstack/delivery'
+   * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(contentType_uid).entry().includeFallback().find();
@@ -35,7 +35,7 @@ export class Entries extends EntryQueryable {
    * @description Include the metadata for getting metadata content for the entry.
    * @returns {Entries}
    * @example
-   * import contentstack from '@contentstack/delivery'
+   * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(contentType_uid).entry().includeMetadata().find();
@@ -52,7 +52,7 @@ export class Entries extends EntryQueryable {
    * @description Include Embedded Objects (Entries and Assets) along with entry/entries details.
    * @returns {Entries}
    * @example
-   * import contentstack from '@contentstack/delivery'
+   * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(contentType_uid).entry().includeEmbeddedItems().fetch();
@@ -69,7 +69,7 @@ export class Entries extends EntryQueryable {
    * @description IInclude the details of the content type along with the entries details
    * @returns {Entries}
    * @example
-   * import contentstack from '@contentstack/delivery'
+   * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(contentType_uid).entry().includeContentType().fetch();
@@ -86,7 +86,7 @@ export class Entries extends EntryQueryable {
    * @description Includes the branch in result
    * @returns {Entries}
    * @example
-   * import contentstack from '@contentstack/delivery'
+   * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType(contentType_uid).entry().includeBranch().find();
@@ -157,7 +157,7 @@ export class Entries extends EntryQueryable {
    * @description The assets published in the locale will be fetched
    * @returns {Entry}
    * @example
-   * import contentstack from '@contentstack/delivery'
+   * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType("contentTypeUid").entry().locale('en-us').find();
@@ -174,7 +174,7 @@ export class Entries extends EntryQueryable {
    * @description Fetches the Entry data on the basis of the asset uid
    * @returns {Collection}
    * @example
-   * import contentstack from '@contentstack/delivery'
+   * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const result = await stack.contentType("contentTypeUid").entry().query();
