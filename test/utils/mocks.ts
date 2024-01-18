@@ -1589,6 +1589,93 @@ const entryFetchMock = {
     }
   }
 }
+
+const gfieldFetchDataMock = {
+  "global_field": {
+    "created_at": "2019-09-06T11:30:02.108Z",
+    "updated_at": "2019-09-06T11:30:02.108Z",
+    "title": "Servlet",
+    "uid": "servlet",
+    "_version": 1,
+    "inbuilt_class": false,
+    "schema": [
+      {
+        "display_name": "Name",
+        "uid": "name",
+        "data_type": "text",
+        "multiple": false,
+        "mandatory": false,
+        "unique": false,
+        "non_localizable": false
+      },
+      {
+        "data_type": "text",
+        "display_name": "Rich text editor",
+        "uid": "description",
+        "field_metadata": {
+          "allow_rich_text": true,
+          "description": "",
+          "multiline": false,
+          "rich_text_type": "advanced",
+          "options": [],
+          "version": 3
+        },
+        "multiple": false,
+        "mandatory": false,
+        "unique": false,
+        "non_localizable": false
+      }
+    ],
+    "last_activity": {},
+    "maintain_revisions": true,
+    "description": ""
+  }
+}
+
+const gfieldQueryFindResponseDataMock = {
+  "global_fields": [
+    {
+      "created_at": "2019-09-06T11:30:02.108Z",
+      "updated_at": "2019-09-06T11:30:02.108Z",
+      "title": "Servlet",
+      "uid": "servlet",
+      "_version": 1,
+      "inbuilt_class": false,
+      "schema": [
+        {
+          "display_name": "Name",
+          "uid": "name",
+          "data_type": "text",
+          "multiple": false,
+          "mandatory": false,
+          "unique": false,
+          "non_localizable": false
+        },
+        {
+          "data_type": "text",
+          "display_name": "Rich text editor",
+          "uid": "description",
+          "field_metadata": {
+            "allow_rich_text": true,
+            "description": "",
+            "multiline": false,
+            "rich_text_type": "advanced",
+            "options": [],
+            "version": 3
+          },
+          "multiple": false,
+          "mandatory": false,
+          "unique": false,
+          "non_localizable": false
+        }
+      ],
+      "last_activity": {},
+      "maintain_revisions": true,
+      "description": ""
+    }
+  ]
+}
+
 const syncResult: any = { ...axiosGetMock.data };
 
 export { 
@@ -1599,5 +1686,7 @@ export {
   contentTypeQueryFindResponseDataMock,
   contentTypeResponseMock,
   entryFindMock,
-  entryFetchMock
+  entryFetchMock,
+  gfieldFetchDataMock,
+  gfieldQueryFindResponseDataMock
 };
