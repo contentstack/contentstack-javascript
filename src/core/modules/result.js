@@ -107,7 +107,3 @@ export default class Result {
         }
      }    
 }
-
-module.exports = function(object) {
-    return new Result(object);
-};
