@@ -20,7 +20,7 @@ import * as Utils  from '../lib/utils'
  * @returns {Result}
  * @instance 
  */
-class Result {
+export default class Result {
     constructor(object){
         if(object) {
             this.object = function() {

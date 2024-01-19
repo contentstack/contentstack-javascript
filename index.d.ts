@@ -23,7 +23,8 @@ export enum Region {
     US = "us",
     EU = "eu",
     AZURE_NA = "azure-na",
-    AZURE_EU = "azure-eu"
+    AZURE_EU = "azure-eu",
+    GCP_NA = "gcp-na",
 }
 
 //Enum for Contentstack CachePolicy
@@ -136,6 +137,7 @@ export class Stack {
     ContentType(uid: string): ContentType;
     Assets(uid: string): Asset;
     Assets(): Assets;
+    Taxonomies(): Taxonomies;
 
     setPort(port: number): Stack;
     setProtocol(protocol: string): Stack;
@@ -163,10 +165,12 @@ export class ContentType {
     constructor();
     content_type_uid: string
     
-    Query(): Query;
+    Query(): Taxonomy;
     Entry(uid: string): Entry;
     fetch(fetchOptions?: object): Promise<any>;
 }
+
+export class Taxonomies extends Taxonomy {}
 
 export class Assets {
     constructor();
@@ -287,4 +291,12 @@ export class Query extends Entry {
 
     find(fetchOptions?: object): Promise<any>;
     findOne(): Promise<any>;
+}
+
+export class Taxonomy extends Query {
+    constructor();
+    above(key: string, value: string, levels?: number): Query;
+    equalAndAbove(key: string, value: string, levels?: number): Query;
+    below(key: string, value: string, levels?: number): Query;
+    equalAndBelow(key: string, value: string, levels?: number): Query;
 }
