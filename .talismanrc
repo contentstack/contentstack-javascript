@@ -1,4 +1,3 @@
-threshold: medium
 fileignoreconfig:
 - filename: test/unit/image-transform.spec.ts
   checksum: 7beabdd07bd35d620668fcd97e1a303b9cbc40170bf3008a376d75ce0895de2a
