@@ -78,6 +78,29 @@ const _extend = {
 };
 
 /**
+ * @function getRequestUrl
+ * @description Returns host url based on this.type
+ * @param  {Object} this `this` variable from Query class
+ * @return {string} returns the url that will be used to make API calls
+ */
+function getRequestUrl(type, config, content_type_uid, baseURL) {
+    let url;
+    switch(type) {
+        case 'asset':
+            url = baseURL + config.urls.assets;
+            break;
+        case 'taxonomy':
+            url = baseURL + config.urls.taxonomies;
+            break;
+        case 'contentType':
+        default:
+            url = baseURL + config.urls.content_types + content_type_uid + config.urls.entries;
+            break;
+    }
+    return url;
+}
+
+/**
  * @class 
    Query  
  * @description
@@ -400,6 +423,7 @@ export default class Query extends Entry {
     }
 
     /**
+     * @method where
      * @memberOf Query
      * @description Retrieve entries in which a specific field satisfies the value provided
      * @param {String} key - uid of the field
@@ -441,7 +465,7 @@ export default class Query extends Entry {
      */
     count() {
         const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-            url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
+            url = getRequestUrl(this.type, this.config, this.content_type_uid, host);
         this._query['count'] = true;
         this.requestParams = {
             method: 'POST',
@@ -750,8 +774,10 @@ export default class Query extends Entry {
         if (this.type && this.type !== 'asset' && this.live_preview && this.live_preview.enable === true && this.live_preview.live_preview && this.live_preview.live_preview !== "init") {
             host = this.live_preview.host;
         }
-        const baseURL = this.config.protocol + "://" + host + '/' + this.config.version,
-            url = (this.type && this.type === 'asset') ? baseURL + this.config.urls.assets : baseURL + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
+        const baseURL = this.config.protocol + "://" + host + '/' + this.config.version
+        const url = getRequestUrl(this.type, this.config, this.content_type_uid, baseURL)
+        
+
         this.requestParams = {
             method: 'POST',
             headers: Utils.mergeDeep({}, this.headers),
@@ -785,7 +811,7 @@ export default class Query extends Entry {
         if(this.type && this.type !== 'asset' && this.live_preview && this.live_preview.enable === true && this.live_preview.live_preview && this.live_preview.live_preview !== "init" ) {
             host = this.config.protocol + "://" + this.live_preview.host + '/' + this.config.version
         }
-        const url = (this.type && this.type === 'asset') ? host + this.config.urls.assets : host + this.config.urls.content_types + this.content_type_uid + this.config.urls.entries;
+        const url = getRequestUrl(this.type, this.config, this.content_type_uid, host)
         
         this.singleEntry = true;
         this._query.limit = 1;

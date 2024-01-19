@@ -24,9 +24,10 @@ test('Initalise the Contentstack Stack Instance', function(TC) {
 test('findOne:  default .findOne()', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query();
     Query
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
+            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
@@ -44,9 +45,10 @@ test('findOne:  .ascending()', function(assert) {
 
     Query
         .ascending(field)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
+            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
@@ -61,9 +63,10 @@ test('findOne:  .descending()', function(assert) {
 
     Query
         .descending(field)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
+            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
@@ -82,10 +85,11 @@ test('findOne:  .lessThan()', function(assert) {
         value = 11;
     Query
         .lessThan(field, value)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.get(field) < value), 'Entry num_field having value less than ' + value + '.');
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
+            assert.ok((entry && entry[field] < value), 'Entry num_field having value less than ' + value + '.');
+            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
@@ -100,10 +104,11 @@ test('findOne:  .lessThanOrEqualTo()', function(assert) {
         value = 11;
     Query
         .lessThanOrEqualTo(field, value)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.get(field) <= value), 'Entry num_field having value less than or equal to ' + value + '.');
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
+            assert.ok((entry && entry[field] <= value), 'Entry num_field having value less than or equal to ' + value + '.');
+            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
@@ -120,10 +125,11 @@ test('findOne:  .greaterThan()', function(assert) {
     Query
         .greaterThan(field, value)
         .ascending(field)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.get(field) > value), 'Entry num_field having value greater than ' + value + '.');
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
+            assert.ok((entry && entry[field] > value), 'Entry num_field having value greater than ' + value + '.');
+            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
@@ -140,10 +146,11 @@ test('findOne:  .greaterThanOrEqualTo()', function(assert) {
     Query
         .greaterThanOrEqualTo(field, value)
         .descending(field)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.get(field) >= value), 'Entry num_field having value greater than ' + value + '.');
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
+            assert.ok((entry && entry[field] >= value), 'Entry num_field having value greater than ' + value + '.');
+            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
@@ -160,10 +167,11 @@ test('findOne:  .notEqualTo()', function(assert) {
     Query
         .notEqualTo(field, value)
         .descending(field)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.get(field) !== value), 'Entry num_field having value is not equal to ' + value + '.');
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
+            assert.ok((entry && entry[field] !== value), 'Entry num_field having value is not equal to ' + value + '.');
+            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
@@ -183,10 +191,11 @@ test('findOne:  .containedIn()', function(assert) {
 
     Query
         .containedIn('title', _in)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.get('title') && ~_in.indexOf(entry.get('title'))), 'Entry title exists from the available options ' + _in.join(', ') + '.');
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
+            assert.ok((entry && entry['title'] && ~_in.indexOf(entry['title'])), 'Entry title exists from the available options ' + _in.join(', ') + '.');
+            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
@@ -201,10 +210,11 @@ test('findOne:  .notContainedIn()', function(assert) {
 
     Query
         .notContainedIn('title', _in)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.get('title') && _in.indexOf(entry.get('title')) === -1), 'Entry title not exists from the available options ' + _in.join(', ') + '.');
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
+            assert.ok((entry && entry['title'] && _in.indexOf(entry['title']) === -1), 'Entry title not exists from the available options ' + _in.join(', ') + '.');
+            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
             console.error("findOne:  .notContainedIn() :", err);
@@ -224,10 +234,11 @@ test('findOne:  .exists()', function(assert) {
 
     Query
         .exists(queryField)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.ok((entry && typeof entry.get(queryField) !== 'undefined'), 'Entry having the ' + queryField + '.');
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
+            assert.ok((entry && typeof entry[queryField] !== 'undefined'), 'Entry having the ' + queryField + '.');
+            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
@@ -242,10 +253,11 @@ test('findOne:  .notExists()', function(assert) {
 
     Query
         .notExists(queryField)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.ok((entry && typeof entry.get(queryField) === 'undefined'), 'Entry having the ' + queryField + '.');
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
+            assert.ok((entry && typeof entry[queryField] === 'undefined'), 'Entry having the ' + queryField + '.');
+            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
             console.error("findOne:  .notExists():", err);
@@ -260,6 +272,7 @@ test('findOne:  .skip()', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query();
 
     Query
+        .toJSON()
         .find()
         .then(function success(allEntries) {
             assert.ok(allEntries.length, 'entry key present in the resultset');
@@ -267,9 +280,10 @@ test('findOne:  .skip()', function(assert) {
                 .ContentType(contentTypes.source)
                 .Query()
                 .skip(1)
+                .toJSON()
                 .findOne()
                 .then(function result(entry) {
-                    assert.deepEqual(allEntries[0][1].toJSON(), entry.toJSON(), 'Element matched.');
+                    assert.deepEqual(allEntries[0][1], entry, 'Element matched.');
                     assert.end();
                 }, function error(err) {
                     console.error("error :", err);
@@ -293,9 +307,10 @@ test('findOne:  .or() - Query Objects', function(assert) {
 
     Query
         .or(Query1, Query2)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.ok((entry && entry.get('uid') && entry.get('locale') && entry.get('publish_details')), 'Entry should have uid, publish_details, locale.');
+            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
@@ -311,9 +326,9 @@ test('findOne:  .and() - Query Objects', function(assert) {
 
     Query
         .and(Query1, Query2)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            entry = entry.toJSON();
             assert.ok(entry && entry.uid && entry.locale && entry.publish_details, 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
@@ -331,9 +346,9 @@ test('findOne:  .query() - Raw query', function(assert) {
 
     Query
         .query({ "$or": [{ "title": "source1" }, { "boolean": "false" }] })
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            entry = entry.toJSON();
             assert.ok(entry && entry.uid && entry.locale && entry.publish_details, 'Entry should have uid, publish_details, locale.');
             assert.ok(~(entry.title === 'source1' || entry.boolean === true), '$OR condition satisfied');
             assert.end();
@@ -352,9 +367,9 @@ test('findOne:  .tags()', function(assert) {
 
     Query
         .tags(tags)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            entry = entry.toJSON();
             assert.ok(entry && entry.uid && entry.locale && entry.publish_details, 'Entry should have uid, publish_details, locale.');
             assert.equal((Utils.arrayPresentInArray(tags, entry.tags) > 0), true, 'Tags specified are found in result set');
             assert.end();
@@ -372,9 +387,9 @@ test('findOne:  .search()', function(assert) {
 
     Query
         .search('source1')
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            entry = entry.toJSON();
             assert.ok(entry && entry.uid && entry.locale && entry.publish_details, 'Entry should have uid, publish_details, locale.');
             assert.end();
         }, function error(err) {
@@ -396,9 +411,9 @@ test('findOne:  .regex()', function(assert) {
 
     Query
         .regex(field, regex.pattern, regex.options)
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            entry = entry.toJSON();
             assert.ok(entry && entry.uid && entry.locale && entry.publish_details, 'Entry should have uid, publish_details, locale.');
             assert.ok((new RegExp(regex.pattern, regex.options).test(entry[field])), "regexp satisfied");
             assert.end();
@@ -413,9 +428,10 @@ test('findOne:  .regex()', function(assert) {
 test('findOne: without fallback', function(assert) {
     var _in = ['ja-jp']
     Stack.ContentType(contentTypes.source).Query().language('ja-jp')
-    .findOne()
+        .toJSON()
+        .findOne()
     .then((entry) => {
-        var _entries = (_in.indexOf(entry.toJSON()['publish_details']['locale']) != -1);
+        var _entries = (_in.indexOf(entry['publish_details']['locale']) != -1);
         assert.equal(_entries, true, "Publish content fallback");
         assert.end();
     }).catch((error) => {
@@ -428,9 +444,10 @@ test('findOne: fallback', function(assert) {
     var _in = ['ja-jp', 'en-us']
     Stack.ContentType(contentTypes.source).Query().language('ja-jp')
     .includeFallback()
-    .findOne()
+        .toJSON()
+        .findOne()
     .then((entry) => {
-        var _entries = (_in.indexOf(entry.toJSON()['publish_details']['locale']) != -1);
+        var _entries = (_in.indexOf(entry['publish_details']['locale']) != -1);
         assert.equal(_entries, true, "Publish content fallback");
         assert.end();
     }).catch((error) => {
@@ -445,9 +462,10 @@ test('findOne:  .includeReference() - String', function(assert) {
 
     Query
         .includeReference('reference')
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            assert.equal((entry && entry.get('reference') && typeof entry.get('reference') === 'object'), true, 'all the present reference are included');
+            assert.equal((entry && entry['reference'] && typeof entry['reference'] === 'object'), true, 'all the present reference are included');
             assert.end();
         }, function error(err) {
             console.error("Error :", err);
@@ -461,9 +479,9 @@ test('findOne:  .includeReference() - Array', function(assert) {
 
     Query
         .includeReference(['reference', 'other_reference'])
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            entry = entry.toJSON();
             assert.equal((entry && entry.reference && typeof entry.reference === 'object' && entry.other_reference && typeof entry.other_reference === 'object'), true, 'all the present reference and other reference are included');
             assert.end();
         }, function error(err) {
@@ -480,6 +498,7 @@ test('findOne:  .includeSchema()', function(assert) {
 
     Query
         .includeSchema()
+        .toJSON()
         .findOne()
         .then(function success(entry, schema) {
             // console.log("result : ", Object.keys(result || {}));
@@ -499,6 +518,7 @@ test('findOne:  .includeContentType()', function(assert) {
 
     Query
         .includeContentType()
+        .toJSON()
         .findOne()
         .then(function success(entry, contentType) {
             // console.log("result : ", entry, contentType);
@@ -520,6 +540,7 @@ test('findOne:  includeSchema & .includeContentType()', function(assert) {
     Query
         .includeSchema()
         .includeContentType()
+        .toJSON()
         .findOne()
         .then(function success(entry, contentType) {
             // console.log("result : ", entry, contentType);
@@ -540,9 +561,9 @@ test('findOne:  .only() - Single String Parameter', function(assert) {
 
     Query
         .only('title')
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            entry = entry.toJSON();
             var flag = (entry && Object.keys(entry).length === 2 && "title" in entry && "uid" in entry);
             assert.ok(flag, 'entry with the field title in the resultset');
             assert.end();
@@ -558,9 +579,9 @@ test('findOne:  .only() - Multiple String Parameter', function(assert) {
 
     Query
         .only('BASE', 'title')
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            entry = entry.toJSON();
             var flag = (entry && Object.keys(entry).length === 2 && "title" in entry && "uid" in entry);
             assert.ok(flag, 'entry with the field title in the resultset');
             assert.end();
@@ -576,9 +597,9 @@ test('findOne:  .only() - Array Parameter', function(assert) {
 
     Query
         .only(['title', 'url'])
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            entry = entry.toJSON();
             var flag = (entry && Object.keys(entry).length === 3 && "title" in entry && "uid" in entry && "url" in entry);
             assert.ok(flag, 'entry with the field title,url in the resultset');
             assert.end();
@@ -596,11 +617,12 @@ test('findOne:  .only() - For the reference - String', function(assert) {
         .includeReference('reference')
         .only('BASE', 'reference')
         .only('reference', 'title')
+        .toJSON()
         .findOne()
         .then(function success(entry) {
             var flag = false;
-            if (entry && entry.get('reference') && typeof entry.get('reference') === 'object') {
-                flag = entry.get('reference').every(function(reference) {
+            if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
+                flag = entry['reference'].every(function(reference) {
                     return (reference && "title" in reference && "uid" in reference);
                 });
             } else {
@@ -622,14 +644,16 @@ test('findOne:  .only() - For the reference - Array', function(assert) {
         .includeReference('reference')
         .only('BASE', ['reference'])
         .only('reference', ['title'])
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            var flag = false;            if (entry && entry.get('reference')) {
-                if (entry.get('reference').length) {
-                    if (entry.get('reference').length === 0){
+            var flag = false;            
+            if (entry && entry['reference']) {
+                if (entry['reference'].length) {
+                    if (entry['reference'].length === 0){
                         flag = true
                     } else {
-                        flag = entry.get('reference').every(function(reference) {
+                        flag = entry['reference'].every(function(reference) {
                             return (reference && "title" in reference && "uid" in reference);
                         });
                     }
@@ -654,9 +678,9 @@ test('findOne:  .except() - Single String Parameter', function(assert) {
 
     Query
         .except('title')
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            entry = entry.toJSON();
             var flag = (entry && !("title" in entry));
             assert.ok(flag, 'entry without the field title in the resultset');
             assert.end();
@@ -672,9 +696,9 @@ test('findOne:  .except() - Multiple String Parameter', function(assert) {
 
     Query
         .except('BASE', 'title')
+        .toJSON()
         .findOne()
         .then(function success(entry) {
-            entry = entry.toJSON();
             var flag = (entry && !("title" in entry));
             assert.ok(flag, 'entry without the field title, url in the resultset');
             assert.end();
@@ -690,6 +714,7 @@ test('findOne:  .except() - Array of String Parameter', function(assert) {
 
     Query
         .except(['title', 'url'])
+        .toJSON()
         .findOne()
         .then(function success(entry) {
             var flag = (entry && !("title" in entry) && !("url" in entry));
@@ -709,11 +734,12 @@ test('findOne:  .except() - For the reference - String', function(assert) {
         .includeReference('reference')
         .only('BASE', 'reference')
         .except('reference', 'title')
+        .toJSON()
         .findOne()
         .then(function success(entry) {
             var flag = false;
-            if (entry && entry.get('reference') && typeof entry.get('reference') === 'object') {
-                flag = entry.get('reference').every(function(reference) {
+            if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
+                flag = entry['reference'].every(function(reference) {
                     return (reference && !("title" in reference));
                 });
             }
@@ -733,11 +759,12 @@ test('findOne:  .except() - For the reference - Array', function(assert) {
         .includeReference('reference')
         .only('BASE', ['reference'])
         .except('reference', ['title'])
+        .toJSON()
         .findOne()
         .then(function success(entry) {
             var flag = false;
-            if (entry && entry.get('reference') && typeof entry.get('reference') === 'object') {
-                flag = entry.get('reference').every(function(reference) {
+            if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
+                flag = entry['reference'].every(function(reference) {
                     return (reference && !("title" in reference));
                 });
             }

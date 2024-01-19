@@ -3,6 +3,7 @@ import * as Utils from './lib/utils';
 import Entry from './modules/entry';
 import Assets from './modules/assets';
 import Query from './modules/query';
+import Taxonomy from './modules/taxonomy';
 import Request from './lib/request';
 import CacheProvider from './cache-provider/index';
 let errorRetry = [408, 429]
@@ -72,10 +73,6 @@ export default class Stack {
 
         if(stack_arguments[0].region && stack_arguments[0].region !== undefined && stack_arguments[0].region !== "us") {
             this.config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
-            this.config["live_preview"]["host"] =
-                stack_arguments[0].region +
-                "-" +
-                "rest-preview.contentstack.com";
         } 
 
         if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions !== undefined) {
@@ -356,6 +353,17 @@ export default class Stack {
     }
 
     /**
+     * @method Taxonomies
+     * @memberof Stack
+     * @description A method to set base url to taxonomies endpoint
+     * @returns {Stack}
+     */
+    Taxonomies() {
+        this.type = "taxonomy"
+        return Utils.merge(new Taxonomy(), this);
+    }
+
+    /**
      * @method Entry
      * @memberOf ContentType
      * @param {String} uid - uid of the entry 
@@ -448,7 +456,12 @@ export default class Stack {
      * @instance  
      */
     Query() {
-        let query = new Query();
+        // Taxonomy is a class that extends Query class and adds 4 more helper methods that use levels.
+        // These 4 methods also work on contentType base url, hence Taxonomy instance is returned
+        // Taxonomy instance is Regular Query instance + 4 additional methods (below, eq_below, above, eq_above)
+        let query = (this.type === "contentType") ?
+        new Taxonomy() :
+        new Query();
         return Utils.merge(query, this);
     }
 

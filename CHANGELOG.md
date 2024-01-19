@@ -1,5 +1,11 @@
 ## Change log
 
+### Version: 3.18.0
+#### Date: January-15-2024
+##### New Features:
+ - added taxonomy support  
+ - X-User-Agent updated 
+ - added region gcp_na
 ### Version: 3.17.2
 #### Date: November-15-2023
 ##### Bug fix:
