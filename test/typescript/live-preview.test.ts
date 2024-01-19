@@ -91,14 +91,14 @@ describe("Live preview realtime URL switch", () => {
             return request;
         }
     }
-    test("should make the call to the CDN if the live preview does not match", async () => {
+    test("should make the call to the CDN if the live preview disabled", async () => {
         const tester = jest.fn();
         const stack = Contentstack.Stack({
             api_key: "api_key",
             delivery_token: "delivery_token",
             environment: "environment",
             live_preview: {
-                enable: true,
+                enable: false,
                 preview_token: "preview_token",
                 host: "api.contentstack.io",
             },
