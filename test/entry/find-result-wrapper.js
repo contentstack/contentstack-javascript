@@ -25,15 +25,15 @@ test('default .find()', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query(),
         field = 'updated_at';
     Query
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok(entries[0].length, 'Entries present in the resultset');
             assert.ok(!entries[1], 'Count should not present in the result');
             if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
+                var prev = entries[0][0].get(field);
                 var _entries = entries[0].every(function(entry) {
+                    entry = entry.toJSON();
                     prev = entry[field];
                     return (entry.updated_at <= prev);
                 });
@@ -56,14 +56,14 @@ test('.ascending()', function(assert) {
 
     Query
         .ascending(field)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok(entries[0].length, 'Entries present in the resultset');
             if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
+                var prev = entries[0][0].get(field);
                 var _entries = entries[0].every(function(entry) {
+                    entry = entry.toJSON();
                     prev = entry[field];
                     return (entry[field] >= prev);
                 });
@@ -83,14 +83,14 @@ test('.descending()', function(assert) {
 
     Query
         .descending(field)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok(entries[0].length, 'Entries present in the resultset');
             if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
+                var prev = entries[0][0].get(field);
                 var _entries = entries[0].every(function(entry) {
+                    entry = entry.toJSON();
                     prev = entry[field];
                     return (entry[field] >= prev);
                 });
@@ -114,15 +114,15 @@ test('.lessThan()', function(assert) {
         field = 'updated_at';
     Query
         .lessThan('num_field', value)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok(entries[0].length, '1 Entry present in the resultset');
             if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
+                var prev = entries[0][0].get(field);
                 var _entries = true;
                 _entries = entries[0].slice(1).every(function(entry) {
+                    entry = entry.toJSON();
                     var flag = (entry[field] < value);
                     prev = entry[field];
                     return flag;
@@ -143,14 +143,14 @@ test('.lessThanOrEqualTo()', function(assert) {
         value = 11;
     Query
         .lessThanOrEqualTo('num_field', value)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok(entries[0].length, 'Entries present in the resultset');
             if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
+                var prev = entries[0][0].get(field);
                 var _entries = entries[0].every(function(entry) {
+                    entry = entry.toJSON();
                     var flag = (entry[field] <= prev);
                     prev = entry[field];
                     return flag;
@@ -173,14 +173,14 @@ test('.greaterThan()', function(assert) {
     Query
         .greaterThan('num_field', value)
         .ascending(field)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok(entries[0].length, 'Entries present in the resultset');
             if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
+                var prev = entries[0][0].get(field);
                 var _entries = entries[0].slice(1).every(function(entry) {
+                    entry = entry.toJSON();
                     var flag = (entry[field] > value);
                     prev = entry[field];
                     return flag;
@@ -203,14 +203,14 @@ test('.greaterThanOrEqualTo()', function(assert) {
     Query
         .greaterThanOrEqualTo('num_field', value)
         .descending(field)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok(entries[0].length, 'Entries present in the resultset');
             if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
+                var prev = entries[0][0].get(field);
                 var _entries = entries[0].every(function(entry) {
+                    entry = entry.toJSON();
                     var flag = (entry[field] >= value);
                     prev = entry[field];
                     return flag;
@@ -233,14 +233,14 @@ test('.notEqualTo()', function(assert) {
     Query
         .notEqualTo('num_field', value)
         .descending(field)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok(entries[0].length, 'Entries present in the resultset');
             if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
+                var prev = entries[0][0].get(field);
                 var _entries = entries[0].every(function(entry) {
+                    entry = entry.toJSON();
                     var flag = (entry[field] != value);
                     prev = entry[field];
                     return flag;
@@ -266,14 +266,13 @@ test('.containedIn()', function(assert) {
 
     Query
         .containedIn('title', _in)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok(entries[0].length, 'Entries present in the resultset');
             if (entries && entries.length && entries[0].length) {
                 var _entries = entries[0].every(function(entry) {
-                    return (_in.indexOf(entry['title']) != -1);
+                    return (_in.indexOf(entry.get('title')) != -1);
                 });
                 assert.equal(_entries, true, "entries sorted descending on '" + field + "' field");
             }
@@ -291,7 +290,6 @@ test('.notContainedIn()', function(assert) {
 
     Query
         .notContainedIn('title', _in)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -316,16 +314,15 @@ test('.exists()', function(assert) {
 
     Query
         .exists(queryField)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok(entries[0].length, 'Entries should not be present in the resultset');
             if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
+                var prev = entries[0][0].get(field);
                 var _entries = entries[0].every(function(entry) {
-                    var flag = (entry[field] <= prev);
-                    prev = entry[field];
+                    var flag = (entry.get(field) <= prev);
+                    prev = entry.get(field);
                     return flag;
                 });
                 assert.equal(_entries, true, "entries sorted descending on '" + field + "' field");
@@ -345,15 +342,14 @@ test('.notExists()', function(assert) {
 
     Query
         .notExists(queryField)
-        .toJSON()
         .find()
         .then(function success(entries) {
             assert.ok("entries" in entries, 'Entries key present in the resultset');
             //assert.notok(entries[0].length, 'No entry present in the resultset');
             if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
+                var prev = entries[0][0].get(field);
                 var _entries = entries[0].every(function(entry) {
-                    return (entry[field] <= prev);
+                    return (entry.get(field) <= prev);
                 });
                 assert.equal(_entries, true, "entries sorted descending on '" + field + "' field");
             }
@@ -388,6 +384,7 @@ test('.skip()', function(assert) {
                     assert.deepEqual(allEntries[0].slice(1), entries[0], 'All elements matched.');
                     if (entries && entries.length && entries[0].length) {
                         allEntries[0] = allEntries[0].slice(1);
+                        //var prev = entries[0][0].get(field);
                         var prev = entries[0][0][field];
                         var _entries = entries[0].every(function(entry) {
                             var flag = (entry[field] <= prev);
@@ -455,7 +452,6 @@ test('.count()', function(assert) {
 
     Query
         .count()
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -478,7 +474,6 @@ test('.or() - Query Objects', function(assert) {
 
     Query
         .or(Query1, Query2)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -504,13 +499,13 @@ test('.and() - Query Objects', function(assert) {
 
     Query
         .and(Query1, Query2)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok(entries[0].length, '1 Entry present in the resultset');
             if (entries && entries.length && entries[0].length) {
                 var _entries = entries[0].every(function(entry) {
+                    entry = entry.toJSON();
                     return (~(entry.title === 'source1' || entry.boolean === true));
                 });
                 assert.ok(_entries, '$AND condition satisfied');
@@ -530,13 +525,13 @@ test('.and() - Raw queries', function(assert) {
 
     Query
         .and(Query1, Query2)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok(entries[0].length, '1 Entry present in the resultset');
             if (entries && entries.length && entries[0].length) {
                 var _entries = entries[0].every(function(entry) {
+                    entry = entry.toJSON();
                     return (~(entry.title === 'source1' || entry.boolean === true));
                 });
                 assert.ok(_entries, '$AND condition satisfied');
@@ -556,13 +551,13 @@ test('.query() - Raw query', function(assert) {
 
     Query
         .query({ "$or": [{ "title": "source1" }, { "boolean": "true" }] })
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok(entries[0].length, 'Entries present in the resultset');
             if (entries && entries.length && entries[0].length) {
                 var _entries = entries[0].every(function(entry) {
+                    entry = entry.toJSON();
                     return (entry.title === 'source1' || entry.boolean === true) 
                 });
                 assert.ok(_entries, '$OR condition satisfied');
@@ -584,14 +579,13 @@ test('.tags()', function(assert) {
 
     Query
         .tags(tags)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok((entries.length >= 1), '1 or more Entry/Entries present in the resultset');
             if (entries && entries.length && entries[0].length) {
                 var _entries = entries[0].every(function(entry) {
-                    return (Utils.arrayPresentInArray(tags, entry[field]));
+                    return (Utils.arrayPresentInArray(tags, entry.get(field)));
                 });
                 assert.equal(_entries, true, 'Tags specified are found in result set');
             }
@@ -610,7 +604,6 @@ test('.search()', function(assert) {
 
     Query
         .search('source1')
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -635,13 +628,12 @@ test('.regex()', function(assert) {
 
     Query
         .regex(field, regex.pattern, regex.options)
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             assert.ok((entries.length >= 1), '1 or more Entry/Entries present in the resultset');
             var flag = entries[0].every(function(entry) {
-                return regexpObj.test(entry[field]);
+                return regexpObj.test(entry.get(field));
             });
             assert.ok(flag, "regexp satisfied for all the entries in the resultset");
             assert.end();
@@ -656,13 +648,12 @@ test('.regex()', function(assert) {
 test('find: without fallback', function(assert) {
     var _in = ['ja-jp']
     Stack.ContentType(contentTypes.source).Query().language('ja-jp')
-    .toJSON()
     .find()
     .then((entries) => {
         assert.ok(entries[0].length, 'Entries present in the resultset');
         if (entries && entries.length && entries[0].length) {
             var _entries = entries[0].every(function(entry) {
-                return (_in.indexOf(entry['publish_details']['locale']) != -1);
+                return (_in.indexOf(entry.toJSON()['publish_details']['locale']) != -1);
             });
             assert.equal(_entries, true, "Publish content fallback");
         }
@@ -677,13 +668,12 @@ test('find: fallback', function(assert) {
     var _in = ['ja-jp', 'en-us']
     Stack.ContentType(contentTypes.source).Query().language('ja-jp')
     .includeFallback()
-    .toJSON()
     .find()
     .then((entries) => {
         assert.ok(entries[0].length, 'Entries present in the resultset');
         if (entries && entries.length && entries[0].length) {
             var _entries = entries[0].every(function(entry) {
-                return (_in.indexOf(entry['publish_details']['locale']) != -1);
+                return (_in.indexOf(entry.toJSON()['publish_details']['locale']) != -1);
             });
             assert.equal(_entries, true, "Publish content fallback");
         }
@@ -700,12 +690,11 @@ test('.includeReference() - String', function(assert) {
 
     Query
         .includeReference('reference')
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             var flag = entries[0].every(function(entry) {
-                return (entry && entry['reference'] && typeof entry['reference'] === 'object');
+                return (entry && entry.get('reference') && typeof entry.get('reference') === 'object');
             });
             assert.equal(flag, true, 'all the present reference are included');
             assert.end();
@@ -721,12 +710,11 @@ test('.includeReference() - Array', function(assert) {
 
     Query
         .includeReference(['reference', 'other_reference'])
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             var flag = entries[0].every(function(entry) {
-                return (entry && entry['reference'] && typeof entry['reference'] === 'object' && entry['other_reference'] && typeof entry['other_reference'] === 'object');
+                return (entry && entry.get('reference') && typeof entry.get('reference') === 'object' && entry.get('other_reference') && typeof entry.get('other_reference') === 'object');
             });
             assert.equal(flag, true, 'all the present reference are included');
             assert.end();
@@ -743,7 +731,6 @@ test('.includeCount()', function(assert) {
 
     Query
         .includeCount()
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -763,7 +750,6 @@ test('.includeSchema()', function(assert) {
 
     Query
         .includeSchema()
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -785,7 +771,6 @@ test('.includeCount() and .includeSchema()', function(assert) {
     Query
         .includeCount()
         .includeSchema()
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -806,7 +791,6 @@ test('.includeContentType()', function(assert) {
 
     Query
         .includeContentType()
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -830,7 +814,6 @@ test('.includeCount() and .includeContentType()', function(assert) {
     Query
         .includeCount()
         .includeContentType()
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -855,7 +838,6 @@ test('.includeSchema() and .includeContentType()', function(assert) {
     Query
         .includeSchema()
         .includeContentType()
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -880,7 +862,6 @@ test('.includeSchema() and .includeContentType()', function(assert) {
         .includeCount()
         .includeSchema()
         .includeContentType()
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -905,11 +886,11 @@ test('.only() - Single String Parameter', function(assert) {
 
     Query
         .only('title')
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             var flag = entries[0].every(function(entry) {
+                entry = entry.toJSON();
                 return (entry && Object.keys(entry).length === 2 && "title" in entry && "uid" in entry);
             });
             assert.ok(flag, 'entries with the field title in the resultset');
@@ -926,11 +907,11 @@ test('.only() - Multiple String Parameter', function(assert) {
 
     Query
         .only('BASE', 'title')
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             var flag = entries[0].every(function(entry) {
+                entry = entry.toJSON();
                 return (entry && Object.keys(entry).length === 2 && "title" in entry && "uid" in entry);
             });
             assert.ok(flag, 'entries with the field title in the resultset');
@@ -947,11 +928,11 @@ test('.only() - Array Parameter', function(assert) {
 
     Query
         .only(['title', 'url'])
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             var flag = entries[0].every(function(entry) {
+                entry = entry.toJSON();
                 return (entry && Object.keys(entry).length === 3 && "title" in entry && "url" in entry && "uid" in entry);
             });
             assert.ok(flag, 'entries with the field title,url in the resultset');
@@ -970,7 +951,6 @@ test('.only() - For the reference - String', function(assert) {
         .includeReference('reference')
         .only('BASE', ['reference'])
         .only('reference', 'title')
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -989,7 +969,6 @@ test('.only() - For the reference - Array', function(assert) {
         .includeReference('reference')
         .only('BASE', ['reference'])
         .only('reference', ['title'])
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
@@ -1007,11 +986,11 @@ test('.except() - Single String Parameter', function(assert) {
 
     Query
         .except('title')
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             var flag = entries[0].every(function(entry) {
+                entry = entry.toJSON();
                 return (entry && !("title" in entry));
             });
             assert.ok(flag, 'entries without the field title in the resultset');
@@ -1028,11 +1007,11 @@ test('.except() - Multiple String Parameter', function(assert) {
 
     Query
         .except('BASE', 'title')
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             var flag = entries[0].every(function(entry) {
+                entry = entry.toJSON();
                 return (entry && !("title" in entry));
             });
             assert.ok(flag, 'entries without the field title, url in the resultset');
@@ -1049,11 +1028,11 @@ test('.except() - Array of String Parameter', function(assert) {
 
     Query
         .except(['title', 'file'])
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             var flag = entries[0].every(function(entry) {
+                entry = entry.toJSON();
                 return (entry && !("title" in entry) && !("file" in entry));
             });
             assert.ok(flag, 'entries without the field title, file in the resultset');
@@ -1072,11 +1051,11 @@ test('.except() - For the reference - String', function(assert) {
         .includeReference('reference')
         .only('BASE', ['reference'])
         .except('reference', 'title')
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             var flag = entries[0].every(function(entry) {
+                entry = entry.toJSON();
                 var _flag;
                 if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
                     _flag = true;
@@ -1104,11 +1083,11 @@ test('.except() - For the reference - Array', function(assert) {
         .includeReference('reference')
         .only('BASE', ['reference'])
         .except('reference', ['title'])
-        .toJSON()
         .find()
         .then(function success(entries) {
             // assert.ok("entries" in result, 'Entries key present in the resultset');
             var flag = entries[0].every(function(entry) {
+                entry = entry.toJSON();
                 var _flag;
                 if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
                     _flag = true;

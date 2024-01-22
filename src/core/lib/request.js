@@ -33,7 +33,7 @@ export default function Request(stack, fetchOptions) {
 
         // setting headers
         requestParams.headers['Content-Type'] = 'application/json; charset=UTF-8';
-        requestParams.headers['X-User-Agent'] = 'contentstack-delivery-javascript-{{PLATFORM}}/' + version;
+        requestParams.headers['X-User-Agent'] = 'contentstack-delivery-{{PLATFORM}}/' + version;
 
         if (requestParams.body && typeof requestParams.body === 'object') {
             delete requestParams.body._method;

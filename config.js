@@ -8,8 +8,7 @@ const config = {
         content_types: "/content_types/",
         entries: "/entries/",
         assets: "/assets/",
-        environments: "/environments/",
-        taxonomies: "/taxonomies/entries"
+        environments: "/environments/"
     },
     live_preview: {
         enable: false,

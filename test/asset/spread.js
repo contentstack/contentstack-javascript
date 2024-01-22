@@ -28,13 +28,13 @@ test('assets as first argument', function(assert) {
 
     Query
         .limit(1)
-        .toJSON()
         .find()
         .spread(function success(assets) {
             assert.ok(assets.length, 'assets exists as first parameter');
             if (assets && assets.length) {
-                var prev = assets[0][field];
+                var prev = assets[0].get(field);
                 var _assets = assets.every(function(asset) {
+                    asset = asset.toJSON();
                     prev = asset[field];
                     return (asset[field] <= prev);
                 });
@@ -51,14 +51,14 @@ test('with assets and count argument', function(assert) {
         field = 'updated_at';
     Query
         .includeCount()
-        .toJSON()
         .find()
         .spread(function success(assets, count) {
             assert.ok(assets.length, 'assets exists as first parameter');
             assert.ok(count, 'Count exists as second parameter');
             if (assets && assets.length) {
-                var prev = assets[0][field];
+                var prev = assets[0].get(field);
                 var _assets = assets.every(function(asset) {
+                    asset = asset.toJSON();
                     prev = asset[field];
                     return (asset[field] <= prev);
                 });
@@ -75,14 +75,14 @@ test('with assets and count argument', function(assert) {
         field = 'updated_at';
     Query
         .includeCount()
-        .toJSON()
         .find()
         .spread(function success(assets, count) {
             assert.ok(assets.length, 'assets exists as first parameter');
             assert.ok(count, 'Count exists as second parameter');
             if (assets && assets.length) {
-                var prev = assets[0][field];
+                var prev = assets[0].get(field);
                 var _assets = assets.every(function(asset) {
+                    asset = asset.toJSON();
                     prev = asset[field];
                     return (asset[field] <= prev);
                 });
