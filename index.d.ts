@@ -72,10 +72,21 @@ export interface ContentTypeCollection {
     count?: number
 }
 
-export interface LivePreview {
-    host: string
-    management_token: string
+export type LivePreview = {
+    host?: string
     enable: boolean
+} & (LivePreivewConfigWithManagementToken | LivePreviewConfigWithPreviewToken)
+
+export interface LivePreivewConfigWithManagementToken {
+    /**
+     * @deprecated Please use `preview_token` instead to enable live preview.
+     * The `management_token` will be removed in future releases.
+     */
+    management_token: string;
+}
+
+export interface LivePreviewConfigWithPreviewToken {
+    preview_token: string;
 }
 
 export interface LivePreviewQuery {
