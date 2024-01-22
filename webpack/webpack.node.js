@@ -31,16 +31,7 @@ module.exports = function(options) {
             rules: [{
                 test: /\.js?$/,
                 exclude: '/node_modules/',
-                use: [
-                {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: [['@babel/preset-env', {
-                            modules: "commonjs"
-                        }]],
-                    }
-                },
-                {
+                use: [{
                     loader: 'string-replace-loader',
                     options: {
                         search: '{{PLATFORM}}',
