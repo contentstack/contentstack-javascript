@@ -16,7 +16,7 @@ jobs:
           node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
       - run: npm ci
-      - run: npm publish
+      - run: npm publish --tag beta
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   publish-git:  
@@ -29,6 +29,6 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           scope: '@contentstack'
       - run: npm ci
-      - run: npm publish
+      - run: npm publish --tag beta
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
