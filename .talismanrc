@@ -4,7 +4,7 @@ fileignoreconfig:
 - filename: test/utils/mocks.ts
   checksum: a1cb4b1890a584f1facd30f2a0974c97a66f91417022be79d00516338e244227
 - filename: package-lock.json
-  checksum: 20eaa357c4e4634bd888e3d2c3af8f88934428ea7c6669aaa99e18934f82d949
+  checksum: ed6e5d36030448030ea8e0ec251b57481be80366b1cfde6a1b47879de8d006c0
 - filename: test/typescript/taxonomy.test.ts
   checksum: e4bdf633e147fd60d929d379f20c814eed5f68b11421d7b53ec8826e9142de37
 - filename: src/core/modules/taxonomy.js
