@@ -1,0 +1,10 @@
+{
+    "extends": "../tsconfig",
+    "compilerOptions": {
+      "declaration": true /* Generates corresponding '.d.ts' file. */,
+      "emitDeclarationOnly": true,
+      "outDir": "../dist/types" /* Redirect output structure to the directory. */
+    },
+    "include": ["../src/**/*.ts"], // Adjust this path based on your project structure
+    "exclude": ["../dist/types"]
+  }
