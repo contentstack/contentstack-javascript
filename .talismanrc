@@ -1,4 +1,8 @@
 fileignoreconfig:
+- filename: test/unit/image-transform.spec.ts
+  checksum: 7beabdd07bd35d620668fcd97e1a303b9cbc40170bf3008a376d75ce0895de2a
+- filename: test/utils/mocks.ts
+  checksum: a1cb4b1890a584f1facd30f2a0974c97a66f91417022be79d00516338e244227
 - filename: package-lock.json
   checksum: ed6e5d36030448030ea8e0ec251b57481be80366b1cfde6a1b47879de8d006c0
 - filename: test/typescript/taxonomy.test.ts
