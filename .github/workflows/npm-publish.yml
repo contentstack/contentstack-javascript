@@ -18,7 +18,7 @@ jobs:
       - run: npm ci
       - run: npm publish --tag beta
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_BETA_TOKEN }}
   publish-git:  
     runs-on: ubuntu-latest
     steps:
