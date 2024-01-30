@@ -1,5 +1,9 @@
 ## Change log
 
+### Version: 3.18.1
+#### Date: January-30-2024
+##### New Features:
+ - added fix for `ESM module cannot use module.exports` issue
 ### Version: 3.18.0
 #### Date: January-15-2024
 ##### New Features:
