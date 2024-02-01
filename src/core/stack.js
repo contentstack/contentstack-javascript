@@ -71,12 +71,21 @@ export default class Stack {
         this.config = JSON.parse(JSON.stringify(config));
         this.plugins = []
 
+        if (stack_arguments[0].live_preview && stack_arguments[0].live_preview.enable === true && stack_arguments[0].live_preview.management_token !== null) {
+            if (stack_arguments[0].live_preview.management_token) {
+                this.config.live_preview.host = 'api.contentstack.io';
+            }
+        }
+    
         if(stack_arguments[0].region && stack_arguments[0].region !== undefined && stack_arguments[0].region !== "us") {
             this.config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
-            this.config["live_preview"]["host"] =
-                stack_arguments[0].region +
-                "-" +
-                "rest-preview.contentstack.com";
+            if (stack_arguments[0].live_preview && stack_arguments[0].live_preview.enable === true) {
+                if (stack_arguments[0].live_preview.management_token) {
+                    this.config["live_preview"]["host"] = stack_arguments[0].region + "-" + "api.contentstack.com";
+                } else {
+                    this.config["live_preview"]["host"] = stack_arguments[0].region + "-" + "rest-preview.contentstack.com";
+                }
+            } 
         } 
 
         if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions !== undefined) {
