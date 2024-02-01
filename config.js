@@ -13,7 +13,7 @@ const config = {
     },
     live_preview: {
         enable: false,
-        host: 'rest-preview.contentstack.com'
+        host: 'api.contentstack.io'
     }
 };
 
