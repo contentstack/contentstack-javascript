@@ -60,7 +60,7 @@ describe("Live preview config", () => {
 
         expect(livePreviewObject.enable).toBe(true);
         expect(livePreviewObject.management_token).toBe("management_token");
-        expect(livePreviewObject.host).toBe("rest-preview.contentstack.com");
+        expect(livePreviewObject.host).toBe("api.contentstack.io");
     });
 
     test("should set host if passed", () => {
@@ -176,7 +176,6 @@ describe("Live preview realtime URL switch", () => {
             live_preview: {
                 enable: true,
                 management_token: "management_token",
-                host: "api.contentstack.io",
             },
             fetchOptions: {
                 retryLimit: 0,
