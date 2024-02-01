@@ -1,17 +1,19 @@
 ## Change log
 
-### Version: 3.18.1
+### Version: 3.18.2
 #### Date: February-01-2024
 ##### New Features:
  - live preview support both 1.0 and 2.0
+### Version: 3.18.1
+#### Date: January-30-2024
+##### New Features:
+ - added fix for `ESM module cannot use module.exports` issue
 ### Version: 3.18.0
-#### Date: January-24-2024
+#### Date: January-15-2024
 ##### New Features:
  - added taxonomy support  
  - X-User-Agent updated 
  - added region gcp_na
- ##### Update api and enhancement:
- - live preview support for rest api support
 ### Version: 3.17.2
 #### Date: November-15-2023
 ##### Bug fix:
