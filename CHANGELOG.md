@@ -1,5 +1,9 @@
 ## Change log
 
+### Version: 3.18.1
+#### Date: February-01-2024
+##### New Features:
+ - live preview support both 1.0 and 2.0
 ### Version: 3.18.0
 #### Date: January-24-2024
 ##### New Features:
