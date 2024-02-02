@@ -1,6 +1,6 @@
 {
   "name": "@contentstack/delivery-sdk",
-  "version": "4.0.0-beta.1",
+  "version": "4.0.0-beta.2",
   "type": "commonjs",
   "main": "./dist/cjs/src/index.js",
   "types": "./dist/types/src/index.d.ts",
@@ -9,12 +9,13 @@
   },
   "scripts": {
     "prepack": "npm run test",
+    "prepare": "npm run build",
     "test": "jest ./test/unit",
     "test:unit": "jest ./test/unit",
     "test:api": "jest ./test/api",
     "lint": "eslint . -c .eslintrc.json",
     "clean": "node tools/cleanup",
-    "package": "npm run build && npm pack", 
+    "package": "npm run build && npm pack",
     "build": "npm run build:cjs && npm run build:esm && npm run build:umd && npm run build:types",
     "build:cjs": "node tools/cleanup cjs && tsc -p config/tsconfig.cjs.json",
     "build:esm": "node tools/cleanup esm && tsc -p config/tsconfig.esm.json",
@@ -44,7 +45,7 @@
     "jest-junit": "^16.0.0",
     "ts-jest": "^29.1.1",
     "ts-loader": "^9.5.1",
-    "ts-node": "10.9.2",
+    "ts-node": "^10.9.2",
     "webpack-cli": "^5.1.4"
   }
 }
