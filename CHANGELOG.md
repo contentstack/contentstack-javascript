@@ -1,9 +1,10 @@
 ## Change log
 
-### Version: 3.18.2
-#### Date: February-01-2024
+### Version: 3.19.0
+#### Date: February-02-2024
 ##### New Features:
  - live preview support both 1.0 and 2.0
+ - fix for `ESM module cannot use module.exports` issue react-native and nativescript builds
 ### Version: 3.18.1
 #### Date: January-30-2024
 ##### New Features:
