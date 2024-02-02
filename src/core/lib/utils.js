@@ -233,26 +233,21 @@ export function sendRequest(queryObject, options) {
         queryObject.requestParams.body = merge(queryObject.requestParams.body, cloneQueryObj);
 
         if (queryObject.live_preview && queryObject.live_preview.enable === true && queryObject.live_preview.live_preview && queryObject.live_preview.live_preview !== "init") {
-            
             queryObject.requestParams.body = merge(queryObject.requestParams.body, {live_preview: queryObject.live_preview.live_preview || "init"});
-                cachePolicy = 2; // network else cache
-                if(queryObject.requestParams.body['environment']) {
-                    delete queryObject.requestParams.body['environment'];
-                }
-                
-                if(queryObject.requestParams.headers['access_token']) 
-                    delete queryObject.requestParams.headers['access_token'];
-                
-                delete queryObject.requestParams.headers['authorization'];
-                delete queryObject.requestParams.headers['preview_token'];
+            cachePolicy = 2; // network else cache
+            if(queryObject.requestParams.body['environment']) {
+                delete queryObject.requestParams.body['environment'];
+            }
+            if(queryObject.requestParams.headers['access_token']) 
+                delete queryObject.requestParams.headers['access_token'];
+            delete queryObject.requestParams.headers['authorization'];
+            delete queryObject.requestParams.headers['preview_token'];
 
-                if (queryObject.live_preview.preview_token) {
-                    queryObject.requestParams.headers['preview_token'] = queryObject.live_preview.preview_token;
-                    queryObject.requestParams.headers['live_preview'] = queryObject.live_preview.live_preview;
-                } else if (queryObject.live_preview.management_token) {
-                    queryObject.requestParams.headers['authorization'] = queryObject.live_preview.management_token;
-                }
-            
+            if (queryObject.live_preview.preview_token) {
+                queryObject.requestParams.headers['preview_token'] = queryObject.live_preview.preview_token;
+                queryObject.requestParams.headers['live_preview'] = queryObject.live_preview.live_preview;
+            } else if (queryObject.live_preview.management_token) {
+                queryObject.requestParams.headers['authorization'] = queryObject.live_preview.management_token;
             }
         }
     }
@@ -355,56 +350,10 @@ export function sendRequest(queryObject, options) {
                             if (err || !_data) {
                                 callback(true, resolve, reject);
                             } else {
-                                try {
-
-                                    const doesQueryRequestForReferences =
-                                        queryObject._query &&
-                                        Array.isArray(
-                                            queryObject._query.include
-                                        ) &&
-                                        queryObject._query.include.length > 0;
-
-                                    if (doesQueryRequestForReferences) {
-                                        const referencesToBeResolved =
-                                            queryObject._query.include;
-
-                                        const referencesToBeResolvedMap =
-                                            generateReferenceMap(
-                                                referencesToBeResolved
-                                            );
-
-                                        if (isSingle) {
-                                            await updateLivePreviewReferenceEntry(
-                                                referencesToBeResolvedMap,
-                                                _data.entry,
-                                                queryObject,
-                                                options
-                                            );
-                                        } else {
-                                            await Promise.all(_data.entries.map(async (entry) => {
-                                                await updateLivePreviewReferenceEntry(
-                                                    referencesToBeResolvedMap,
-                                                    entry,
-                                                    queryObject,
-                                                    options
-                                                   
-                                                );
-                                            }))
-                                        }
-                                        
-                                    }
-                                } catch (error) {
+                                if (!tojson) {
+                                    _data = resultWrapper(_data);
                                 }
-                                try {
-                                    if (!tojson)
-                                        _data =
-                                            resultWrapper(_data);
-                                    return resolve(
-                                        spreadResult(_data)
-                                    );
-                                } catch (e) {
-                                    return reject(e);
-                                }
+                                return resolve(spreadResult(_data));
                             }
                         } catch (e) {
                             return reject(e);
@@ -413,7 +362,7 @@ export function sendRequest(queryObject, options) {
                 }else {
                     callback(true, resolve, reject);
                 }
-                
+
             });
         case 2:
         case 0:
@@ -455,121 +404,4 @@ export function sendRequest(queryObject, options) {
                 });
               })
     }
-}
-
-
-function generateReferenceMap (references) {
-    const map = {};
-
-    function mapSingleReference(reference) {
-        reference = reference.replace(/[\[]/gm, ".").replace(/[\]]/gm, ""); //to accept [index]
-        let keys = reference.split("."),
-            last = keys.pop();
-
-        keys.reduce(function (o, k) {
-            return (o[k] = o[k] || {});
-        }, map)[last] = { };
-    }
-
-    references.forEach(function (reference) {
-        mapSingleReference(reference);
-    });
-
-    return map;
-};
-
-async function updateLivePreviewReferenceEntry(referenceMap, entry, stack, options, handlerOptions) {
-    const {live_preview:livePreview, requestParams} = stack;
-    const { content_type_uid: livePreviewContentTypeUid, preview_token, management_token } =
-        livePreview;
-
-
-    async function findReferenceAndFetchEntry(referenceMap, entry, setReference) {
-        if ( typeof entry === "undefined")
-            return;
-        if (Array.isArray(entry)) {
-            await Promise.all(entry.map((subEntry, i) => {
-                const setReference = (val) => {
-                    entry[i] = val;
-                }
-                return findReferenceAndFetchEntry(referenceMap, subEntry, setReference)
-            }));
-        } else {
-            if (entry._content_type_uid === livePreviewContentTypeUid) {
-
-                try {
-                    stack.requestParams = JSON.parse(JSON.stringify(requestParams));
-                    
-                    const includeReference = getIncludeParamForReference(referenceMap)
-                    stack.requestParams.body.include = includeReference
-                    stack.requestParams.body.live_preview = livePreview.live_preview
-                    stack.requestParams.body.content_type_uid = livePreviewContentTypeUid
-
-                    const livePreviewUrl = livePreview.host.match(
-                        /^((http[s]?):(\/\/)?)?(.+)$/
-                    );
-
-                    const livePreviewHost =
-                        (livePreviewUrl[1] || "https://") + livePreviewUrl[4];
-                        const entryUid = entry.uid;
-
-                    const url = `${livePreviewHost}/v3/content_types/${entry._content_type_uid}/entries/${entryUid}`;
-                    stack.requestParams.url = url
-                    stack.requestParams.method = "GET"
- 
-                    delete stack.requestParams.headers.access_token
-                    delete stack.requestParams.headers.preview_token
-
-                    if (preview_token) {
-                        stack.requestParams.headers.preview_token = preview_token;
-                        stack.requestParams.headers.live_preview = livePreview.live_preview;
-                    } else if (management_token) {
-                        stack.requestParams.headers.authorization =
-                            management_token;
-                    }
-
-                    const data = await Request(stack, options);
-                    data.entry._content_type_uid = livePreviewContentTypeUid;
-                    data.entry.uid = entryUid;
-                    setReference(data.entry);
-                   
-                } catch (err) {
-                    console.log("errror", err)
-                }
-            } else {
-                
-               await Promise.all(Object.entries(referenceMap).map(async function ([
-                    currentRefFieldKey,
-                    subReferenceMap,
-                ]) {
-                    // recurse
-                    const setRef = (val) => {
-                        entry[currentRefFieldKey] = val;
-                    }
-                     await findReferenceAndFetchEntry(subReferenceMap, entry[currentRefFieldKey], () => {});
-                }));
-            }
-        }
-    }
-
-    await findReferenceAndFetchEntry(referenceMap, entry, () => {});
-
-}
-
-function getIncludeParamForReference(referenceMap) {
-    const newRefences = [];
-
-    function buildParamStringRecursively(currentReferenceMap, includeParamTillNow) {
-        if (Object.keys(currentReferenceMap).length === 0) {
-            newRefences.push(includeParamTillNow.substring(1));
-        } else {
-
-            Object.entries(currentReferenceMap).forEach(([referenceFieldKey, subReferenceMap]) => {
-                buildParamStringRecursively(subReferenceMap, [includeParamTillNow, referenceFieldKey].join("."));
-            });
-        }
-    }
-
-    buildParamStringRecursively(referenceMap, "");
-    return newRefences.filter((currentReference) =>  currentReference !== "");
 }
