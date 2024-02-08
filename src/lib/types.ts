@@ -20,6 +20,7 @@ export interface StackConfig extends HttpClientParams {
   plugins?: any[];
   logHandler?: (level: string, data: any) => void;
   cacheOptions?: CacheOptions;
+  live_preview?: LivePreview;
 }
 export interface CacheOptions extends PersistanceStoreOptions {
   policy: Policy;
@@ -253,4 +254,20 @@ export interface FindResponse<T> {
   assets?: T[];
   global_fields?: T[];
   count?: number
+}
+
+export interface LivePreviewQuery {
+  live_preview: string
+  contentTypeUid: string
+  entryUid?: any;
+}
+
+export type LivePreview = {
+  live_preview?: string;
+  contentTypeUid?: string;
+  entryUid?: any;
+  host?: string;
+  enable: boolean;
+  management_token?: string;
+  preview_token?: string;
 }

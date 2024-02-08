@@ -31,11 +31,23 @@ export * as Utils from '@contentstack/utils';
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export function Stack(config: StackConfig): StackClass {
-  const defaultConfig = {
+  let defaultConfig = {
     defaultHostname: 'cdn.contentstack.io',
     headers: {} as AxiosRequestHeaders,
     params: {} as any,
+    live_preview: {} as any
   };
+
+  if (config.live_preview?.enable === true) {
+    if (config.live_preview?.management_token != null && config.live_preview?.preview_token == null) {
+      config.host = 'api.contentstack.com'
+      config.live_preview.host = config.host
+    } else if (config.live_preview?.preview_token != null && config.live_preview?.management_token == null) {
+      config.host = 'rest-preview.contentstack.com'
+      config.live_preview.host = config.host
+    }
+  } else config.host = defaultConfig.defaultHostname
+  defaultConfig.live_preview = config.live_preview
 
   defaultConfig.defaultHostname = getHost(config.region, config.host);
 
