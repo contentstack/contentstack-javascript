@@ -105,8 +105,8 @@ describe('Live preview query Entry API tests', () => {
             }
         })
         stack.livePreviewQuery({
-            contentTypeUid: "contentTypeUid",
-            live_preview: "ser",
+            contentTypeUid: 'contentTypeUid',
+            live_preview: 'ser',
         })
         const result = await stack.ContentType('contentTypeUid').Entry('entryUid').fetch<TEntry>();
         expect(result).toBeDefined();
@@ -123,13 +123,13 @@ describe('Live preview query Entry API tests', () => {
             deliveryToken: process.env.DELIVERY_TOKEN as string,
             environment: process.env.ENVIRONMENT as string,
             live_preview: {
-                enable: true,
+                enable: false,
                 management_token: 'management_token'
             }
         })
         stack.livePreviewQuery({
-            contentTypeUid: "contentTypeUid",
-            live_preview: "ser",
+            contentTypeUid: 'contentTypeUid',
+            live_preview: 'ser',
         })
         const result = await stack.ContentType('contentTypeUid').Entry('entryUid').fetch<TEntry>();
         expect(result).toBeDefined();
@@ -151,8 +151,8 @@ describe('Live preview query Entry API tests', () => {
             }
         })
         stack.livePreviewQuery({
-            contentTypeUid: "contentTypeUid",
-            live_preview: "ser",
+            contentTypeUid: 'contentTypeUid',
+            live_preview: 'ser',
         })
         const result = await stack.ContentType('contentTypeUid').Entry('entryUid').fetch<TEntry>();
         expect(result).toBeDefined();
