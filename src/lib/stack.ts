@@ -1,4 +1,4 @@
-import { StackConfig, SyncStack, SyncType } from './types';
+import { StackConfig, SyncStack, SyncType, LivePreviewQuery } from './types';
 import { AxiosInstance } from '@contentstack/core';
 import { Asset } from './asset';
 import { AssetQuery } from './asset-query';
@@ -15,6 +15,7 @@ export class Stack {
   constructor(client: AxiosInstance, config: StackConfig) {
     this._client = client;
     this.config = config;
+    this.config.live_preview = config.live_preview
   }
 
   /**
@@ -140,5 +141,13 @@ export class Stack {
    */
   async sync(params: SyncType | SyncStack = {}, recursive = false) {
     return await synchronization(this._client, params, recursive);
+  }
+
+  livePreviewQuery(query: LivePreviewQuery) {
+    if (this.config.live_preview) {
+      this.config.live_preview.live_preview = query.live_preview || 'init';
+      this.config.live_preview.contentTypeUid = query.contentTypeUid;
+      this.config.live_preview.entryUid = query.entryUid
+    }
   }
 }
