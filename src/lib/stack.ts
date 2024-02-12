@@ -15,7 +15,6 @@ export class Stack {
   constructor(client: AxiosInstance, config: StackConfig) {
     this._client = client;
     this.config = config;
-    this.config.live_preview = config.live_preview
   }
 
   /**
