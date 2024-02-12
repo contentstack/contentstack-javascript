@@ -28,7 +28,7 @@ describe('Live preview tests', () => {
         expect(livePreviewObject).toHaveProperty('enable');
         expect(livePreviewObject).toHaveProperty('host');
         expect(livePreviewObject).not.toHaveProperty('preview');
-        expect(stack.config.host).toBe('api.contentstack.com');
+        expect(stack.config.host).toBe('api.contentstack.io');
     });
 
     test('should check host when live preview is disabled and management token is provided', () => {
