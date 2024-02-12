@@ -40,7 +40,7 @@ export function Stack(config: StackConfig): StackClass {
 
   if (config.live_preview?.enable === true) {
     if (config.live_preview?.management_token != null && config.live_preview?.preview_token == null) {
-      config.host = 'api.contentstack.com'
+      config.host = 'api.contentstack.io'
       config.live_preview.host = config.host
     } else if (config.live_preview?.preview_token != null && config.live_preview?.management_token == null) {
       config.host = 'rest-preview.contentstack.com'
