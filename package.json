@@ -1,6 +1,6 @@
 {
   "name": "@contentstack/delivery-sdk",
-  "version": "4.0.0-beta.2",
+  "version": "4.0.0-beta.3",
   "type": "commonjs",
   "main": "./dist/cjs/src/index.js",
   "types": "./dist/types/src/index.d.ts",
