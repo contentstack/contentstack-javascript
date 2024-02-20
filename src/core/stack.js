@@ -383,6 +383,7 @@ export default class Stack {
      * @description An initializer is responsible for creating Entry object
      * @returns {Entry}
      * @instance 
+     * test line
      */
     Entry(uid) {
         let entry = new Entry();
