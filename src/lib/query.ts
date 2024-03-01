@@ -3,7 +3,7 @@ import { BaseQuery } from './base-query';
 import { BaseQueryParameters, QueryOperation, QueryOperator, TaxonomyQueryOperation } from './types';
 export class Query extends BaseQuery {
   private _contentTypeUid?: string;
-  override _queryParams: { [key: string]: any}  = {};
+
   constructor(client: AxiosInstance, uid: string, queryObj?: { [key: string]: any }) {
     super();
     this._client = client;
@@ -173,13 +173,31 @@ export class Query extends BaseQuery {
    * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
-   * const query = stack.contentType("contentTypeUid").Query;
+   * const query = stack.contentType("contentTypeUid").Query();
    * const result = containedIn('fieldUid', ['value1', 'value2']).find()
    * 
    * @returns {Query}
    */
   containedIn(key: string, value: (string | number | boolean)[]): Query {
-    this._queryParams[key] = value;
+    this._parameters[key] = { '$in': value };
+    return this;
+  }
+
+  /**
+   * @method NoContainedIn
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType("contentTypeUid").Query();
+   * const result = notContainedIn('fieldUid', ['value1', 'value2']).find()
+   * 
+   * @returns {Query}
+   */
+  notContainedIn(key: string, value: (string | number | boolean)[]): Query {
+    this._parameters[key] = { '$nin': value };
     return this;
   }
 }
