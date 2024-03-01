@@ -27,7 +27,7 @@ describe('ContentType API test cases', () => {
   });
 });
 describe('ContentType Query API test cases', () => {
-  it('should test for contained In', async () => {
+  it('should get entries which matches the fieldUid and values', async () => {
     const query = await makeContentType('contenttype_uid').Query().containedIn('title', ['value']).find<TEntry>()
     if (query.entries) {
       expect(query.entries[0]._version).toBeDefined();
@@ -37,7 +37,7 @@ describe('ContentType Query API test cases', () => {
     }
   });
 
-  it('should test for not Contained In', async () => {
+  it('should get entries which does not match the fieldUid and values', async () => {
     const query = await makeContentType('contenttype_uid').Query().NotContainedIn('title', ['test', 'test2']).find<TEntry>()
     if (query.entries) {
       expect(query.entries[0]._version).toBeDefined();
