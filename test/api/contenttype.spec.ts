@@ -3,7 +3,7 @@
 import { BaseContentType, BaseEntry, FindResponse } from 'src';
 import { ContentType } from '../../src/lib/content-type';
 import { stackInstance } from '../utils/stack-instance';
-import { TContentType, TEntry } from './types';
+import { TContentType, TEntries, TEntry } from './types';
 import dotenv from 'dotenv';
 
 dotenv.config()
@@ -29,6 +29,16 @@ describe('ContentType API test cases', () => {
 describe('ContentType Query API test cases', () => {
   it('should test for contained In', async () => {
     const query = await makeContentType('contenttype_uid').Query().containedIn('title', ['value']).find<TEntry>()
+    if (query.entries) {
+      expect(query.entries[0]._version).toBeDefined();
+      expect(query.entries[0].title).toBeDefined();
+      expect(query.entries[0].uid).toBeDefined();
+      expect(query.entries[0].created_at).toBeDefined();
+    }
+  });
+
+  it('should test for not Contained In', async () => {
+    const query = await makeContentType('contenttype_uid').Query().NotContainedIn('title', ['test', 'test2']).find<TEntry>()
     if (query.entries) {
       expect(query.entries[0]._version).toBeDefined();
       expect(query.entries[0].title).toBeDefined();

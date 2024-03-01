@@ -58,6 +58,10 @@ describe('ContentType Query class', () => {
   });
   it('should test for contained In', () => {
     const query = contentType.Query().containedIn('fieldUID', ['value']);
-    expect(query._queryParams).toStrictEqual({'fieldUID': ['value']});
+    expect(query._queryParams).toStrictEqual({'fieldUID': {'$in': ['value']}});
+  });
+  it('should test for not contained In', () => {
+    const query = contentType.Query().NotContainedIn('fieldUID', ['value', 'value2']);
+    expect(query._queryParams).toStrictEqual({'fieldUID': {'$nin': ['value', 'value2']}});
   });
 });
