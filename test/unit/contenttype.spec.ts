@@ -5,6 +5,7 @@ import { Entry } from '../../src/lib/entry';
 import { contentTypeResponseMock } from '../utils/mocks';
 import { Entries } from '../../src/lib/entries';
 import { MOCK_CLIENT_OPTIONS } from '../utils/constant';
+import { Query } from 'src/lib/query';
 
 describe('ContentType class', () => {
   let contentType: ContentType;
@@ -39,5 +40,24 @@ describe('ContentType class', () => {
 
     const response = await contentType.fetch();
     expect(response).toEqual(contentTypeResponseMock.content_type);
+  });
+});
+
+describe('ContentType Query class', () => {
+  let contentType: ContentType;
+  let client: AxiosInstance;
+  let mockClient: MockAdapter;
+
+  beforeAll(() => {
+    client = httpClient(MOCK_CLIENT_OPTIONS);
+    mockClient = new MockAdapter(client as any);
+  });
+
+  beforeEach(() => {
+    contentType = new ContentType(client, 'contentTypeUid');
+  });
+  it('should test for contained In', () => {
+    const query = contentType.Query().containedIn('fieldUID', ['value']);
+    expect(query._queryParams).toStrictEqual({'fieldUID': ['value']});
   });
 });
