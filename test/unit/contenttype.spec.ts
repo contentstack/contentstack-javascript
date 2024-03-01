@@ -61,7 +61,7 @@ describe('ContentType Query class', () => {
     expect(query._queryParams).toStrictEqual({'fieldUID': {'$in': ['value']}});
   });
   it('should get entries which does not match the fieldUid and values', () => {
-    const query = contentType.Query().NotContainedIn('fieldUID', ['value', 'value2']);
+    const query = contentType.Query().notContainedIn('fieldUID', ['value', 'value2']);
     expect(query._queryParams).toStrictEqual({'fieldUID': {'$nin': ['value', 'value2']}});
   });
 });

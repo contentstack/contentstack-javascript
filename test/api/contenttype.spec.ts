@@ -38,7 +38,7 @@ describe('ContentType Query API test cases', () => {
   });
 
   it('should get entries which does not match the fieldUid and values', async () => {
-    const query = await makeContentType('contenttype_uid').Query().NotContainedIn('title', ['test', 'test2']).find<TEntry>()
+    const query = await makeContentType('contenttype_uid').Query().notContainedIn('title', ['test', 'test2']).find<TEntry>()
     if (query.entries) {
       expect(query.entries[0]._version).toBeDefined();
       expect(query.entries[0].title).toBeDefined();

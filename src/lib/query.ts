@@ -184,7 +184,7 @@ export class Query extends BaseQuery {
   }
 
   /**
-   * @method containedIn
+   * @method NoContainedIn
    * @memberof Query
    * @description Returns the raw (JSON) query based on the filters applied on Query object.
    * @example
@@ -192,11 +192,11 @@ export class Query extends BaseQuery {
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").Query;
-   * const result = containedIn('fieldUid', ['value1', 'value2']).find()
+   * const result = notContainedIn('fieldUid', ['value1', 'value2']).find()
    * 
    * @returns {Query}
    */
-  NotContainedIn(key: string, value: (string | number | boolean)[]): Query {
+  notContainedIn(key: string, value: (string | number | boolean)[]): Query {
     this._queryParams[key] = { '$nin': value };
     return this;
   }
