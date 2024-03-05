@@ -1,5 +1,28 @@
 ## Change log
 
+### Version: 3.19.0
+#### Date: February-02-2024
+##### New Features:
+ - live preview support both 1.0 and 2.0
+ - fix for `ESM module cannot use module.exports` issue react-native and nativescript builds
+### Version: 3.18.1
+#### Date: January-30-2024
+##### New Features:
+ - added fix for `ESM module cannot use module.exports` issue
+### Version: 3.18.0
+#### Date: January-15-2024
+##### New Features:
+ - added taxonomy support  
+ - X-User-Agent updated 
+ - added region gcp_na
+### Version: 3.17.2
+#### Date: November-15-2023
+##### Bug fix:
+ - Same management token in Live Preview in different stack object fixed
+ - X-User-Agent updated 
+##### New Features
+ - Early Access added to stack config
+
 ### Version: 3.17.1
 #### Date: April-18-2023
 ##### Bug fix:

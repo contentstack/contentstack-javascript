@@ -23,7 +23,8 @@ export enum Region {
     US = "us",
     EU = "eu",
     AZURE_NA = "azure-na",
-    AZURE_EU = "azure-eu"
+    AZURE_EU = "azure-eu",
+    GCP_NA = "gcp-na",
 }
 
 //Enum for Contentstack CachePolicy
@@ -55,6 +56,7 @@ export interface Config {
     live_preview?: LivePreview;
     plugins?: ContentstackPlugin[];
     fetchOptions?: FetchOptions;
+    early_access?: string[]
 }
 // Stack Config
 export interface StackConfig {
@@ -70,10 +72,21 @@ export interface ContentTypeCollection {
     count?: number
 }
 
-export interface LivePreview {
-    host: string
-    management_token: string
+export type LivePreview = {
+    host?: string
     enable: boolean
+} & (LivePreivewConfigWithManagementToken | LivePreviewConfigWithPreviewToken)
+
+export interface LivePreivewConfigWithManagementToken {
+    /**
+     * @deprecated Please use `preview_token` instead to enable live preview.
+     * The `management_token` will be removed in future releases.
+     */
+    management_token: string;
+}
+
+export interface LivePreviewConfigWithPreviewToken {
+    preview_token: string;
 }
 
 export interface LivePreviewQuery {
@@ -119,10 +132,12 @@ export class Stack {
     cachePolicy: CachePolicy;
     config: StackConfig;
     fetchOptions: any;
+    live_preview: { enable: boolean, host: string, management_token: string }
 
     ContentType(uid: string): ContentType;
     Assets(uid: string): Asset;
     Assets(): Assets;
+    Taxonomies(): Taxonomies;
 
     setPort(port: number): Stack;
     setProtocol(protocol: string): Stack;
@@ -150,10 +165,12 @@ export class ContentType {
     constructor();
     content_type_uid: string
     
-    Query(): Query;
+    Query(): Taxonomy;
     Entry(uid: string): Entry;
     fetch(fetchOptions?: object): Promise<any>;
 }
+
+export class Taxonomies extends Taxonomy {}
 
 export class Assets {
     constructor();
@@ -274,4 +291,12 @@ export class Query extends Entry {
 
     find(fetchOptions?: object): Promise<any>;
     findOne(): Promise<any>;
+}
+
+export class Taxonomy extends Query {
+    constructor();
+    above(key: string, value: string, levels?: number): Query;
+    equalAndAbove(key: string, value: string, levels?: number): Query;
+    below(key: string, value: string, levels?: number): Query;
+    equalAndBelow(key: string, value: string, levels?: number): Query;
 }
