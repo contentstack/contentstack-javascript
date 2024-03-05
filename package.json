@@ -99,6 +99,8 @@
   },
   "dependencies": {
     "@contentstack/utils": "^1.2.0",
+    "@slack/bolt": "^3.17.1",
+    "cheerio": "^1.0.0-rc.12",
     "es6-promise": "^4.1.1",
     "isomorphic-fetch": "^3.0.0",
     "localStorage": "1.0.4",
