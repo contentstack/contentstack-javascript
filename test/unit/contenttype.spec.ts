@@ -66,6 +66,6 @@ describe('ContentType Query class', () => {
   });
   it('should get entries which does not match the fieldUid - notExists', () => {
     const query = contentType.Query().notExists('fieldUID');
-    expect(query._parameters).toStrictEqual({'fieldUID': {'$nin': ['value', 'value2']}});
+    expect(query._parameters).toStrictEqual({'fieldUID': {'$exists': false}});
   });
 });
