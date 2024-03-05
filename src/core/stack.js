@@ -3,6 +3,7 @@ import * as Utils from './lib/utils';
 import Entry from './modules/entry';
 import Assets from './modules/assets';
 import Query from './modules/query';
+import Taxonomy from './modules/taxonomy';
 import Request from './lib/request';
 import CacheProvider from './cache-provider/index';
 let errorRetry = [408, 429]
@@ -67,11 +68,24 @@ export default class Stack {
                 }
             }
         };
-        this.config = Utils.mergeDeep({}, config)
+        this.config = JSON.parse(JSON.stringify(config));
         this.plugins = []
 
+        if (stack_arguments[0].live_preview && stack_arguments[0].live_preview.enable === true && stack_arguments[0].live_preview.management_token !== null) {
+            if (stack_arguments[0].live_preview.management_token) {
+                this.config.live_preview.host = 'api.contentstack.io';
+            }
+        }
+    
         if(stack_arguments[0].region && stack_arguments[0].region !== undefined && stack_arguments[0].region !== "us") {
             this.config['host'] = stack_arguments[0].region+"-"+"cdn.contentstack.com";
+            if (stack_arguments[0].live_preview && stack_arguments[0].live_preview.enable === true) {
+                if (stack_arguments[0].live_preview.management_token) {
+                    this.config["live_preview"]["host"] = stack_arguments[0].region + "-" + "api.contentstack.com";
+                } else {
+                    this.config["live_preview"]["host"] = stack_arguments[0].region + "-" + "rest-preview.contentstack.com";
+                }
+            } 
         } 
 
         if (stack_arguments[0].fetchOptions && stack_arguments[0].fetchOptions !== undefined) {
@@ -100,6 +114,9 @@ export default class Stack {
                     }
                     if (typeof stack_arguments[0].branch === "string" && stack_arguments[0].branch !== undefined) {
                         this.headers.branch = stack_arguments[0].branch
+                    }
+                    if (typeof stack_arguments[0].early_access == "object" && Array.isArray(stack_arguments[0].early_access) && stack_arguments[0].early_access.length > 0) {
+                        this.headers['x-header-ea'] = stack_arguments[0].early_access.join(',')
                     }
                     this.environment = stack_arguments[0].environment;
                     return this;
@@ -348,7 +365,18 @@ export default class Stack {
         return this;
     }
 
- /**
+    /**
+     * @method Taxonomies
+     * @memberof Stack
+     * @description A method to set base url to taxonomies endpoint
+     * @returns {Stack}
+     */
+    Taxonomies() {
+        this.type = "taxonomy"
+        return Utils.merge(new Taxonomy(), this);
+    }
+
+    /**
      * @method Entry
      * @memberOf ContentType
      * @param {String} uid - uid of the entry 
@@ -364,7 +392,7 @@ export default class Stack {
         return Utils.merge(entry, this);
     }
 
-     /**
+    /**
      * @method fetch
      * @memberOf ContentType
      * @description This method returns the complete information of a specific content type.
@@ -394,7 +422,7 @@ export default class Stack {
         return Request(this, options);
     }
 
-  /**
+    /**
      * @method Assets
      * @memberOf Stack
      * @param {String} uid - uid of the asset 
@@ -433,7 +461,7 @@ export default class Stack {
         return this;
     }
 
- /**
+    /**
      * @method Query
      * @memberOf Stack
      * @description An initializer is responsible for creating Query object.Provides support for all search queries
@@ -441,11 +469,16 @@ export default class Stack {
      * @instance  
      */
     Query() {
-        let query = new Query();
+        // Taxonomy is a class that extends Query class and adds 4 more helper methods that use levels.
+        // These 4 methods also work on contentType base url, hence Taxonomy instance is returned
+        // Taxonomy instance is Regular Query instance + 4 additional methods (below, eq_below, above, eq_above)
+        let query = (this.type === "contentType") ?
+        new Taxonomy() :
+        new Query();
         return Utils.merge(query, this);
     }
 
-   /**
+    /**
      * @method getLastActivities
      * @memberOf Stack
      * @description getLastActivities get all the ContentTypes whose last activity updated.
@@ -475,7 +508,7 @@ export default class Stack {
         return Request(this, this.fetchOptions);
     }
 
-     /**
+    /**
      * @method getContentTypes
      * @memberOf Stack
      * @param {String} param - Query on contentTypes

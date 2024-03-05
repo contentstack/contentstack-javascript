@@ -8,11 +8,12 @@ const config = {
         content_types: "/content_types/",
         entries: "/entries/",
         assets: "/assets/",
-        environments: "/environments/"
+        environments: "/environments/",
+        taxonomies: "/taxonomies/entries"
     },
     live_preview: {
         enable: false,
-        host: 'api.contentstack.io'
+        host: 'rest-preview.contentstack.com'
     }
 };
 
