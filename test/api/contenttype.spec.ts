@@ -46,6 +46,19 @@ describe('ContentType Query API test cases', () => {
       expect(query.entries[0].created_at).toBeDefined();
     }
   });
+
+  it('should get entries which does not match the fieldUid - notExists', async () => {
+  console.log("🚀 ~ makeContentType ~ stack:", await stack.ContentType().find())
+
+    const query = await makeContentType('contenttype_uid').Query().notExists('multi_line').find<TEntry>()
+    if (query.entries) {
+      expect(query.entries[0]._version).toBeDefined();
+      expect(query.entries[0].title).toBeDefined();
+      expect(query.entries[0].uid).toBeDefined();
+      expect(query.entries[0].created_at).toBeDefined();
+      expect((query.entries[0] as any).multi_line).not.toBeDefined()
+    }
+  });
 });
 function makeContentType(uid = ''): ContentType {
   const contentType = stack.ContentType(uid);
