@@ -48,8 +48,6 @@ describe('ContentType Query API test cases', () => {
   });
 
   it('should get entries which does not match the fieldUid - notExists', async () => {
-  console.log("🚀 ~ makeContentType ~ stack:", await stack.ContentType().find())
-
     const query = await makeContentType('contenttype_uid').Query().notExists('multi_line').find<TEntry>()
     if (query.entries) {
       expect(query.entries[0]._version).toBeDefined();
