@@ -1,6 +1,7 @@
 import config from '../../config';
 import * as Utils from './lib/utils';
 import Entry from './modules/entry';
+import Variants from './modules/variants';
 import Assets from './modules/assets';
 import Query from './modules/query';
 import Taxonomy from './modules/taxonomy';
@@ -391,6 +392,23 @@ export default class Stack {
         }
         return Utils.merge(entry, this);
     }
+
+    /**
+     * @method Variants
+     * @memberOf Entry
+     * @param {String} uid - uid of the variants entry 
+     * @description An initializer is responsible for creating Variants Entry object
+     * @returns {Variants}
+     * @instance 
+     */
+    Variants(uid) {
+        let entry = new Entry();
+        if (uid && typeof uid === "string") {
+            entry.entry_uid = uid;
+        }
+        return Utils.merge(entry, this);
+    }
+
 
     /**
      * @method fetch
