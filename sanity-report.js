@@ -29,7 +29,7 @@ console.log('Total Pending:', totalTodo);
 console.log('Total Duration:', `${durationInMinutes}m`,`${durationInSeconds.toFixed(2)}s`);
 
 const slackMessage = `
-*Test Summary of JS Management SDK*
+*Test Summary of JS Delivery SDK*
 • Total Test Suits: *9*
 • Total Tests: *${totalCount}*
 • Total Pass:: *${totalPass}*
