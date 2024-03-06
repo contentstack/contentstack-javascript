@@ -1,5 +1,10 @@
 ## Change log
 
+### Version: 3.19.1
+#### Date: March-06-2024
+##### Dependency:
+ - Update Utils SDK dependency version
+
 ### Version: 3.19.0
 #### Date: February-02-2024
 ##### New Features:
