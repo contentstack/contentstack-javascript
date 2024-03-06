@@ -1,5 +1,8 @@
 ## Change log
-
+### Version: 3.19.0
+#### Date: March-12-2024
+##### New Features:
+ - Variants Feature support added
 ### Version: 3.19.0
 #### Date: February-02-2024
 ##### New Features:
