@@ -1,7 +1,6 @@
 import config from '../../config';
 import * as Utils from './lib/utils';
 import Entry from './modules/entry';
-import Variants from './modules/variants';
 import Assets from './modules/assets';
 import Query from './modules/query';
 import Taxonomy from './modules/taxonomy';
