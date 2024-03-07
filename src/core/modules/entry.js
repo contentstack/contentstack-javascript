@@ -388,11 +388,9 @@ export default class Entry {
      * @returns {Variants}
      * @instance 
      */
-    Variants(uid) {
-        let variant_entry = new Variants(uid); 
-        if (uid && typeof uid === "string") {
-            variant_entry.variant_entry_uid = uid;
-        }
-        return Utils.merge(variant_entry, this);
-    }
+    Variants(variant_headers) {
+        this.headers['x-cs-variant-uid'] = variant_headers;
+        return this;
+     }
+
 }

@@ -394,23 +394,6 @@ export default class Stack {
     }
 
     /**
-     * @method Variants
-     * @memberOf Entry
-     * @param {String} uid - uid of the variants entry 
-     * @description An initializer is responsible for creating Variants Entry object
-     * @returns {Variants}
-     * @instance 
-     */
-    Variants(uid) {
-        let entry = new Entry();
-        if (uid && typeof uid === "string") {
-            entry.entry_uid = uid;
-        }
-        return Utils.merge(entry, this);
-    }
-
-
-    /**
      * @method fetch
      * @memberOf ContentType
      * @description This method returns the complete information of a specific content type.
