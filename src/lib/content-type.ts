@@ -20,21 +20,6 @@ export class ContentType {
   }
 
   /**
-   * @method Query
-   * @memberof ContentType
-   * @description queries get all entries that satisfy the condition of the following function
-   * @returns {Query}
-   * @example
-   * import contentstack from '@contentstack/delivery-sdk'
-   *
-   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
-   * const entries = stack.contentType("contentTypeUid").Query().containedIn('fieldUid', ['value1','value2'])
-   */
-  Query(): Query {
-    return new Query(this._client, this._contentTypeUid);
-  };
-
-  /**
    * @method entry
    * @memberof ContentType
    * @description Creates entry object of the passed entry uid.
