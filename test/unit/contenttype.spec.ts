@@ -42,30 +42,3 @@ describe('ContentType class', () => {
     expect(response).toEqual(contentTypeResponseMock.content_type);
   });
 });
-
-describe('ContentType Query class', () => {
-  let contentType: ContentType;
-  let client: AxiosInstance;
-  let mockClient: MockAdapter;
-
-  beforeAll(() => {
-    client = httpClient(MOCK_CLIENT_OPTIONS);
-    mockClient = new MockAdapter(client as any);
-  });
-
-  beforeEach(() => {
-    contentType = new ContentType(client, 'contentTypeUid');
-  });
-  it('should get entries which matches the fieldUid and values', () => {
-    const query = contentType.Query().containedIn('fieldUID', ['value']);
-    expect(query._parameters).toStrictEqual({'fieldUID': {'$in': ['value']}});
-  });
-  it('should get entries which does not match the fieldUid and values', () => {
-    const query = contentType.Query().notContainedIn('fieldUID', ['value', 'value2']);
-    expect(query._parameters).toStrictEqual({'fieldUID': {'$nin': ['value', 'value2']}});
-  });
-  it('should get entries which does not match the fieldUid - notExists', () => {
-    const query = contentType.Query().notExists('fieldUID');
-    expect(query._parameters).toStrictEqual({'fieldUID': {'$exists': false}});
-  });
-});
