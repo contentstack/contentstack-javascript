@@ -1659,3 +1659,19 @@ test('CT Taxonomies Query: Get Entries With Taxonomy Terms Parent and Excluding 
             assert.end();
         })
 })
+
+test('Variants in entry', function (t) {
+    let Query = Stack.ContentType('source').Query();
+    Query
+        .Variants('variant_entry_1', 'variant_entry_2')
+        .toJSON()
+        .find()
+        .then(entries => {
+            assert.ok(entries[0].length, 'Variant entries present in the resultset');
+            assert.end();
+        }, err => {
+            console.error("error :", err);
+            assert.fail("Variant Entries are not present in the CT");
+            assert.end();
+        })
+});
