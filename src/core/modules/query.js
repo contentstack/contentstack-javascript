@@ -829,4 +829,18 @@ export default class Query extends Entry {
         return Utils.sendRequest(Utils.mergeDeep({}, this), options);
     }
 
+    /**
+     * @method Variants
+     * @memberOf Query
+     * @param {String} uid - uid of the variants entry 
+     * @description An initializer is responsible for creating Variants Entry object
+     * @returns {Variants}
+     * @instance 
+     */
+    Variants(variant_headers) {
+       this.headers['x-cs-variant-uid'] = variant_headers;
+       return this;
+    }
+
+
 }
