@@ -1,5 +1,4 @@
 import * as Utils from "../lib/utils";
-import Variants from "./variants";
 
 /**
  * @class 
@@ -389,7 +388,11 @@ export default class Entry {
      * @instance 
      */
     Variants(variant_headers) {
-        this.headers['x-cs-variant-uid'] = variant_headers;
+        if (Array.isArray(variant_headers) && variant_headers.length > 0) {
+            this.headers['x-cs-variant-uid'] = variant_headers.join(',')
+        }else{
+            this.headers['x-cs-variant-uid'] = variant_headers;
+        }
         return this;
      }
 

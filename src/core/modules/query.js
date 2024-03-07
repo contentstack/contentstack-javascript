@@ -1,6 +1,5 @@
 import * as Utils from '../lib/utils.js';
 import Entry from './entry';
-import Variants from './variants.js';
 
 const _extend = {
     compare: function(type) {
@@ -838,9 +837,11 @@ export default class Query extends Entry {
      * @instance 
      */
     Variants(variant_headers) {
-       this.headers['x-cs-variant-uid'] = variant_headers;
-       return this;
+        if (Array.isArray(variant_headers) && variant_headers.length > 0) {
+            this.headers['x-cs-variant-uid'] = variant_headers.join(',')
+        }else{
+            this.headers['x-cs-variant-uid'] = variant_headers;
+        }
+        return this;
     }
-
-
 }
