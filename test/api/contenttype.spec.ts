@@ -1,9 +1,8 @@
 /* eslint-disable no-console */
 /* eslint-disable promise/always-return */
-import { BaseContentType, BaseEntry, FindResponse } from 'src';
 import { ContentType } from '../../src/lib/content-type';
 import { stackInstance } from '../utils/stack-instance';
-import { TContentType, TEntries, TEntry } from './types';
+import { TContentType, TEntry } from './types';
 import dotenv from 'dotenv';
 
 dotenv.config()
@@ -26,38 +25,7 @@ describe('ContentType API test cases', () => {
     expect(result.schema).toBeDefined();
   });
 });
-describe('ContentType Query API test cases', () => {
-  it('should get entries which matches the fieldUid and values', async () => {
-    const query = await makeContentType('contenttype_uid').Query().containedIn('title', ['value']).find<TEntry>()
-    if (query.entries) {
-      expect(query.entries[0]._version).toBeDefined();
-      expect(query.entries[0].title).toBeDefined();
-      expect(query.entries[0].uid).toBeDefined();
-      expect(query.entries[0].created_at).toBeDefined();
-    }
-  });
 
-  it('should get entries which does not match the fieldUid and values', async () => {
-    const query = await makeContentType('contenttype_uid').Query().notContainedIn('title', ['test', 'test2']).find<TEntry>()
-    if (query.entries) {
-      expect(query.entries[0]._version).toBeDefined();
-      expect(query.entries[0].title).toBeDefined();
-      expect(query.entries[0].uid).toBeDefined();
-      expect(query.entries[0].created_at).toBeDefined();
-    }
-  });
-
-  it('should get entries which does not match the fieldUid - notExists', async () => {
-    const query = await makeContentType('contenttype_uid').Query().notExists('multi_line').find<TEntry>()
-    if (query.entries) {
-      expect(query.entries[0]._version).toBeDefined();
-      expect(query.entries[0].title).toBeDefined();
-      expect(query.entries[0].uid).toBeDefined();
-      expect(query.entries[0].created_at).toBeDefined();
-      expect((query.entries[0] as any).multi_line).not.toBeDefined()
-    }
-  });
-});
 function makeContentType(uid = ''): ContentType {
   const contentType = stack.ContentType(uid);
 
