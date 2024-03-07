@@ -173,7 +173,7 @@ export class Query extends BaseQuery {
    * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
-   * const query = stack.contentType("contentTypeUid").Query();
+   * const query = stack.contentType("contentTypeUid").entry().query();
    * const result = containedIn('fieldUid', ['value1', 'value2']).find()
    * 
    * @returns {Query}
@@ -191,7 +191,7 @@ export class Query extends BaseQuery {
    * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
-   * const query = stack.contentType("contentTypeUid").Query();
+   * const query = stack.contentType("contentTypeUid").entry().query();
    * const result = notContainedIn('fieldUid', ['value1', 'value2']).find()
    * 
    * @returns {Query}
@@ -209,7 +209,7 @@ export class Query extends BaseQuery {
    * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
-   * const query = stack.contentType("contentTypeUid").Query();
+   * const query = stack.contentType("contentTypeUid").entry().query();
    * const result = notExists('fieldUid').find()
    * 
    * @returns {Query}
