@@ -200,4 +200,22 @@ export class Query extends BaseQuery {
     this._parameters[key] = { '$nin': value };
     return this;
   }
+
+  /**
+   * @method notExists
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType("contentTypeUid").Query();
+   * const result = notExists('fieldUid').find()
+   * 
+   * @returns {Query}
+   */
+  notExists(key: string): Query {
+    this._parameters[key] = { '$exists': false };
+    return this;
+  }
 }
