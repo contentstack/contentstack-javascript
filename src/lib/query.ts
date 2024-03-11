@@ -3,8 +3,6 @@ import { BaseQuery } from './base-query';
 import { BaseQueryParameters, QueryOperation, QueryOperator, TaxonomyQueryOperation } from './types';
 export class Query extends BaseQuery {
   private _contentTypeUid?: string;
-  private _subQueries: Query[] = [];
-
 
   constructor(client: AxiosInstance, uid: string, queryObj?: { [key: string]: any }) {
     super();
@@ -204,16 +202,17 @@ export class Query extends BaseQuery {
   }
 
   /**
-   * @method notExists
+   * @method or
    * @memberof Query
    * @description Returns the raw (JSON) query based on the filters applied on Query object.
    * @example
    * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
-   * const query = stack.contentType("contentTypeUid").entry().query();
-   * const result = notExists('fieldUid').find()
-   * 
+   * const query1 = await contentType.Entry().query().containedIn('fieldUID', ['value']);
+   * const query2 = await contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value2');
+   * const query = await contentType.Entry().query().or(query1, query2).find();
+   *  
    * @returns {Query}
    */
   notExists(key: string): Query {

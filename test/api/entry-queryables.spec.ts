@@ -37,7 +37,7 @@ describe('Query Operators API test cases', () => {
         expect((query.entries[0] as any).multi_line).not.toBeDefined()
       }
     });
-    it('should return entries matching any of the conditions', async () => {
+    it('should return entries matching any of the conditions - or', async () => {
         const query1: Query = await makeEntries('contenttype_uid').query().containedIn('title', ['value']);
         const query2: Query = await makeEntries('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value2');
         const query = await makeEntries('contenttype_uid').query().or(query1, query2).find<TEntry>();
