@@ -173,7 +173,7 @@ export class Query extends BaseQuery {
    * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
-   * const query = stack.contentType("contentTypeUid").Query();
+   * const query = stack.contentType("contentTypeUid").entry().query();
    * const result = containedIn('fieldUid', ['value1', 'value2']).find()
    * 
    * @returns {Query}
@@ -191,7 +191,7 @@ export class Query extends BaseQuery {
    * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
-   * const query = stack.contentType("contentTypeUid").Query();
+   * const query = stack.contentType("contentTypeUid").entry().query();
    * const result = notContainedIn('fieldUid', ['value1', 'value2']).find()
    * 
    * @returns {Query}
@@ -202,20 +202,32 @@ export class Query extends BaseQuery {
   }
 
   /**
-   * @method notExists
+   * @method or
    * @memberof Query
    * @description Returns the raw (JSON) query based on the filters applied on Query object.
    * @example
    * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
-   * const query = stack.contentType("contentTypeUid").Query();
-   * const result = notExists('fieldUid').find()
-   * 
+   * const query1 = await contentType.Entry().query().containedIn('fieldUID', ['value']);
+   * const query2 = await contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value2');
+   * const query = await contentType.Entry().query().or(query1, query2).find();
+   *  
    * @returns {Query}
    */
   notExists(key: string): Query {
     this._parameters[key] = { '$exists': false };
     return this;
+  }
+
+  or(...queries: Query[]): Query {
+    const combinedQuery: any = { $or: [] };
+    for (const query of queries) {
+      combinedQuery.$or.push(query._parameters);
+    }
+    const newQuery: Query = Object.create(this);
+    newQuery._parameters = combinedQuery;
+    
+    return newQuery;
   }
 }
