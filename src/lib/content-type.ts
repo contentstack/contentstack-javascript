@@ -1,7 +1,6 @@
 import { AxiosInstance, getData } from '@contentstack/core';
 import { Entry } from './entry';
 import { Entries } from './entries';
-import { Query } from './query';
 
 interface ContentTypeResponse<T> {
   content_type: T;
