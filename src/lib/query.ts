@@ -3,6 +3,8 @@ import { BaseQuery } from './base-query';
 import { BaseQueryParameters, QueryOperation, QueryOperator, TaxonomyQueryOperation } from './types';
 export class Query extends BaseQuery {
   private _contentTypeUid?: string;
+  private _subQueries: Query[] = [];
+
 
   constructor(client: AxiosInstance, uid: string, queryObj?: { [key: string]: any }) {
     super();
@@ -217,5 +219,16 @@ export class Query extends BaseQuery {
   notExists(key: string): Query {
     this._parameters[key] = { '$exists': false };
     return this;
+  }
+
+  or(...queries: Query[]): Query {
+    const combinedQuery: any = { $or: [] };
+    for (const query of queries) {
+      combinedQuery.$or.push(query._parameters);
+    }
+    const newQuery: Query = Object.create(this);
+    newQuery._parameters = combinedQuery;
+    
+    return newQuery;
   }
 }
