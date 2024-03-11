@@ -2,6 +2,8 @@ import { AxiosInstance, httpClient } from '@contentstack/core';
 import { ContentType } from '../../src/lib/content-type';
 import MockAdapter from 'axios-mock-adapter';
 import { MOCK_CLIENT_OPTIONS } from '../utils/constant';
+import { Query } from 'src/lib/query';
+import { QueryOperation } from 'src/lib/types';
 
 
 describe('Query Operators API test cases', () => {
@@ -29,4 +31,10 @@ describe('Query Operators API test cases', () => {
       const query = contentType.Entry().query().notExists('fieldUID');
       expect(query._parameters).toStrictEqual({'fieldUID': {'$exists': false}});
     });
+    it('should return entries matching any of the conditions', async () => {
+      const query1: Query = await contentType.Entry().query().containedIn('fieldUID', ['value']);
+      const query2: Query = await contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value2');
+      const query = await contentType.Entry().query().or(query1, query2);
+      expect(query._parameters).toStrictEqual({ '$or': [ {'fieldUID': {'$in': ['value']}}, { 'fieldUID': 'value2' } ] });
+  });
 });
