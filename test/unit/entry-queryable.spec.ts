@@ -36,5 +36,11 @@ describe('Query Operators API test cases', () => {
       const query2: Query = await contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value2');
       const query = await contentType.Entry().query().or(query1, query2);
       expect(query._parameters).toStrictEqual({ '$or': [ {'fieldUID': {'$in': ['value']}}, { 'fieldUID': 'value2' } ] });
-  });
+    });
+    it('should return entry when both conditions are matching - and', async () => {
+      const query1: Query = await contentType.Entry().query().containedIn('fieldUID', ['value']);
+      const query2: Query = await contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value2');
+      const query = await contentType.Entry().query().and(query1, query2);
+      expect(query._parameters).toStrictEqual({ '$and': [ {'fieldUID': {'$in': ['value']}}, { 'fieldUID': 'value2' } ] });
+    });
 });
