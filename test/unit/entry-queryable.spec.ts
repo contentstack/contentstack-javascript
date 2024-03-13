@@ -47,7 +47,7 @@ describe('Query Operators API test cases', () => {
       const query = contentType.Entry().query().equalTo('fieldUID', 'value');
       expect(query._parameters).toStrictEqual({ 'fieldUID': 'value' });
     });
-    test('should return entry for referencedIn query', async () => {
+    it('should return entry for referencedIn query', async () => {
       const query1 = contentType.Entry().query().containedIn('fieldUID', ['value']);
       const entryQuery = await contentType.Entry().query().referenceIn('reference_uid', query1);
       if (entryQuery) {
