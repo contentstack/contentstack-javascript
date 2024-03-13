@@ -264,6 +264,19 @@ export class Query extends BaseQuery {
     this._parameters.$and = paramsList;
     return this;
   }
+
+  /**
+   * @method equalTo
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = await contentType.Entry().query().equalTo('fieldUid', 'value').find();
+   *  
+   * @returns {Query}
+   */
   equalTo(key: string, value: string | number | boolean): Query {
     this._parameters[key] = value;
     return this;
