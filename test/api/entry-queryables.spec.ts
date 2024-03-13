@@ -106,7 +106,7 @@ describe('Query Operators API test cases', () => {
       }
     });
 
-    test('should return entry for referencedIn query', async () => {
+    it('should return entry for referencedIn query', async () => {
       const query = makeEntries('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
       const entryQuery = await makeEntries('contenttype_uid').query().referenceIn('reference_uid', query).find<TEntry>();
       if (entryQuery.entries) {
