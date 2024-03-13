@@ -264,4 +264,8 @@ export class Query extends BaseQuery {
     this._parameters.$and = paramsList;
     return this;
   }
+  equalTo(key: string, value: string | number | boolean): Query {
+    this._parameters[key] = value;
+    return this;
+  }
 }
