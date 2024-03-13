@@ -2,8 +2,8 @@ import { AxiosInstance, httpClient } from '@contentstack/core';
 import { ContentType } from '../../src/lib/content-type';
 import MockAdapter from 'axios-mock-adapter';
 import { MOCK_CLIENT_OPTIONS } from '../utils/constant';
-import { Query } from 'src/lib/query';
-import { QueryOperation } from 'src/lib/types';
+import { Query } from '../../src/lib/query';
+import { QueryOperation } from '../../src/lib/types';
 
 
 describe('Query Operators API test cases', () => {
@@ -46,5 +46,12 @@ describe('Query Operators API test cases', () => {
     it('should return entry equal to the condition - equalTo', async () => {
       const query = contentType.Entry().query().equalTo('fieldUID', 'value');
       expect(query._parameters).toStrictEqual({ 'fieldUID': 'value' });
+    });
+    test('should return entry for referencedIn query', async () => {
+      const query1 = contentType.Entry().query().containedIn('fieldUID', ['value']);
+      const entryQuery = await contentType.Entry().query().referenceIn('reference_uid', query1);
+      if (entryQuery) {
+        expect(entryQuery._parameters).toEqual({ reference_uid: { '$in_query': { fieldUID: { '$in': [ 'value' ] } } } });
+      }
     });
 });
