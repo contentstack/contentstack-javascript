@@ -94,6 +94,17 @@ describe('Query Operators API test cases', () => {
 
         }
     });
+
+    it('should return entry equal to the condition - equalTo', async () => {
+      const query = await makeEntries('contenttype_uid').query().equalTo('title', 'value').find<TEntry>();
+    
+      if (query.entries) {
+        expect(query.entries[0]._version).toBeDefined();
+        expect(query.entries[0].locale).toBeDefined();
+        expect(query.entries[0].uid).toBeDefined();
+        expect(query.entries[0].title).toBe('value');
+      }
+    });
 });
   
 function makeEntries(contentTypeUid = ''): Entries {
