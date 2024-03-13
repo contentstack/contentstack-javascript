@@ -43,4 +43,8 @@ describe('Query Operators API test cases', () => {
       const query = await contentType.Entry().query().and(query1, query2);
       expect(query._parameters).toStrictEqual({ '$and': [ {'fieldUID': {'$in': ['value']}}, { 'fieldUID': 'value2' } ] });
     });
+    it('should return entry equal to the condition - equalTo', async () => {
+      const query = contentType.Entry().query().equalTo('fieldUID', 'value');
+      expect(query._parameters).toStrictEqual({ 'fieldUID': 'value' });
+    });
 });
