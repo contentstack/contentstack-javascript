@@ -1,0 +1,1 @@
+# contentstack-javascript-variants
