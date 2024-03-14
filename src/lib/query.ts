@@ -301,7 +301,7 @@ export class Query extends BaseQuery {
   }
 
   /**
-   * @method equalTo
+   * @method referenceNotIn
    * @memberof Query
    * @description Returns the raw (JSON) query based on the filters applied on Query object.
    * @example
@@ -315,6 +315,24 @@ export class Query extends BaseQuery {
    */
   referenceNotIn(key: string, query: Query) {
     this._parameters[key] = { '$nin_query': query._parameters }
+    return this;
+  }
+
+  /**
+   * @method tags
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
+   * const entryQuery = await stack.contentType('contenttype_uid').query().tags(['tag1']).find<TEntry>();
+   *  
+   * @returns {Query}
+   */
+  tags(values: (string | number | boolean)[]): Query {
+    this._parameters['tags'] = values;
     return this;
   }
 }
