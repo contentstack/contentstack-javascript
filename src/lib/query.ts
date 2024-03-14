@@ -174,7 +174,7 @@ export class Query extends BaseQuery {
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
-   * const result = containedIn('fieldUid', ['value1', 'value2']).find()
+   * const result = await query.containedIn('fieldUid', ['value1', 'value2']).find()
    * 
    * @returns {Query}
    */
@@ -192,7 +192,7 @@ export class Query extends BaseQuery {
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
-   * const result = notContainedIn('fieldUid', ['value1', 'value2']).find()
+   * const result = await query.notContainedIn('fieldUid', ['value1', 'value2']).find()
    * 
    * @returns {Query}
    */
@@ -210,7 +210,7 @@ export class Query extends BaseQuery {
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType("contentTypeUid").entry().query();
-   * const result = notExists('fieldUid').find()
+   * const result = await query.notExists('fieldUid').find()
    * 
    * @returns {Query}
    */
@@ -227,9 +227,9 @@ export class Query extends BaseQuery {
    * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
-   * const query1 = await contentType.Entry().query().containedIn('fieldUID', ['value']);
-   * const query2 = await contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value2');
-   * const query = await contentType.Entry().query().or(query1, query2).find();
+   * const query1 = stack.contentType('contenttype_uid').Entry().query().containedIn('fieldUID', ['value']);
+   * const query2 = stack.contentType('contenttype_uid').Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value2');
+   * const query = await stack.contentType('contenttype_uid').Entry().query().or(query1, query2).find();
    *  
    * @returns {Query}
    */
@@ -250,9 +250,9 @@ export class Query extends BaseQuery {
    * import contentstack from '@contentstack/delivery-sdk'
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
-   * const query1 = await contentType.Entry().query().containedIn('fieldUID', ['value']);
-   * const query2 = await contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value2');
-   * const query = await contentType.Entry().query().and(query1, query2).find();
+   * const query1 = stack.contentType('contenttype_uid').Entry().query().containedIn('fieldUID', ['value']);
+   * const query2 = stack.contentType('contenttype_uid').Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value2');
+   * const query = await stack.contentType('contenttype_uid').Entry().query().and(query1, query2).find();
    *  
    * @returns {Query}
    */
@@ -264,4 +264,39 @@ export class Query extends BaseQuery {
     this._parameters.$and = paramsList;
     return this;
   }
+
+  /**
+   * @method equalTo
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = await stack.contentType('contenttype_uid').Entry().query().equalTo('fieldUid', 'value').find();
+   *  
+   * @returns {Query}
+   */
+  equalTo(key: string, value: string | number | boolean): Query {
+    this._parameters[key] = value;
+    return this;
+  }
+
+  /**
+   * @method equalTo
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
+   * const entryQuery = await stack.contentType('contenttype_uid').query().referenceIn('reference_uid', query).find<TEntry>();
+   *  
+   * @returns {Query}
+   */
+  referenceIn(key: string, query: Query) {
+    this._parameters[key] = { '$in_query': query._parameters }
+    return this;
+}
 }

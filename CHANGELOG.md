@@ -1,9 +1,9 @@
 ## Change log
 
 ### Version: 4.0.0-beta.4
-#### Date: March-04-2024
+#### Date: March-14-2024
 ##### New Features:
-- Query implementation for containedIn and notContainedIn
+- Query operators implementation
 
 ### Version: 4.0.0-beta.3
 #### Date: February-13-2024
