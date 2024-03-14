@@ -1,8 +1,8 @@
 import { stackInstance } from '../utils/stack-instance';
 import { Entries } from '../../src/lib/entries';
 import { TEntry } from './types';
-import { QueryOperation } from 'src/lib/types';
-import { Query } from 'src/lib/query';
+import { QueryOperation } from '../../src/lib/types';
+import { Query } from '../../src/lib/query';
 
 const stack = stackInstance();
 
@@ -93,6 +93,28 @@ describe('Query Operators API test cases', () => {
           expect(query.entries).toHaveLength(0);
 
         }
+    });
+
+    it('should return entry equal to the condition - equalTo', async () => {
+      const query = await makeEntries('contenttype_uid').query().equalTo('title', 'value').find<TEntry>();
+    
+      if (query.entries) {
+        expect(query.entries[0]._version).toBeDefined();
+        expect(query.entries[0].locale).toBeDefined();
+        expect(query.entries[0].uid).toBeDefined();
+        expect(query.entries[0].title).toBe('value');
+      }
+    });
+
+    it('should return entry for referencedIn query', async () => {
+      const query = makeEntries('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
+      const entryQuery = await makeEntries('contenttype_uid').query().referenceIn('reference_uid', query).find<TEntry>();
+      if (entryQuery.entries) {
+        expect(entryQuery.entries[0]._version).toBeDefined();
+        expect(entryQuery.entries[0].locale).toBeDefined();
+        expect(entryQuery.entries[0].uid).toBeDefined();
+        expect(entryQuery.entries[0].title).toBe('test');
+      }
     });
 });
   
