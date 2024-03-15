@@ -5,6 +5,7 @@ import { Entry } from '../../src/lib/entry';
 import { contentTypeResponseMock } from '../utils/mocks';
 import { Entries } from '../../src/lib/entries';
 import { MOCK_CLIENT_OPTIONS } from '../utils/constant';
+import { Query } from 'src/lib/query';
 
 describe('ContentType class', () => {
   let contentType: ContentType;
