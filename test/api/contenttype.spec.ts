@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 /* eslint-disable promise/always-return */
-import { BaseContentType, BaseEntry } from 'src';
 import { ContentType } from '../../src/lib/content-type';
 import { stackInstance } from '../utils/stack-instance';
 import { TContentType, TEntry } from './types';
@@ -26,6 +25,7 @@ describe('ContentType API test cases', () => {
     expect(result.schema).toBeDefined();
   });
 });
+
 function makeContentType(uid = ''): ContentType {
   const contentType = stack.ContentType(uid);
 

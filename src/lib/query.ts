@@ -164,4 +164,139 @@ export class Query extends BaseQuery {
   getQuery(): { [key: string]: any } {
     return this._parameters;
   }
+
+  /**
+   * @method containedIn
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType("contentTypeUid").entry().query();
+   * const result = await query.containedIn('fieldUid', ['value1', 'value2']).find()
+   * 
+   * @returns {Query}
+   */
+  containedIn(key: string, value: (string | number | boolean)[]): Query {
+    this._parameters[key] = { '$in': value };
+    return this;
+  }
+
+  /**
+   * @method NoContainedIn
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType("contentTypeUid").entry().query();
+   * const result = await query.notContainedIn('fieldUid', ['value1', 'value2']).find()
+   * 
+   * @returns {Query}
+   */
+  notContainedIn(key: string, value: (string | number | boolean)[]): Query {
+    this._parameters[key] = { '$nin': value };
+    return this;
+  }
+
+  /**
+   * @method notExists
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType("contentTypeUid").entry().query();
+   * const result = await query.notExists('fieldUid').find()
+   * 
+   * @returns {Query}
+   */
+  notExists(key: string): Query {
+    this._parameters[key] = { '$exists': false };
+    return this;
+  }
+
+  /**
+   * @method or
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query1 = stack.contentType('contenttype_uid').Entry().query().containedIn('fieldUID', ['value']);
+   * const query2 = stack.contentType('contenttype_uid').Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value2');
+   * const query = await stack.contentType('contenttype_uid').Entry().query().or(query1, query2).find();
+   *  
+   * @returns {Query}
+   */
+  or(...queries: Query[]): Query {
+    const paramsList: BaseQueryParameters[] = [];
+    for (const queryItem of queries) {
+      paramsList.push(queryItem._parameters);
+    }
+    this._parameters.$or = paramsList;
+    return this;
+  }
+
+  /**
+   * @method and
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query1 = stack.contentType('contenttype_uid').Entry().query().containedIn('fieldUID', ['value']);
+   * const query2 = stack.contentType('contenttype_uid').Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value2');
+   * const query = await stack.contentType('contenttype_uid').Entry().query().and(query1, query2).find();
+   *  
+   * @returns {Query}
+   */
+  and(...queries: Query[]): Query {
+    const paramsList: BaseQueryParameters[] = [];
+    for (const queryItem of queries) {
+      paramsList.push(queryItem._parameters);
+    }
+    this._parameters.$and = paramsList;
+    return this;
+  }
+
+  /**
+   * @method equalTo
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = await stack.contentType('contenttype_uid').Entry().query().equalTo('fieldUid', 'value').find();
+   *  
+   * @returns {Query}
+   */
+  equalTo(key: string, value: string | number | boolean): Query {
+    this._parameters[key] = value;
+    return this;
+  }
+
+  /**
+   * @method equalTo
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
+   * const entryQuery = await stack.contentType('contenttype_uid').query().referenceIn('reference_uid', query).find<TEntry>();
+   *  
+   * @returns {Query}
+   */
+  referenceIn(key: string, query: Query) {
+    this._parameters[key] = { '$in_query': query._parameters }
+    return this;
+}
 }
