@@ -116,6 +116,32 @@ describe('Query Operators API test cases', () => {
         expect(entryQuery.entries[0].title).toBe('test');
       }
     });
+    it('should return entry for referenceNotIn query', async () => {
+      const query = makeEntries('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
+      const entryQuery = await makeEntries('contenttype_uid').query().referenceNotIn('reference_uid', query).find<TEntry>();
+
+      if (entryQuery.entries) {
+        expect(entryQuery.entries[0]._version).toBeDefined();
+        expect(entryQuery.entries[0].locale).toBeDefined();
+        expect(entryQuery.entries[0].uid).toBeDefined();
+        expect(entryQuery.entries[0].title).not.toBe('test');
+        expect(entryQuery.entries[0].title).toBe('value2');
+        expect(entryQuery.entries[1]._version).toBeDefined();
+        expect(entryQuery.entries[1].locale).toBeDefined();
+        expect(entryQuery.entries[1].uid).toBeDefined();
+        expect(entryQuery.entries[1].title).toBe('value');
+      }
+    });
+
+    it('should return entry if tags are matching', async () => {
+      const query = await makeEntries('contenttype_uid').query().tags(['tag1']).find<TEntry>();
+      if (query.entries) {
+        expect(query.entries[0]._version).toBeDefined();
+        expect(query.entries[0].locale).toBeDefined();
+        expect(query.entries[0].uid).toBeDefined();
+        expect(query.entries[0].title).toBe('value');
+      }
+    });
 });
   
 function makeEntries(contentTypeUid = ''): Entries {

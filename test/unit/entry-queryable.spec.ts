@@ -47,11 +47,24 @@ describe('Query Operators API test cases', () => {
       const query = contentType.Entry().query().equalTo('fieldUID', 'value');
       expect(query._parameters).toStrictEqual({ 'fieldUID': 'value' });
     });
-    it('should return entry for referencedIn query', async () => {
-      const query1 = contentType.Entry().query().containedIn('fieldUID', ['value']);
+    it('should return entry for referenceIn query', async () => {
+      const query1 = contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value');
       const entryQuery = await contentType.Entry().query().referenceIn('reference_uid', query1);
       if (entryQuery) {
-        expect(entryQuery._parameters).toEqual({ reference_uid: { '$in_query': { fieldUID: { '$in': [ 'value' ] } } } });
+        expect(entryQuery._parameters).toEqual({ reference_uid: { '$in_query': { fieldUID: 'value' } } });
+      }
+    });
+    it('should return entry for referenceNotIn query', async () => {
+      const query1 = contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value');
+      const entryQuery = await contentType.Entry().query().referenceNotIn('reference_uid', query1);
+      if (entryQuery) {
+        expect(entryQuery._parameters).toEqual({ reference_uid: { '$nin_query': { fieldUID: 'value' } } });
+      }
+    });
+    it('should return entry if tags are matching', async () => {
+      const query =  contentType.Entry().query().tags(['tag1']);
+      if (query) {
+        expect(query._parameters).toEqual({ tags: ['tag1'] });
       }
     });
 });
