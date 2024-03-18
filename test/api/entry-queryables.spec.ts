@@ -142,6 +142,16 @@ describe('Query Operators API test cases', () => {
         expect(query.entries[0].title).toBe('value');
       }
     });
+
+    it('should search for the matching key and return the entry', async () => {
+      const query = await makeEntries('contenttype_uid').query().search('value2').find<TEntry>();
+      if (query.entries) {
+        expect(query.entries[0]._version).toBeDefined();
+        expect(query.entries[0].locale).toBeDefined();
+        expect(query.entries[0].uid).toBeDefined();
+        expect(query.entries[0].title).toBe('value2');
+      }
+    });
 });
   
 function makeEntries(contentTypeUid = ''): Entries {
