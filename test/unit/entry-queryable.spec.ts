@@ -67,4 +67,16 @@ describe('Query Operators API test cases', () => {
         expect(query._parameters).toEqual({ tags: ['tag1'] });
       }
     });
+    it('should return entry after uid are matching', async () => {
+      const query = contentType.Entry().query().afterUid('entry_uid')
+      if (query) {
+        expect(query._parameters).toEqual({ after_uid: 'entry_uid' });
+      }
+    });
+    it('should return entry before uid are matching', async () => {
+      const query = await contentType.Entry().query().beforeUid('entry_uid');
+      if (query) {
+        expect(query._parameters).toEqual({ before_uid: 'entry_uid' });
+      }
+    });
 });

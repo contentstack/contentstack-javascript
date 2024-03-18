@@ -335,4 +335,38 @@ export class Query extends BaseQuery {
     this._parameters['tags'] = values;
     return this;
   }
+
+  /**
+   * @method afterUid
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType('contenttype_uid').query().afterUid('entryUid');
+   *  
+   * @returns {Query}
+   */
+  afterUid(key: string): Query {
+    this._parameters['after_uid'] = key;
+    return this;
+  }
+
+  /**
+   * @method beforeUid
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType('contenttype_uid').query().beforeUid('entryUid');
+   *  
+   * @returns {Query}
+   */
+  beforeUid(key: string): Query {
+    this._parameters['before_uid'] = key;
+    return this;
+  }
 }
