@@ -67,4 +67,10 @@ describe('Query Operators API test cases', () => {
         expect(query._parameters).toEqual({ tags: ['tag1'] });
       }
     });
+    it('should search for the matching key and return the entry', async () => {
+      const query =  contentType.Entry().query().search('entry');
+      if (query) {
+        expect(query._queryParams).toEqual({ typeahead: 'entry' });
+      }
+    });
 });
