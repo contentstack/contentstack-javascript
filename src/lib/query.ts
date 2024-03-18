@@ -295,7 +295,7 @@ export class Query extends BaseQuery {
    *  
    * @returns {Query}
    */
-  referenceIn(key: string, query: Query) {
+  referenceIn(key: string, query: Query): Query {
     this._parameters[key] = { '$in_query': query._parameters }
     return this;
   }
@@ -313,7 +313,7 @@ export class Query extends BaseQuery {
    *  
    * @returns {Query}
    */
-  referenceNotIn(key: string, query: Query) {
+  referenceNotIn(key: string, query: Query): Query {
     this._parameters[key] = { '$nin_query': query._parameters }
     return this;
   }
@@ -334,5 +334,9 @@ export class Query extends BaseQuery {
   tags(values: (string | number | boolean)[]): Query {
     this._parameters['tags'] = values;
     return this;
+  }
+  search(key: string): Query {
+    this._queryParams['typeahead'] = key
+    return this
   }
 }
