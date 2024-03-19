@@ -28,13 +28,24 @@ describe('Query Operators API test cases', () => {
     });
   
     it('should get entries which does not match the fieldUid - notExists', async () => {
-      const query = await makeEntries('contenttype_uid').query().notExists('multi_line').find<TEntry>()
+      const query = await makeEntries('contenttype_uid2').query().notExists('multi_line').find<TEntry>()
       if (query.entries) {
         expect(query.entries[0]._version).toBeDefined();
         expect(query.entries[0].title).toBeDefined();
         expect(query.entries[0].uid).toBeDefined();
         expect(query.entries[0].created_at).toBeDefined();
         expect((query.entries[0] as any).multi_line).not.toBeDefined()
+      }
+    });
+
+    it('should get entries which matches the fieldUid - exists', async () => {
+      const query = await makeEntries('contenttype_uid').query().exists('multi_line').find<TEntry>()
+      if (query.entries) {
+        expect(query.entries[0]._version).toBeDefined();
+        expect(query.entries[0].title).toBeDefined();
+        expect(query.entries[0].uid).toBeDefined();
+        expect(query.entries[0].created_at).toBeDefined();
+        expect((query.entries[0] as any).multi_line).toBeDefined()
       }
     });
 
@@ -150,6 +161,30 @@ describe('Query Operators API test cases', () => {
         expect(query.entries[0].locale).toBeDefined();
         expect(query.entries[0].uid).toBeDefined();
         expect(query.entries[0].title).toBe('value2');
+      }
+    });
+  
+    it('should sort entries in ascending order of the given fieldUID', async () => {
+      const query = await makeEntries('contenttype_uid').query().orderByAscending('title').find<TEntry>();
+      if (query.entries) {
+        expect(query.entries[0]._version).toBeDefined();
+        expect(query.entries[0].locale).toBeDefined();
+        expect(query.entries[0].uid).toBeDefined();
+        expect(query.entries[0].title).toBe('test');
+        expect(query.entries[1].title).toBe('test2');
+        expect(query.entries[2].title).toBe('value');
+      }
+    });
+
+    it('should sort entries in descending order of the given fieldUID', async () => {
+      const query = await makeEntries('contenttype_uid').query().orderByDescending('title').find<TEntry>();
+      if (query.entries) {
+        expect(query.entries[0]._version).toBeDefined();
+        expect(query.entries[0].locale).toBeDefined();
+        expect(query.entries[0].uid).toBeDefined();
+        expect(query.entries[0].title).toBe('value2');
+        expect(query.entries[1].title).toBe('value');
+        expect(query.entries[2].title).toBe('test2');
       }
     });
 });
