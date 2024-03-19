@@ -31,6 +31,12 @@ describe('Query Operators API test cases', () => {
       const query = contentType.Entry().query().notExists('fieldUID');
       expect(query._parameters).toStrictEqual({'fieldUID': {'$exists': false}});
     });
+    it('should get entries which matches the fieldUid - exists', async () => {
+      const query =  contentType.Entry().query().exists('fieldUID');
+      if (query) {
+        expect(query._parameters).toEqual({'fieldUID': {'$exists': true}});
+      }
+    });
     it('should return entries matching any of the conditions - or', async () => {
       const query1: Query = await contentType.Entry().query().containedIn('fieldUID', ['value']);
       const query2: Query = await contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value2');
@@ -71,6 +77,18 @@ describe('Query Operators API test cases', () => {
       const query =  contentType.Entry().query().search('entry');
       if (query) {
         expect(query._queryParams).toEqual({ typeahead: 'entry' });
+      }
+    });
+    it('should sort entries in ascending order of the given fieldUID', async () => {
+      const query =  contentType.Entry().query().orderByAscending('fieldUid');
+      if (query) {
+        expect(query._queryParams).toEqual({ asc: 'fieldUid' });
+      }
+    });
+    it('should sort entries in descending order of the given fieldUID', async () => {
+      const query =  contentType.Entry().query().orderByDescending('fieldUid');
+      if (query) {
+        expect(query._queryParams).toEqual({ desc: 'fieldUid' });
       }
     });
 });
