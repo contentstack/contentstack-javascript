@@ -202,6 +202,24 @@ export class Query extends BaseQuery {
   }
 
   /**
+   * @method exists
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType("contentTypeUid").entry().query();
+   * const result = await query.exists('fieldUid').find()
+   * 
+   * @returns {Query}
+   */
+  exists(key: string): Query {
+    this._parameters[key] = { '$exists': true };
+    return this;
+  }
+
+  /**
    * @method notExists
    * @memberof Query
    * @description Returns the raw (JSON) query based on the filters applied on Query object.
@@ -291,7 +309,7 @@ export class Query extends BaseQuery {
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
-   * const entryQuery = await stack.contentType('contenttype_uid').query().referenceIn('reference_uid', query).find<TEntry>();
+   * const entryQuery = await stack.contentType('contenttype_uid').query().referenceIn('reference_uid', query).find();
    *  
    * @returns {Query}
    */
@@ -309,7 +327,7 @@ export class Query extends BaseQuery {
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
-   * const entryQuery = await stack.contentType('contenttype_uid').query().referenceNotIn('reference_uid', query).find<TEntry>();
+   * const entryQuery = await stack.contentType('contenttype_uid').query().referenceNotIn('reference_uid', query).find();
    *  
    * @returns {Query}
    */
@@ -327,7 +345,7 @@ export class Query extends BaseQuery {
    *
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const query = stack.contentType('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
-   * const entryQuery = await stack.contentType('contenttype_uid').query().tags(['tag1']).find<TEntry>();
+   * const entryQuery = await stack.contentType('contenttype_uid').query().tags(['tag1']).find();
    *  
    * @returns {Query}
    */
@@ -335,6 +353,20 @@ export class Query extends BaseQuery {
     this._parameters['tags'] = values;
     return this;
   }
+
+  /**
+   * @method search
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
+   * const entryQuery = await stack.contentType('contenttype_uid').query().search('key').find();
+   *  
+   * @returns {Query}
+   */
   search(key: string): Query {
     this._queryParams['typeahead'] = key
     return this
