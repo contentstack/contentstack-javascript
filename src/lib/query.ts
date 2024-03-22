@@ -371,4 +371,76 @@ export class Query extends BaseQuery {
     this._queryParams['typeahead'] = key
     return this
   }
+
+  /**
+   * @method lessThan
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
+   * const entryQuery = await stack.contentType('contenttype_uid').query().lessThan('fieldUid', 'value').find();
+   *  
+   * @returns {Query}
+   */
+  lessThan(key: string, value: (string | number)): Query {
+    this._parameters[key] = { '$lt': value };
+    return this;
+  }
+
+  /**
+   * @method lessThanOrEqualTo
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
+   * const entryQuery = await stack.contentType('contenttype_uid').query().lessThanOrEqualTo('fieldUid', 'value').find();
+   *  
+   * @returns {Query}
+   */
+  lessThanOrEqualTo(key: string, value: (string | number)): Query {
+    this._parameters[key] = { '$lte': value };
+    return this;
+  }
+
+  /**
+   * @method greaterThan
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
+   * const entryQuery = await stack.contentType('contenttype_uid').query().greaterThan('fieldUid', 'value').find();
+   *  
+   * @returns {Query}
+   */
+  greaterThan(key: string, value: (string | number)): Query {
+    this._parameters[key] = { '$gt': value };
+    return this;
+  }
+
+  /**
+   * @method greaterThanOrEqualTo
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = stack.contentType('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
+   * const entryQuery = await stack.contentType('contenttype_uid').query().greaterThanOrEqualTo('fieldUid', 'value').find();
+   *  
+   * @returns {Query}
+   */
+  greaterThanOrEqualTo(key: string, value: (string | number)): Query {
+    this._parameters[key] = { '$gte': value };
+    return this;
+  }
 }
