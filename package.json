@@ -1,0 +1,109 @@
+{
+  "name": "contentstack",
+  "version": "3.20.0",
+  "description": "Contentstack Javascript SDK",
+  "homepage": "https://www.contentstack.com/",
+  "author": {
+    "name": "Contentstack",
+    "url": "https://www.contentstack.com/"
+  },
+  "main": "dist/node/contentstack.js",
+  "browser": "dist/web/contentstack.js",
+  "react-native": "dist/react-native/contentstack.js",
+  "types": "./index.d.ts",
+  "_id": "contentstack@3.16.1",
+  "scripts": {
+    "test": "npm run test:e2e && npm run test:typescript",
+    "test:e2e": "tape test/index.js | tap-html --out ./tap-html.html",
+    "test:typescript": "jest --config jest.config.js --testPathPattern=test/typescript",
+    "automate": "node test.js",
+    "build:node": "webpack --config webpack/webpack.node.js",
+    "build:web": "webpack --config webpack/webpack.web.js",
+    "build:react-native": "webpack --config webpack/webpack.react-native.js",
+    "build:native-script": "webpack --config webpack/webpack.nativescript.js",
+    "build": "npm run build:node && npm run build:web && npm run build:react-native && npm run build:native-script",
+    "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose",
+    "prepare": "npm run build",
+    "pretest": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/contentstack/contentstack-javascript.git"
+  },
+  "_shasum": "a328ed07240476a26b31a23261355dc929e1da63",
+  "_from": "contentstack@latest",
+  "engines": {
+    "node": ">= 10.14.2"
+  },
+  "_npmUser": {
+    "name": "mynk",
+    "email": "mayank@contentstack.com"
+  },
+  "maintainers": [
+    {
+      "name": "uttamukkoji",
+      "email": "uttam.ukkoji@contentstack.com"
+    },
+    {
+      "name": "hiteshbal",
+      "email": "hitesh.baldaniya@contentstack.com"
+    },
+    {
+      "name": "mynk",
+      "email": "mayank@contentstack.com"
+    }
+  ],
+  "dist": {
+    "shasum": "a328ed07240476a26b31a23261355dc929e1da63",
+    "tarball": "https://registry.npmjs.org/contentstack/-/contentstack-3.16.1.tgz"
+  },
+  "license": "MIT",
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/contentstack/-/contentstack-3.16.1.tgz",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/contentstack-3.15.0.tgz_1477830884275_0.9869455888401717"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.3",
+    "@babel/preset-env": "^7.23.3",
+    "@babel/runtime": "^7.23.4",
+    "@types/jest": "^26.0.24",
+    "babel-loader": "^9.1.3",
+    "clean-webpack-plugin": "^4.0.0",
+    "compression-webpack-plugin": "^10.0.0",
+    "dotenv": "^16.0.3",
+    "es3ify-loader": "0.2.0",
+    "fetch-mock-jest": "^1.3.0",
+    "http-proxy-agent": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-html-reporters": "^2.1.7",
+    "jsdoc": "^4.0.2",
+    "jshint": "^2.13.6",
+    "minami": "^1.2.3",
+    "node-request-interceptor": "^0.6.3",
+    "nodemailer": "^6.9.1",
+    "string-replace-loader": "^3.1.0",
+    "tap-html": "^1.1.0",
+    "tap-json": "1.0.0",
+    "tape": "4.8.0",
+    "terser-webpack-plugin": "^5.3.7",
+    "ts-jest": "^29.1.1",
+    "typescript": "^4.9.5",
+    "uglify-js": "2.8.29",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-md5-hash": "0.0.5",
+    "webpack-merge": "4.1.0",
+    "webpack-node-externals": "^3.0.0"
+  },
+  "dependencies": {
+    "@contentstack/utils": "^1.3.3",
+    "@slack/bolt": "^3.17.1",
+    "cheerio": "^1.0.0-rc.12",
+    "es6-promise": "^4.1.1",
+    "isomorphic-fetch": "^3.0.0",
+    "localStorage": "1.0.4",
+    "qs": "^6.11.2"
+  }
+}
