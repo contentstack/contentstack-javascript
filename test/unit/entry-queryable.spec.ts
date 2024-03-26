@@ -53,6 +53,10 @@ describe('Query Operators API test cases', () => {
       const query = contentType.Entry().query().equalTo('fieldUID', 'value');
       expect(query._parameters).toStrictEqual({ 'fieldUID': 'value' });
     });
+    it('should return entry equal to the condition - notEqualTo', async () => {
+      const query = contentType.Entry().query().notEqualTo('fieldUID', 'value');
+      expect(query._parameters).toStrictEqual({ 'fieldUID': {'$ne': 'value'} });
+    });
     it('should return entry for referenceIn query', async () => {
       const query1 = contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value');
       const entryQuery = await contentType.Entry().query().referenceIn('reference_uid', query1);
