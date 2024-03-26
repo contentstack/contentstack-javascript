@@ -187,6 +187,50 @@ describe('Query Operators API test cases', () => {
         expect(query.entries[2].title).toBe('test2');
       }
     });
+
+    it('should get entries which is lessThan the fieldUid and values', async () => {
+      const query = await makeEntries('contenttype_uid').query().lessThan('created_at', '2024-03-01T05:25:30.940Z').find<TEntry>()
+      if (query.entries) {
+        expect(query.entries.length).toBeGreaterThan(0);
+        expect(query.entries[0]._version).toBeDefined();
+        expect(query.entries[0].title).toBeDefined();
+        expect(query.entries[0].uid).toBeDefined();
+        expect(query.entries[0].created_at).toBeDefined();
+      }
+    });
+
+    it('should get entries which is lessThanOrEqualTo the fieldUid and values', async () => {
+      const query = await makeEntries('contenttype_uid').query().lessThanOrEqualTo('created_at', '2024-03-01T05:25:30.940Z').find<TEntry>()
+      if (query.entries) {
+        expect(query.entries.length).toBeGreaterThan(0);
+        expect(query.entries[0]._version).toBeDefined();
+        expect(query.entries[0].title).toBeDefined();
+        expect(query.entries[0].uid).toBeDefined();
+        expect(query.entries[0].created_at).toBeDefined();
+      }
+    });
+
+    it('should get entries which is greaterThan the fieldUid and values', async () => {
+      const query = await makeEntries('contenttype_uid').query().greaterThan('created_at', '2024-03-01T05:25:30.940Z').find<TEntry>()
+      if (query.entries) {
+        expect(query.entries.length).toBeGreaterThan(0);
+        expect(query.entries[0]._version).toBeDefined();
+        expect(query.entries[0].title).toBeDefined();
+        expect(query.entries[0].uid).toBeDefined();
+        expect(query.entries[0].created_at).toBeDefined();
+      }
+    });
+
+    it('should get entries which is greaterThanOrEqualTo the fieldUid and values', async () => {
+      const query = await makeEntries('contenttype_uid').query().greaterThanOrEqualTo('created_at', '2024-03-01T05:25:30.940Z').find<TEntry>()
+      if (query.entries) {
+        expect(query.entries.length).toBeGreaterThan(0);
+        expect(query.entries[0]._version).toBeDefined();
+        expect(query.entries[0].title).toBeDefined();
+        expect(query.entries[0].uid).toBeDefined();
+        expect(query.entries[0].created_at).toBeDefined();
+      }
+    });
 });
   
 function makeEntries(contentTypeUid = ''): Entries {
