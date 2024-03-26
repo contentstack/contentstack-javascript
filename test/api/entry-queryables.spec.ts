@@ -117,6 +117,17 @@ describe('Query Operators API test cases', () => {
       }
     });
 
+    it('should return entry not equal to the condition - notEqualTo', async () => {
+      const query = await makeEntries('contenttype_uid').query().notEqualTo('title', 'value').find<TEntry>();
+    
+      if (query.entries) {
+        expect(query.entries[0]._version).toBeDefined();
+        expect(query.entries[0].locale).toBeDefined();
+        expect(query.entries[0].uid).toBeDefined();
+        expect(query.entries[0].title).not.toBe('value');
+      }
+    });
+
     it('should return entry for referencedIn query', async () => {
       const query = makeEntries('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
       const entryQuery = await makeEntries('contenttype_uid').query().referenceIn('reference_uid', query).find<TEntry>();
@@ -127,6 +138,7 @@ describe('Query Operators API test cases', () => {
         expect(entryQuery.entries[0].title).toBe('test');
       }
     });
+
     it('should return entry for referenceNotIn query', async () => {
       const query = makeEntries('contenttype_uid').query().where('title', QueryOperation.EQUALS, 'value');
       const entryQuery = await makeEntries('contenttype_uid').query().referenceNotIn('reference_uid', query).find<TEntry>();

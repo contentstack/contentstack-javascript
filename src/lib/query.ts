@@ -301,7 +301,24 @@ export class Query extends BaseQuery {
   }
 
   /**
-   * @method equalTo
+   * @method notEqualTo
+   * @memberof Query
+   * @description Returns the raw (JSON) query based on the filters applied on Query object.
+   * @example
+   * import contentstack from '@contentstack/delivery-sdk'
+   *
+   * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
+   * const query = await stack.contentType('contenttype_uid').Entry().query().notEqualTo('fieldUid', 'value').find();
+   *  
+   * @returns {Query}
+   */
+  notEqualTo(key: string, value: string | number | boolean): Query {
+    this._parameters[key] = { '$ne': value };
+    return this;;
+  }
+
+  /**
+   * @method referenceIn
    * @memberof Query
    * @description Returns the raw (JSON) query based on the filters applied on Query object.
    * @example
