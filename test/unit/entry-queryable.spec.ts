@@ -91,4 +91,20 @@ describe('Query Operators API test cases', () => {
         expect(query._queryParams).toEqual({ desc: 'fieldUid' });
       }
     });
+    it('should get entries which is lessThan the fieldUid and values', async () => {
+      const query = contentType.Entry().query().lessThan('fieldUID', 'value');
+      expect(query._parameters).toStrictEqual({'fieldUID': {'$lt': 'value'}});
+    });
+    it('should get entries which is lessThanOrEqualTo the fieldUid and values', async () => {
+      const query = contentType.Entry().query().lessThanOrEqualTo('fieldUID', 'value');
+      expect(query._parameters).toStrictEqual({'fieldUID': {'$lte': 'value'}});
+    });
+    it('should get entries which is greaterThan the fieldUid and values', async () => {
+      const query = contentType.Entry().query().greaterThan('fieldUID', 'value');
+      expect(query._parameters).toStrictEqual({'fieldUID': {'$gt': 'value'}});
+    });
+    it('should get entries which is greaterThanOrEqualTo the fieldUid and values', async () => {
+      const query = contentType.Entry().query().greaterThanOrEqualTo('fieldUID', 'value');
+      expect(query._parameters).toStrictEqual({'fieldUID': {'$gte': 'value'}});
+    });
 });
