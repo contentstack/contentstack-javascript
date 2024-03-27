@@ -1,0 +1,15 @@
+name: Source Composition Analysis Scan
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  security-sca:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/node@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --all-projects --fail-on=all
