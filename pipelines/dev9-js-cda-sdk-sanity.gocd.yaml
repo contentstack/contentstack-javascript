@@ -1,0 +1,58 @@
+format_version: 4
+pipelines:
+  dev9-js-cda-sdk-sanity:
+    group: sdk
+    label_template: ${git[:7]}
+    lock_behavior: none
+    display_order: -1
+    timer:
+      spec: 0 10 5,13 ? * MON-FRI
+      only_on_changes: false
+    materials:
+      git:
+        git: git@github.com:contentstack/contentstack-javascript.git
+        shallow_clone: true
+        auto_update: true
+        branch: next
+        blacklist:
+          - '**/*'
+    stages:
+      - sanity:
+          fetch_materials: true
+          keep_artifacts: false
+          clean_workspace: false
+          approval:
+            type: success
+            allow_only_on_success: false
+          secure_variables:
+            HOST: AES:KWFx7MZOTZXQ0KOAgNAjSQ==:vFWBF2aSRz2hm2aNsmz0acguYmlzOnVI15ZzOFHG7F4=
+            API_KEY: AES:NpCbN9gjcaEsQKcfe6bTog==:cT3WRl43FnZVYmYiXjrszbQzh66SKljk0H0KPNJBV24=
+            DELIVERY_TOKEN: AES:q0GdKVqicHs1slHxG8Scvw==:LQ+ae19hvAZwe5ybmvzyWvUXJlRf6Olad+jCgTBHme0=
+            ENVIRONMENT: AES:vl/kAch4UGtWrY1IUtnbPg==:tSwJ/eQlTEjZdOetLxsGPg==
+            SLACK_SIGNING_SECRET: AES:njDs/T8zYUJA0kftS2M2HA==:RCW2lY4cXWfdFyQEHdTXE08SRNZuiEFOvtBS29Xiwb8C5eI2ped0s2CwlvOnPA71
+            SLACK_BOT_TOKEN: AES:FLKnYSTjts0m3NoaqbUwjA==:8LVU9XPZ2DBcKtqXlgHuoqmH+BFBcNyf9hDJRZPbgJry4BoooU0pReTOp6B/QxeX5X0jwrYmEfsgs4abkS5zdg==
+            SLACK_CHANNEL: AES:nU2RD0z7WI7F3AuChOr9mA==:v1qI9sqIhwK/w9KViDf5eCCiAatNBZg3X6amlBEVi8n7QSFWyr6/G98brWXPiXC0
+          jobs:
+            sanity:
+              elastic_profile_id: k8s-cicd-npm18-build-coverage
+              timeout: 0
+              artifacts:
+                - test:
+                    source: tap-html.html
+                    destination: test-results
+              tasks:
+                - exec:
+                    arguments:
+                      - -c
+                      - npm install
+                    command: sh
+                - exec:
+                    arguments:
+                      - -c
+                      - npm run test:e2e
+                    command: sh
+                - exec:
+                    arguments:
+                      - -c
+                      - node sanity-report.js
+                    command: sh
