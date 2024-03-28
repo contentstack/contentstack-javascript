@@ -31,6 +31,12 @@ describe('Query Operators API test cases', () => {
       const query = contentType.Entry().query().notExists('fieldUID');
       expect(query._parameters).toStrictEqual({'fieldUID': {'$exists': false}});
     });
+    it('should get entries which matches the fieldUid - exists', async () => {
+      const query =  contentType.Entry().query().exists('fieldUID');
+      if (query) {
+        expect(query._parameters).toEqual({'fieldUID': {'$exists': true}});
+      }
+    });
     it('should return entries matching any of the conditions - or', async () => {
       const query1: Query = await contentType.Entry().query().containedIn('fieldUID', ['value']);
       const query2: Query = await contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value2');
@@ -47,11 +53,58 @@ describe('Query Operators API test cases', () => {
       const query = contentType.Entry().query().equalTo('fieldUID', 'value');
       expect(query._parameters).toStrictEqual({ 'fieldUID': 'value' });
     });
-    it('should return entry for referencedIn query', async () => {
-      const query1 = contentType.Entry().query().containedIn('fieldUID', ['value']);
+    it('should return entry for referenceIn query', async () => {
+      const query1 = contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value');
       const entryQuery = await contentType.Entry().query().referenceIn('reference_uid', query1);
       if (entryQuery) {
-        expect(entryQuery._parameters).toEqual({ reference_uid: { '$in_query': { fieldUID: { '$in': [ 'value' ] } } } });
+        expect(entryQuery._parameters).toEqual({ reference_uid: { '$in_query': { fieldUID: 'value' } } });
       }
+    });
+    it('should return entry for referenceNotIn query', async () => {
+      const query1 = contentType.Entry().query().where('fieldUID', QueryOperation.EQUALS, 'value');
+      const entryQuery = await contentType.Entry().query().referenceNotIn('reference_uid', query1);
+      if (entryQuery) {
+        expect(entryQuery._parameters).toEqual({ reference_uid: { '$nin_query': { fieldUID: 'value' } } });
+      }
+    });
+    it('should return entry if tags are matching', async () => {
+      const query =  contentType.Entry().query().tags(['tag1']);
+      if (query) {
+        expect(query._parameters).toEqual({ tags: ['tag1'] });
+      }
+    });
+    it('should search for the matching key and return the entry', async () => {
+      const query =  contentType.Entry().query().search('entry');
+      if (query) {
+        expect(query._queryParams).toEqual({ typeahead: 'entry' });
+      }
+    });
+    it('should sort entries in ascending order of the given fieldUID', async () => {
+      const query =  contentType.Entry().query().orderByAscending('fieldUid');
+      if (query) {
+        expect(query._queryParams).toEqual({ asc: 'fieldUid' });
+      }
+    });
+    it('should sort entries in descending order of the given fieldUID', async () => {
+      const query =  contentType.Entry().query().orderByDescending('fieldUid');
+      if (query) {
+        expect(query._queryParams).toEqual({ desc: 'fieldUid' });
+      }
+    });
+    it('should get entries which is lessThan the fieldUid and values', async () => {
+      const query = contentType.Entry().query().lessThan('fieldUID', 'value');
+      expect(query._parameters).toStrictEqual({'fieldUID': {'$lt': 'value'}});
+    });
+    it('should get entries which is lessThanOrEqualTo the fieldUid and values', async () => {
+      const query = contentType.Entry().query().lessThanOrEqualTo('fieldUID', 'value');
+      expect(query._parameters).toStrictEqual({'fieldUID': {'$lte': 'value'}});
+    });
+    it('should get entries which is greaterThan the fieldUid and values', async () => {
+      const query = contentType.Entry().query().greaterThan('fieldUID', 'value');
+      expect(query._parameters).toStrictEqual({'fieldUID': {'$gt': 'value'}});
+    });
+    it('should get entries which is greaterThanOrEqualTo the fieldUid and values', async () => {
+      const query = contentType.Entry().query().greaterThanOrEqualTo('fieldUID', 'value');
+      expect(query._parameters).toStrictEqual({'fieldUID': {'$gte': 'value'}});
     });
 });
