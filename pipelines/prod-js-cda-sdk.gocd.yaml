@@ -1,0 +1,53 @@
+format_version: 4
+pipelines:
+  prod-js-cda-sdk-sanity:
+    group: sdk
+    label_template: ${git[:7]}
+    lock_behavior: none
+    display_order: 2
+    materials:
+      git:
+        git: git@github.com:contentstack/contentstack-javascript.git
+        shallow_clone: true
+        auto_update: true
+        branch: master
+    stages:
+      - sanity:
+          fetch_materials: true
+          keep_artifacts: false
+          clean_workspace: false
+          approval:
+            type: success
+            allow_only_on_success: false
+          secure_variables:
+            HOST: AES:x9lVJfEFL3pDGqyPvuGzYg==:h1D9i5eHmPLlwh0tkUAUt8c25cKyxrpQaz+C49MCFJE=
+            API_KEY: AES:5YzHmaHZ/jsTqm+cYeD4iw==:vq/NlA5kG08C0onLdOvWwvN9YuErqCYf+1Zi50W1lTg=
+            DELIVERY_TOKEN: AES:a1iGoKqFELmLxqGPnjrkpg==:nbeLzdn/K/ESTr6qsWD/dck7t/Mq/e8sjWyCTbAMnLM=
+            SLACK_BOT_TOKEN: AES:CmkGI94OuiCDkS3q+Gbdmw==:fOgW68/UN9KshQhF5GaWPziLTuAMMFNYrRQi/WXs2D/URa3VQbxJve2uWhbXaztbF1Bbt5m/2DTDdF49cAiDkA==
+            SLACK_CHANNEL: AES:/5gN7Yxhrmx3xvkBKHZGBg==:VRsz4DNIH/2Z2hDyflRSFZz2+PGYw1afCtJT3AToCcE=
+            ENVIRONMENT: AES:vl/kAch4UGtWrY1IUtnbPg==:tSwJ/eQlTEjZdOetLxsGPg==
+            SLACK_SIGNING_SECRET: AES:njDs/T8zYUJA0kftS2M2HA==:RCW2lY4cXWfdFyQEHdTXE08SRNZuiEFOvtBS29Xiwb8C5eI2ped0s2CwlvOnPA71
+          jobs:
+            sanity:
+              elastic_profile_id: k8s-cicd-npm18-build-coverage
+              timeout: 0
+              artifacts:
+                - test:
+                    source: tap-html.html
+                    destination: test-results
+              tasks:
+                - exec:
+                    arguments:
+                      - -c
+                      - npm install
+                    command: sh
+                - exec:
+                    arguments:
+                      - -c
+                      - npm run test:e2e
+                    command: sh
+                - exec:
+                    arguments:
+                      - -c
+                      - node sanity-report.js
+                    command: sh
