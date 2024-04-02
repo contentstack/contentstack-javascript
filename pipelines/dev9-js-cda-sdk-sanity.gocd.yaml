@@ -6,7 +6,7 @@ pipelines:
     lock_behavior: none
     display_order: -1
     timer:
-      spec: 0 40 5,13 ? * MON-FRI
+      spec: 0 40 5,12 ? * MON-FRI
       only_on_changes: false
     materials:
       git:
