@@ -1,5 +1,10 @@
 ## Change log
 
+### Version: 4.0.0-beta.6
+#### Date: April-09-2024
+##### New Features:
+- Query operators implementation-3
+
 ### Version: 4.0.0-beta.5
 #### Date: March-26-2024
 ##### New Features:
