@@ -26,8 +26,8 @@ pipelines:
             allow_only_on_success: false
           secure_variables:
             HOST: AES:KWFx7MZOTZXQ0KOAgNAjSQ==:vFWBF2aSRz2hm2aNsmz0acguYmlzOnVI15ZzOFHG7F4=
-            API_KEY: AES:NpCbN9gjcaEsQKcfe6bTog==:cT3WRl43FnZVYmYiXjrszbQzh66SKljk0H0KPNJBV24=
-            DELIVERY_TOKEN: AES:q0GdKVqicHs1slHxG8Scvw==:LQ+ae19hvAZwe5ybmvzyWvUXJlRf6Olad+jCgTBHme0=
+            API_KEY: AES:MMPj6+LBgOJApYeSoJOw0Q==:2gP+YC8bvXkOs8mA6+jXLotNTSfhWhVKdv+RiDJ10F8=
+            DELIVERY_TOKEN: AES:YISpD3HOinAReA8ty2zfjw==:Wq/a1rCnd25DBF5jkzoT9oWQer4dmVeUfcfuJloLybQ=
             ENVIRONMENT: AES:vl/kAch4UGtWrY1IUtnbPg==:tSwJ/eQlTEjZdOetLxsGPg==
             SLACK_SIGNING_SECRET: AES:njDs/T8zYUJA0kftS2M2HA==:RCW2lY4cXWfdFyQEHdTXE08SRNZuiEFOvtBS29Xiwb8C5eI2ped0s2CwlvOnPA71
             SLACK_BOT_TOKEN: AES:FLKnYSTjts0m3NoaqbUwjA==:8LVU9XPZ2DBcKtqXlgHuoqmH+BFBcNyf9hDJRZPbgJry4BoooU0pReTOp6B/QxeX5X0jwrYmEfsgs4abkS5zdg==
