@@ -6,7 +6,7 @@ pipelines:
     lock_behavior: none
     display_order: -1
     timer:
-      spec: 0 40 5,12 ? * MON-FRI
+      spec: 0 30 5,12 ? * MON-FRI
       only_on_changes: false
     materials:
       git:
@@ -26,8 +26,8 @@ pipelines:
             allow_only_on_success: false
           secure_variables:
             HOST: AES:KWFx7MZOTZXQ0KOAgNAjSQ==:vFWBF2aSRz2hm2aNsmz0acguYmlzOnVI15ZzOFHG7F4=
-            API_KEY: AES:MMPj6+LBgOJApYeSoJOw0Q==:2gP+YC8bvXkOs8mA6+jXLotNTSfhWhVKdv+RiDJ10F8=
-            DELIVERY_TOKEN: AES:YISpD3HOinAReA8ty2zfjw==:Wq/a1rCnd25DBF5jkzoT9oWQer4dmVeUfcfuJloLybQ=
+            API_KEY: AES:XNgt6SSftRpUZuFpXFflEQ==:2G8n9f/oFGCG7/x1zrKs0UWL+YmPf2wqjEYsO492HIs=
+            DELIVERY_TOKEN: AES:UwnQ2jUvzkJjl79cJdARPg==:gEOLTqI83cjLJa8FUTEX0shAYDioSw47ZUKmQR5Hu6c=
             ENVIRONMENT: AES:vl/kAch4UGtWrY1IUtnbPg==:tSwJ/eQlTEjZdOetLxsGPg==
             SLACK_SIGNING_SECRET: AES:njDs/T8zYUJA0kftS2M2HA==:RCW2lY4cXWfdFyQEHdTXE08SRNZuiEFOvtBS29Xiwb8C5eI2ped0s2CwlvOnPA71
             SLACK_BOT_TOKEN: AES:FLKnYSTjts0m3NoaqbUwjA==:8LVU9XPZ2DBcKtqXlgHuoqmH+BFBcNyf9hDJRZPbgJry4BoooU0pReTOp6B/QxeX5X0jwrYmEfsgs4abkS5zdg==
