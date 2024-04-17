@@ -1,5 +1,10 @@
 ## Change log
 
+### Version: 3.19.2
+#### Date:  April-17-2024
+##### Dependency:
+ - Hotfix moving slack/bolt to devDependency
+
 ### Version: 3.19.1
 #### Date: March-06-2024
 ##### Dependency:
