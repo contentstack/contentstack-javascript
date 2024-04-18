@@ -12,3 +12,6 @@ require('./asset/find');
 require('./asset/find-result-wrapper');
 require('./asset/spread');
 require('./asset/image-transformation.js');
+
+// Live-preview
+require('./live-preview/live-preview-test.js')
