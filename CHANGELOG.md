@@ -1,5 +1,11 @@
 ## Change log
 
+
+### Version: 4.0.0-beta.7
+#### Date: April-19-2024
+##### Fix:
+- parameters and query params bug fixed
+
 ### Version: 4.0.0-beta.6
 #### Date: April-09-2024
 ##### New Features:
