@@ -1,9 +1,11 @@
 import { AxiosInstance, getData } from '@contentstack/core';
 import { Pagination } from './pagination';
 import { FindResponse } from './types';
+import { params } from './internal-types';
 
 export class BaseQuery extends Pagination {
-  _parameters: { [key: string]: any } = {}; // Params of query class ?query={}
+  _parameters: params = {}; // Params of query class ?query={}
+
   protected _client!: AxiosInstance;
   protected _urlPath!: string;
 
