@@ -4,11 +4,13 @@ import { BaseQueryParameters, QueryOperation, QueryOperator, TaxonomyQueryOperat
 export class Query extends BaseQuery {
   private _contentTypeUid?: string;
 
-  constructor(client: AxiosInstance, uid: string, queryObj?: { [key: string]: any }) {
+  constructor(client: AxiosInstance, params: { [key: string]: any }, queryParams: { [key: string]: string | boolean | number }, uid?: string, queryObj?: { [key: string]: any }) {
     super();
     this._client = client;
     this._contentTypeUid = uid;
     this._urlPath = `/content_types/${this._contentTypeUid}/entries`;
+    this._parameters = params || {};
+    this._queryParams = queryParams || {};
 
     if (queryObj) {
       this._parameters = { ...this._parameters, ...queryObj };
