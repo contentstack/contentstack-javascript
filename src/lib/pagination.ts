@@ -1,7 +1,8 @@
 import { PaginationObj } from './types';
+import { queryParams } from './internal-types';
 
 export class Pagination {
-  _queryParams: { [key: string]: string | boolean | number } = {};
+  _queryParams: queryParams = {};
   /**
    * @method constructor
    * @memberof Pagination

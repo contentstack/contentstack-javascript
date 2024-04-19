@@ -180,8 +180,8 @@ export class Entries extends EntryQueryable {
    * const result = await stack.contentType("contentTypeUid").entry().query();
    */
   query(queryObj?: { [key: string]: any }) {
-    if (queryObj) return new Query(this._client, this._contentTypeUid, queryObj);
+    if (queryObj) return new Query(this._client, this._parameters, this._queryParams, this._contentTypeUid, queryObj);
 
-    return new Query(this._client, this._contentTypeUid);
+    return new Query(this._client, this._parameters, this._queryParams, this._contentTypeUid);
   }
 }

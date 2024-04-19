@@ -90,7 +90,7 @@ describe('Query class', () => {
 });
 
 function getQueryObject(client: AxiosInstance, uid: string, queryObj?: { [key: string]: any }) {
-  if (queryObj) return new Query(client, uid, queryObj);
+  if (queryObj) return new Query(client, {}, {}, uid, queryObj);
 
-  return new Query(client, uid);
+  return new Query(client, {}, {}, uid);
 }
