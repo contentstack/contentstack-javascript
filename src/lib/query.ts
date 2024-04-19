@@ -1,10 +1,12 @@
 import { AxiosInstance } from '@contentstack/core';
 import { BaseQuery } from './base-query';
 import { BaseQueryParameters, QueryOperation, QueryOperator, TaxonomyQueryOperation } from './types';
+import { params, queryParams } from './internal-types';
+
 export class Query extends BaseQuery {
   private _contentTypeUid?: string;
 
-  constructor(client: AxiosInstance, params: { [key: string]: any }, queryParams: { [key: string]: string | boolean | number }, uid?: string, queryObj?: { [key: string]: any }) {
+  constructor(client: AxiosInstance, params: params, queryParams: queryParams, uid?: string, queryObj?: { [key: string]: any }) {
     super();
     this._client = client;
     this._contentTypeUid = uid;
