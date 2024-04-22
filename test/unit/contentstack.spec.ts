@@ -34,7 +34,7 @@ describe('Contentstack', () => {
     createHttpClientMock.mockReset();
   });
 
-  const createStackInstance = (config: StackConfig) => Contentstack.Stack(config);
+  const createStackInstance = (config: StackConfig) => Contentstack.stack(config);
 
   it('should throw error when api key is empty', (done) => {
     const config = {

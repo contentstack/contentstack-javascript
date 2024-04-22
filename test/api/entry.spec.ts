@@ -52,7 +52,7 @@ describe('Entry API tests', () => {
   });
 });
 function makeEntry(uid = ''): Entry {
-  const entry = stack.ContentType('author').Entry(uid);
+  const entry = stack.contentType('author').entry(uid);
 
   return entry;
 }

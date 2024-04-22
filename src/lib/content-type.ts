@@ -29,9 +29,9 @@ export class ContentType {
    * const stack = contentstack.Stack({ apiKey: "apiKey", deliveryToken: "deliveryToken", environment: "environment" });
    * const entry = stack.contentType("contentTypeUid").entry("entryUid");
    */
-  Entry(uid: string): Entry;
-  Entry(): Entries;
-  Entry(uid?: string): Entry | Entries {
+  entry(uid: string): Entry;
+  entry(): Entries;
+  entry(uid?: string): Entry | Entries {
     if (uid) return new Entry(this._client, this._contentTypeUid, uid);
 
     return new Entries(this._client, this._contentTypeUid);

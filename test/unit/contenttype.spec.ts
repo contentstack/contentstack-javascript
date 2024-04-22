@@ -26,12 +26,12 @@ describe('ContentType class', () => {
   });
 
   it('should give Entry instance when entry method is called with entryUid', () => {
-    const query = contentType.Entry('entryUid');
+    const query = contentType.entry('entryUid');
     expect(query).toBeInstanceOf(Entry);
   });
 
   it('should give Entries instance when entry method is called without entryUid', () => {
-    const query = contentType.Entry();
+    const query = contentType.entry();
     expect(query).toBeInstanceOf(Entries);
   });
 

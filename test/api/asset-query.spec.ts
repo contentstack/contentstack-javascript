@@ -96,7 +96,7 @@ describe('AssetQuery API tests', () => {
   });
 });
 function makeAssetQuery(): AssetQuery {
-  const asset = stack.Asset();
+  const asset = stack.asset();
 
   return asset;
 }
