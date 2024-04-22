@@ -24,7 +24,7 @@ describe('ContentTypeQuery API test cases', () => {
   });
 });
 function makeContentTypeQuery(): ContentTypeQuery {
-  const contentTypeQuery = stack.ContentType();
+  const contentTypeQuery = stack.contentType();
 
   return contentTypeQuery;
 }

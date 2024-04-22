@@ -243,9 +243,17 @@ describe('Query Operators API test cases', () => {
         expect(query.entries[0].created_at).toBeDefined();
       }
     });
+
+    it('should check for include reference', async () => {
+      const query = makeEntries('contenttype_uid').includeReference('abc').query()
+      const result = await query.find<TEntry>()
+      if (query) {
+      console.log("🚀 ~ it ~ query._p:", query._queryParams)
+      }
+    });
 });
   
 function makeEntries(contentTypeUid = ''): Entries {
-    const entries = stack.ContentType(contentTypeUid).Entry();
+    const entries = stack.contentType(contentTypeUid).entry();
     return entries;
 }

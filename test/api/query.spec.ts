@@ -53,7 +53,7 @@ describe('Query API tests', () => {
   });
 });
 function makeQuery(ctUid: string, queryObj?: { [key: string]: any }) {
-  const entryInstance = stack.ContentType(ctUid).Entry();
+  const entryInstance = stack.contentType(ctUid).entry();
 
   if (queryObj) return entryInstance.query(queryObj);
   return entryInstance.query();

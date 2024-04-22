@@ -3,7 +3,7 @@ import * as Contentstack from '../../src/lib/contentstack';
 describe('Live preview tests', () => {
 
     test('should check for values initialized', () => {
-        const stack = Contentstack.Stack({
+        const stack = Contentstack.stack({
             apiKey: 'apiKey',
             deliveryToken: 'deliveryToken',
             environment: 'environment',
@@ -14,7 +14,7 @@ describe('Live preview tests', () => {
     });
 
     test('should check host when live preview is enabled and management token is provided', () => {
-        const stack = Contentstack.Stack({
+        const stack = Contentstack.stack({
             apiKey: 'apiKey',
             deliveryToken: 'deliveryToken',
             environment: 'environment',
@@ -32,7 +32,7 @@ describe('Live preview tests', () => {
     });
 
     test('should check host when live preview is disabled and management token is provided', () => {
-        const stack = Contentstack.Stack({
+        const stack = Contentstack.stack({
             apiKey: 'apiKey',
             deliveryToken: 'deliveryToken',
             environment: 'environment',
@@ -50,7 +50,7 @@ describe('Live preview tests', () => {
     });
 
     test('should check host when live preview is enabled and preview token is provided', () => {
-        const stack = Contentstack.Stack({
+        const stack = Contentstack.stack({
             apiKey: 'apiKey',
             deliveryToken: 'deliveryToken',
             environment: 'environment',
@@ -68,7 +68,7 @@ describe('Live preview tests', () => {
     });
 
     test('should check host when live preview is disabled and preview token is provided', () => {
-        const stack = Contentstack.Stack({
+        const stack = Contentstack.stack({
             apiKey: 'apiKey',
             deliveryToken: 'deliveryToken',
             environment: 'environment',

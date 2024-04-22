@@ -11,7 +11,7 @@ function stackInstance() {
     environment: process.env.ENVIRONMENT || '',
   };
 
-  return contentstack.Stack(params);
+  return contentstack.stack(params);
 }
 
 export { stackInstance };

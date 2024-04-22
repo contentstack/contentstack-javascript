@@ -30,7 +30,7 @@ export * as Utils from '@contentstack/utils';
  * }
  */
 // eslint-disable-next-line @typescript-eslint/naming-convention
-export function Stack(config: StackConfig): StackClass {
+export function stack(config: StackConfig): StackClass {
   let defaultConfig = {
     defaultHostname: 'cdn.contentstack.io',
     headers: {} as AxiosRequestHeaders,

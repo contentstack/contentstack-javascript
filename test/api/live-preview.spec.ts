@@ -10,7 +10,7 @@ const environment = process.env.ENVIRONMENT as string
 
 describe('Live preview tests', () => {
     test('should check for values initialized', () => {
-        const stack = contentstack.Stack({
+        const stack = contentstack.stack({
             apiKey: apiKey,
             deliveryToken: deliveryToken,
             environment: environment,
@@ -21,7 +21,7 @@ describe('Live preview tests', () => {
     });
 
     test('should check host when live preview is enabled and management token is provided', () => {
-        const stack = contentstack.Stack({
+        const stack = contentstack.stack({
             apiKey: apiKey,
             deliveryToken: deliveryToken,
             environment: environment,
@@ -39,7 +39,7 @@ describe('Live preview tests', () => {
     });
 
     test('should check host when live preview is disabled and management token is provided', () => {
-        const stack = contentstack.Stack({
+        const stack = contentstack.stack({
             apiKey: apiKey,
             deliveryToken: deliveryToken,
             environment: environment,
@@ -57,7 +57,7 @@ describe('Live preview tests', () => {
     });
 
     test('should check host when live preview is enabled and preview token is provided', () => {
-        const stack = contentstack.Stack({
+        const stack = contentstack.stack({
             apiKey: apiKey,
             deliveryToken: deliveryToken,
             environment: environment,
@@ -75,7 +75,7 @@ describe('Live preview tests', () => {
     });
 
     test('should check host when live preview is disabled and preview token is provided', () => {
-        const stack = contentstack.Stack({
+        const stack = contentstack.stack({
             apiKey: apiKey,
             deliveryToken: deliveryToken,
             environment: environment,
@@ -95,7 +95,7 @@ describe('Live preview tests', () => {
 
 describe('Live preview query Entry API tests', () => {
     it('should check for entry is when live preview is enabled with managemenet token', async () => {
-        const stack = contentstack.Stack({
+        const stack = contentstack.stack({
             apiKey: process.env.API_KEY as string,
             deliveryToken: process.env.DELIVERY_TOKEN as string,
             environment: process.env.ENVIRONMENT as string,
@@ -108,7 +108,7 @@ describe('Live preview query Entry API tests', () => {
             contentTypeUid: 'contentTypeUid',
             live_preview: 'ser',
         })
-        const result = await stack.ContentType('contentTypeUid').Entry('entryUid').fetch<TEntry>();
+        const result = await stack.contentType('contentTypeUid').entry('entryUid').fetch<TEntry>();
         expect(result).toBeDefined();
         expect(result._version).toBeDefined();
         expect(result.locale).toEqual('en-us');
@@ -118,7 +118,7 @@ describe('Live preview query Entry API tests', () => {
     });
 
     it('should check for entry is when live preview is disabled with managemenet token', async () => {
-        const stack = contentstack.Stack({
+        const stack = contentstack.stack({
             apiKey: process.env.API_KEY as string,
             deliveryToken: process.env.DELIVERY_TOKEN as string,
             environment: process.env.ENVIRONMENT as string,
@@ -131,7 +131,7 @@ describe('Live preview query Entry API tests', () => {
             contentTypeUid: 'contentTypeUid',
             live_preview: 'ser',
         })
-        const result = await stack.ContentType('contentTypeUid').Entry('entryUid').fetch<TEntry>();
+        const result = await stack.contentType('contentTypeUid').entry('entryUid').fetch<TEntry>();
         expect(result).toBeDefined();
         expect(result._version).toBeDefined();
         expect(result.locale).toEqual('en-us');
@@ -141,7 +141,7 @@ describe('Live preview query Entry API tests', () => {
     });
 
     it('should check for entry is when live preview is disabled with preview token', async () => {
-        const stack = contentstack.Stack({
+        const stack = contentstack.stack({
             apiKey: process.env.API_KEY as string,
             deliveryToken: process.env.DELIVERY_TOKEN as string,
             environment: process.env.ENVIRONMENT as string,
@@ -154,7 +154,7 @@ describe('Live preview query Entry API tests', () => {
             contentTypeUid: 'contentTypeUid',
             live_preview: 'ser',
         })
-        const result = await stack.ContentType('contentTypeUid').Entry('entryUid').fetch<TEntry>();
+        const result = await stack.contentType('contentTypeUid').entry('entryUid').fetch<TEntry>();
         expect(result).toBeDefined();
         expect(result._version).toBeDefined();
         expect(result.locale).toEqual('en-us');

@@ -37,14 +37,14 @@ describe('Stack class tests', () => {
   });
 
   it('should return Asset instance when asset function is called with stack obj', (done) => {
-    expect(stack.Asset('assetUid')).toBeInstanceOf(Asset);
-    expect(stack.Asset()).toBeInstanceOf(AssetQuery);
+    expect(stack.asset('assetUid')).toBeInstanceOf(Asset);
+    expect(stack.asset()).toBeInstanceOf(AssetQuery);
     done();
   });
 
   it('should return ContentType instance when contentType function is called with stack obj', (done) => {
-    expect(stack.ContentType('contentTypeUid')).toBeInstanceOf(ContentType);
-    expect(stack.ContentType()).toBeInstanceOf(ContentTypeQuery);
+    expect(stack.contentType('contentTypeUid')).toBeInstanceOf(ContentType);
+    expect(stack.contentType()).toBeInstanceOf(ContentTypeQuery);
     done();
   });
 

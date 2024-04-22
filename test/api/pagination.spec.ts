@@ -36,7 +36,7 @@ describe('Pagination API tests', () => {
   });
 });
 function makePagination(uid = '', pageObj = {}) {
-  const query = stack.ContentType(uid).Entry().paginate(pageObj);
+  const query = stack.contentType(uid).entry().paginate(pageObj);
 
   return query;
 }
