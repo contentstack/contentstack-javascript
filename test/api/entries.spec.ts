@@ -135,7 +135,7 @@ describe('Entries API test cases', () => {
     })
 });
 function makeEntries(contentTypeUid = ''): Entries {
-  const entries = stack.ContentType(contentTypeUid).Entry();
+  const entries = stack.contentType(contentTypeUid).entry();
 
   return entries;
 }

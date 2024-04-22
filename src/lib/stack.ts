@@ -33,9 +33,9 @@ export class Stack {
    * const asset = stack.asset('assetUid') // For a single asset with uid 'assetUid'
    *
    */
-  Asset(uid: string): Asset;
-  Asset(): AssetQuery;
-  Asset(uid?: string): Asset | AssetQuery {
+  asset(uid: string): Asset;
+  asset(): AssetQuery;
+  asset(uid?: string): Asset | AssetQuery {
     if (uid) return new Asset(this._client, uid);
 
     return new AssetQuery(this._client);
@@ -56,9 +56,9 @@ export class Stack {
    * // OR
    * const contentType = stack.contentType('contentTypeUid') // For a single contentType with uid 'contentTypeUid'
    */
-  ContentType(): ContentTypeQuery;
-  ContentType(uid: string): ContentType;
-  ContentType(uid?: string): ContentType | ContentTypeQuery {
+  contentType(): ContentTypeQuery;
+  contentType(uid: string): ContentType;
+  contentType(uid?: string): ContentType | ContentTypeQuery {
     if (uid) return new ContentType(this._client, uid);
 
     return new ContentTypeQuery(this._client);
@@ -76,7 +76,7 @@ export class Stack {
 
    * const taxonomy = stack.Taxonomy() // For taxonomy query object
    */
-  Taxonomy(): TaxonomyQuery {
+  taxonomy(): TaxonomyQuery {
     return new TaxonomyQuery(this._client)
   };
 
@@ -91,9 +91,9 @@ export class Stack {
    * // OR
    * const contentType = stack.contentType('contentTypeUid') // For a single contentType with uid 'contentTypeUid'
    */
-  GlobalField(): GlobalFieldQuery;
-  GlobalField(uid: string): GlobalField;
-  GlobalField(uid?: string): GlobalField | GlobalFieldQuery {
+  globalField(): GlobalFieldQuery;
+  globalField(uid: string): GlobalField;
+  globalField(uid?: string): GlobalField | GlobalFieldQuery {
     if (uid) return new GlobalField(this._client, uid);
 
     return new GlobalFieldQuery(this._client);
