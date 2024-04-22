@@ -12,7 +12,7 @@ import {
   TransformData,
 } from './types';
 
-export class imageTransform {
+export class ImageTransform {
   obj: TransformData = {};
 
   /**
@@ -26,7 +26,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  auto(): imageTransform {
+  auto(): ImageTransform {
     this.obj.auto = 'webp';
 
     return this;
@@ -44,7 +44,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  quality(qualityNum: number): imageTransform {
+  quality(qualityNum: number): ImageTransform {
     this.obj.quality = qualityNum.toString();
 
     return this;
@@ -62,7 +62,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  format(format: Format): imageTransform {
+  format(format: Format): ImageTransform {
     this.obj.format = format;
 
     return this;
@@ -93,7 +93,7 @@ export class imageTransform {
     width?: string | number;
     height?: string | number;
     disable?: string;
-  }): imageTransform {
+  }): ImageTransform {
     if (width) this.obj.width = width.toString();
     if (height) this.obj.height = height.toString();
     if (disable) this.obj.disable = 'upscale';
@@ -159,7 +159,7 @@ export class imageTransform {
     cropBy?: CropBy;
     safe?: boolean;
     smart?: boolean;
-  }): imageTransform {
+  }): ImageTransform {
     switch (cropBy) {
       case CropBy.DEFAULT: {
         this.obj.crop = [width.toString(), height.toString()];
@@ -195,7 +195,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  fit(type: FitBy): imageTransform {
+  fit(type: FitBy): ImageTransform {
     this.obj.fit = type;
 
     return this;
@@ -223,7 +223,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  trim(trimValues: number | number[]): imageTransform {
+  trim(trimValues: number | number[]): ImageTransform {
     this.obj.trim = trimValues.toString();
 
     return this;
@@ -243,7 +243,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  orient(orientType: Orientation): imageTransform {
+  orient(orientType: Orientation): ImageTransform {
     this.obj.orient = orientType.toString();
 
     return this;
@@ -300,7 +300,7 @@ export class imageTransform {
     width?: string | number;
     height?: string | number;
     pad?: number | number[];
-  }): imageTransform {
+  }): ImageTransform {
     this.obj.overlay = relativeURL;
     if (align) this.obj['overlay-align'] = align.toString();
     if (repeat) this.obj['overlay-repeat'] = repeat.toString();
@@ -328,7 +328,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  padding(padding: number | number[]): imageTransform {
+  padding(padding: number | number[]): ImageTransform {
     this.obj.pad = padding.toString();
 
     return this;
@@ -351,7 +351,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  bgColor(color: string | number[]): imageTransform {
+  bgColor(color: string | number[]): ImageTransform {
     this.obj['bg-color'] = color.toString();
 
     return this;
@@ -369,7 +369,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  dpr(dprValue: number): imageTransform {
+  dpr(dprValue: number): ImageTransform {
     this.obj.dpr = dprValue.toString();
 
     return this;
@@ -387,7 +387,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  blur(blurValue: number): imageTransform {
+  blur(blurValue: number): ImageTransform {
     this.obj.blur = blurValue.toString();
 
     return this;
@@ -405,7 +405,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  frame(): imageTransform {
+  frame(): ImageTransform {
     this.obj.frame = '1';
 
     return this;
@@ -425,7 +425,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  sharpen(amount: number, radius: number, threshold: number): imageTransform {
+  sharpen(amount: number, radius: number, threshold: number): ImageTransform {
     this.obj.sharpen = [`a${amount}`, `r${radius}`, `t${threshold}`].toString();
 
     return this;
@@ -443,7 +443,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  saturation(saturationValue: number): imageTransform {
+  saturation(saturationValue: number): ImageTransform {
     this.obj.saturation = saturationValue.toString();
 
     return this;
@@ -461,7 +461,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  contrast(contrastValue: number): imageTransform {
+  contrast(contrastValue: number): ImageTransform {
     this.obj.contrast = contrastValue.toString();
 
     return this;
@@ -479,7 +479,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  brightness(brightnessValue: number): imageTransform {
+  brightness(brightnessValue: number): ImageTransform {
     this.obj.brightness = brightnessValue.toString();
 
     return this;
@@ -499,7 +499,7 @@ export class imageTransform {
    *
    * const transformURL = url.transform(transformObj);
    */
-  resizeFilter(type: ResizeFilter): imageTransform {
+  resizeFilter(type: ResizeFilter): ImageTransform {
     this.obj['resize-filter'] = type;
 
     return this;
@@ -540,7 +540,7 @@ export class imageTransform {
     xval?: string | number;
     yval?: string | number;
     canvasBy?: CanvasBy;
-  }): imageTransform {
+  }): ImageTransform {
     switch (canvasBy) {
       case CanvasBy.DEFAULT: {
         this.obj.canvas = [width.toString(), height.toString()];

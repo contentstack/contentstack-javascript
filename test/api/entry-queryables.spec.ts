@@ -245,10 +245,16 @@ describe('Query Operators API test cases', () => {
     });
 
     it('should check for include reference', async () => {
-      const query = makeEntries('contenttype_uid').includeReference('abc').query()
+      const query = makeEntries('contenttype_uid2').includeReference('test3').query()
       const result = await query.find<TEntry>()
-      if (query) {
-      console.log("🚀 ~ it ~ query._p:", query._queryParams)
+      if (result.entries) {
+        expect(result.entries.length).toBeGreaterThan(0);
+        expect(result.entries[0].reference).toBeDefined();
+        expect(result.entries[0]._version).toBeDefined();
+        expect(result.entries[0].title).toBeDefined();
+        expect(result.entries[0].uid).toBeDefined();
+        expect(result.entries[0].created_at).toBeDefined();
+
       }
     });
 });

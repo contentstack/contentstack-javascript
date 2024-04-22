@@ -10,6 +10,7 @@ export interface TEntry {
   publish_details: PublishDetails;
   author: Author[];
   url: string;
+  reference?: Reference[]
 }
 
 
@@ -25,6 +26,11 @@ interface PublishDetails {
 }
 
 interface Author {
+  uid: string;
+  _content_type_uid: string;
+}
+
+interface Reference {
   uid: string;
   _content_type_uid: string;
 }
