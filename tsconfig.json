@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "strictFunctionTypes": true,
+        "strictNullChecks": true,
+        "types": ["jest"],
+        "noEmit": true,
+        "forceConsistentCasingInFileNames": true,
+        "allowJs": true
+    },
+    "files": ["index.d.ts"]
+}
+  
