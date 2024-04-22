@@ -10,7 +10,7 @@ export interface TEntry {
   publish_details: PublishDetails;
   author: Author[];
   url: string;
-  reference?: Reference[]
+  reference?:  any;
 }
 
 
