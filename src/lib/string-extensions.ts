@@ -1,13 +1,13 @@
-import { ImageTransform } from './image-transform';
+import { imageTransform } from './image-transform';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   interface String {
-    transform(imageTransform: ImageTransform): string;
+    transform(imageTransform: imageTransform): string;
   }
 }
 
-String.prototype.transform = function (imageTransform: ImageTransform): string {
+String.prototype.transform = function (imageTransform: imageTransform): string {
   let result = this.toString();
   const queryString = Object.entries(Object.assign({}, imageTransform.obj))
     .map(([key, value]) => `${key}=${value}`)

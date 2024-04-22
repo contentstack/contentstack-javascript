@@ -103,7 +103,7 @@ describe('Asset API tests', () => {
   });
 });
 function makeAsset(uid = ''): Asset {
-  const asset = stack.Asset(uid);
+  const asset = stack.asset(uid);
 
   return asset;
 }
