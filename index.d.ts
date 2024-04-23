@@ -46,6 +46,11 @@ export interface SyncResult {
     total_count: number;
 }
 
+interface ReleasePreview {
+    release_id: string;
+    preview_timestamp: string;
+}
+
 // Contentstack Config 
 export interface Config {
     api_key: string;
@@ -56,7 +61,8 @@ export interface Config {
     live_preview?: LivePreview;
     plugins?: ContentstackPlugin[];
     fetchOptions?: FetchOptions;
-    early_access?: string[]
+    early_access?: string[];
+    release_preview?: ReleasePreview;
 }
 // Stack Config
 export interface StackConfig {
