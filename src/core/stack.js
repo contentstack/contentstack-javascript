@@ -69,7 +69,7 @@ export default class Stack {
             }
         };
         this.config = JSON.parse(JSON.stringify(config));
-        this.plugins = []
+        this.plugins = [];
 
         if (stack_arguments[0].live_preview && stack_arguments[0].live_preview.enable === true && stack_arguments[0].live_preview.management_token !== null) {
             if (stack_arguments[0].live_preview.management_token) {
@@ -117,6 +117,10 @@ export default class Stack {
                     }
                     if (typeof stack_arguments[0].early_access == "object" && Array.isArray(stack_arguments[0].early_access) && stack_arguments[0].early_access.length > 0) {
                         this.headers['x-header-ea'] = stack_arguments[0].early_access.join(',')
+                    }
+                    if (typeof stack_arguments[0].release_preview == "object" && stack_arguments[0].release_preview !== null && Object.keys(stack_arguments[0].release_preview).length > 0) {
+                        this.headers['release_id'] = stack_arguments[0].release_preview.release_id;
+                        this.headers['preview_timestamp'] = stack_arguments[0].release_preview.preview_timestamp;
                     }
                     this.environment = stack_arguments[0].environment;
                     return this;
