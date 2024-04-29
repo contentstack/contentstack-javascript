@@ -253,6 +253,28 @@ export default class Stack {
         return this;
     }
 
+    removeReleasePreview(){
+        delete this.headers['release_id'];
+        delete this.headers['preview_timestamp'];
+
+        return this;
+    }
+
+    getReleasePreviewConfig(){
+        if (this.headers.hasOwnProperty('release_id') && this.headers.hasOwnProperty('preview_timestamp')) {
+            return { release_id: this.headers['release_id'], preview_timestamp: this.headers['preview_timestamp'] };
+        } else {
+            return {};
+        }
+    }
+
+    updateReleasePreview(releasePreviewConfig) {
+        this.headers['release_id'] = releasePreviewConfig.release_id;
+        this.headers['preview_timestamp'] = releasePreviewConfig.preview_timestamp;
+
+        return this;
+    }
+    
 
     livePreviewQuery(query) {
         if (this.live_preview) {

@@ -13,6 +13,9 @@ describe('Stack tests', () => {
         expect(stack.getContentTypes).not.toEqual(undefined)
         expect(stack.imageTransform).not.toEqual(undefined)
         expect(stack.livePreviewQuery).not.toEqual(undefined)
+        expect(stack.removeReleasePreview).not.toEqual(undefined)
+        expect(stack.getReleasePreviewConfig).not.toEqual(undefined)
+        expect(stack.updateReleasePreview).not.toEqual(undefined)
 
         expect(stack.cachePolicy).toEqual(Contentstack.CachePolicy.IGNORE_CACHE);
         expect(stack.environment).toEqual('environment');
@@ -219,6 +222,39 @@ describe('Stack tests', () => {
         expect(stack.config.port).toEqual(443);
         expect(stack.config.version).toEqual("v3");
         expect(stack.fetchOptions.timeout).toEqual(2000);
+
+        done();
+    });
+
+    test('Stack initialization with release preview test', done => {
+        const stack = Contentstack.Stack({
+            api_key: 'api_key', delivery_token: 'delivery_token', environment: 'environment',
+            release_preview: {
+                release_id: 'release_id',
+                preview_timestamp: 'preview_timestamp'
+            }
+        });
+        expect(stack.environment).toEqual('environment');
+        expect(stack.config.port).toEqual(443);
+        expect(stack.config.version).toEqual("v3");
+        expect(stack.getReleasePreviewConfig()).toEqual({
+            release_id: 'release_id',
+            preview_timestamp: 'preview_timestamp'
+        });
+
+        stack.updateReleasePreview({
+            release_id: 'release_id_2',
+            preview_timestamp: 'preview_timestamp_2'
+        });
+
+        expect(stack.getReleasePreviewConfig()).toEqual({
+            release_id: 'release_id_2',
+            preview_timestamp: 'preview_timestamp_2'
+        });
+
+        stack.removeReleasePreview();
+
+        expect(stack.getReleasePreviewConfig()).toEqual({});
 
         done();
     });
