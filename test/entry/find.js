@@ -26,6 +26,13 @@ test('early_access in stack initialization', function (t) {
     t.end();
 });
 
+test('Release Preview in stack initialization', function (t) {
+    const stack = Contentstack.Stack({ ...init.stack, release_preview: { release_id: 'release1', preview_timestamp: 'timestamp1'} });
+    t.equal(stack.headers['release_id'], 'release1', 'release_id should be added');
+    t.equal(stack.headers['preview_timestamp'], 'timestamp1', 'preview_timestamp should be added');
+    t.end();
+});
+
 test('default .find()', function(assert) {
     var Query = Stack.ContentType(contentTypes.source).Query(),
         field = 'updated_at';

@@ -150,6 +150,9 @@ export class Stack {
     setHost(host: string): Stack;
     setCachePolicy(policy: CachePolicy): Stack;
     setCacheProvider(provider: object): Stack;
+    getReleasePreviewConfig(): ReleasePreview | {};
+    removeReleasePreview(): Stack;
+    updateReleasePreview(release_preview_config: ReleasePreview): Stack;
     livePreviewQuery(query: LivePreviewQuery): void;
     clearByQuery(): Stack;
     clearByContentType(): Stack;
