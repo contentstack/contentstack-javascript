@@ -1,5 +1,10 @@
 ## Change log
 
+### Version: 3.20.0
+#### Date: March-12-2024
+##### New Features:
+ - Variants Feature support added
+ 
 ### Version: 3.19.2
 #### Date:  April-17-2024
 ##### Dependency:
