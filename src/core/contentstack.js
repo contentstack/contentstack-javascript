@@ -52,7 +52,9 @@ class Contentstack {
 					if (item._content_type_uid == 'sys_assets' && item.filename) {
 
 						const correspondingAsset = entry[key].children.find(child => child.attrs['asset-uid'] === item.uid);
-						correspondingAsset.attrs['asset-link'] = item.url;
+						if (correspondingAsset) {
+							correspondingAsset.attrs['asset-link'] = item.url;
+						}
 					}
 				});
 			}
