@@ -11,4 +11,6 @@ fileignoreconfig:
   checksum: c88b336f9a271397ffedcf8c5085941ceb0bd1cd7e25ed9ada3acd8ce4f8970c
 - filename: test/typescript/stack.test.ts
   checksum: bbb3c425f8e1a63d4793f69ee9eaba9559294ff53f163a28f70ae54b1792276a
+- filename: src/core/contentstack.js
+  checksum: 90a3b07300155a34f67dc3df87363107eec202123a21bc0cefda324e477a676d
 version: ""
