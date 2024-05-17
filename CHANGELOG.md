@@ -1,5 +1,10 @@
 ## Change log
 
+### Version: 3.19.3
+#### Date:  May-17-2024
+##### Enhanncement:
+ - Update Asset URL method added
+
 ### Version: 3.19.2
 #### Date:  April-17-2024
 ##### Dependency:

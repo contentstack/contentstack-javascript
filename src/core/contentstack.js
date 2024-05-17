@@ -27,12 +27,38 @@ class Contentstack {
 		
 		this.Utils = require('@contentstack/utils');
 	}
-/**
 
-* @memberOf Contentstack
-*/
+	/**
+
+	* @memberOf Contentstack
+	*/
 	Stack(...stack_arguments){
 		return new Stack(...stack_arguments);
+	}
+
+	updateAssetURL(entry) {
+		// check if entry consist of _embedded_items object
+		if (entry._embedded_items == undefined) {
+			throw new Error("_embedded_items not present in entry. Call includeEmbeddedItems() before fetching entry.");
+		}
+
+		// Iterate through each object in _embedded_items and update the asset link
+		for (let key in entry._embedded_items) {
+			let embedded_item = entry._embedded_items[key];
+			if (Array.isArray(embedded_item)) {
+
+				embedded_item.forEach((item) => {
+
+					if (item._content_type_uid == 'sys_assets' && item.filename) {
+
+						const correspondingAsset = entry[key].children.find(child => child.attrs['asset-uid'] === item.uid);
+						if (correspondingAsset) {
+							correspondingAsset.attrs['asset-link'] = item.url;
+						}
+					}
+				});
+			}
+		}
 	}
 }
 

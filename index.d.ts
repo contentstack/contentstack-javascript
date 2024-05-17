@@ -161,6 +161,7 @@ export function Stack(config: Config): Stack;
  */
 export function Stack(api_key: string, access_token: string, environment_name: string, region?: string, fetchOptions?: FetchOptions): Stack;
 
+export function updateAssetURL(entry: object): object;
 export class ContentType {
     constructor();
     content_type_uid: string
