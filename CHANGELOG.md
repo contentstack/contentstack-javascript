@@ -1,5 +1,10 @@
 ## Change log
 
+### Version: 3.20.0
+#### Date:  May-31-2024
+##### Enhanncement:
+ - Adds Timeline Preview changes
+
 ### Version: 3.19.3
 #### Date:  May-17-2024
 ##### Enhanncement:
