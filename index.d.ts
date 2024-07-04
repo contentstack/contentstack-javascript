@@ -92,6 +92,8 @@ export interface LivePreviewConfigWithPreviewToken {
 export interface LivePreviewQuery {
     live_preview: string
     content_type_uid: string
+    preview_timestamp: string
+    release_id: string
 }
 
 export interface RetryDelayOption {
