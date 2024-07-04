@@ -1,6 +1,6 @@
 fileignoreconfig:
 - filename: package-lock.json
-  checksum: 4ddadcdbbd39ead729f20a58ce15fbbf2c71b17edf300df82f51f4f73489e96c
+  checksum: 28f8e6d0e7856b4a568fd260dcc4deb531bcdbebbbff956b008ce7dd26a0475d
 - filename: test/typescript/taxonomy.test.ts
   checksum: e4bdf633e147fd60d929d379f20c814eed5f68b11421d7b53ec8826e9142de37
 - filename: src/core/modules/taxonomy.js
