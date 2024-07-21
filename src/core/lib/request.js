@@ -109,7 +109,7 @@ function fetchRetry(stack, queryParams, fetchOptions, resolve, reject, retryDela
     }
 
     
-    fetch(request.url, request.option)
+    fetch(encodeURI(request.url), request.option)
         .then( function(response) {
             
             if (fetchOptions.debug)  fetchOptions.logHandler('info', response);
