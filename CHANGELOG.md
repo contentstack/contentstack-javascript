@@ -5,6 +5,11 @@
 ##### Enhanncement:
  - Adds Timeline Preview changes
 
+### Version: 3.20.1
+#### Date:  July-09-2024
+##### Fix:
+ - Type support for LivePreviewQuery method params
+
 ### Version: 3.19.3
 #### Date:  May-17-2024
 ##### Enhanncement:
