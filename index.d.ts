@@ -46,6 +46,11 @@ export interface SyncResult {
     total_count: number;
 }
 
+interface ReleasePreview {
+    release_id: string;
+    preview_timestamp: string;
+}
+
 // Contentstack Config 
 export interface Config {
     api_key: string;
@@ -56,7 +61,8 @@ export interface Config {
     live_preview?: LivePreview;
     plugins?: ContentstackPlugin[];
     fetchOptions?: FetchOptions;
-    early_access?: string[]
+    early_access?: string[];
+    release_preview?: ReleasePreview;
 }
 // Stack Config
 export interface StackConfig {
@@ -146,6 +152,9 @@ export class Stack {
     setHost(host: string): Stack;
     setCachePolicy(policy: CachePolicy): Stack;
     setCacheProvider(provider: object): Stack;
+    getReleasePreviewConfig(): ReleasePreview | {};
+    removeReleasePreview(): Stack;
+    updateReleasePreview(release_preview_config: ReleasePreview): Stack;
     livePreviewQuery(query: LivePreviewQuery): void;
     clearByQuery(): Stack;
     clearByContentType(): Stack;
