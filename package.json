@@ -1,6 +1,6 @@
 {
   "name": "contentstack",
-  "version": "3.20.0",
+  "version": "4.0.0",
   "description": "Contentstack Javascript SDK",
   "homepage": "https://www.contentstack.com/",
   "author": {
@@ -11,7 +11,7 @@
   "browser": "dist/web/contentstack.js",
   "react-native": "dist/react-native/contentstack.js",
   "types": "./index.d.ts",
-  "_id": "contentstack@3.16.1",
+  "_id": "contentstack@3.19.3",
   "scripts": {
     "test": "npm run test:e2e && npm run test:typescript",
     "test:e2e": "tape test/index.js | tap-html --out ./tap-html.html",
@@ -99,7 +99,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "@contentstack/utils": "^1.3.3",
+    "@contentstack/utils": "^1.3.8",
     "cheerio": "^1.0.0-rc.12",
     "es6-promise": "^4.1.1",
     "isomorphic-fetch": "^3.0.0",

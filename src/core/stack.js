@@ -111,6 +111,7 @@ export default class Stack {
                     };
                     if (typeof stack_arguments[0].live_preview == "object") {
                         this.live_preview =  Utils.mergeDeep(this.config.live_preview , stack_arguments[0].live_preview)
+                        this.setLivePreviewTimelinePreviewForClient()
                     }
                     if (typeof stack_arguments[0].branch === "string" && stack_arguments[0].branch !== undefined) {
                         this.headers.branch = stack_arguments[0].branch
@@ -276,11 +277,34 @@ export default class Stack {
     }
     
 
+    setLivePreviewTimelinePreviewForClient() {
+        if (Utils.isBrowser()){
+            const params = new URL(document.location.toString()).searchParams;
+            if (params.has('live_preview')) {
+                this.live_preview.live_preview = params.get('live_preview');
+            }
+            if (params.has('release_id')) {
+                this.headers['release_id'] = params.get('release_id');
+            }
+            if (params.has('preview_timestamp')) {
+                this.headers['preview_timestamp'] = params.get('preview_timestamp');
+            }
+        }
+    }
+
+
     livePreviewQuery(query) {
         if (this.live_preview) {
             this.live_preview.live_preview = query.live_preview || 'init';
             this.live_preview.content_type_uid = query.content_type_uid;
             this.live_preview.entry_uid = query.entry_uid
+        }
+
+        if (query.hasOwnProperty('release_id')) {
+            this.headers['release_id'] = query.release_id;
+        }
+        if (query.hasOwnProperty('preview_timestamp')) {
+            this.headers['preview_timestamp'] = query.preview_timestamp;
         }
     }
 

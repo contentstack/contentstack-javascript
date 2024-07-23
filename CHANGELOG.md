@@ -1,10 +1,26 @@
 ## Change log
 
 ### Version: 3.20.0
+
 #### Date: March-12-2024
 ##### New Features:
  - Variants Feature support added
  
+
+#### Date:  May-31-2024
+##### Enhanncement:
+ - Adds Timeline Preview changes
+
+### Version: 3.20.1
+#### Date:  July-09-2024
+##### Fix:
+ - Type support for LivePreviewQuery method params
+
+### Version: 3.19.3
+#### Date:  May-17-2024
+##### Enhanncement:
+ - Update Asset URL method added
+
 ### Version: 3.19.2
 #### Date:  April-17-2024
 ##### Dependency:
