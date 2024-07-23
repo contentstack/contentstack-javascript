@@ -91,7 +91,7 @@ export function merge(target, source) {
 
 // return true if process is running in browser else false
 export function isBrowser() {
-    return (typeof window !== "undefined" && typeof process === "object" && process.title === "browser");
+    return (typeof window !== "undefined");
 }
 
 
