@@ -1,7 +1,7 @@
 ## Change log
 
 ### Version: 3.20.4
-#### Date:  August-16-2024
+#### Date:  August-14-2024
 ##### Fix:
  - Fix file upload function in sanity report file
 
