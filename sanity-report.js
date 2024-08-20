@@ -50,9 +50,9 @@ async function publishMessage (text, report) {
     channel: process.env.SLACK_CHANNEL,
     text: text
   })
-  await app.client.files.upload({
+  await app.client.files.uploadV2({
     token: process.env.SLACK_BOT_TOKEN,
-    channels: process.env.SLACK_CHANNEL,
+    channel_id: process.env.SLACK_CHANNEL_ID,
     initial_comment: '*Here is the report generated*',
     filetype: 'html',
     filename: 'tap-html.html',
