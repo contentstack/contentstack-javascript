@@ -321,7 +321,7 @@ test('.where() compare boolean value (false)', function(assert) {
         .find()
         .then(function success(entries) {
             assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.equal(entries[0].length, 3, ' three entries present in the resultset');
+            assert.equal(entries[0].length, 4, ' three entries present in the resultset');
             assert.end();
         }, function error(err) {
             console.error("error :", err);
@@ -373,7 +373,7 @@ test('.equalTo() compare boolean value (false)', function(assert) {
         .find()
         .then(function success(entries) {
             assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.equal(entries[0].length, 3, ' three entries present in the resultset');
+            assert.equal(entries[0].length, 4, ' three entries present in the resultset');
             assert.end();
         }, function error(err) {
             console.error("error :", err);
@@ -1667,8 +1667,8 @@ test('CT Taxonomies Query: Get Entries With Taxonomy Terms Parent and Excluding 
         })
 })
 
-test('Variants in entry', function (t) {
-    let Query = Stack.ContentType('source').Query();
+test('Variants in entry', function (assert) {
+    let Query = Stack.ContentType('variants').Query();
     Query
         .Variants('variant_entry_1', 'variant_entry_2')
         .toJSON()
