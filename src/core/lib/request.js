@@ -9,27 +9,24 @@ export default function Request(stack, fetchOptions) {
     let requestParams = stack.requestParams;
     return new Promise(function(resolve, reject) {
         let queryParams;
-        let serialize = function(obj, prefix) {
-
-            let str = [],
-                p;
-            if (typeof obj === "object" && obj.length !== undefined) {
-                for (var i = 0, _i = obj.length; i < _i; i++) {
-                    str.push(prefix + '[]=' + obj[i]);
-                }
-            } else {
-                for (const p in obj) {
-                    let k = prefix ? prefix + "[" + p + "]" : p,
-                        v = obj[p];
-                    str.push((v !== null && typeof v === "object" && p !== 'query') ?
-                        serialize(v, k) :
-                        k + "=" + encodeURIComponent(p !== 'query' ? v : JSON.stringify(v)));
-                }
-            }
-            return str.join("&");
-        };
-
         
+        const params = new URLSearchParams();
+        let serialize = function (obj, prefix) {
+          if (typeof obj === 'object' && obj.length !== undefined) {
+            for (let i = 0, _i = obj.length; i < _i; i++) {
+              params.append(prefix + '[]', obj[i]);
+            }
+          } else {
+            for (const p in obj) {
+              let k = prefix ? prefix + '[' + p + ']' : p,
+                v = obj[p];
+              v !== null && typeof v === 'object' && p !== 'query'
+                ? serialize(v, k)
+                : params.append(k, p !== 'query' ? v : JSON.stringify(v));
+            }
+          }
+          return params.toString();
+        };
 
         // setting headers
         requestParams.headers['Content-Type'] = 'application/json; charset=UTF-8';
