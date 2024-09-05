@@ -11,7 +11,7 @@
   "browser": "dist/web/contentstack.js",
   "react-native": "dist/react-native/contentstack.js",
   "types": "./index.d.ts",
-  "_id": "contentstack@3.16.1",
+  "_id": "contentstack@3.19.3",
   "scripts": {
     "test": "npm run test:e2e && npm run test:typescript",
     "test:e2e": "tape test/index.js | tap-html --out ./tap-html.html",
@@ -68,6 +68,7 @@
     "@babel/core": "^7.23.3",
     "@babel/preset-env": "^7.23.3",
     "@babel/runtime": "^7.23.4",
+    "@slack/bolt": "^3.17.1",
     "@types/jest": "^26.0.24",
     "babel-loader": "^9.1.3",
     "clean-webpack-plugin": "^4.0.0",
@@ -98,12 +99,11 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "@contentstack/utils": "^1.3.3",
-    "@slack/bolt": "^3.17.1",
+    "@contentstack/utils": "^1.3.10",
     "cheerio": "^1.0.0-rc.12",
     "es6-promise": "^4.1.1",
     "isomorphic-fetch": "^3.0.0",
     "localStorage": "1.0.4",
-    "qs": "^6.11.2"
+    "qs": "^6.12.1"
   }
 }

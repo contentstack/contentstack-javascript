@@ -1,10 +1,43 @@
 ## Change log
 
+
 ### Version: 3.20.0
 #### Date: March-12-2024
 ##### New Features:
  - Variants Feature support added
  
+
+### Version: 3.20.4
+#### Date:  August-14-2024
+##### Fix:
+ - Fix file upload function in sanity report file
+
+### Version: 3.20.3
+#### Date:  August-02-2024
+##### HotFix:
+ - Removed encode for query params
+
+### Version: 3.20.1
+#### Date:  July-09-2024
+##### Fix:
+ - Type support for LivePreviewQuery method params
+
+### Version: 3.20.0
+#### Date:  May-31-2024
+##### Enhanncement:
+ - Adds Timeline Preview changes
+
+### Version: 3.19.3
+#### Date:  May-17-2024
+##### Enhanncement:
+ - Update Asset URL method added
+
+### Version: 3.19.2
+#### Date:  April-17-2024
+##### Dependency:
+ - Hotfix moving slack/bolt to devDependency
+
+
 ### Version: 3.19.1
 #### Date: March-06-2024
 ##### Dependency:
