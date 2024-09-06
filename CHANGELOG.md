@@ -1,5 +1,10 @@
 ## Change log
 
+### Version: 3.21.0
+#### Date:  September-09-2024
+##### Fix:
+ - Feat Variants support added
+
 ### Version: 3.20.4
 #### Date:  August-14-2024
 ##### Fix:
