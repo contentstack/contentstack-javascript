@@ -236,6 +236,7 @@ export class Entry {
     includeOwner(): this;
     toJSON(): this;
     addParam(key: string, value: any): this;
+    variants(variant_headers: string | string[]): this;
     fetch(fetchOptions?: object): Promise<any>;
 }
 
