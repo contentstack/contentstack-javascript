@@ -1,6 +1,6 @@
 {
   "name": "contentstack",
-  "version": "3.20.3",
+  "version": "3.21.0",
   "description": "Contentstack Javascript SDK",
   "homepage": "https://www.contentstack.com/",
   "author": {
@@ -100,10 +100,10 @@
   },
   "dependencies": {
     "@contentstack/utils": "^1.3.10",
-    "cheerio": "^1.0.0-rc.12",
+    "cheerio": "^1.0.0",
     "es6-promise": "^4.1.1",
     "isomorphic-fetch": "^3.0.0",
     "localStorage": "1.0.4",
-    "qs": "^6.12.1"
+    "qs": "^6.12.3"
   }
 }

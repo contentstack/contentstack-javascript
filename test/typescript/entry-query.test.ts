@@ -455,6 +455,11 @@ describe('Entry Query Test', () => {
         done();
     });
 
+    test('Variants Query: Get variant Entries', done => {
+        makeEntryQuery().variants(['variantEntryUid1', 'variantEntryUid2']).find().then((response) => done()).catch((error) => done());
+        done();
+    });
+
     test('Taxonomy find test', done => {
         makeTaxonomyQuery().find().then((response) => done()).catch((error) => done());
     });
