@@ -342,6 +342,22 @@ export default class Entry {
         }
     }
 
+    /**
+     * @method Variants
+     * @memberOf Entry
+     * @param {String} uid - uid of the variants entry 
+     * @description An initializer is responsible for creating Variants Entry object
+     * @returns {Variants}
+     * @instance 
+     */
+    variants(variant_headers) {
+        if (Array.isArray(variant_headers) && variant_headers.length > 0) {
+            this.headers['x-cs-variant-uid'] = variant_headers.join(',')
+        }else{
+            this.headers['x-cs-variant-uid'] = variant_headers;
+        }
+        return this;
+     }
 
     /**
      * @method fetch
