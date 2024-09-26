@@ -67,11 +67,6 @@ class Contentstack {
 						if (correspondingAsset) {
 							correspondingAsset['href'] = item.url;
 						}
-
-						// const correspondingAsset = entry[key].children.find(child => child.attrs['asset-uid'] === item.uid);
-						// if (correspondingAsset) {
-						// 	correspondingAsset.attrs['asset-link'] = item.url;
-						// }
 					}
 				});
 			}
