@@ -136,13 +136,14 @@ To get a single entry, you need to specify the content type as well as the ID of
 ```javascript
 const Query = Stack.ContentType('blog').Entry("<entry_uid>");
 
-Query.fetch()
-.then(function success(entry) {
-    console.log(entry.get('title')); // Retrieve field value by providing a field's uid
-    console.log(entry.toJSON()); // Convert the entry result object to JSON
-}, function error(err) {
-    // err object
-})
+Query
+    .toJSON()
+    .fetch()
+    .then(function success(entry) {
+        console.log(entry.get('title')); // Retrieve field value by providing a field's uid
+    }, function error(err) {
+        // err object
+    })
 ```
 
 To retrieve multiple entries of a content type, you need to specify the content type uid. You can also specify search parameters to filter results.
@@ -151,19 +152,19 @@ To retrieve multiple entries of a content type, you need to specify the content 
 const Query = Stack.ContentType('blog').Query();
 
 Query
-.where("title", "welcome")
-.includeContentType()
-.includeCount()
-.toJSON()
-.find()
-.then(function success(result) {
-    // result is array where -
-    // result[0] =&gt; entry objects
-    // result[result.length-1] =&gt; entry objects count included only when .includeCount() is queried.
-    // result[1] =&gt; schema of the content type is included when .includeContentType() is queried.
-}, function error(err) {
-    // err object
-})
+    .where("title", "welcome")
+    .includeContentType()
+    .includeCount()
+    .toJSON()
+    .find()
+    .then(function success(result) {
+        // result is array where -
+        // result[0] =&gt; entry objects
+        // result[result.length-1] =&gt; entry objects count included only when .includeCount() is queried.
+        // result[1] =&gt; schema of the content type is included when .includeContentType() is queried.
+    }, function error(err) {
+        // err object
+    })
 ```
 
 #### Cache Policies

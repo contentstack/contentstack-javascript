@@ -51,9 +51,21 @@ class Contentstack {
 
 					if (item._content_type_uid == 'sys_assets' && item.filename) {
 
-						const correspondingAsset = entry[key].children.find(child => child.attrs['asset-uid'] === item.uid);
+						let correspondingAsset;
+						const x = (children) => {
+							for (let i = 0; i < children.length; i++) {
+								if (children[i].children && children[i].children.length) {
+									x(children[i].children);
+								}
+								if (children[i].attrs && children[i].attrs['asset-uid'] === item.uid) {
+									correspondingAsset = children[i].attrs;
+									return;
+								}
+							}
+						}
+						x(entry[key].children);
 						if (correspondingAsset) {
-							correspondingAsset.attrs['asset-link'] = item.url;
+							correspondingAsset['href'] = item.url;
 						}
 					}
 				});
