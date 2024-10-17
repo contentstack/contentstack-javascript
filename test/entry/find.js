@@ -1659,7 +1659,7 @@ test('CT Taxonomies Query: Get Entries With Taxonomy Terms Parent and Excluding 
             assert.end();
         })
 })
-test('Variants in entry', function (t) {
+test('Variants in entry', function (assert) {
     let Query = Stack.ContentType('source').Query();
     Query
         .variants(['variant_entry_1', 'variant_entry_2'])
