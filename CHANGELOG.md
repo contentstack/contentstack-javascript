@@ -1,4 +1,8 @@
 ## Change log
+### Version: 3.22.0
+#### Date:  October-22-2024
+##### Fix:
+ - Node version bump
 
 ### Version: 3.21.0
 #### Date:  September-09-2024
