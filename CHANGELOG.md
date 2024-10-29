@@ -1,8 +1,15 @@
 ## Change log
-### Version: 3.22.0
-#### Date:  October-22-2024
+### Version: 3.22.1
+#### Date:  October-28-2024
 ##### Fix:
  - Node version bump
+
+### Version: 3.22.0
+#### Date:  October-17-2024
+##### Fix:
+ - Fixed updateAssetUrl issue
+ - Fixed the Github workflow issue
+ - Updated the qs version
 
 ### Version: 3.21.0
 #### Date:  September-09-2024
