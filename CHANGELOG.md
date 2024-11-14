@@ -1,4 +1,10 @@
 ## Change log
+
+### Version: 3.22.2
+#### Date:  November-18-2024
+##### Fix:
+ - Handle empty entries
+
 ### Version: 3.22.1
 #### Date:  October-28-2024
 ##### Fix:
