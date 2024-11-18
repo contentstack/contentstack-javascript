@@ -1,6 +1,7 @@
 const fs = require("fs");
 const dotenv = require("dotenv");
 const cheerio = require("cheerio");
+const fetch = require("node-fetch");
 
 dotenv.config();
 
@@ -28,13 +29,17 @@ const resultMessage =
     ? `:white_check_mark: Success (${passedTests} / ${totalTests} Passed)`
     : `:x: Failure (${passedTests} / ${totalTests} Passed)`;
 
+const pipelineName = process.env.GOCD_PIPELINE_NAME;
+const buildNumber = process.env.GOCD_PIPELINE_LABEL;
+const goCdServer = process.env.GOCD_SERVER;
+
+const reportUrl = `http://${goCdServer}/go/files/${pipelineName}/${buildNumber}/sanity/1/sanity/test-results/tap-html.html`;
+
 const slackMessage = {
-  text: `
-    *Dev11, CDA SDK Full Sanity*
-    Result: ${resultMessage}
-    Failed Tests: *${totalFail}*
-    View Report: <file://${process.cwd()}/mochawesome-report/sanity-report.html>
-  `,
+  text: `Dev11, CDA SDK Full Sanity
+*Result:* ${resultMessage}
+*Failed Tests:* ${totalFail}
+<${reportUrl}|View Report>`,
 };
 
 const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
@@ -62,4 +67,5 @@ const sendSlackMessage = async (message) => {
     console.error("Error:", error);
   }
 };
+
 sendSlackMessage(slackMessage.text);
