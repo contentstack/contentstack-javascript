@@ -287,7 +287,12 @@ export function sendRequest(queryObject, options) {
                                 entries.assets = data.assets[0];
                             } else {
                                 if (cachePolicy === 2 && self.provider !== null) {
-                                    self.provider.get(hashQuery, getCacheCallback());
+                                    self.provider.get(hashQuery, function(err, _data) {
+                                        if (err || !_data || (_data.entries.length === 0 && _data.assets.length === 0)) {
+                                            return reject({ error_code: 141, error_message: 'The requested entry doesn\'t exist.' });
+                                        }
+                                        getCacheCallback()(err, _data);
+                                    });
                                     return
                                 } else {
                                     return reject({ error_code: 141, error_message: 'The requested entry doesn\'t exist.' });
