@@ -33,7 +33,7 @@ const pipelineName = process.env.GO_PIPELINE_NAME;
 const pipelineCounter = process.env.GO_PIPELINE_COUNTER;
 const goCdServer = process.env.GOCD_SERVER;
 
-const reportUrl = `http://${goCdServer}/go/files/${pipelineName}/${buildNumber}/sanity/1/sanity/test-results/tap-html.html`;
+const reportUrl = `http://${goCdServer}/go/files/${pipelineName}/${pipelineCounter}/sanity/1/sanity/test-results/tap-html.html`;
 
 const slackMessage = {
   text: `Dev11, CDA SDK Full Sanity
