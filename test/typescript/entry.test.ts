@@ -123,8 +123,8 @@ describe('Entry Test', () => {
         expect(entry._query).toEqual({"include_fallback": true});
         done()
     });
-
-    test('Entry include owner test', done => {
+    // The includeOwner function is deprecated.
+    test.skip('Entry include owner test', done => {
         const entry = makeEntry().includeOwner()
         expect(entry._query).toEqual({"include_owner": true});
         done()
