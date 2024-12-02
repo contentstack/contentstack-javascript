@@ -739,3 +739,59 @@ test('findOne:  .except() - For the reference - Array', function(assert) {
             assert.end();
         });
 });
+/*!
+ * HTTP Error Handling
+ * !*/
+
+test('findOne: should handle 404 Not Found error', function(assert) {
+    const Query = Stack.ContentType(contentTypes.invalid_type).Query();
+    
+    Query
+        .toJSON()
+        .findOne()
+        .then(function success() {
+            assert.fail("Expected 404 error but got a successful response.");
+            assert.end();
+        }, function error(err) {
+            assert.equal(err.http_code, 404, 'Should return HTTP status 404.');
+            assert.ok(err.http_message, 'Error message should be present.');
+            console.error("Error:", err.http_message);
+            assert.end();
+        });
+});
+
+test('findOne: should handle 401 Unauthorized error', function(assert) {
+    Stack.headers = { authorization: 'InvalidAPIKey' }; // Simulating an invalid API key
+    const Query = Stack.ContentType(contentTypes.source).Query();
+    
+    Query
+        .toJSON()
+        .findOne()
+        .then(function success() {
+            assert.fail("Expected 401 error but got a successful response.");
+            assert.end();
+        }, function error(err) {
+            assert.equal(err.http_code, 401, 'Should return HTTP status 401.');
+            assert.ok(err.http_message, 'Error message should be present.');
+            console.error("Error:", err.http_message);
+            assert.end();
+        });
+});
+
+test('findOne: should handle 500 Internal Server Error', function(assert) {
+    const mockStack = Contentstack.Stack({ ...init.stack, host: 'invalid.host' }); // Simulating a server error
+    const Query = mockStack.ContentType(contentTypes.source).Query();
+    
+    Query
+        .toJSON()
+        .findOne()
+        .then(function success() {
+            assert.fail("Expected 500 error but got a successful response.");
+            assert.end();
+        }, function error(err) {
+            assert.equal(err.http_code, 500, 'Should return HTTP status 500.');
+            assert.ok(err.http_message, 'Error message should be present.');
+            console.error("Error:", err.http_message);
+            assert.end();
+        });
+});
