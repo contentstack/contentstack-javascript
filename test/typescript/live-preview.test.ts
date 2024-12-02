@@ -109,6 +109,8 @@ describe("Live preview realtime URL switch", () => {
         stack.livePreviewQuery({
             content_type_uid: "some-other-ct",
             live_preview: "ser",
+            preview_timestamp: Date.now().toString(),
+            release_id: "release_id",
         });
 
         try {
@@ -145,6 +147,8 @@ describe("Live preview realtime URL switch", () => {
         stack.livePreviewQuery({
             content_type_uid: "he",
             live_preview: "ser",
+            preview_timestamp: Date.now().toString(),
+            release_id: "release_id",
         });
 
         try {
@@ -189,6 +193,8 @@ describe("Live preview realtime URL switch", () => {
         stack.livePreviewQuery({
             content_type_uid: "he",
             live_preview: "ser",
+            preview_timestamp: Date.now().toString(),
+            release_id: "release_id",
         });
 
         try {
