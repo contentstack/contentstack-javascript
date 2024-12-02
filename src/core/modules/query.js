@@ -828,7 +828,6 @@ export default class Query extends Entry {
             host = this.config.protocol + "://" + this.live_preview.host + '/' + this.config.version
         }
         const url = getRequestUrl(this.type, this.config, this.content_type_uid, host)
-        
         this.singleEntry = true;
         this._query.limit = 1;
         this.requestParams = {
@@ -840,8 +839,17 @@ export default class Query extends Entry {
                 query: this._query
             }
         };
-        var options = Utils.mergeDeep({}, this.fetchOptions);
-        return Utils.sendRequest(Utils.mergeDeep({}, this), options);
+        const options = Utils.mergeDeep({}, this.fetchOptions);
+        return Utils.sendRequest(Utils.mergeDeep({}, this), options).catch(error => {
+            // Add HTTP status code to the error object if it exists
+            if (error.status) {
+                return Promise.reject({
+                    ...error,
+                    http_code: error.status, // Adding the HTTP status code explicitly
+                    http_message: error.statusText || 'An error occurred'
+                });
+            }
+            return Promise.reject(error); // Fallback for other errors
+        });
     }
-
 }
