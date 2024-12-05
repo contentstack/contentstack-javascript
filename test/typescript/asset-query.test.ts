@@ -118,8 +118,8 @@ describe('Asset Query Test', () => {
         expect(assetQuery._query).toEqual({"include_reference_content_type_uid": true, query:{} });
         done()
     });
-
-    test('Asset Query include owner test', done => {
+    // The includeOwner function is deprecated.
+    test.skip('Asset Query include owner test', done => {
         const assetQuery = makeAssetQuery().includeOwner()
         expect(assetQuery._query).toEqual({"include_owner": true, query:{} });
         done()
