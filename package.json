@@ -103,7 +103,6 @@
     "cheerio": "^1.0.0",
     "es6-promise": "^4.2.8",
     "fetch-mock": "^11.1.5",
-    "isomorphic-fetch": "^3.0.0",
     "localStorage": "1.0.4",
     "qs": "^6.13.0"
   }
