@@ -50,6 +50,9 @@ module.exports = function(options) {
                     }
                 ],
             }]
-        }
+        },
+        optimization: {
+            minimize: false, // Prevents code compression/minification
+        },
     });
 }

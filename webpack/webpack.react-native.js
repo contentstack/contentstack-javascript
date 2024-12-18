@@ -29,12 +29,12 @@ module.exports = function(options) {
         externalsPresets: {
             node: true
         },
-        optimization: {
-            minimize: true,
-            minimizer: [new TerserPlugin({
-                terserOptions: { output: { ascii_only: true } }
-            })],
-          },
+        // optimization: {
+        //     minimize: true,
+        //     minimizer: [new TerserPlugin({
+        //         terserOptions: { output: { ascii_only: true } }
+        //     })],
+        // },
         module: {
             rules: [{
                 test: /\.js?$/,
@@ -57,6 +57,9 @@ module.exports = function(options) {
                     }
                 ],
             }]
-        }
+        },
+        optimization: {
+            minimize: false, // Prevents code compression/minification
+        },
     });
 }
