@@ -282,7 +282,7 @@ data.then(function(sync_data,  err) {
 ##### Advanced sync queries
 
 You can use advanced sync queries to fetch custom results while performing initial sync. 
-[Read advanced sync queries documentation](https://www.contentstack.com/docs/guide/synchronization/using-the-sync-api-with-javascript-sdk#advanced-sync-queries)
+[Read advanced sync queries documentation](https://www.contentstack.com/docs/developers/use-the-sync-apis-with-sdk/use-sync-api-with-javascript-sdk#advanced-sync-queries)
 
 ### Helpful Links
 
