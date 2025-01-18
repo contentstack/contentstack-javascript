@@ -1,5 +1,5 @@
 const fs = require('fs');
-const Slack = require('@slack/bolt')
+const { App } = require('@slack/bolt');
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -39,7 +39,7 @@ const slackMessage = `
 • Total Duration: *${durationInMinutes}m ${durationInSeconds}s*
 `
 
-const app = new Slack.App({
+const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET
 })
