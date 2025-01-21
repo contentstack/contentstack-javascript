@@ -54,6 +54,9 @@ module.exports = function(options) {
             new webpack.ProvidePlugin({
                 global: require.resolve('./../global.js')
               })
-        ]
+        ],
+        optimization: {
+            minimize: true,
+        },
     });
 }
