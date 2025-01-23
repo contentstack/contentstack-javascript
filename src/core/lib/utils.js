@@ -292,7 +292,7 @@ export function sendRequest(queryObject, options) {
                                         if (err || !_data || (_data.entries.length === 0 && _data.assets.length === 0)) {
                                             return reject({ error_code: 141, error_message: 'The requested entry doesn\'t exist.' });
                                         }
-                                        getCacheCallback()(err, _data);
+                                        getCacheCallback(resolve, reject)(err, _data);
                                     });
                                     return
                                 } else {
