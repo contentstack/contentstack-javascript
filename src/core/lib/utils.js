@@ -339,11 +339,12 @@ export function sendRequest(queryObject, options) {
                     }
                 }.bind(self))
                 .catch(function(error) {
-                    if (cachePolicy === 2 && self.provider !== null) {
-                        self.provider.get(hashQuery, getCacheCallback(resolve, reject));
-                    } else {
+                    if(error){
                         reject(error);
                     }
+                    else if (cachePolicy === 2 && self.provider !== null) {
+                        self.provider.get(hashQuery, getCacheCallback(resolve, reject));
+                    } 
                 });
                 
         }
