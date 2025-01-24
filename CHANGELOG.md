@@ -1,4 +1,15 @@
 ## Change log
+### Version: 3.24.1
+#### Date:  January-27-2025
+##### Fix:
+ - Added HTTP error codes in the findOne method
+
+### Version: 3.24.0
+#### Date:  January-27-2025
+##### Enhancement:
+ - updateasseturl for handling jrte within blocks
+ - version bumps
+ - Fixed testcases
 
 ### Version: 3.23.0
 #### Date:  December-05-2024
