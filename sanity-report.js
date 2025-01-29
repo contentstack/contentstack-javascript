@@ -1,14 +1,11 @@
 const fs = require('fs');
 const { App } = require('@slack/bolt');
+const { JSDOM } = require("jsdom");
 const dotenv = require('dotenv')
 dotenv.config()
 
-// const cheerio = require('cheerio');
 const tapHtmlContent = fs.readFileSync('./tap-html.html', 'utf8');
 const report = `./tap-html.html`
-// const $ = cheerio.load(tapHtmlContent);
-// const tapHtmlContent = fs.readFileSync("./tap-html.html", "utf8");
-const { JSDOM } = require("jsdom");
 const dom = new JSDOM(tapHtmlContent);
 const $ = require("jquery")(dom.window);
 
