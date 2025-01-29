@@ -1,6 +1,6 @@
 const fs = require("fs");
+const { JSDOM } = require("jsdom");
 const dotenv = require("dotenv");
-const cheerio = require("cheerio");
 
 dotenv.config();
 
@@ -10,7 +10,8 @@ const user3 = process.env.USER3;
 const user4 = process.env.USER4;
 
 const tapHtmlContent = fs.readFileSync("./tap-html.html", "utf8");
-const $ = cheerio.load(tapHtmlContent);
+const dom = new JSDOM(tapHtmlContent);
+const $ = require("jquery")(dom.window);
 
 const totalCount = $(".nav a:nth-child(2)")
   .text()
