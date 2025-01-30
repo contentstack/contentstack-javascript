@@ -1,6 +1,6 @@
 ## Change log
 ### Version: 3.24.1
-#### Date:  January-27-2025
+#### Date:  February-03-2025
 ##### Fix:
  - Added HTTP error codes in the findOne method
 
