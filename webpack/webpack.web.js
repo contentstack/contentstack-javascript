@@ -1,13 +1,13 @@
 'use strict';
 
 const path = require('path');
-const webpackMerge = require('webpack-merge');
+const { merge }  = require('webpack-merge');
 
 const commonConfig = require('./webpack.common.js');
 const webpack = require('webpack');
 
 module.exports = function(options) {
-    return webpackMerge(commonConfig(), {
+    return merge(commonConfig(), {
         output: {
             library: "Contentstack",
             libraryTarget: "umd",
@@ -54,6 +54,9 @@ module.exports = function(options) {
             new webpack.ProvidePlugin({
                 global: require.resolve('./../global.js')
               })
-        ]
+        ],
+        optimization: {
+            minimize: true,
+        },
     });
 }

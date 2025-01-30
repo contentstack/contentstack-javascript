@@ -1,14 +1,14 @@
 'use strict';
 
 const path = require('path');
-const webpackMerge = require('webpack-merge');
+const { merge }  = require('webpack-merge');
 const TerserPlugin = require("terser-webpack-plugin");
 var nodeExternals = require('webpack-node-externals');
 
 const commonConfig = require('./webpack.common.js');
 
 module.exports = function(options) {
-    return webpackMerge(commonConfig(), {
+    return merge(commonConfig(), {
         output: {
             libraryTarget: "commonjs2",
             path: path.join(__dirname, "../dist/react-native"),
@@ -29,12 +29,12 @@ module.exports = function(options) {
         externalsPresets: {
             node: true
         },
-        optimization: {
-            minimize: true,
-            minimizer: [new TerserPlugin({
-                terserOptions: { output: { ascii_only: true } }
-            })],
-          },
+        // optimization: {
+        //     minimize: true,
+        //     minimizer: [new TerserPlugin({
+        //         terserOptions: { output: { ascii_only: true } }
+        //     })],
+        // },
         module: {
             rules: [{
                 test: /\.js?$/,
@@ -57,6 +57,9 @@ module.exports = function(options) {
                     }
                 ],
             }]
-        }
+        },
+        optimization: {
+            minimize: false, // Prevents code compression/minification
+        },
     });
 }
