@@ -63,7 +63,19 @@ class Contentstack {
 								}
 							}
 						}
-						x(entry[key].children);
+						let _entry = {...entry};
+						const keys = key.split(".");
+						for (const k of keys) {
+							if (_entry[k]) _entry = _entry[k];
+							else if (_entry.length) {
+								for (const block of _entry) {
+									if (block[k]) {
+										_entry = block[k];
+									}
+								}
+							}
+						}
+						if (_entry.children) x(_entry.children);
 						if (correspondingAsset) {
 							correspondingAsset['href'] = item.url;
 						}

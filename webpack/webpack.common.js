@@ -42,6 +42,9 @@ module.exports = function(options) {
                 protectWebpackAssets: false,
                 cleanAfterEveryBuildPatterns: ['*.LICENSE.txt']
             })
-        ]
+        ],
+        optimization: {
+            minimize: false, // Prevents code compression/minification
+        },
     };
 }
