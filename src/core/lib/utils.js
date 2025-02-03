@@ -252,19 +252,20 @@ export function sendRequest(queryObject, options) {
         }
     }
 
-    let getCacheCallback = function() {
+    let getCacheCallback = function(resolve, reject) {
         return function(err, entries) {
-            return new Promise(function(resolve, reject) {
-                try {
-                    if (err) reject(err);
-                    if (!tojson) entries = resultWrapper(entries);
-                    resolve(spreadResult(entries));
-                } catch (e) {
-                    reject(e)
+            try {
+                if (err) {
+                    return reject(err); // Propagate the error to the parent promise
                 }
-            });
-        }
-    }
+                if (!tojson) entries = resultWrapper(entries);
+                resolve(spreadResult(entries)); // Propagate the result to the parent promise
+            } catch (e) {
+                reject(e); // Handle any synchronous errors
+            }
+        };
+    };
+    
 
     let callback = function(continueFlag, resolve, reject) {
         if (continueFlag) {
@@ -291,7 +292,7 @@ export function sendRequest(queryObject, options) {
                                         if (err || !_data || (_data.entries.length === 0 && _data.assets.length === 0)) {
                                             return reject({ error_code: 141, error_message: 'The requested entry doesn\'t exist.' });
                                         }
-                                        getCacheCallback()(err, _data);
+                                        getCacheCallback(resolve, reject)(err, _data);
                                     });
                                     return
                                 } else {
@@ -338,12 +339,14 @@ export function sendRequest(queryObject, options) {
                     }
                 }.bind(self))
                 .catch(function(error) {
-                    if (cachePolicy === 2 && self.provider !== null) {
-                        self.provider.get(hashQuery, getCacheCallback());
-                    } else {
-                        return reject(error);
+                    if(error){
+                        reject(error);
                     }
+                    else if (cachePolicy === 2 && self.provider !== null) {
+                        self.provider.get(hashQuery, getCacheCallback(resolve, reject));
+                    } 
                 });
+                
         }
     }
     switch (cachePolicy) {

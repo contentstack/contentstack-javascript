@@ -151,7 +151,7 @@ export class Stack {
     clearByContentType(): Stack;
     clearAll(): Stack;
     getCacheProvider(): object;
-    getLastActivities(): Promise<any>;;
+    getLastActivities(): Promise<any>;
     getContentTypes(param?: object): Promise<ContentTypeCollection>;
     sync(params: object): Promise<SyncResult>;
     imageTransform(url: string, params: any): string;
