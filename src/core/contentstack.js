@@ -3,12 +3,10 @@ import CacheProvider from './cache-provider/index';
 import ContentstackRegion from "./contentstackregion";
 
  /**
- * @class 
-  Contentstack 
-* @description Creates an instance of `Contentstack`.
-* @instance
-*/
-
+ * @class Contentstack 
+ * @description Creates an instance of `Contentstack`.
+ * @instance
+ */
 class Contentstack {
 
 	constructor(){
@@ -45,8 +43,8 @@ class Contentstack {
 		// Iterate through each object in _embedded_items and update the asset link
 		for (let key in entry._embedded_items) {
 			let embedded_item = entry._embedded_items[key];
-			if (Array.isArray(embedded_item)) {
 
+			if (Array.isArray(embedded_item)) {
 				embedded_item.forEach((item) => {
 
 					if (item._content_type_uid == 'sys_assets' && item.filename) {
@@ -62,8 +60,30 @@ class Contentstack {
 									return;
 								}
 							}
+						};
+
+						let _entry = { ...entry };
+						const keys = key.split(".");
+						const unsafeKeys = new Set(["__proto__", "constructor", "prototype"]);
+
+						for (const k of keys) {
+							// Ensure key is safe before accessing it
+							if (unsafeKeys.has(k)) continue;
+
+							if (_entry && typeof _entry === "object" && _entry !== null && Object.prototype.hasOwnProperty.call(_entry, k)) {
+								const newEntry = _entry[k];
+								if (typeof newEntry === "object" && newEntry !== null) {
+									_entry = newEntry;
+								}
+							} else if (Array.isArray(_entry)) {
+								for (const block of _entry) {
+									if (block && typeof block === "object" && Object.prototype.hasOwnProperty.call(block, k)) {
+										_entry = block[k];
+									}
+								}
+							}
 						}
-						x(entry[key].children);
+						if (_entry.children) x(_entry.children);
 						if (correspondingAsset) {
 							correspondingAsset['href'] = item.url;
 						}
