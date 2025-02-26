@@ -1,6 +1,12 @@
 ## Change log
-### Version: 3.24.2
+### Version: 3.24.3
 #### Date:  March-03-2025
+##### Fix:
+ - Using Node v22
+ - Fixed license and Semgrep issues
+
+### Version: 3.24.2
+#### Date:  Feb-25-2025
 ##### Fix:
  - Reset Timeline Preview variables
 
