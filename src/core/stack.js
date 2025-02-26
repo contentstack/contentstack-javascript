@@ -258,9 +258,13 @@ export default class Stack {
             }
             if (params.has('release_id')) {
                 this.headers['release_id'] = params.get('release_id');
+            } else {
+                delete this.headers['release_id'];
             }
             if (params.has('preview_timestamp')) {
                 this.headers['preview_timestamp'] = params.get('preview_timestamp');
+            } else {
+                delete this.headers['preview_timestamp'];
             }
         }
     }
@@ -274,9 +278,13 @@ export default class Stack {
 
         if (query.hasOwnProperty('release_id')) {
             this.headers['release_id'] = query.release_id;
+        } else {
+            delete this.headers['release_id'];
         }
         if (query.hasOwnProperty('preview_timestamp')) {
             this.headers['preview_timestamp'] = query.preview_timestamp;
+        } else {
+            delete this.headers['preview_timestamp'];
         }
     }
 

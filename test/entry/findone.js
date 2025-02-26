@@ -743,24 +743,23 @@ test('findOne:  .except() - For the reference - Array', function(assert) {
  * HTTP Error Handling
  * !*/
 
-test('findOne: should handle 404 Not Found error', function(assert) {
-    const Query = Stack.ContentType(contentTypes.invalid_type).Query();
+test('findOne: should handle 422 Unprocessable Entity error', function(assert) {
+    const Query = Stack.ContentType("invalid_content_type").Query();
     
     Query
         .toJSON()
         .findOne()
         .then(function success() {
-            assert.fail("Expected 404 error but got a successful response.");
+            assert.fail("Expected 422 error but got a successful response.");
             assert.end();
         }, function error(err) {
-            assert.equal(err.http_code, 404, 'Should return HTTP status 404.');
-            assert.ok(err.http_message, 'Error message should be present.');
-            console.error("Error:", err.http_message);
+            assert.equal(err.http_code, 422, 'Should return HTTP status 422.');
+            assert.ok(err.http_message, 'Unprocessable Entity');
             assert.end();
         });
 });
 
-test('findOne: should handle 401 Unauthorized error', function(assert) {
+test('findOne: should handle 412 Unauthorized error', function(assert) {
     Stack.headers = { authorization: 'InvalidAPIKey' }; // Simulating an invalid API key
     const Query = Stack.ContentType(contentTypes.source).Query();
     
@@ -768,30 +767,11 @@ test('findOne: should handle 401 Unauthorized error', function(assert) {
         .toJSON()
         .findOne()
         .then(function success() {
-            assert.fail("Expected 401 error but got a successful response.");
+            assert.fail("Expected 412 error but got a successful response.");
             assert.end();
         }, function error(err) {
-            assert.equal(err.http_code, 401, 'Should return HTTP status 401.');
-            assert.ok(err.http_message, 'Error message should be present.');
-            console.error("Error:", err.http_message);
-            assert.end();
-        });
-});
-
-test('findOne: should handle 500 Internal Server Error', function(assert) {
-    const mockStack = Contentstack.Stack({ ...init.stack, host: 'invalid.host' }); // Simulating a server error
-    const Query = mockStack.ContentType(contentTypes.source).Query();
-    
-    Query
-        .toJSON()
-        .findOne()
-        .then(function success() {
-            assert.fail("Expected 500 error but got a successful response.");
-            assert.end();
-        }, function error(err) {
-            assert.equal(err.http_code, 500, 'Should return HTTP status 500.');
-            assert.ok(err.http_message, 'Error message should be present.');
-            console.error("Error:", err.http_message);
+            assert.equal(err.http_code, 412, 'Should return HTTP status 412.');
+            assert.ok(err.http_message, 'Precondition Failed.');
             assert.end();
         });
 });

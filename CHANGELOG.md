@@ -1,4 +1,26 @@
 ## Change log
+### Version: 3.24.3
+#### Date:  March-03-2025
+##### Fix:
+ - Using Node v22
+ - Fixed license and Semgrep issues
+
+### Version: 3.24.2
+#### Date:  Feb-25-2025
+##### Fix:
+ - Reset Timeline Preview variables
+
+### Version: 3.24.1
+#### Date:  February-03-2025
+##### Fix:
+ - Added HTTP error codes in the findOne method
+
+### Version: 3.24.0
+#### Date:  January-27-2025
+##### Enhancement:
+ - updateasseturl for handling jrte within blocks
+ - version bumps
+ - Fixed testcases
 
 ### Version: 3.23.0
 #### Date:  December-05-2024

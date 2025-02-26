@@ -1,12 +1,13 @@
 const fs = require('fs');
-const Slack = require('@slack/bolt')
+const { App } = require('@slack/bolt');
+const { JSDOM } = require("jsdom");
 const dotenv = require('dotenv')
 dotenv.config()
 
-const cheerio = require('cheerio');
 const tapHtmlContent = fs.readFileSync('./tap-html.html', 'utf8');
 const report = `./tap-html.html`
-const $ = cheerio.load(tapHtmlContent);
+const dom = new JSDOM(tapHtmlContent);
+const $ = require("jquery")(dom.window);
 
 const totalTime = $('.nav a:nth-child(1)').text().trim().replace('Total Time', '');
 const totalCount = $('.nav a:nth-child(2)').text().trim().replace('Total Count', '');
@@ -39,7 +40,7 @@ const slackMessage = `
 • Total Duration: *${durationInMinutes}m ${durationInSeconds}s*
 `
 
-const app = new Slack.App({
+const app = new App({
   token: process.env.SLACK_BOT_TOKEN,
   signingSecret: process.env.SLACK_SIGNING_SECRET
 })
