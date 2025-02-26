@@ -28,7 +28,8 @@ jobs:
           node-version: '22.x'
           registry-url: 'https://npm.pkg.github.com'
           scope: '@contentstack'
-      - run: npm ci
-      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.PAT_TOKEN }}
+      - run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.PAT_TOKEN }}" > ~/.npmrc
+      - run: npm ci --registry=https://npm.pkg.github.com
+      - run: npm publish --registry=https://npm.pkg.github.com
