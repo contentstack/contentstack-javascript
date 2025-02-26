@@ -1,4 +1,9 @@
 ## Change log
+### Version: 3.24.2
+#### Date:  March-03-2025
+##### Fix:
+ - Reset Timeline Preview variables
+
 ### Version: 3.24.1
 #### Date:  February-03-2025
 ##### Fix:
