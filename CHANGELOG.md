@@ -1,4 +1,10 @@
 ## Change log
+
+### Version: 3.25.0
+#### Date:  March-10-2025
+##### Fix:
+ - Added GCP-EU support
+
 ### Version: 3.24.3
 #### Date:  March-03-2025
 ##### Fix:
