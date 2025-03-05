@@ -196,6 +196,34 @@ describe('Stack tests', () => {
         done();
     });
     
+    test('Stack initialization with Contentstack Config with fetchOptions, GCP-EU region test', done => {
+        const config : Contentstack.Config = {
+            api_key: 'api_key', 
+            delivery_token: 'delivery_token', 
+            environment: 'environment',
+            region: Contentstack.Region.GCP_EU,
+            fetchOptions:{
+                timeout: 2000,
+                retryLimit: 4,
+                retryDelay: 40,
+                logHandler: () => {
+
+                }
+            }
+        };
+        const stack = Contentstack.Stack(config);
+        
+        expect(stack.cachePolicy).toEqual(Contentstack.CachePolicy.IGNORE_CACHE);
+        expect(stack.environment).toEqual('environment');
+        expect(stack.config.host).toEqual('gcp-eu-cdn.contentstack.com');
+        expect(stack.config.port).toEqual(443);
+        expect(stack.config.version).toEqual("v3");
+        expect(stack.fetchOptions.timeout).toEqual(2000);
+        expect(stack.fetchOptions.retryLimit).toEqual(4);
+        expect(stack.fetchOptions.retryDelay).toEqual(40);
+        done();
+    });
+
     test('Stack initialization with region EU test', done => {
         const stack = Contentstack.Stack('api_key', 'delivery_token', 'environment', Contentstack.Region.AZURE_NA);
         expect(stack.cachePolicy).toEqual(Contentstack.CachePolicy.IGNORE_CACHE);
