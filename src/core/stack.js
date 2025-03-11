@@ -596,8 +596,21 @@ export default class Stack {
      */
 
     sync(params, fetchOptions) {
+        if (params && typeof params !== "object") {
+            throw new Error("Invalid parameters: params must be an object.");
+        }
         this._query = {};
-        this._query = Utils.mergeDeep(this._query, params);
+
+        if (params) {
+            for (const key in params) {
+                if (params.hasOwnProperty(key)) {
+                    if (typeof params[key] !== "string" && typeof params[key] !== "number") {
+                        throw new Error(`Invalid parameter value for key "${key}": must be a string or number.`);
+                    }
+                    this._query[key] = params[key];
+                }
+            }
+        }
         this.requestParams = {
             method: 'POST',
             headers: Utils.mergeDeep({}, this.headers),
@@ -630,7 +643,9 @@ export default class Stack {
         if (url && typeof url === "string" && typeof params === "object" && params.length === undefined) {
             let queryParams = [];
             for (const operation in params) {
-                queryParams.push(operation + '=' + params[operation]);
+                const encodedKey = encodeURIComponent(operation);
+                const encodedValue = encodeURIComponent(params[operation]);
+                queryParams.push(encodedKey + '=' + encodedValue);
             }
             url += (url.indexOf("?") <= -1) ? "?" + queryParams.join('&') : "&" + queryParams.join('&');
         }
