@@ -2,7 +2,6 @@
 /*
  * Module Dependencies.
  */
-const test = require('tape');
 const Contentstack = require('../../dist/node/contentstack.js');
 const init = require('./../config.js');
 const Utils = require('./../entry/utils.js');
@@ -11,91 +10,145 @@ const Regexp = new RegExp('\\\?', 'g');
 
 let Stack;
 let Asset;
-/*
- * Initalise the Contentstack Instance
- * */
-test('Initalise the Contentstack Stack Instance', function(TC) {
-    setTimeout(function() {
-        Stack = Contentstack.Stack(init.stack);
-        Stack.setHost(init.host);
-        TC.end();
-    }, 1000);
-});
 
-test('Get All Assets', function(assert) {
-    Stack
-        .Assets()
-        .Query()
-        .toJSON()
-        .find()
-        .then(function success(assets) {
-            assert.ok(assets[0].length, 'Assets present in the resultset');
-            Asset = assets[0][0];
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail("asset default .find()");
-            assert.end();
-        });
-});
+describe('Image Transformation Tests', () => {
+  // Setup - runs before all tests
+  beforeAll(done => {
+    Stack = Contentstack.Stack(init.stack);
+    Stack.setHost(init.host);
+    setTimeout(done, 1000);
+  });
 
-test('Valid URL: single parameter testing', function(assert) {
+  // Get assets for testing
+  describe('Get All Assets', () => {
+    beforeAll(async () => {
+      try {
+        const assets = await Stack.Assets().Query().toJSON().find();
+        Asset = assets[0][0];
+      } catch (error) {
+        console.error("error:", error);
+        throw new Error("Failed to get assets");
+      }
+    });
+
+    test('Should have assets in the resultset', () => {
+      expect(Asset).toBeDefined();
+    });
+  });
+
+  describe('Valid URL: single parameter testing', () => {
+    let Image;
     const Params = {
-        quality: 50
-    }
-    const URL = Asset['url'];
-    const Image = Stack.imageTransform(URL, Params);
-    console.log("URL : ", Image, Image.match(Regexp));
-    assert.ok((Image.match(Regexp).length === 1), "Valid URL is generated");
-    for (var key in Params) {
-        assert.ok((Image.indexOf('?' + key + '=' + Params[key]) !== -1), "Supplied parameter " + key + " found");
-    }
-    assert.ok((Image.match(Regexp).length === 1), "Valid URL is generated");
-    assert.end();
-});
+      quality: 50
+    };
+    
+    beforeAll(() => {
+      const URL = Asset['url'];
+      Image = Stack.imageTransform(URL, Params);
+    });
 
-test('Valid URL: multiple parameter testing', function(assert) {
-    const Params = {
-        quality: 50,
-        auto: 'webp',
-        format: 'jpg'
-    }
-    const URL = Asset['url'];
-    const Image = Stack.imageTransform(URL, Params);
-    assert.ok((Image.match(Regexp).length === 1), "Valid URL is generated");
-    for (var key in Params) {
-        assert.ok((Image.indexOf(key + '=' + Params[key]) !== -1), "Supplied parameter " + key + " found");
-    }
-    assert.ok((Image.match(Regexp).length === 1), "Valid URL is generated");
-    assert.end();
-});
+    test('Should generate valid URL', () => {
+      expect(Image.match(Regexp).length).toBe(1);
+    });
 
-test('Invalid URL: single parameter testing', function(assert) {
-    const Params = {
-        quality: 50
-    }
-    const URL = Asset['url'] + '?';
-    const Image = Stack.imageTransform(URL, Params);
-    assert.ok((Image.match(Regexp).length === 1), "Valid URL is generated");
-    for (var key in Params) {
-        assert.ok((Image.indexOf(key + '=' + Params[key]) !== -1), "Supplied parameter " + key + " found");
-    }
-    assert.ok((Image.match(Regexp).length === 1), "Valid URL is generated");
-    assert.end();
-});
+    test('Should include quality parameter', () => {
+      expect(Image.includes('?quality=50')).toBe(true);
+    });
 
-test('Invalid URL: multiple parameter testing', function(assert) {
+    test('Should verify URL is valid again', () => {
+      expect(Image.match(Regexp).length).toBe(1);
+    });
+  });
+
+  describe('Valid URL: multiple parameter testing', () => {
+    let Image;
     const Params = {
-        quality: 50,
-        auto: 'webp',
-        format: 'jpg'
-    }
-    const URL = Asset['url'] + '?';
-    const Image = Stack.imageTransform(URL, Params);
-    assert.ok((Image.match(Regexp).length === 1), "Valid URL is generated");
-    for (var key in Params) {
-        assert.ok((Image.indexOf(key + '=' + Params[key]) !== -1), "Supplied parameter " + key + " found");
-    }
-    assert.ok((Image.match(Regexp).length === 1), "Valid URL is generated");
-    assert.end();
+      quality: 50,
+      auto: 'webp',
+      format: 'jpg'
+    };
+    
+    beforeAll(() => {
+      const URL = Asset['url'];
+      Image = Stack.imageTransform(URL, Params);
+    });
+
+    test('Should generate valid URL', () => {
+      expect(Image.match(Regexp).length).toBe(1);
+    });
+
+    test('Should include quality parameter', () => {
+      expect(Image.includes('quality=50')).toBe(true);
+    });
+
+    test('Should include auto parameter', () => {
+      expect(Image.includes('auto=webp')).toBe(true);
+    });
+
+    test('Should include format parameter', () => {
+      expect(Image.includes('format=jpg')).toBe(true);
+    });
+
+    test('Should verify URL is valid again', () => {
+      expect(Image.match(Regexp).length).toBe(1);
+    });
+  });
+
+  describe('Invalid URL: single parameter testing', () => {
+    let Image;
+    const Params = {
+      quality: 50
+    };
+    
+    beforeAll(() => {
+      const URL = Asset['url'] + '?';
+      Image = Stack.imageTransform(URL, Params);
+    });
+
+    test('Should generate valid URL', () => {
+      expect(Image.match(Regexp).length).toBe(1);
+    });
+
+    test('Should include quality parameter', () => {
+      expect(Image.includes('quality=50')).toBe(true);
+    });
+
+    test('Should verify URL is valid again', () => {
+      expect(Image.match(Regexp).length).toBe(1);
+    });
+  });
+
+  describe('Invalid URL: multiple parameter testing', () => {
+    let Image;
+    const Params = {
+      quality: 50,
+      auto: 'webp',
+      format: 'jpg'
+    };
+    
+    beforeAll(() => {
+      const URL = Asset['url'] + '?';
+      Image = Stack.imageTransform(URL, Params);
+    });
+
+    test('Should generate valid URL', () => {
+      expect(Image.match(Regexp).length).toBe(1);
+    });
+
+    test('Should include quality parameter', () => {
+      expect(Image.includes('quality=50')).toBe(true);
+    });
+
+    test('Should include auto parameter', () => {
+      expect(Image.includes('auto=webp')).toBe(true);
+    });
+
+    test('Should include format parameter', () => {
+      expect(Image.includes('format=jpg')).toBe(true);
+    });
+
+    test('Should verify URL is valid again', () => {
+      expect(Image.match(Regexp).length).toBe(1);
+    });
+  });
 });

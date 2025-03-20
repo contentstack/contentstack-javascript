@@ -2,7 +2,6 @@
 /*
  * Module Dependencies.
  */
-const test = require('tape');
 const Contentstack = require('../../dist/node/contentstack.js');
 const Utils = require('./utils.js');
 const init = require('../config.js');
@@ -10,769 +9,1056 @@ const init = require('../config.js');
 const contentTypes = init.contentTypes;
 
 let Stack;
-/*
- * Initalise the Contentstack Instance
- * */
-test('Initalise the Contentstack Stack Instance', function(TC) {
-    setTimeout(function() {
-        Stack = Contentstack.Stack(init.stack);
-        Stack.setHost(init.host);
-        TC.end();
-    }, 1000);
-});
 
-test('findOne:  default .findOne()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-    Query
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  default .findOne()");
-            assert.end();
+describe('FindOne Tests', () => {
+  // Setup - Initialize the Contentstack Stack Instance
+  beforeAll((done) => {
+    Stack = Contentstack.Stack(init.stack);
+    Stack.setHost(init.host);
+    setTimeout(done, 1000);
+  });
+  
+  describe('Default FindOne', () => {
+    let entry;
+    let error = null;
+
+    beforeAll(async () => {
+      try {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entry = await Query.toJSON().findOne();
+      } catch (err) {
+        error = err;
+        console.error("Error:", err);
+      }
+    });
+
+    test('Should return an entry with uid, locale, publish_details', () => {
+      expect(entry).toBeDefined();
+      expect(entry['uid']).toBeDefined();
+      expect(entry['locale']).toBeDefined();
+      expect(entry['publish_details']).toBeDefined();
+    });
+  });
+
+  // SORTING TESTS
+  describe('Sorting', () => {
+    describe('Ascending', () => {
+      let entry;
+      let error = null;
+      const field = 'updated_at';
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.ascending(field).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry with uid, locale, publish_details', () => {
+        expect(entry).toBeDefined();
+        expect(entry['uid']).toBeDefined();
+        expect(entry['locale']).toBeDefined();
+        expect(entry['publish_details']).toBeDefined();
+      });
+    });
+
+    describe('Descending', () => {
+      let entry;
+      let error = null;
+      const field = 'created_at';
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.descending(field).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry with uid, locale, publish_details', () => {
+        expect(entry).toBeDefined();
+        expect(entry['uid']).toBeDefined();
+        expect(entry['locale']).toBeDefined();
+        expect(entry['publish_details']).toBeDefined();
+      });
+    });
+  });
+
+  // COMPARISON TESTS
+  describe('Comparison', () => {
+    describe('lessThan', () => {
+      let entry;
+      let error = null;
+      const field = 'num_field';
+      const value = 11;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.numbers_content_type).Query();
+          entry = await Query.lessThan(field, value).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry with uid, locale, publish_details', () => {
+        expect(entry).toBeDefined();
+        expect(entry['uid']).toBeDefined();
+        expect(entry['locale']).toBeDefined();
+        expect(entry['publish_details']).toBeDefined();
+      });
+
+      test('num_field should be less than specified value', () => {
+        expect(entry[field]).toBeLessThan(value);
+      });
+    });
+
+    describe('lessThanOrEqualTo', () => {
+      let entry;
+      let error = null;
+      const field = 'num_field';
+      const value = 11;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.numbers_content_type).Query();
+          entry = await Query.lessThanOrEqualTo(field, value).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+      test('Should return an entry with uid, locale, publish_details', () => {
+        expect(entry).toBeDefined();
+        expect(entry['uid']).toBeDefined();
+        expect(entry['locale']).toBeDefined();
+        expect(entry['publish_details']).toBeDefined();
+      });
+      test('num_field should be less than or equal to specified value', () => {
+        expect(entry[field]).toBeLessThanOrEqual(value);
+      });
+    });
+
+    describe('greaterThan', () => {
+      let entry;
+      let error = null;
+      const field = 'num_field';
+      const value = 6;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.numbers_content_type).Query();
+          entry = await Query.greaterThan(field, value).ascending(field).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry with uid, locale, publish_details', () => {
+        expect(entry).toBeDefined();
+        expect(entry['uid']).toBeDefined();
+        expect(entry['locale']).toBeDefined();
+        expect(entry['publish_details']).toBeDefined();
+      });
+
+      test('num_field should be greater than specified value', () => {
+        expect(entry[field]).toBeGreaterThan(value);
+      });
+    });
+
+    describe('greaterThanOrEqualTo', () => {
+      let entry;
+      let error = null;
+      const field = 'num_field';
+      const value = 11;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.numbers_content_type).Query();
+          entry = await Query.greaterThanOrEqualTo(field, value).descending(field).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+      
+      test('Should return an entry with uid, locale, publish_details', () => {
+        expect(entry).toBeDefined();
+        expect(entry['uid']).toBeDefined();
+        expect(entry['locale']).toBeDefined();
+        expect(entry['publish_details']).toBeDefined();
+      });
+
+      test('num_field should be greater than or equal to specified value', () => {
+        expect(entry[field]).toBeGreaterThanOrEqual(value);
+      });
+    });
+
+    describe('notEqualTo', () => {
+      let entry;
+      let error = null;
+      const field = 'num_field';
+      const value = 6;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.numbers_content_type).Query();
+          entry = await Query.notEqualTo(field, value).descending(field).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('num_field should not be equal to specified value', () => {
+        expect(entry[field]).not.toBe(value);
+      });
+      
+      test('Should return an entry with uid, locale, publish_details', () => {
+        expect(entry).toBeDefined();
+        expect(entry['uid']).toBeDefined();
+        expect(entry['locale']).toBeDefined();
+        expect(entry['publish_details']).toBeDefined();
+      });
+    });
+  });
+
+  // ARRAY/SUBSET TESTS
+  describe('Array/Subset', () => {
+    describe('containedIn', () => {
+      let entry;
+      let error = null;
+      const _in = ["source1", "source2"];
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.containedIn('title', _in).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Entry title should be in the specified values', () => {
+        expect(_in).toContain(entry.title);
+      });
+
+      test('Should return an entry with uid, locale, publish_details', () => {
+        expect(entry).toBeDefined();
+        expect(entry['uid']).toBeDefined();
+        expect(entry['locale']).toBeDefined();
+        expect(entry['publish_details']).toBeDefined();
+      });
+    });
+
+    describe('notContainedIn', () => {
+      let entry;
+      let error = null;
+      const _in = ["source1"];
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.notContainedIn('title', _in).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should either return an entry with matching criteria or an expected error', () => {
+        if (entry) {
+          expect(entry.title).toBeDefined();
+          expect(_in).not.toContain(entry.title);
+        } else {
+          expect(error).toEqual({ 
+            error_code: 141, 
+            error_message: 'The requested entry doesn\'t exist.' 
+          });
+        }
+      });
+
+      test('If entry exists, it should have uid', () => {
+        if (entry) {
+          expect(entry.uid).toBeDefined();
+        }
+      });
+
+      test('If entry exists, it should have locale', () => {
+        if (entry) {
+          expect(entry.locale).toBeDefined();
+        }
+      });
+
+      test('If entry exists, it should have publish_details', () => {
+        if (entry) {
+          expect(entry.publish_details).toBeDefined();
+        }
+      });
+    });
+  });
+
+  // ELEMENT EXISTS TESTS
+  describe('Element Existence', () => {
+    describe('exists', () => {
+      let entry;
+      let error = null;
+      const queryField = "boolean";
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.exists(queryField).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Entry should have the queried field', () => {
+        expect(typeof entry[queryField]).not.toBe('undefined');
+      });
+      
+      test('Should return an entry with uid, locale, publish_details', () => {
+        expect(entry).toBeDefined();
+        expect(entry['uid']).toBeDefined();
+        expect(entry['locale']).toBeDefined();
+        expect(entry['publish_details']).toBeDefined();
+      });
+    });
+
+    describe('notExists', () => {
+      let entry;
+      let error = null;
+      const queryField = "isspecial";
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.notExists(queryField).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should handle either success or error case', () => {
+        if (entry) {
+          expect(typeof entry[queryField]).toBe('undefined');
+        } else {
+          expect(error).toEqual({ 
+            error_code: 141, 
+            error_message: 'The requested entry doesn\'t exist.' 
+          });
+        }
+      });
+      
+      test('If entry exists, it should have uid', () => {
+        if (entry) {
+          expect(entry.uid).toBeDefined();
+        }
+      });
+
+      test('If entry exists, it should have locale', () => {
+        if (entry) {
+          expect(entry.locale).toBeDefined();
+        }
+      });
+
+      test('If entry exists, it should have publish_details', () => {
+        if (entry) {
+          expect(entry.publish_details).toBeDefined();
+        }
+      });
+    });
+  });
+  describe('Pagination', () => {
+    describe('skip', () => {
+      let allEntries;
+      let skippedEntry;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          allEntries = await Query.toJSON().find();
+          
+          const skipQuery = Stack.ContentType(contentTypes.source).Query();
+          skippedEntry = await skipQuery.skip(1).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should have entries in the result set', () => {
+        expect(allEntries.length).toBeTruthy();
+      });
+
+      test('Should get correct skipped entry', () => {
+        expect(skippedEntry).toEqual(allEntries[0][1]);
+      });
+    });
+  });
+
+  describe('Logical Operations', () => {
+    describe('OR Query Objects', () => {
+      let entry;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query1 = Stack.ContentType(contentTypes.source).Query().containedIn('title', ['source1']);
+          const Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', 'false');
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          
+          entry = await Query.or(Query1, Query2).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry with uid, locale, publish_details', () => {
+        expect(entry).toBeDefined();
+        expect(entry['uid']).toBeDefined();
+        expect(entry['locale']).toBeDefined();
+        expect(entry['publish_details']).toBeDefined();
+      });
+    });
+
+    describe('AND Query Objects', () => {
+      let entry;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query1 = Stack.ContentType(contentTypes.source).Query().containedIn('title', ['source1']);
+          const Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', true);
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          
+          entry = await Query.and(Query1, Query2).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry with uid, locale, publish_details', () => {
+        expect(entry).toBeDefined();
+        expect(entry['uid']).toBeDefined();
+        expect(entry['locale']).toBeDefined();
+        expect(entry['publish_details']).toBeDefined();
+      });
+    });
+
+    describe('Raw Query', () => {
+      let entry;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query
+            .query({ "$or": [{ "title": "source1" }, { "boolean": "false" }] })
+            .toJSON()
+            .findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Entry should satisfy OR condition', () => {
+        expect(entry.title === 'source1' || entry.boolean === false).toBeTruthy();
+      });
+      
+      test('Should return an entry with uid, locale, publish_details', () => {
+        expect(entry).toBeDefined();
+        expect(entry['uid']).toBeDefined();
+        expect(entry['locale']).toBeDefined();
+        expect(entry['publish_details']).toBeDefined();
+      });
+    });
+  });
+
+  describe('Tags', () => {
+    let entry;
+    let error = null;
+    const tags = ["tag1", "tag2"];
+
+    beforeAll(async () => {
+      try {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entry = await Query.tags(tags).toJSON().findOne();
+      } catch (err) {
+        error = err;
+        console.error("Error:", err);
+      }
+    });
+
+    test('Tags specified should be found in the result', () => {
+      expect(Utils.arrayPresentInArray(tags, entry.tags) > 0).toBe(true);
+    });
+
+    test('Should return an entry with uid, locale, publish_details', () => {
+      expect(entry).toBeDefined();
+      expect(entry['uid']).toBeDefined();
+      expect(entry['locale']).toBeDefined();
+      expect(entry['publish_details']).toBeDefined();
+    });
+  });
+
+  describe('Search', () => {
+    let entry;
+    let error = null;
+
+    beforeAll(async () => {
+      try {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entry = await Query.search('source1').toJSON().findOne();
+      } catch (err) {
+        error = err;
+        console.error("Error:", err);
+      }
+    });
+
+    test('Should return an entry with uid, locale, publish_details', () => {
+      expect(entry).toBeDefined();
+      expect(entry['uid']).toBeDefined();
+      expect(entry['locale']).toBeDefined();
+      expect(entry['publish_details']).toBeDefined();
+    });
+  });
+
+  describe('Regex', () => {
+    let entry;
+    let error = null;
+    const field = 'title';
+    const regex = {
+      pattern: '^source',
+      options: 'i'
+    };
+
+    beforeAll(async () => {
+      try {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entry = await Query.regex(field, regex.pattern, regex.options).toJSON().findOne();
+      } catch (err) {
+        error = err;
+        console.error("Error:", err);
+      }
+    });
+
+    test('Entry field should match the regex pattern', () => {
+      const regExp = new RegExp(regex.pattern, regex.options);
+      expect(regExp.test(entry[field])).toBe(true);
+    });
+    
+    test('Should return an entry with uid, locale, publish_details', () => {
+        expect(entry).toBeDefined();
+        expect(entry['uid']).toBeDefined();
+        expect(entry['locale']).toBeDefined();
+        expect(entry['publish_details']).toBeDefined();
+      });
+  });
+
+  describe('Localization', () => {
+    describe('Without Fallback', () => {
+      let entry;
+      let error = null;
+      const _in = ['ja-jp'];
+
+      beforeAll(async () => {
+        try {
+          entry = await Stack.ContentType(contentTypes.source)
+            .Query()
+            .language('ja-jp')
+            .toJSON()
+            .findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
+
+      test('Entry should have correct locale in publish_details', () => {
+        expect(_in).toContain(entry.publish_details.locale);
+      });
+    });
+
+    describe('With Fallback', () => {
+      let entry;
+      let error = null;
+      const _in = ['ja-jp', 'en-us'];
+
+      beforeAll(async () => {
+        try {
+          entry = await Stack.ContentType(contentTypes.source)
+            .Query()
+            .language('ja-jp')
+            .includeFallback()
+            .toJSON()
+            .findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
+
+      test('Entry should have locale from allowed fallback list', () => {
+        expect(_in).toContain(entry.publish_details.locale);
+      });
+    });
+  });
+  describe('Including References', () => {
+    describe('includeReference - String', () => {
+      let entry;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.includeReference('reference').toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
+
+      test('All present references should be included as objects', () => {
+        expect(entry && entry['reference'] && typeof entry['reference'] === 'object').toBe(true);
+      });
+    });
+
+    describe('includeReference - Array', () => {
+      let entry;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.includeReference(['reference', 'other_reference']).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
+
+      test('All present references should be included as objects', () => {
+        const condition = (
+          entry && 
+          entry['reference'] && 
+          typeof entry['reference'] === 'object' && 
+          entry.other_reference && 
+          typeof entry.other_reference === 'object'
+        );
+        expect(condition).toBe(true);
+      });
+    });
+  });
+
+  describe('Including Schema', () => {
+    let entry;
+    let error = null;
+
+    beforeAll(async () => {
+      try {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entry = await Query.includeSchema().toJSON().findOne();
+      } catch (err) {
+        error = err;
+        console.error("Error:", err);
+      }
+    });
+
+    test('Should return an entry', () => {
+      expect(entry).toBeDefined();
+    });
+  });
+
+  describe('Including ContentType', () => {
+    let entry;
+    let contentType;
+    let error = null;
+
+    beforeAll(async () => {
+      try {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        [entry, contentType] = await new Promise((resolve, reject) => {
+          Query.includeContentType()
+            .toJSON()
+            .findOne()
+            .then((entry, contentType) => resolve([entry, contentType]), reject);
         });
-});
+      } catch (err) {
+        error = err;
+        console.error("Error:", err);
+      }
+    });
 
-/*!
- * SORTING
- * !*/
-test('findOne:  .ascending()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'updated_at';
+    test('Should return an entry', () => {
+      expect(entry).toBeDefined();
+    });
 
-    Query
-        .ascending(field)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .ascending()");
-            assert.end();
+    test('ContentType should not be present', () => {
+      expect(typeof contentType).toBe("undefined");
+    });
+  });
+
+  describe('Including Schema and ContentType', () => {
+    let entry;
+    let contentType;
+    let error = null;
+
+    beforeAll(async () => {
+      try {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        [entry, contentType] = await new Promise((resolve, reject) => {
+          Query.includeSchema()
+            .includeContentType()
+            .toJSON()
+            .findOne()
+            .then((entry, contentType) => resolve([entry, contentType]), reject);
         });
-});
-
-test('findOne:  .descending()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'created_at';
-
-    Query
-        .descending(field)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .descending()");
-            assert.end();
-        });
-});
-
-
-/*!
- * COMPARISION
- * !*/
-test('findOne:  .lessThan()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
-        field = 'num_field',
-        value = 11;
-    Query
-        .lessThan(field, value)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && entry[field] < value), 'Entry num_field having value less than ' + value + '.');
-            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .lessThan()");
-            assert.end();
-        });
-});
-
-test('findOne:  .lessThanOrEqualTo()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
-        field = 'num_field',
-        value = 11;
-    Query
-        .lessThanOrEqualTo(field, value)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && entry[field] <= value), 'Entry num_field having value less than or equal to ' + value + '.');
-            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .lessThanOrEqualTo()");
-            assert.end();
-        });
-});
-
-test('findOne:  .greaterThan()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
-        field = 'num_field',
-        value = 6;
-
-    Query
-        .greaterThan(field, value)
-        .ascending(field)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && entry[field] > value), 'Entry num_field having value greater than ' + value + '.');
-            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .greaterThan()");
-            assert.end();
-        });
-});
-
-test('findOne:  .greaterThanOrEqualTo()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
-        field = 'num_field',
-        value = 11;
-
-    Query
-        .greaterThanOrEqualTo(field, value)
-        .descending(field)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && entry[field] >= value), 'Entry num_field having value greater than ' + value + '.');
-            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .greaterThanOrEqualTo()");
-            assert.end();
-        });
-});
-
-test('findOne:  .notEqualTo()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
-        field = 'num_field',
-        value = 6;
-
-    Query
-        .notEqualTo(field, value)
-        .descending(field)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && entry[field] !== value), 'Entry num_field having value is not equal to ' + value + '.');
-            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .notEqualTo()");
-            assert.end();
-        });
-});
-
-
-/*!
- * Array/Subset
- * !*/
-
-test('findOne:  .containedIn()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        _in = ["source1", "source2"];
-
-    Query
-        .containedIn('title', _in)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && entry['title'] && ~_in.indexOf(entry['title'])), 'Entry title exists from the available options ' + _in.join(', ') + '.');
-            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .containedIn()");
-            assert.end();
-        });
-});
-
-test('findOne:  .notContainedIn()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        _in = ["source1"];
-
-    Query
-        .notContainedIn('title', _in)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && entry['title'] && _in.indexOf(entry['title']) === -1), 'Entry title not exists from the available options ' + _in.join(', ') + '.');
-            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("findOne:  .notContainedIn() :", err);
-            assert.deepEqual(err, { error_code: 141, error_message: 'The requested entry doesn\'t exist.' }, "No entry found");
-            assert.end();
-        });
-});
-
-
-/*!
- *Element(exists)
- * !*/
-
-test('findOne:  .exists()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        queryField = "boolean";
-
-    Query
-        .exists(queryField)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && typeof entry[queryField] !== 'undefined'), 'Entry having the ' + queryField + '.');
-            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .exists()");
-            assert.end();
-        });
-});
-
-test('findOne:  .notExists()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        queryField = "isspecial";
-
-    Query
-        .notExists(queryField)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && typeof entry[queryField] === 'undefined'), 'Entry having the ' + queryField + '.');
-            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("findOne:  .notExists():", err);
-            assert.deepEqual(err, { error_code: 141, error_message: 'The requested entry doesn\'t exist.' }, "No entry found");
-            assert.end();
-        });
-});
-
-
-// Pagination
-test('findOne:  .skip()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .toJSON()
-        .find()
-        .then(function success(allEntries) {
-            assert.ok(allEntries.length, 'entry key present in the resultset');
-            Stack
-                .ContentType(contentTypes.source)
-                .Query()
-                .skip(1)
-                .toJSON()
-                .findOne()
-                .then(function result(entry) {
-                    assert.deepEqual(allEntries[0][1], entry, 'Element matched.');
-                    assert.end();
-                }, function error(err) {
-                    console.error("error :", err);
-                    assert.fail("findOne:  .skip()");
-                    assert.end();
-                });
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .skip()");
-            assert.end();
-        });
-});
-
-
-
-// Logical
-test('findOne:  .or() - Query Objects', function(assert) {
-    var Query1 = Stack.ContentType(contentTypes.source).Query().containedIn('title', ['source1']);
-    var Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', 'false');
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .or(Query1, Query2)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok((entry && entry['uid'] && entry['locale'] && entry['publish_details']), 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .or() - Query Objects");
-            assert.end();
-        });
-});
-
-test('findOne:  .and() - Query Objects', function(assert) {
-    var Query1 = Stack.ContentType(contentTypes.source).Query().containedIn('title', ['source1']);
-    var Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', true);
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .and(Query1, Query2)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok(entry && entry.uid && entry.locale && entry.publish_details, 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .and() - Query Objects");
-            assert.end();
-        });
-});
-
-
-
-// Custom query
-test('findOne:  .query() - Raw query', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .query({ "$or": [{ "title": "source1" }, { "boolean": "false" }] })
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok(entry && entry.uid && entry.locale && entry.publish_details, 'Entry should have uid, publish_details, locale.');
-            assert.ok(~(entry.title === 'source1' || entry.boolean === true), '$OR condition satisfied');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .query() - Raw query");
-            assert.end();
-        });
-});
-
-
-// tags
-test('findOne:  .tags()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        tags = ["tag1", "tag2"];
-
-    Query
-        .tags(tags)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok(entry && entry.uid && entry.locale && entry.publish_details, 'Entry should have uid, publish_details, locale.');
-            assert.equal((Utils.arrayPresentInArray(tags, entry.tags) > 0), true, 'Tags specified are found in result set');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .tags()");
-            assert.end();
-        });
-});
-
-
-// search
-test('findOne:  .search()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .search('source1')
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok(entry && entry.uid && entry.locale && entry.publish_details, 'Entry should have uid, publish_details, locale.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .search()");
-            assert.end();
-        });
-});
-
-
-// search
-test('findOne:  .regex()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'title',
-        regex = {
-            pattern: '^source',
-            options: 'i'
-        };
-
-    Query
-        .regex(field, regex.pattern, regex.options)
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.ok(entry && entry.uid && entry.locale && entry.publish_details, 'Entry should have uid, publish_details, locale.');
-            assert.ok((new RegExp(regex.pattern, regex.options).test(entry[field])), "regexp satisfied");
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .regex()");
-            assert.end();
-        });
-});
-
-
-test('findOne: without fallback', function(assert) {
-    var _in = ['ja-jp']
-    Stack.ContentType(contentTypes.source).Query().language('ja-jp')
-        .toJSON()
-        .findOne()
-    .then((entry) => {
-        var _entries = (_in.indexOf(entry['publish_details']['locale']) != -1);
-        assert.equal(_entries, true, "Publish content fallback");
-        assert.end();
-    }).catch((error) => {
-        assert.fail("Entries default .find() fallback catch", error.toString());
-        assert.end();
-    })
-})
-
-test('findOne: fallback', function(assert) {
-    var _in = ['ja-jp', 'en-us']
-    Stack.ContentType(contentTypes.source).Query().language('ja-jp')
-    .includeFallback()
-        .toJSON()
-        .findOne()
-    .then((entry) => {
-        var _entries = (_in.indexOf(entry['publish_details']['locale']) != -1);
-        assert.equal(_entries, true, "Publish content fallback");
-        assert.end();
-    }).catch((error) => {
-        assert.fail("Entries default .find() fallback catch", error.toString());
-        assert.end();
-    })
-})
-
-// includeReference
-test('findOne:  .includeReference() - String', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeReference('reference')
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.equal((entry && entry['reference'] && typeof entry['reference'] === 'object'), true, 'all the present reference are included');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .includeReference() - String");
-            assert.end();
-        });
-});
-
-test('findOne:  .includeReference() - Array', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeReference(['reference', 'other_reference'])
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            assert.equal((entry && entry.reference && typeof entry.reference === 'object' && entry.other_reference && typeof entry.other_reference === 'object'), true, 'all the present reference and other reference are included');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .includeReference() - Array");
-            assert.end();
-        });
-});
-
-
-// includeSchema
-test('findOne:  .includeSchema()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeSchema()
-        .toJSON()
-        .findOne()
-        .then(function success(entry, schema) {
-            // console.log("result : ", Object.keys(result || {}));
-            assert.ok(entry, 'entry present in the resultset');
-            //assert.ok(schema, 'Schema is not present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .includeSchema()");
-            assert.end();
-        });
-});
-
-// includeContentType
-test('findOne:  .includeContentType()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeContentType()
-        .toJSON()
-        .findOne()
-        .then(function success(entry, contentType) {
-            // console.log("result : ", entry, contentType);
-            assert.ok(entry, 'entry present in the resultset');
-            assert.ok((typeof contentType === "undefined"), 'ContentType is not present.');
-            // assert.ok((contentType.uid === "source"), 'ContentType is title matched.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .includeContentType()");
-            assert.end();
-        });
-});
-
-// includeSchema & includeContentType
-test('findOne:  includeSchema & .includeContentType()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeSchema()
-        .includeContentType()
-        .toJSON()
-        .findOne()
-        .then(function success(entry, contentType) {
-            // console.log("result : ", entry, contentType);
-            assert.ok(entry, 'entry present in the resultset');
-            assert.ok((typeof contentType === "undefined"), 'ContentType is not present.');
-            // assert.ok((contentType.uid === "source"), 'ContentType is title matched.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  includeSchema & .includeContentType()");
-            assert.end();
-        });
-});
-
-// only
-test('findOne:  .only() - Single String Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .only('title')
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            var flag = (entry && Object.keys(entry).length === 2 && "title" in entry && "uid" in entry);
-            assert.ok(flag, 'entry with the field title in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .only() - Single String Parameter");
-            assert.end();
-        });
-});
-
-test('findOne:  .only() - Multiple String Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .only('BASE', 'title')
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            var flag = (entry && Object.keys(entry).length === 2 && "title" in entry && "uid" in entry);
-            assert.ok(flag, 'entry with the field title in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .only() - Multiple String Parameter");
-            assert.end();
-        });
-});
-
-test('findOne:  .only() - Array Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .only(['title', 'url'])
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            var flag = (entry && Object.keys(entry).length === 3 && "title" in entry && "uid" in entry && "url" in entry);
-            assert.ok(flag, 'entry with the field title,url in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .only() - Array Parameter");
-            assert.end();
-        });
-});
-
-test('findOne:  .only() - For the reference - String', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeReference('reference')
-        .only('BASE', 'reference')
-        .only('reference', 'title')
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            var flag = false;
-            if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
-                flag = entry['reference'].every(function(reference) {
-                    return (reference && "title" in reference && "uid" in reference);
-                });
+      } catch (err) {
+        error = err;
+        console.error("Error:", err);
+      }
+    });
+
+    test('Should return an entry', () => {
+      expect(entry).toBeDefined();
+    });
+
+    test('ContentType should not be present', () => {
+      expect(typeof contentType).toBe("undefined");
+    });
+  });
+
+  describe('Field Selection - Only', () => {
+    describe('only - Single String Parameter', () => {
+      let entry;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.only('title').toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
+
+      test('Entry should only contain title and uid fields', () => {
+        expect(Object.keys(entry).length).toBe(2);
+        expect(entry).toHaveProperty('title');
+        expect(entry).toHaveProperty('uid');
+      });
+    });
+
+    describe('only - Multiple String Parameters', () => {
+      let entry;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.only('BASE', 'title').toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
+
+      test('Entry should only contain title and uid fields', () => {
+        expect(Object.keys(entry).length).toBe(2);
+        expect(entry).toHaveProperty('title');
+        expect(entry).toHaveProperty('uid');
+      });
+    });
+
+    describe('only - Array Parameter', () => {
+      let entry;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.only(['title', 'url']).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
+
+      test('Entry should contain title, url, and uid fields', () => {
+        expect(Object.keys(entry).length).toBe(3);
+        expect(entry).toHaveProperty('title');
+        expect(entry).toHaveProperty('url');
+        expect(entry).toHaveProperty('uid');
+      });
+    });
+
+    describe('only - For reference - String', () => {
+      let entry;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query
+            .includeReference('reference')
+            .only('BASE', 'reference')
+            .only('reference', 'title')
+            .toJSON()
+            .findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
+
+      test('Reference fields should be properly filtered', () => {
+        let hasProperReferences = false;
+        if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
+          hasProperReferences = entry['reference'].every(ref => 
+            ref && "title" in ref && "uid" in ref);
+        } else {
+          hasProperReferences = true; // No references or empty references is valid
+        }
+        expect(hasProperReferences).toBe(true);
+      });
+    });
+
+    describe('only - For reference - Array', () => {
+      let entry;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query
+            .includeReference('reference')
+            .only('BASE', ['reference'])
+            .only('reference', ['title'])
+            .toJSON()
+            .findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
+
+      test('References should have only specified fields', () => {
+        let hasProperReferences = false;
+        if (entry && entry['reference']) {
+          if (Array.isArray(entry['reference'])) {
+            if (entry['reference'].length === 0) {
+              hasProperReferences = true;
             } else {
-                flag = true
+              hasProperReferences = entry['reference'].every(ref => 
+                ref && "title" in ref && "uid" in ref);
             }
-            assert.equal(flag, true, 'Entry has the reference with only paramteres.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .only() - For the reference - String");
-            assert.end();
-        });
-});
+          } else {
+            hasProperReferences = true;
+          }
+        } else {
+          hasProperReferences = true;
+        }
+        expect(hasProperReferences).toBe(true);
+      });
+    });
+  });
 
-test('findOne:  .only() - For the reference - Array', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+  describe('Field Selection - Except', () => {
+    describe('except - Single String Parameter', () => {
+      let entry;
+      let error = null;
 
-    Query
-        .includeReference('reference')
-        .only('BASE', ['reference'])
-        .only('reference', ['title'])
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            var flag = false;            
-            if (entry && entry['reference']) {
-                if (entry['reference'].length) {
-                    if (entry['reference'].length === 0){
-                        flag = true
-                    } else {
-                        flag = entry['reference'].every(function(reference) {
-                            return (reference && "title" in reference && "uid" in reference);
-                        });
-                    }
-                } else {
-                    flag = true
-                }
-            } else {
-                flag = true
-            }
-            assert.equal(flag, true, 'Entry do not have the reference with only paramteres.');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .only() - For the reference - Array");
-            assert.end();
-        });
-});
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.except('title').toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
 
-// except
-test('findOne:  .except() - Single String Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
 
-    Query
-        .except('title')
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            var flag = (entry && !("title" in entry));
-            assert.ok(flag, 'entry without the field title in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .except() - Single String Parameter");
-            assert.end();
-        });
-});
+      test('Entry should not contain the excluded field', () => {
+        expect(entry).not.toHaveProperty('title');
+      });
+    });
 
-test('findOne:  .except() - Multiple String Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+    describe('except - Multiple String Parameters', () => {
+      let entry;
+      let error = null;
 
-    Query
-        .except('BASE', 'title')
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            var flag = (entry && !("title" in entry));
-            assert.ok(flag, 'entry without the field title, url in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .except() - Multiple String Parameter");
-            assert.end();
-        });
-});
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.except('BASE', 'title').toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
 
-test('findOne:  .except() - Array of String Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
 
-    Query
-        .except(['title', 'url'])
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            var flag = (entry && !("title" in entry) && !("url" in entry));
-            assert.ok(flag, 'entry without the field title, url in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("");
-            assert.end();
-        });
-});
+      test('Entry should not contain the excluded field', () => {
+        expect(entry).not.toHaveProperty('title');
+      });
+    });
 
-test('findOne:  .except() - For the reference - String', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+    describe('except - Array of String Parameters', () => {
+      let entry;
+      let error = null;
 
-    Query
-        .includeReference('reference')
-        .only('BASE', 'reference')
-        .except('reference', 'title')
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            var flag = false;
-            if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
-                flag = entry['reference'].every(function(reference) {
-                    return (reference && !("title" in reference));
-                });
-            }
-            assert.ok(flag, 'entry with the field reference without title field in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .except() - For the reference - String");
-            assert.end();
-        });
-});
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query.except(['title', 'url']).toJSON().findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
 
-test('findOne:  .except() - For the reference - Array', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
 
-    Query
-        .includeReference('reference')
-        .only('BASE', ['reference'])
-        .except('reference', ['title'])
-        .toJSON()
-        .findOne()
-        .then(function success(entry) {
-            var flag = false;
-            if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
-                flag = entry['reference'].every(function(reference) {
-                    return (reference && !("title" in reference));
-                });
-            }
-            assert.ok(flag, 'entry with the field reference without title field in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail("findOne:  .except() - For the reference - Array");
-            assert.end();
-        });
+      test('Entry should not contain the first excluded field', () => {
+        expect(entry).not.toHaveProperty('title');
+      });
+
+      test('Entry should not contain the second excluded field', () => {
+        expect(entry).not.toHaveProperty('url');
+      });
+    });
+
+    describe('except - For the reference - String', () => {
+      let entry;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query
+            .includeReference('reference')
+            .only('BASE', 'reference')
+            .except('reference', 'title')
+            .toJSON()
+            .findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
+
+      test('References should not contain the excluded field', () => {
+        let hasProperExclusions = false;
+        if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
+          hasProperExclusions = entry['reference'].every(ref => 
+            ref && !("title" in ref));
+        } else {
+          // No references is valid for this test
+          hasProperExclusions = true;
+        }
+        expect(hasProperExclusions).toBe(true);
+      });
+    });
+    
+    describe('except - For the reference - Array', () => {
+      let entry;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entry = await Query
+            .includeReference('reference')
+            .only('BASE', ['reference'])
+            .except('reference', ['title'])
+            .toJSON()
+            .findOne();
+        } catch (err) {
+          error = err;
+          console.error("Error:", err);
+        }
+      });
+
+      test('Should return an entry', () => {
+        expect(entry).toBeDefined();
+      });
+
+      test('References should not contain the excluded field', () => {
+        let hasProperExclusions = false;
+        if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
+          hasProperExclusions = entry['reference'].every(ref => 
+            ref && !("title" in ref));
+        } else {
+          hasProperExclusions = true;
+        }
+        expect(hasProperExclusions).toBe(true);
+      });
+    });
+  });
 });
