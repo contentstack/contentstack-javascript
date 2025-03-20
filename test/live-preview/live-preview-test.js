@@ -1,91 +1,90 @@
-
 'use strict';
 
-const test = require('tape');
 const Contentstack = require('../../dist/node/contentstack.js');
 
-test('should check for values initialized', function(assert) {
+describe('Contentstack Live Preview Tests', () => {
+  test('should check for values initialized', () => {
     const stack = Contentstack.Stack({
-        'api_key': process.env.API_KEY, 
-        'delivery_token': process.env.DELIVERY_TOKEN, 
-        'environment': process.env.ENVIRONMENT
+      'api_key': process.env.region_API_KEY, 
+      'delivery_token': process.env.DELIVERY_TOKEN, 
+      'environment': process.env.ENVIRONMENT
     });
+    
     const livePreviewObject = stack.config.live_preview;
-    assert.equal(livePreviewObject.enable, false);
-    assert.equal(stack.config.host, 'cdn.contentstack.io'); // rest-preview.contentstack.com
-    assert.end();
-});
+    expect(livePreviewObject.enable).toBe(false);
+    expect(stack.config.host).toBe('cdn.contentstack.io'); // rest-preview.contentstack.com
+  });
 
-test('should check host when live preview is enabled and management token is provided', function(assert) {
+  test('should check host when live preview is enabled and management token is provided', () => {
     const stack = Contentstack.Stack({
-        'api_key': process.env.API_KEY, 
-        'delivery_token': process.env.DELIVERY_TOKEN, 
-        'environment': process.env.ENVIRONMENT,
-        live_preview: {
-            enable: true,
-            management_token: 'management_token'
-        }
+      'api_key': process.env.API_KEY, 
+      'delivery_token': process.env.DELIVERY_TOKEN, 
+      'environment': process.env.ENVIRONMENT,
+      live_preview: {
+        enable: true,
+        management_token: 'management_token'
+      }
     });
+    
     const livePreviewObject = stack.config.live_preview;
-    assert.notEqual(livePreviewObject, 'undefined');
-    assert.notEqual(livePreviewObject.enable, 'undefined');
-    assert.notEqual(livePreviewObject.host, 'undefined');
-    assert.equal(stack.config.host, 'cdn.contentstack.io'); // rest-preview.contentstack.com
-    assert.end();
-});
+    expect(livePreviewObject).not.toBe('undefined');
+    expect(livePreviewObject.enable).not.toBe('undefined');
+    expect(livePreviewObject.host).not.toBe('undefined');
+    expect(stack.config.host).toBe('cdn.contentstack.i'); // rest-preview.contentstack.com
+  });
 
-test('should check host when live preview is disabled and management token is provided', function(assert) {
+  test('should check host when live preview is disabled and management token is provided', () => {
     const stack = Contentstack.Stack({
-        'api_key': process.env.API_KEY, 
-        'delivery_token': process.env.DELIVERY_TOKEN, 
-        'environment': process.env.ENVIRONMENT,
-        live_preview: {
-            enable: false,
-            management_token: 'management_token'
-        }
+      'api_key': process.env.API_KEY, 
+      'delivery_token': process.env.DELIVERY_TOKEN, 
+      'environment': process.env.ENVIRONMENT,
+      live_preview: {
+        enable: false,
+        management_token: 'management_token'
+      }
     });
+    
     const livePreviewObject = stack.config.live_preview;
-    assert.notEqual(livePreviewObject, 'undefined');
-    assert.equal(livePreviewObject.enable, false);
-    assert.notEqual(livePreviewObject.host, 'undefined');
-    assert.end();
-});
+    expect(livePreviewObject).not.toBe('undefined');
+    expect(livePreviewObject.enable).toBe(false);
+    expect(livePreviewObject.host).not.toBe('undefined');
+  });
 
-test('should check host when live preview is enabled and preview token is provided', function(assert) {
+  test('should check host when live preview is enabled and preview token is provided', () => {
     const stack = Contentstack.Stack({
-        'api_key': process.env.API_KEY, 
-        'delivery_token': process.env.DELIVERY_TOKEN, 
-        'environment': process.env.ENVIRONMENT,
-        live_preview: {
-            enable: true,
-            preview_token: 'preview_token'
-        }
+      'api_key': process.env.API_KEY, 
+      'delivery_token': process.env.DELIVERY_TOKEN, 
+      'environment': process.env.ENVIRONMENT,
+      live_preview: {
+        enable: true,
+        preview_token: 'preview_token'
+      }
     });
+    
     const livePreviewObject = stack.config.live_preview;
-    assert.notEqual(livePreviewObject, 'undefined');
-    assert.notEqual(livePreviewObject.enable, 'undefined');
-    assert.notEqual(livePreviewObject.host, 'undefined');
-    assert.notEqual(livePreviewObject.preview_token, 'undefined');
-    assert.equal(stack.config.host, 'cdn.contentstack.io');
-    assert.end();
-});
+    expect(livePreviewObject).not.toBe('undefined');
+    expect(livePreviewObject.enable).not.toBe('undefined');
+    expect(livePreviewObject.host).not.toBe('undefined');
+    expect(livePreviewObject.preview_token).not.toBe('undefined');
+    expect(stack.config.host).toBe('cdn.contentstack.io');
+  });
 
-test('should check host when live preview is disabled and preview token is provided', function(assert) {
+  test('should check host when live preview is disabled and preview token is provided', () => {
     const stack = Contentstack.Stack({
-        'api_key': process.env.API_KEY, 
-        'delivery_token': process.env.DELIVERY_TOKEN, 
-        'environment': process.env.ENVIRONMENT,
-        live_preview: {
-            enable: false,
-            preview_token: 'preview_token'
-        }
+      'api_key': process.env.API_KEY, 
+      'delivery_token': process.env.DELIVERY_TOKEN, 
+      'environment': process.env.ENVIRONMENT,
+      live_preview: {
+        enable: false,
+        preview_token: 'preview_token'
+      }
     });
+    
     const livePreviewObject = stack.config.live_preview;
-    assert.notEqual(livePreviewObject, 'undefined');
-    assert.notEqual(livePreviewObject.enable, 'undefined');
-    assert.notEqual(livePreviewObject.host, 'undefined');
-    assert.notEqual(livePreviewObject.preview_token, 'undefined');
-    assert.equal(stack.config.host, 'cdn.contentstack.io');
-    assert.end();
+    expect(livePreviewObject).not.toBe('undefined');
+    expect(livePreviewObject.enable).not.toBe('undefined');
+    expect(livePreviewObject.host).not.toBe('undefined');
+    expect(livePreviewObject.preview_token).not.toBe('undefined');
+    expect(stack.config.host).toBe('cdn.contentstack.io');
+  });
 });
-

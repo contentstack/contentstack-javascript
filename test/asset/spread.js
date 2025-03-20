@@ -5,91 +5,75 @@
 /*
  * Module Dependencies.
  */
-var test = require('tape');
-var Contentstack = require('../../dist/node/contentstack.js');
-var init = require('../config.js');
+const Contentstack = require('../../dist/node/contentstack.js');
+const init = require('../config.js');
 
-var Stack;
-/*
- * Initalise the Contentstack Instance
- * */
-test('Initalise the Contentstack Stack Instance', function(TC) {
-    setTimeout(function() {
-        Stack = Contentstack.Stack(init.stack);
-        Stack.setHost(init.host);
-        TC.end();
-    }, 1000);
-});
+let Stack;
 
+describe("Contentstack Asset Tests", () => {
+  // Initialize the Contentstack Stack Instance
+  beforeAll(() => {
+    return new Promise((resolve) => {
+      Stack = Contentstack.Stack(init.stack);
+      Stack.setHost(init.host);
+      setTimeout(resolve, 1000);
+    });
+  });
 
-test('assets as first argument', function(assert) {
-    var Query = Stack.Assets().Query(),
-        field = 'updated_at';
+  test('assets as first argument', async () => {
+    const Query = Stack.Assets().Query();
+    const field = 'updated_at';
 
-    Query
+    try {
+      const result = await Query
         .limit(1)
         .toJSON()
-        .find()
-        .spread(function success(assets) {
-            assert.ok(assets.length, 'assets exists as first parameter');
-            if (assets && assets.length) {
-                var prev = assets[0][field];
-                var _assets = assets.every(function(asset) {
-                    prev = asset[field];
-                    return (asset[field] <= prev);
-                });
-                assert.equal(_assets, true, "default sorting of descending 'updated_at'");
-            }
-            assert.end();
-        }, function error(err) {
-            assert.end();
+        .find();
+        
+      const assets = result[0]; // Using array destructuring
+      
+      expect(assets.length).toBeTruthy();
+      
+      if (assets && assets.length) {
+        let prev = assets[0][field];
+        const _assets = assets.every((asset) => {
+          prev = asset[field];
+          return (asset[field] <= prev);
         });
-});
+        expect(_assets).toBe(true);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      fail("assets as first argument test failed");
+    }
+  });
 
-test('with assets and count argument', function(assert) {
-    var Query = Stack.Assets().Query(),
-        field = 'updated_at';
-    Query
+  test('with assets and count argument', async () => {
+    const Query = Stack.Assets().Query();
+    const field = 'updated_at';
+    
+    try {
+      const result = await Query
         .includeCount()
         .toJSON()
-        .find()
-        .spread(function success(assets, count) {
-            assert.ok(assets.length, 'assets exists as first parameter');
-            assert.ok(count, 'Count exists as second parameter');
-            if (assets && assets.length) {
-                var prev = assets[0][field];
-                var _assets = assets.every(function(asset) {
-                    prev = asset[field];
-                    return (asset[field] <= prev);
-                });
-                assert.equal(_assets, true, "default sorting of descending 'updated_at'");
-            }
-            assert.end();
-        }, function error(err) {
-            assert.end();
+        .find();
+        
+      const [assets, count] = result; // Using array destructuring
+      
+      expect(assets.length).toBeTruthy();
+      expect(count).toBeTruthy();
+      
+      if (assets && assets.length) {
+        let prev = assets[0][field];
+        const _assets = assets.every((asset) => {
+          prev = asset[field];
+          return (asset[field] <= prev);
         });
-});
-
-test('with assets and count argument', function(assert) {
-    var Query = Stack.Assets().Query(),
-        field = 'updated_at';
-    Query
-        .includeCount()
-        .toJSON()
-        .find()
-        .spread(function success(assets, count) {
-            assert.ok(assets.length, 'assets exists as first parameter');
-            assert.ok(count, 'Count exists as second parameter');
-            if (assets && assets.length) {
-                var prev = assets[0][field];
-                var _assets = assets.every(function(asset) {
-                    prev = asset[field];
-                    return (asset[field] <= prev);
-                });
-                assert.equal(_assets, true, "default sorting of descending 'updated_at'");
-            }
-            assert.end();
-        }, function error(err) {
-            assert.end();
-        });
+        expect(_assets).toBe(true);
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      fail("with assets and count argument test failed");
+    }
+  });
 });
