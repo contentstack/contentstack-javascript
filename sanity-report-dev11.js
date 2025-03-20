@@ -1,6 +1,8 @@
 const fs = require("fs");
+const { App } = require("@slack/bolt");
 const { JSDOM } = require("jsdom");
 const dotenv = require("dotenv");
+const path = require("path");
 
 dotenv.config();
 
@@ -9,40 +11,38 @@ const user2 = process.env.USER2;
 const user3 = process.env.USER3;
 const user4 = process.env.USER4;
 
-const tapHtmlContent = fs.readFileSync("./tap-html.html", "utf8");
-const dom = new JSDOM(tapHtmlContent);
-const $ = require("jquery")(dom.window);
+const data = fs.readFileSync(path.join(__dirname, "tap-html.html"), "utf8");
+const dom = new JSDOM(data);
+const textarea = dom.window.document.querySelector(
+  "#jest-html-reports-result-data"
+);
+const testResults = JSON.parse(textarea.textContent.trim());
 
-const totalCount = $(".nav a:nth-child(2)")
-  .text()
-  .trim()
-  .replace("Total Count", "");
-const totalPass = $(".nav a:nth-child(3)")
-  .text()
-  .trim()
-  .replace("Total Pass", "");
-const totalFail = $(".nav a:nth-child(4)")
-  .text()
-  .trim()
-  .replace("Total Fail", "");
+const startTime = testResults.startTime;
+const endTime = Math.max(
+  ...testResults.testResults.map((t) => t.perfStats.end)
+);
+const totalSeconds = (endTime - startTime) / 1000;
+const minutes = Math.floor(totalSeconds / 60);
+const seconds = (totalSeconds % 60).toFixed(2);
+const duration = `${minutes}m ${seconds}s`;
 
-const totalTime = $(".nav a:nth-child(1)")
-  .text()
-  .trim()
-  .replace("Total Time", "");
-
-const milliseconds = parseInt(totalTime.replace(/\D/g, ''), 10);
-const totalSeconds = Math.floor(milliseconds / 1000);
-const durationInMinutes = Math.floor(totalSeconds / 60);
-const durationInSeconds = totalSeconds % 60;
-
-const passedTests = parseInt(totalPass, 10);
-const totalTests = parseInt(totalCount, 10);
+const summary = {
+  totalSuites: testResults.numTotalTestSuites,
+  passedSuites: testResults.numPassedTestSuites,
+  failedSuites: testResults.numFailedTestSuites,
+  totalTests: testResults.numTotalTests,
+  passedTests: testResults.numPassedTests,
+  failedTests: testResults.numFailedTests,
+  skippedTests: testResults.numPendingTests + testResults.numTodoTests,
+  pendingTests: testResults.numPendingTests,
+  duration: duration,
+};
 
 const resultMessage =
-  passedTests === totalTests
-    ? `:white_check_mark: Success (${passedTests} / ${totalTests} Passed)`
-    : `:x: Failure (${passedTests} / ${totalTests} Passed)`;
+  summary.passedTests === summary.totalTests
+    ? `:white_check_mark: Success (${summary.passedTests} / ${summary.totalTests} Passed)`
+    : `:x: Failure (${summary.passedTests} / ${summary.totalTests} Passed)`;
 
 const pipelineName = process.env.GO_PIPELINE_NAME;
 const pipelineCounter = process.env.GO_PIPELINE_COUNTER;
@@ -51,41 +51,67 @@ const goCdServer = process.env.GOCD_SERVER;
 const reportUrl = `http://${goCdServer}/go/files/${pipelineName}/${pipelineCounter}/sanity/1/sanity/test-results/tap-html.html`;
 
 let tagUsers = ``;
-if (totalFail > 0) {
+if (summary.failedTests > 0) {
   tagUsers = `<@${user1}> <@${user2}> <@${user3}> <@${user4}>`;
 }
 
 const slackMessage = {
   text: `Dev11, SDK-CDA Sanity
-*Result:* ${resultMessage}. ${durationInMinutes}m ${durationInSeconds}s
-*Failed Tests:* ${totalFail}
+*Result:* ${resultMessage}. ${summary.duration}s
+*Failed Tests:* ${summary.failedTests + summary.skippedTests}
 <${reportUrl}|View Report>
 ${tagUsers}`,
 };
 
-const slackWebhookUrl = process.env.SLACK_WEBHOOK_URL;
+const app = new App({
+  token: process.env.SLACK_BOT_TOKEN,
+  signingSecret: process.env.SLACK_SIGNING_SECRET,
+});
 
-const sendSlackMessage = async (message) => {
-  const payload = {
-    text: message,
-  };
-
+const sendSlackMessage = async () => {
   try {
-    const response = await fetch(slackWebhookUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
+    const result = await app.client.chat.postMessage({
+      token: process.env.SLACK_BOT_TOKEN,
+      channel: process.env.SLACK_CHANNEL,
+      text: slackMessage.text, // Ensure this is the full object
     });
 
-    if (!response.ok) {
-      throw new Error(`Error sending message to Slack: ${response.statusText}`);
+    if (summary.failedTests > 0) {
+      await sendFailureDetails(result.ts); // Pass the correct thread timestamp
     }
-
-    console.log("Message sent to Slack successfully");
   } catch (error) {
-    console.error("Error:", error);
+    console.error("Error sending Slack message:", error);
+  }
+};
+
+sendSlackMessage();
+
+
+const sendFailureDetails = async (threadTs) => {
+  const failedTestSuites = testResults.testResults.filter(
+    (suite) => suite.numFailingTests > 0
+  );
+  if (failedTestSuites.length > 0) {
+    let failureDetails = "*Failed Test Modules:*\n";
+    for (const suite of failedTestSuites) {
+      let modulePath = suite.testFilePath;
+      let formattedModuleName = path
+        .relative(__dirname, modulePath)
+        .replace(/^test\//, "")
+        .replace(/\.js$/, "")
+        .replace(/\//g, " ");
+      failureDetails += ` - ${formattedModuleName}: ${suite.numFailingTests} failed\n`;
+    }
+    try {
+      await app.client.chat.postMessage({
+        token: process.env.SLACK_BOT_TOKEN,
+        channel: process.env.SLACK_CHANNEL,
+        text: failureDetails,
+        thread_ts: threadTs,
+      });
+    } catch (error) {
+      console.error("Error sending failure details:", error);
+    }
   }
 };
 
