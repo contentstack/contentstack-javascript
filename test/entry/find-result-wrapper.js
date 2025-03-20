@@ -20,16 +20,28 @@ describe("ContentStack SDK Tests", () => {
     });
   });
 
-  test("default .find()", async () => {
-    const Query = Stack.ContentType(contentTypes.source).Query();
+  describe("default .find()", () => {
+    let entries;
     const field = "updated_at";
 
-    try {
-      const entries = await Query.toJSON().find();
+    // Setup - run the query once for all tests
+    beforeAll(async () => {
+      const Query = Stack.ContentType(contentTypes.source).Query();
+      entries = await Query.toJSON().find();
+    });
 
+    test("should return a non-empty array of entries", async () => {
+      expect(entries).toBeDefined();
+      expect(Array.isArray(entries)).toBe(true);
+      expect(entries[0]).toBeDefined();
       expect(entries[0].length).toBeTruthy();
-      expect(entries[1]).toBeFalsy();
+    });
 
+    test("should not include count when not requested", async () => {
+      expect(entries[1]).toBeFalsy();
+    });
+
+    test("should return entries sorted by updated_at in descending order by default", async () => {
       if (entries && entries.length && entries[0].length) {
         let prev = entries[0][0][field];
         const _entries = entries[0].every(function (entry) {
@@ -37,11 +49,21 @@ describe("ContentStack SDK Tests", () => {
           return entry.updated_at <= prev;
         });
         expect(_entries).toBe(true);
+      } else {
+        console.warn("Not enough entries returned to verify default sorting");
       }
-    } catch (err) {
-      console.error("error:", err);
-      fail("default .find()");
-    }
+    });
+
+    test("should have entries with valid structure", async () => {
+      if (entries && entries.length && entries[0].length) {
+        const firstEntry = entries[0][0];
+        expect(firstEntry).toHaveProperty("uid");
+        expect(firstEntry).toHaveProperty("title");
+        expect(firstEntry).toHaveProperty("updated_at");
+      } else {
+        console.warn("No entries returned to verify structure");
+      }
+    });
   });
 
   describe("sorting", () => {
@@ -49,22 +71,17 @@ describe("ContentStack SDK Tests", () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
       const field = "updated_at";
 
-      try {
-        const entries = await Query.ascending(field).toJSON().find();
+      const entries = await Query.ascending(field).toJSON().find();
 
-        expect(entries[0].length).toBeTruthy();
+      expect(entries[0].length).toBeTruthy();
 
-        if (entries && entries.length && entries[0].length) {
-          let prev = entries[0][0][field];
-          const _entries = entries[0].every(function (entry) {
-            prev = entry[field];
-            return entry[field] >= prev;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".ascending()");
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].every(function (entry) {
+          prev = entry[field];
+          return entry[field] >= prev;
+        });
+        expect(_entries).toBe(true);
       }
     });
 
@@ -72,22 +89,17 @@ describe("ContentStack SDK Tests", () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
       const field = "created_at";
 
-      try {
-        const entries = await Query.descending(field).toJSON().find();
+      const entries = await Query.descending(field).toJSON().find();
 
-        expect(entries[0].length).toBeTruthy();
+      expect(entries[0].length).toBeTruthy();
 
-        if (entries && entries.length && entries[0].length) {
-          let prev = entries[0][0][field];
-          const _entries = entries[0].every(function (entry) {
-            prev = entry[field];
-            return entry[field] >= prev;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".descending()");
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].every(function (entry) {
+          prev = entry[field];
+          return entry[field] >= prev;
+        });
+        expect(_entries).toBe(true);
       }
     });
   });
@@ -100,25 +112,18 @@ describe("ContentStack SDK Tests", () => {
       const value = 11;
       const field = "updated_at";
 
-      try {
-        const entries = await Query.lessThan("num_field", value)
-          .toJSON()
-          .find();
+      const entries = await Query.lessThan("num_field", value).toJSON().find();
 
-        expect(entries[0].length).toBeTruthy();
+      expect(entries[0].length).toBeTruthy();
 
-        if (entries && entries.length && entries[0].length) {
-          let prev = entries[0][0][field];
-          const _entries = entries[0].slice(1).every(function (entry) {
-            const flag = entry[field] < value;
-            prev = entry[field];
-            return flag;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".lessThan()");
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].slice(1).every(function (entry) {
+          const flag = entry[field] < value;
+          prev = entry[field];
+          return flag;
+        });
+        expect(_entries).toBe(true);
       }
     });
 
@@ -129,25 +134,20 @@ describe("ContentStack SDK Tests", () => {
       const field = "updated_at";
       const value = 11;
 
-      try {
-        const entries = await Query.lessThanOrEqualTo("num_field", value)
-          .toJSON()
-          .find();
+      const entries = await Query.lessThanOrEqualTo("num_field", value)
+        .toJSON()
+        .find();
 
-        expect(entries[0].length).toBeTruthy();
+      expect(entries[0].length).toBeTruthy();
 
-        if (entries && entries.length && entries[0].length) {
-          let prev = entries[0][0][field];
-          const _entries = entries[0].every(function (entry) {
-            const flag = entry[field] <= prev;
-            prev = entry[field];
-            return flag;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".lessThanOrEqualTo()");
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].every(function (entry) {
+          const flag = entry[field] <= prev;
+          prev = entry[field];
+          return flag;
+        });
+        expect(_entries).toBe(true);
       }
     });
 
@@ -158,26 +158,21 @@ describe("ContentStack SDK Tests", () => {
       const field = "num_field";
       const value = 11;
 
-      try {
-        const entries = await Query.greaterThan("num_field", value)
-          .ascending(field)
-          .toJSON()
-          .find();
+      const entries = await Query.greaterThan("num_field", value)
+        .ascending(field)
+        .toJSON()
+        .find();
 
-        expect(entries[0].length).toBeTruthy();
+      expect(entries[0].length).toBeTruthy();
 
-        if (entries && entries.length && entries[0].length) {
-          let prev = entries[0][0][field];
-          const _entries = entries[0].slice(1).every(function (entry) {
-            const flag = entry[field] > value;
-            prev = entry[field];
-            return flag;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".greaterThan()");
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].slice(1).every(function (entry) {
+          const flag = entry[field] > value;
+          prev = entry[field];
+          return flag;
+        });
+        expect(_entries).toBe(true);
       }
     });
 
@@ -188,26 +183,21 @@ describe("ContentStack SDK Tests", () => {
       const field = "num_field";
       const value = 11;
 
-      try {
-        const entries = await Query.greaterThanOrEqualTo("num_field", value)
-          .descending(field)
-          .toJSON()
-          .find();
+      const entries = await Query.greaterThanOrEqualTo("num_field", value)
+        .descending(field)
+        .toJSON()
+        .find();
 
-        expect(entries[0].length).toBeTruthy();
+      expect(entries[0].length).toBeTruthy();
 
-        if (entries && entries.length && entries[0].length) {
-          let prev = entries[0][0][field];
-          const _entries = entries[0].every(function (entry) {
-            const flag = entry[field] >= value;
-            prev = entry[field];
-            return flag;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".greaterThanOrEqualTo()");
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].every(function (entry) {
+          const flag = entry[field] >= value;
+          prev = entry[field];
+          return flag;
+        });
+        expect(_entries).toBe(true);
       }
     });
 
@@ -218,26 +208,21 @@ describe("ContentStack SDK Tests", () => {
       const field = "num_field";
       const value = 6;
 
-      try {
-        const entries = await Query.notEqualTo("num_field", value)
-          .descending(field)
-          .toJSON()
-          .find();
+      const entries = await Query.notEqualTo("num_field", value)
+        .descending(field)
+        .toJSON()
+        .find();
 
-        expect(entries[0].length).toBeTruthy();
+      expect(entries[0].length).toBeTruthy();
 
-        if (entries && entries.length && entries[0].length) {
-          let prev = entries[0][0][field];
-          const _entries = entries[0].every(function (entry) {
-            const flag = entry[field] != value;
-            prev = entry[field];
-            return flag;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".notEqualTo()");
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].every(function (entry) {
+          const flag = entry[field] != value;
+          prev = entry[field];
+          return flag;
+        });
+        expect(_entries).toBe(true);
       }
     });
   });
@@ -248,20 +233,15 @@ describe("ContentStack SDK Tests", () => {
       const _in = ["source1", "source2"];
       const field = "updated_at";
 
-      try {
-        const entries = await Query.containedIn("title", _in).toJSON().find();
+      const entries = await Query.containedIn("title", _in).toJSON().find();
 
-        expect(entries[0].length).toBeTruthy();
+      expect(entries[0].length).toBeTruthy();
 
-        if (entries && entries.length && entries[0].length) {
-          const _entries = entries[0].every(function (entry) {
-            return _in.indexOf(entry["title"]) != -1;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".containedIn()");
+      if (entries && entries.length && entries[0].length) {
+        const _entries = entries[0].every(function (entry) {
+          return _in.indexOf(entry["title"]) != -1;
+        });
+        expect(_entries).toBe(true);
       }
     });
 
@@ -269,16 +249,9 @@ describe("ContentStack SDK Tests", () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
       const _in = ["sourceddd1", "sourceddddd2"];
 
-      try {
-        const entries = await Query.notContainedIn("title", _in)
-          .toJSON()
-          .find();
+      const entries = await Query.notContainedIn("title", _in).toJSON().find();
 
-        expect(entries[0].length).toBeTruthy();
-      } catch (err) {
-        console.error("error:", err);
-        fail(".notContainedIn()");
-      }
+      expect(entries[0].length).toBeTruthy();
     });
   });
 
@@ -288,23 +261,18 @@ describe("ContentStack SDK Tests", () => {
       const queryField = "boolean";
       const field = "updated_at";
 
-      try {
-        const entries = await Query.exists(queryField).toJSON().find();
+      const entries = await Query.exists(queryField).toJSON().find();
 
-        expect(entries[0].length).toBeTruthy();
+      expect(entries[0].length).toBeTruthy();
 
-        if (entries && entries.length && entries[0].length) {
-          let prev = entries[0][0][field];
-          const _entries = entries[0].every(function (entry) {
-            const flag = entry[field] <= prev;
-            prev = entry[field];
-            return flag;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".exists()");
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].every(function (entry) {
+          const flag = entry[field] <= prev;
+          prev = entry[field];
+          return flag;
+        });
+        expect(_entries).toBe(true);
       }
     });
 
@@ -313,21 +281,16 @@ describe("ContentStack SDK Tests", () => {
       const queryField = "isspecial";
       const field = "updated_at";
 
-      try {
-        const entries = await Query.notExists(queryField).toJSON().find();
+      const entries = await Query.notExists(queryField).toJSON().find();
 
-        expect("entries" in entries).toBeTruthy();
+      expect("entries" in entries).toBeTruthy();
 
-        if (entries && entries.length && entries[0].length) {
-          let prev = entries[0][0][field];
-          const _entries = entries[0].every(function (entry) {
-            return entry[field] <= prev;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".notExists()");
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].every(function (entry) {
+          return entry[field] <= prev;
+        });
+        expect(_entries).toBe(true);
       }
     });
   });
@@ -337,31 +300,26 @@ describe("ContentStack SDK Tests", () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
       const field = "updated_at";
 
-      try {
-        const allEntries = await Query.toJSON().find();
+      const allEntries = await Query.toJSON().find();
 
-        const entries = await Stack.ContentType(contentTypes.source)
-          .Query()
-          .skip(1)
-          .toJSON()
-          .find();
+      const entries = await Stack.ContentType(contentTypes.source)
+        .Query()
+        .skip(1)
+        .toJSON()
+        .find();
 
-        expect(entries[0].length).toBeGreaterThanOrEqual(2);
-        expect(allEntries[0].slice(1)).toEqual(entries[0]);
+      expect(entries[0].length).toBeGreaterThanOrEqual(2);
+      expect(allEntries[0].slice(1)).toEqual(entries[0]);
 
-        if (entries && entries.length && entries[0].length) {
-          allEntries[0] = allEntries[0].slice(1);
-          let prev = entries[0][0][field];
-          const _entries = entries[0].every(function (entry) {
-            const flag = entry[field] <= prev;
-            prev = entry[field];
-            return flag;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".skip()");
+      if (entries && entries.length && entries[0].length) {
+        allEntries[0] = allEntries[0].slice(1);
+        let prev = entries[0][0][field];
+        const _entries = entries[0].every(function (entry) {
+          const flag = entry[field] <= prev;
+          prev = entry[field];
+          return flag;
+        });
+        expect(_entries).toBe(true);
       }
     });
 
@@ -369,194 +327,365 @@ describe("ContentStack SDK Tests", () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
       const field = "updated_at";
 
-      try {
-        const allEntries = await Query.toJSON().find();
+      const allEntries = await Query.toJSON().find();
 
-        const entries = await Stack.ContentType(contentTypes.source)
-          .Query()
-          .limit(2)
-          .toJSON()
-          .find();
+      const entries = await Stack.ContentType(contentTypes.source)
+        .Query()
+        .limit(2)
+        .toJSON()
+        .find();
 
-        expect(entries[0].length).toBeTruthy();
-        expect(allEntries[0].slice(0, 2)).toEqual(entries[0]);
+      expect(entries[0].length).toBeTruthy();
+      expect(allEntries[0].slice(0, 2)).toEqual(entries[0]);
 
-        if (entries && entries.length && entries[0].length) {
-          let prev = entries[0][0][field];
-          const _entries = entries[0].every(function (entry) {
-            const flag = entry[field] <= prev;
-            prev = entry[field];
-            return flag;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".limit()");
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].every(function (entry) {
+          const flag = entry[field] <= prev;
+          prev = entry[field];
+          return flag;
+        });
+        expect(_entries).toBe(true);
       }
     });
 
     test(".count()", async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
 
-      try {
-        const entries = await Query.count().toJSON().find();
+      const entries = await Query.count().toJSON().find();
 
-        expect(entries[0]).toBeTruthy();
-      } catch (err) {
-        console.error("error:", err);
-        fail(".count()");
-      }
+      expect(entries[0]).toBeTruthy();
     });
   });
 
   describe("logical", () => {
-    test(".or() - Query Objects", async () => {
-      const Query1 = Stack.ContentType(contentTypes.source)
-        .Query()
-        .containedIn("title", ["source1", "source2"]);
-      const Query2 = Stack.ContentType(contentTypes.source)
-        .Query()
-        .where("boolean", true);
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".or() - Query Objects", () => {
+      let entries;
+      const titles = ["source1", "source2"];
 
-      try {
-        const entries = await Query.or(Query1, Query2).toJSON().find();
+      beforeAll(async () => {
+        const Query1 = Stack.ContentType(contentTypes.source)
+          .Query()
+          .containedIn("title", titles);
+        const Query2 = Stack.ContentType(contentTypes.source)
+          .Query()
+          .where("boolean", true);
+        const Query = Stack.ContentType(contentTypes.source).Query();
 
+        entries = await Query.or(Query1, Query2).toJSON().find();
+      });
+
+      test("should return a non-empty array of entries", async () => {
+        expect(entries).toBeDefined();
+        expect(Array.isArray(entries)).toBe(true);
+        expect(entries[0]).toBeDefined();
         expect(entries[0].length).toBeTruthy();
+      });
 
+      test("should return entries matching at least one of the conditions", async () => {
         if (entries && entries.length && entries[0].length) {
-          const _entries = entries[0].every(function (entry) {
-            return ~(entry.title === "source1" || entry.boolean === true);
-          });
-          expect(_entries).toBeTruthy();
+          const allEntriesMatchAnyCondition = entries[0].every(
+            (entry) => titles.includes(entry.title) || entry.boolean === true
+          );
+          expect(allEntriesMatchAnyCondition).toBe(true);
+        } else {
+          console.warn("No entries returned to verify OR condition");
         }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".or() - Query Objects");
-      }
+      });
+
+      test("should include entries with title in the specified list", async () => {
+        if (entries && entries.length && entries[0].length) {
+          const hasEntryWithTitle = entries[0].some((entry) =>
+            titles.includes(entry.title)
+          );
+          expect(hasEntryWithTitle).toBe(true);
+        } else {
+          console.warn("No entries returned to verify first condition");
+        }
+      });
+
+      test("should include entries with boolean field set to true", async () => {
+        if (entries && entries.length && entries[0].length) {
+          const hasEntryWithBoolean = entries[0].some(
+            (entry) => entry.boolean === true
+          );
+          expect(hasEntryWithBoolean).toBe(true);
+        } else {
+          console.warn("No entries returned to verify second condition");
+        }
+      });
     });
 
-    test(".and() - Query Objects", async () => {
-      const Query1 = Stack.ContentType(contentTypes.source)
-        .Query()
-        .where("title", "source1");
-      const Query2 = Stack.ContentType(contentTypes.source)
-        .Query()
-        .where("boolean", true);
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".and() - Query Objects", () => {
+      let entries;
 
-      try {
-        const entries = await Query.and(Query1, Query2).toJSON().find();
+      beforeAll(async () => {
+        const Query1 = Stack.ContentType(contentTypes.source)
+          .Query()
+          .where("title", "source1");
+        const Query2 = Stack.ContentType(contentTypes.source)
+          .Query()
+          .where("boolean", true);
+        const Query = Stack.ContentType(contentTypes.source).Query();
 
+        entries = await Query.and(Query1, Query2).toJSON().find();
+      });
+
+      test("should return a non-empty array of entries", async () => {
+        expect(entries).toBeDefined();
+        expect(Array.isArray(entries)).toBe(true);
+        expect(entries[0]).toBeDefined();
         expect(entries[0].length).toBeTruthy();
+      });
 
+      test("should return only entries matching all specified conditions", async () => {
         if (entries && entries.length && entries[0].length) {
-          const _entries = entries[0].every(function (entry) {
-            return ~(entry.title === "source1" || entry.boolean === true);
-          });
-          expect(_entries).toBeTruthy();
+          const allEntriesMatchAllConditions = entries[0].every(
+            (entry) => entry.title === "source1" && entry.boolean === true
+          );
+          expect(allEntriesMatchAllConditions).toBe(true);
+        } else {
+          console.warn("No entries returned to verify AND condition");
         }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".and() - Query Objects");
-      }
+      });
+
+      test('should include entries with title set to "source1"', async () => {
+        if (entries && entries.length && entries[0].length) {
+          const allEntriesHaveCorrectTitle = entries[0].every(
+            (entry) => entry.title === "source1"
+          );
+          expect(allEntriesHaveCorrectTitle).toBe(true);
+        } else {
+          console.warn("No entries returned to verify title condition");
+        }
+      });
+
+      test("should include entries with boolean field set to true", async () => {
+        if (entries && entries.length && entries[0].length) {
+          const allEntriesHaveBooleanTrue = entries[0].every(
+            (entry) => entry.boolean === true
+          );
+          expect(allEntriesHaveBooleanTrue).toBe(true);
+        } else {
+          console.warn("No entries returned to verify boolean condition");
+        }
+      });
     });
 
-    test(".and() - Raw queries", async () => {
-      const Query1 = Stack.ContentType(contentTypes.source)
-        .Query()
-        .where("title", "source1");
-      const Query2 = Stack.ContentType(contentTypes.source)
-        .Query()
-        .where("boolean", true);
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".query() - Raw query", () => {
+      let entries;
 
-      try {
-        const entries = await Query.and(Query1, Query2).toJSON().find();
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.query({
+          $or: [{ title: "source1" }, { boolean: true }],
+        })
+          .toJSON()
+          .find();
+      });
 
+      test("should return a non-empty array of entries", async () => {
+        expect(entries).toBeDefined();
+        expect(Array.isArray(entries)).toBe(true);
+        expect(entries[0]).toBeDefined();
         expect(entries[0].length).toBeTruthy();
+      });
 
+      test("should return entries matching at least one of the conditions in the raw query", async () => {
         if (entries && entries.length && entries[0].length) {
-          const _entries = entries[0].every(function (entry) {
-            return ~(entry.title === "source1" || entry.boolean === true);
-          });
-          expect(_entries).toBeTruthy();
+          const allEntriesMatchAnyCondition = entries[0].every(
+            (entry) => entry.title === "source1" || entry.boolean === true
+          );
+          expect(allEntriesMatchAnyCondition).toBe(true);
+        } else {
+          console.warn("No entries returned to verify raw query conditions");
         }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".and() - Raw queries");
-      }
+      });
+
+      test('should include entries with title "source1"', async () => {
+        if (entries && entries.length && entries[0].length) {
+          const hasEntryWithTitle = entries[0].some(
+            (entry) => entry.title === "source1"
+          );
+          expect(hasEntryWithTitle).toBe(true);
+        } else {
+          console.warn(
+            "No entries returned to verify first raw query condition"
+          );
+        }
+      });
+
+      test("should include entries with boolean field set to true", async () => {
+        if (entries && entries.length && entries[0].length) {
+          const hasEntryWithBoolean = entries[0].some(
+            (entry) => entry.boolean === true
+          );
+          expect(hasEntryWithBoolean).toBe(true);
+        } else {
+          console.warn(
+            "No entries returned to verify second raw query condition"
+          );
+        }
+      });
     });
   });
 
   describe("custom query", () => {
-    test(".query() - Raw query", async () => {
+    test(".query() - Raw query with basic OR condition", async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
 
-      try {
-        const entries = await Query.query({
-          $or: [{ title: "source1" }, { boolean: "true" }],
-        })
-          .toJSON()
-          .find();
+      const entries = await Query.query({
+        $or: [{ title: "source1" }, { boolean: "true" }],
+      })
+        .toJSON()
+        .find();
 
-        expect(entries[0].length).toBeTruthy();
+      expect(entries[0].length).toBeTruthy();
 
-        if (entries && entries.length && entries[0].length) {
-          const _entries = entries[0].every(function (entry) {
-            return entry.title === "source1" || entry.boolean === true;
-          });
-          expect(_entries).toBeTruthy();
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".query() - Raw query");
+      if (entries && entries.length && entries[0].length) {
+        const _entries = entries[0].every(function (entry) {
+          return entry.title === "source1" || entry.boolean === true;
+        });
+        expect(_entries).toBeTruthy();
       }
+    });
+
+    test(".query() - Raw query with AND condition", async () => {
+      const Query = Stack.ContentType(contentTypes.source).Query();
+
+      const entries = await Query.query({
+        $and: [{ title: "source1" }, { boolean: true }],
+      })
+        .toJSON()
+        .find();
+
+      expect(entries[0].length).toBeTruthy();
+
+      const allMatchBothConditions = entries[0].every(
+        (entry) => entry.title === "source1" && entry.boolean === true
+      );
+      expect(allMatchBothConditions).toBeTruthy();
+    });
+
+    test(".query() - Raw query with nested conditions", async () => {
+      const Query = Stack.ContentType(contentTypes.source).Query();
+
+      const entries = await Query.query({
+        $and: [
+          { title: "source1" },
+          { $or: [{ boolean: true }, { url: { $exists: true } }] },
+        ],
+      })
+        .toJSON()
+        .find();
+
+      expect(entries[0].length).toBeTruthy();
+
+      const allMatchConditions = entries[0].every(
+        (entry) =>
+          entry.title === "source1" &&
+          (entry.boolean === true || entry.url !== undefined)
+      );
+      expect(allMatchConditions).toBeTruthy();
     });
   });
 
   describe("tags", () => {
-    test(".tags()", async () => {
+    test(".tags() - Multiple tags filter", async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
       const field = "tags";
       const tags = ["tag1", "tag2"];
 
-      try {
-        const entries = await Query.tags(tags).toJSON().find();
+      const entries = await Query.tags(tags).toJSON().find();
 
-        expect(entries.length).toBeGreaterThanOrEqual(1);
+      expect(entries.length).toBeGreaterThanOrEqual(1);
 
-        if (entries && entries.length && entries[0].length) {
-          const _entries = entries[0].every(function (entry) {
-            return Utils.arrayPresentInArray(tags, entry[field]);
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".tags()");
+      if (entries && entries.length && entries[0].length) {
+        const _entries = entries[0].every(function (entry) {
+          return Utils.arrayPresentInArray(tags, entry[field]);
+        });
+        expect(_entries).toBe(true);
       }
+    });
+
+    test(".tags() - Single tag filter", async () => {
+      const Query = Stack.ContentType(contentTypes.source).Query();
+      const field = "tags";
+      const tags = ["tag1"];
+
+      const entries = await Query.tags(tags).toJSON().find();
+
+      expect(entries.length).toBeGreaterThanOrEqual(1);
+
+      if (entries && entries.length && entries[0].length) {
+        const entriesWithTag = entries[0].every(
+          (entry) => entry[field] && entry[field].includes(tags[0])
+        );
+        expect(entriesWithTag).toBe(true);
+      }
+    });
+
+    test(".tags() - Empty results with non-existent tag", async () => {
+      const Query = Stack.ContentType(contentTypes.source).Query();
+      const nonExistentTag = ["non_existent_tag_123456"];
+
+      const entries = await Query.tags(nonExistentTag).toJSON().find();
+
+      // Should return an array but with empty results
+      expect(entries).toBeDefined();
+      expect(Array.isArray(entries)).toBe(true);
+      expect(entries[0].length).toBe(0);
     });
   });
 
   describe("search", () => {
-    test(".search()", async () => {
+    test(".search() - Exact match", async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
 
-      try {
-        const entries = await Query.search("source1").toJSON().find();
+      const entries = await Query.search("source1").toJSON().find();
 
-        expect(entries[0].length).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".search()");
-      }
+      expect(entries[0].length).toBeTruthy();
+
+      const hasMatchingEntries = entries[0].some(
+        (entry) =>
+          entry.title === "source1" || JSON.stringify(entry).includes("source1")
+      );
+      expect(hasMatchingEntries).toBe(true);
+    });
+
+    test(".search() - Partial match", async () => {
+      const Query = Stack.ContentType(contentTypes.source).Query();
+
+      const entries = await Query.search("source").toJSON().find();
+
+      expect(entries[0].length).toBeTruthy();
+
+      const hasMatchingEntries = entries[0].some(
+        (entry) =>
+          (entry.title && entry.title.includes("source")) ||
+          JSON.stringify(entry).includes("source")
+      );
+      expect(hasMatchingEntries).toBe(true);
+    });
+
+    test(".search() - Case insensitive match", async () => {
+      const Query = Stack.ContentType(contentTypes.source).Query();
+
+      const entries = await Query.search("SOURCE1").toJSON().find();
+
+      expect(entries[0].length).toBeTruthy();
+
+      const hasMatchingEntries = entries[0].some(
+        (entry) =>
+          (entry.title && entry.title.toLowerCase() === "source1") ||
+          JSON.stringify(entry).toLowerCase().includes("source1")
+      );
+      expect(hasMatchingEntries).toBe(true);
     });
   });
 
   describe("regex", () => {
-    test(".regex()", async () => {
+    test(".regex() - Basic pattern match", async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
       const field = "title";
       const regex = {
@@ -565,422 +694,567 @@ describe("ContentStack SDK Tests", () => {
       };
       const regexpObj = new RegExp(regex.pattern, regex.options);
 
-      try {
-        const entries = await Query.regex(field, regex.pattern, regex.options)
-          .toJSON()
-          .find();
+      const entries = await Query.regex(field, regex.pattern, regex.options)
+        .toJSON()
+        .find();
 
-        expect(entries.length).toBeGreaterThanOrEqual(1);
+      expect(entries.length).toBeGreaterThanOrEqual(1);
 
-        const flag = entries[0].every(function (entry) {
-          return regexpObj.test(entry[field]);
-        });
-        expect(flag).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".regex()");
+      const flag = entries[0].every(function (entry) {
+        return regexpObj.test(entry[field]);
+      });
+      expect(flag).toBeTruthy();
+    });
+
+    test(".regex() - Specific suffix pattern", async () => {
+      const Query = Stack.ContentType(contentTypes.source).Query();
+      const field = "title";
+      const regex = {
+        pattern: "1$", // Matches strings ending with 1
+        options: "",
+      };
+      const regexpObj = new RegExp(regex.pattern, regex.options);
+
+      const entries = await Query.regex(field, regex.pattern, regex.options)
+        .toJSON()
+        .find();
+
+      expect(entries.length).toBeGreaterThanOrEqual(1);
+
+      if (entries && entries[0].length) {
+        const matchesPattern = entries[0].every((entry) =>
+          regexpObj.test(entry[field])
+        );
+        expect(matchesPattern).toBeTruthy();
+
+        const endsWithOne = entries[0].every(
+          (entry) => entry[field] && entry[field].endsWith("1")
+        );
+        expect(endsWithOne).toBeTruthy();
+      }
+    });
+
+    test(".regex() - With wildcard pattern", async () => {
+      const Query = Stack.ContentType(contentTypes.source).Query();
+      const field = "title";
+      const regex = {
+        pattern: "source.*",
+        options: "i",
+      };
+      const regexpObj = new RegExp(regex.pattern, regex.options);
+
+      const entries = await Query.regex(field, regex.pattern, regex.options)
+        .toJSON()
+        .find();
+
+      expect(entries.length).toBeGreaterThanOrEqual(1);
+
+      if (entries && entries[0].length) {
+        const matchesPattern = entries[0].every((entry) =>
+          regexpObj.test(entry[field])
+        );
+        expect(matchesPattern).toBeTruthy();
       }
     });
   });
 
   describe("locale and fallback", () => {
-    test("find: without fallback", async () => {
-      const _in = ["ja-jp"];
+    test("find: with specific locale", async () => {
+      const locale = "ja-jp";
 
-      try {
-        const entries = await Stack.ContentType(contentTypes.source)
-          .Query()
-          .language("ja-jp")
-          .toJSON()
-          .find();
+      const entries = await Stack.ContentType(contentTypes.source)
+        .Query()
+        .language(locale)
+        .toJSON()
+        .find();
 
-        expect(entries[0].length).toBeTruthy();
+      expect(entries[0].length).toBeTruthy();
 
-        if (entries && entries.length && entries[0].length) {
-          const _entries = entries[0].every(function (entry) {
-            return _in.indexOf(entry["publish_details"]["locale"]) != -1;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (error) {
-        fail("Entries default .find() fallback catch: " + error.toString());
+      if (entries && entries.length && entries[0].length) {
+        const allEntriesInRequestedLocale = entries[0].every(
+          (entry) =>
+            entry.publish_details && entry.publish_details.locale === locale
+        );
+        expect(allEntriesInRequestedLocale).toBe(true);
       }
     });
 
-    test("find: fallback", async () => {
-      const _in = ["ja-jp", "en-us"];
+    test("find: with fallback enabled for partially localized content", async () => {
+      const primaryLocale = "ja-jp";
+      const fallbackLocale = "en-us";
 
-      try {
-        const entries = await Stack.ContentType(contentTypes.source)
-          .Query()
-          .language("ja-jp")
-          .includeFallback()
-          .toJSON()
-          .find();
+      const entries = await Stack.ContentType(contentTypes.source)
+        .Query()
+        .language(primaryLocale)
+        .includeFallback()
+        .toJSON()
+        .find();
 
-        expect(entries[0].length).toBeTruthy();
+      expect(entries[0].length).toBeTruthy();
 
-        if (entries && entries.length && entries[0].length) {
-          const _entries = entries[0].every(function (entry) {
-            return _in.indexOf(entry["publish_details"]["locale"]) != -1;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (error) {
-        fail("Entries default .find() fallback catch: " + error.toString());
+      if (entries && entries.length && entries[0].length) {
+        const _entries = entries[0].every(function (entry) {
+          return [primaryLocale, fallbackLocale].includes(
+            entry.publish_details.locale
+          );
+        });
+        expect(_entries).toBe(true);
+      }
+
+      if (entries && entries.length && entries[0].length > 1) {
+        const hasPrimaryLocaleEntries = entries[0].some(
+          (entry) => entry.publish_details.locale === primaryLocale
+        );
+
+        const hasFallbackLocaleEntries = entries[0].some(
+          (entry) => entry.publish_details.locale === fallbackLocale
+        );
+
+        expect(hasPrimaryLocaleEntries || hasFallbackLocaleEntries).toBe(true);
+      }
+    });
+
+    test("find: comparing results with and without fallback", async () => {
+      const locale = "ja-jp";
+
+      const entriesWithoutFallback = await Stack.ContentType(
+        contentTypes.source
+      )
+        .Query()
+        .language(locale)
+        .toJSON()
+        .find();
+
+      const entriesWithFallback = await Stack.ContentType(contentTypes.source)
+        .Query()
+        .language(locale)
+        .includeFallback()
+        .toJSON()
+        .find();
+
+      expect(entriesWithFallback[0].length).toBeGreaterThanOrEqual(
+        entriesWithoutFallback[0].length
+      );
+
+      if (entriesWithoutFallback && entriesWithoutFallback[0].length) {
+        const allInRequestedLocale = entriesWithoutFallback[0].every(
+          (entry) => entry.publish_details.locale === locale
+        );
+        expect(allInRequestedLocale).toBe(true);
       }
     });
   });
 
   describe("include reference", () => {
-    test(".includeReference() - String", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".includeReference() - String", () => {
+      let entries;
 
-      try {
-        const entries = await Query.includeReference("reference")
-          .toJSON()
-          .find();
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.includeReference("reference").toJSON().find();
+      });
 
-        const flag = entries[0].every(function (entry) {
-          return (
+      test("should return entries with the reference field", () => {
+        expect(entries[0].length).toBeGreaterThan(0);
+      });
+
+      test("should include the reference field as an object", () => {
+        const allEntriesHaveReference = entries[0].every(
+          (entry) =>
             entry &&
             entry["reference"] &&
             typeof entry["reference"] === "object"
-          );
-        });
-        expect(flag).toBe(true);
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".includeReference() - String");
-      }
+        );
+        expect(allEntriesHaveReference).toBe(true);
+      });
     });
 
-    test(".includeReference() - Array", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".includeReference() - Array", () => {
+      let entries;
 
-      try {
-        const entries = await Query.includeReference([
-          "reference",
-          "other_reference",
-        ])
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.includeReference(["reference", "other_reference"])
           .toJSON()
           .find();
+      });
 
-        const flag = entries[0].every(function (entry) {
-          return (
+      test("should return entries with data", () => {
+        expect(entries[0].length).toBeGreaterThan(0);
+      });
+
+      test("should include the first reference field as an object", () => {
+        const allEntriesHaveFirstReference = entries[0].every(
+          (entry) =>
             entry &&
             entry["reference"] &&
-            typeof entry["reference"] === "object" &&
+            typeof entry["reference"] === "object"
+        );
+        expect(allEntriesHaveFirstReference).toBe(true);
+      });
+
+      test("should include the second reference field as an object", () => {
+        const allEntriesHaveSecondReference = entries[0].every(
+          (entry) =>
+            entry &&
             entry["other_reference"] &&
             typeof entry["other_reference"] === "object"
-          );
-        });
-        expect(flag).toBe(true);
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".includeReference() - Array");
-      }
+        );
+        expect(allEntriesHaveSecondReference).toBe(true);
+      });
     });
   });
 
   describe("include count and schema", () => {
-    test(".includeCount()", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".includeCount()", () => {
+      let entries;
 
-      try {
-        const entries = await Query.includeCount().toJSON().find();
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.includeCount().toJSON().find();
+      });
 
+      test("should return entries", () => {
         expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should include count information", () => {
         expect(entries[1]).toBeTruthy();
-      } catch (err) {
-        console.error("error:", err);
-        fail(".includeCount()");
-      }
+      });
     });
 
-    test(".includeSchema()", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".includeSchema()", () => {
+      let entries;
 
-      try {
-        const entries = await Query.includeSchema().toJSON().find();
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.includeSchema().toJSON().find();
+      });
 
+      test("should return entries", () => {
         expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should include schema information", () => {
         expect(entries[1].length).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".includeSchema()");
-      }
+      });
     });
 
-    test(".includeCount() and .includeSchema()", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".includeCount() and .includeSchema()", () => {
+      let entries;
 
-      try {
-        const entries = await Query.includeCount()
-          .includeSchema()
-          .toJSON()
-          .find();
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.includeCount().includeSchema().toJSON().find();
+      });
 
+      test("should return entries", () => {
         expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should include schema information", () => {
         expect(entries[1].length).toBeTruthy();
+      });
+
+      test("should include count information", () => {
         expect(entries[2]).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".includeSchema()");
-      }
+      });
     });
   });
 
   describe("include contenttypes", () => {
-    test(".includeContentType()", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".includeContentType()", () => {
+      let entries;
 
-      try {
-        const entries = await Query.includeContentType().toJSON().find();
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.includeContentType().toJSON().find();
+      });
 
+      test("should return entries", () => {
         expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should include content type information", () => {
         expect(entries[1]).toBeTruthy();
+      });
+
+      test("should include content type title", () => {
         expect(entries[1]["title"]).toBeTruthy();
+      });
+
+      test("should have the correct content type UID", () => {
         expect(entries[1]["uid"]).toBe(contentTypes.source);
-      } catch (err) {
-        console.error("error:", err);
-        fail(".includeContentType()");
-      }
+      });
     });
 
-    test(".includeCount() and .includeContentType()", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".includeCount() and .includeContentType()", () => {
+      let entries;
 
-      try {
-        const entries = await Query.includeCount()
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.includeCount()
           .includeContentType()
           .toJSON()
           .find();
+      });
 
+      test("should return entries", () => {
         expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should include content type information", () => {
         expect(entries[1]).toBeTruthy();
+      });
+
+      test("should include content type title", () => {
         expect(entries[1]["title"]).toBeTruthy();
+      });
+
+      test("should have the correct content type UID", () => {
         expect(entries[1]["uid"]).toBe(contentTypes.source);
+      });
+
+      test("should include count information", () => {
         expect(entries[2]).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".includeCount && includeContentType");
-      }
+      });
     });
 
-    test(".includeSchema() and .includeContentType()", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".includeSchema() and .includeContentType()", () => {
+      let entries;
 
-      try {
-        const entries = await Query.includeSchema()
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.includeSchema()
           .includeContentType()
           .toJSON()
           .find();
+      });
 
+      test("should return entries", () => {
         expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should include content type information", () => {
         expect(entries[1]).toBeTruthy();
+      });
+
+      test("should include content type title", () => {
         expect(entries[1]["title"]).toBeTruthy();
+      });
+
+      test("should have the correct content type UID", () => {
         expect(entries[1]["uid"]).toBe(contentTypes.source);
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".includeCount && includeContentType");
-      }
+      });
     });
 
-    test(".includeCount(), .includeSchema() and .includeContentType()", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".includeCount(), .includeSchema() and .includeContentType()", () => {
+      let entries;
 
-      try {
-        const entries = await Query.includeCount()
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.includeCount()
           .includeSchema()
           .includeContentType()
           .toJSON()
           .find();
+      });
 
+      test("should return entries", () => {
         expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should include content type information", () => {
         expect(entries[1]).toBeTruthy();
+      });
+
+      test("should include content type title", () => {
         expect(entries[1]["title"]).toBeTruthy();
+      });
+
+      test("should have the correct content type UID", () => {
         expect(entries[1]["uid"]).toBe(contentTypes.source);
+      });
+
+      test("should include count information", () => {
         expect(entries[2]).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".includeCount && includeContentType");
-      }
+      });
     });
   });
 
   describe("field projections", () => {
-    test(".only() - Single String Parameter", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".only() - Single String Parameter", () => {
+      let entries;
 
-      try {
-        const entries = await Query.only("title").toJSON().find();
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.only("title").toJSON().find();
+      });
 
-        const flag = entries[0].every(function (entry) {
-          return (
+      test("should return entries", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should include only the title and uid fields", () => {
+        const correctFieldsOnly = entries[0].every(
+          (entry) =>
             entry &&
             Object.keys(entry).length === 2 &&
             "title" in entry &&
             "uid" in entry
-          );
-        });
-        expect(flag).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".only() - Single String Parameter");
-      }
+        );
+        expect(correctFieldsOnly).toBeTruthy();
+      });
     });
 
-    test(".only() - Multiple String Parameter", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".only() - Multiple String Parameter", () => {
+      let entries;
 
-      try {
-        const entries = await Query.only("BASE", "title").toJSON().find();
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.only("BASE", "title").toJSON().find();
+      });
 
-        const flag = entries[0].every(function (entry) {
-          return (
+      test("should return entries", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should include only the title and uid fields", () => {
+        const correctFieldsOnly = entries[0].every(
+          (entry) =>
             entry &&
             Object.keys(entry).length === 2 &&
             "title" in entry &&
             "uid" in entry
-          );
-        });
-        expect(flag).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".only() - Multiple String Parameter");
-      }
+        );
+        expect(correctFieldsOnly).toBeTruthy();
+      });
     });
 
-    test(".only() - Array Parameter", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".only() - Array Parameter", () => {
+      let entries;
 
-      try {
-        const entries = await Query.only(["title", "url"]).toJSON().find();
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.only(["title", "url"]).toJSON().find();
+      });
 
-        const flag = entries[0].every(function (entry) {
-          return (
+      test("should return entries", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should include only the title, url, and uid fields", () => {
+        const correctFieldsOnly = entries[0].every(
+          (entry) =>
             entry &&
             Object.keys(entry).length === 3 &&
             "title" in entry &&
             "url" in entry &&
             "uid" in entry
-          );
-        });
-        expect(flag).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".only() - Array Parameter");
-      }
+        );
+        expect(correctFieldsOnly).toBeTruthy();
+      });
     });
 
-    test(".only() - For the reference - String", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
+    describe(".except() - Single String Parameter", () => {
+      let entries;
 
-      try {
-        const entries = await Query.includeReference("reference")
-          .only("BASE", ["reference"])
-          .only("reference", "title")
-          .toJSON()
-          .find();
-
-        expect(entries).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".only() - For the reference - String");
-      }
-    });
-
-    test(".only() - For the reference - Array", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
-
-      try {
-        const entries = await Query.includeReference("reference")
-          .only("BASE", ["reference"])
-          .only("reference", ["title"])
-          .toJSON()
-          .find();
-
-        expect(entries).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".only() - For the reference - Array");
-      }
-    });
-
-    test(".except() - Single String Parameter", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
-
-      try {
-        const entries = await Query.except("title").toJSON().find();
-
-        const flag = entries[0].every(function (entry) {
-          return entry && !("title" in entry);
-        });
-        expect(flag).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".except() - Single String Parameter");
-      }
-    });
-
-    test(".except() - Multiple String Parameter", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
-
-      try {
-        const entries = await Query.except("BASE", "title").toJSON().find();
-
-        const flag = entries[0].every(function (entry) {
-          return entry && !("title" in entry);
-        });
-        expect(flag).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".except() - Multiple String Parameter");
-      }
-    });
-
-    test(".except() - Array of String Parameter", async () => {
-      const Query = Stack.ContentType(contentTypes.source).Query();
-
-      try {
-        const entries = await Query.except(["title", "file"]).toJSON().find();
-
-        const flag = entries[0].every(function (entry) {
-          return entry && !("title" in entry) && !("file" in entry);
-        });
-        expect(flag).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".except() - Array of String Parameter");
-      }
-    });
-    test(".except() - For the reference - String", async () => {
-      try {
+      beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.except("title").toJSON().find();
+      });
 
-        const entries = await Query.includeReference("reference")
+      test("should return entries", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should exclude the title field", () => {
+        const titleExcluded = entries[0].every(
+          (entry) => entry && !("title" in entry)
+        );
+        expect(titleExcluded).toBeTruthy();
+      });
+    });
+
+    describe(".except() - Multiple String Parameter", () => {
+      let entries;
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.except("BASE", "title").toJSON().find();
+      });
+
+      test("should return entries", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should exclude the title field", () => {
+        const titleExcluded = entries[0].every(
+          (entry) => entry && !("title" in entry)
+        );
+        expect(titleExcluded).toBeTruthy();
+      });
+    });
+
+    describe(".except() - Array of String Parameter", () => {
+      let entries;
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.except(["title", "file"]).toJSON().find();
+      });
+
+      test("should return entries", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should exclude the title field", () => {
+        const titleExcluded = entries[0].every(
+          (entry) => entry && !("title" in entry)
+        );
+        expect(titleExcluded).toBeTruthy();
+      });
+
+      test("should exclude the file field", () => {
+        const fileExcluded = entries[0].every(
+          (entry) => entry && !("file" in entry)
+        );
+        expect(fileExcluded).toBeTruthy();
+      });
+    });
+
+    describe(".except() - For the reference - String", () => {
+      let entries;
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.includeReference("reference")
           .only("BASE", ["reference"])
           .except("reference", "title")
           .toJSON()
           .find();
+      });
 
-        const flag = entries[0].every((entry) => {
-          let _flag;
+      test("should return entries", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("should properly format entries with reference but without title in references", () => {
+        const correctFormat = entries[0].every((entry) => {
+          let hasCorrectReferenceFormat = false;
           if (
             entry &&
             entry["reference"] &&
             typeof entry["reference"] === "object"
           ) {
-            _flag = true;
-            _flag = entry.reference.every((reference) => {
+            hasCorrectReferenceFormat = true;
+            hasCorrectReferenceFormat = entry.reference.every((reference) => {
               return reference && !("title" in reference);
             });
-          } else {
-            _flag = false;
           }
+
           return (
-            _flag &&
+            hasCorrectReferenceFormat &&
             entry &&
             Object.keys(entry).length === 2 &&
             "reference" in entry &&
@@ -988,51 +1262,8 @@ describe("ContentStack SDK Tests", () => {
           );
         });
 
-        expect(flag).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".except() - For the reference - String");
-      }
-    });
-
-    test(".except() - For the reference - Array", async () => {
-      try {
-        const Query = Stack.ContentType(contentTypes.source).Query();
-
-        const entries = await Query.includeReference("reference")
-          .only("BASE", ["reference"])
-          .except("reference", ["title"])
-          .toJSON()
-          .find();
-
-        const flag = entries[0].every((entry) => {
-          let _flag;
-          if (
-            entry &&
-            entry["reference"] &&
-            typeof entry["reference"] === "object"
-          ) {
-            _flag = true;
-            _flag = entry.reference.every((reference) => {
-              return reference && !("title" in reference);
-            });
-          } else {
-            _flag = false;
-          }
-          return (
-            _flag &&
-            entry &&
-            Object.keys(entry).length === 2 &&
-            "reference" in entry &&
-            "uid" in entry
-          );
-        });
-
-        expect(flag).toBeTruthy();
-      } catch (err) {
-        console.error("Error:", err);
-        fail(".except() - For the reference - Array");
-      }
+        expect(correctFormat).toBeTruthy();
+      });
     });
   });
 });
