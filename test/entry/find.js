@@ -28,17 +28,12 @@ describe("ContentStack SDK Tests", () => {
   });
 
   describe("Default Find", () => {
-    let entries
+    let entries;
     const field = "updated_at";
 
     beforeAll(async () => {
-      try {
-        const Query = Stack.ContentType(contentTypes.source).Query();
-        entries = await Query.toJSON().find();
-      } catch (err) {
-        error = err;
-        console.error("Error:", err);
-      }
+      const Query = Stack.ContentType(contentTypes.source).Query();
+      entries = await Query.toJSON().find();
     });
 
     test("Should return entries in the resultset", () => {
@@ -68,13 +63,8 @@ describe("ContentStack SDK Tests", () => {
       const field = "updated_at";
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(contentTypes.source).Query();
-          entries = await Query.ascending(field).toJSON().find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.ascending(field).toJSON().find();
       });
 
       test("Should return entries in the resultset", () => {
@@ -99,13 +89,8 @@ describe("ContentStack SDK Tests", () => {
       const field = "created_at";
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(contentTypes.source).Query();
-          entries = await Query.descending(field).toJSON().find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.descending(field).toJSON().find();
       });
 
       test("Should return entries in the resultset", () => {
@@ -131,15 +116,8 @@ describe("ContentStack SDK Tests", () => {
       let entries;
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(contentTypes.source).Query();
-          entries = await Query.addParam("include_count", "true")
-            .toJSON()
-            .find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.addParam("include_count", "true").toJSON().find();
       });
 
       test("Should return entries in the resultset", () => {
@@ -159,20 +137,14 @@ describe("ContentStack SDK Tests", () => {
       const value = 11;
 
       test("Should return entry in the resultset", async () => {
-        try {
-          const Query = Stack.ContentType(
-            contentTypes.numbers_content_type
-          ).Query();
+        const Query = Stack.ContentType(
+          contentTypes.numbers_content_type
+        ).Query();
 
-          const result = await Query.lessThan("num_field", value)
-            .toJSON()
-            .find();
+        const result = await Query.lessThan("num_field", value).toJSON().find();
 
-          entries = result;
-          expect(entries[0].length).toBeTruthy();
-        } catch (err) {
-          fail("Query.lessThan failed");
-        }
+        entries = result;
+        expect(entries[0].length).toBeTruthy();
       });
 
       test("All entries should have num_field less than specified value", () => {
@@ -189,17 +161,12 @@ describe("ContentStack SDK Tests", () => {
       const value = 11;
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(
-            contentTypes.numbers_content_type
-          ).Query();
-          entries = await Query.lessThanOrEqualTo("num_field", value)
-            .toJSON()
-            .find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(
+          contentTypes.numbers_content_type
+        ).Query();
+        entries = await Query.lessThanOrEqualTo("num_field", value)
+          .toJSON()
+          .find();
       });
 
       test("Should return entries in the resultset", () => {
@@ -233,18 +200,13 @@ describe("ContentStack SDK Tests", () => {
       const value = 11;
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(
-            contentTypes.numbers_content_type
-          ).Query();
-          entries = await Query.greaterThan("num_field", value)
-            .ascending(field)
-            .toJSON()
-            .find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(
+          contentTypes.numbers_content_type
+        ).Query();
+        entries = await Query.greaterThan("num_field", value)
+          .ascending(field)
+          .toJSON()
+          .find();
       });
 
       test("Should return entries in the resultset", () => {
@@ -277,18 +239,13 @@ describe("ContentStack SDK Tests", () => {
       const value = 11;
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(
-            contentTypes.numbers_content_type
-          ).Query();
-          entries = await Query.greaterThanOrEqualTo("num_field", value)
-            .descending(field)
-            .toJSON()
-            .find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(
+          contentTypes.numbers_content_type
+        ).Query();
+        entries = await Query.greaterThanOrEqualTo("num_field", value)
+          .descending(field)
+          .toJSON()
+          .find();
       });
 
       test("Should return entries in the resultset", () => {
@@ -321,18 +278,13 @@ describe("ContentStack SDK Tests", () => {
       const value = 6;
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(
-            contentTypes.numbers_content_type
-          ).Query();
-          entries = await Query.notEqualTo("num_field", value)
-            .descending(field)
-            .toJSON()
-            .find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(
+          contentTypes.numbers_content_type
+        ).Query();
+        entries = await Query.notEqualTo("num_field", value)
+          .descending(field)
+          .toJSON()
+          .find();
       });
 
       test("Should return entries in the resultset", () => {
@@ -361,13 +313,8 @@ describe("ContentStack SDK Tests", () => {
       let entries;
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(contentTypes.source).Query();
-          entries = await Query.where("boolean", true).toJSON().find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.where("boolean", true).toJSON().find();
       });
 
       test("Should return entries in the resultset", () => {
@@ -388,13 +335,8 @@ describe("ContentStack SDK Tests", () => {
       let entries;
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(contentTypes.source).Query();
-          entries = await Query.where("boolean", false).toJSON().find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.where("boolean", false).toJSON().find();
       });
 
       test("Should return entries in the resultset", () => {
@@ -415,13 +357,8 @@ describe("ContentStack SDK Tests", () => {
       let entries;
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(contentTypes.source).Query();
-          entries = await Query.where("title", "").toJSON().find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.where("title", "").toJSON().find();
       });
 
       test("Should return zero entries in the resultset", () => {
@@ -434,13 +371,8 @@ describe("ContentStack SDK Tests", () => {
       const tags = ["tag1", "tag2"];
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(contentTypes.source).Query();
-          entries = await Query.tags(tags).toJSON().find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.tags(tags).toJSON().find();
       });
 
       test("Should return one or more entries in the resultset", () => {
@@ -468,13 +400,8 @@ describe("ContentStack SDK Tests", () => {
       const field = "title";
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(contentTypes.source).Query();
-          entries = await Query.containedIn("title", _in).toJSON().find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.containedIn("title", _in).toJSON().find();
       });
 
       test("Should return entries in the resultset", () => {
@@ -501,13 +428,8 @@ describe("ContentStack SDK Tests", () => {
       const field = "title";
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(contentTypes.source).Query();
-          entries = await Query.notContainedIn("title", _in).toJSON().find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.notContainedIn("title", _in).toJSON().find();
       });
 
       test("Should return entries in the resultset", () => {
@@ -531,26 +453,20 @@ describe("ContentStack SDK Tests", () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
       const queryField = "boolean";
       const field = "updated_at";
+      const entries = await Query.exists(queryField).toJSON().find();
 
-      try {
-        const entries = await Query.exists(queryField).toJSON().find();
+      // Check if entries are returned
+      expect(entries[0].length).toBeTruthy();
 
-        // Check if entries are returned
-        expect(entries[0].length).toBeTruthy();
-
-        // Verify sorting order (descending on updated_at)
-        if (entries && entries.length && entries[0].length) {
-          let prev = entries[0][0][field];
-          const _entries = entries[0].every(function (entry) {
-            const flag = entry[field] <= prev;
-            prev = entry[field];
-            return flag;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".exists() test failed");
+      // Verify sorting order (descending on updated_at)
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].every(function (entry) {
+          const flag = entry[field] <= prev;
+          prev = entry[field];
+          return flag;
+        });
+        expect(_entries).toBe(true);
       }
     });
 
@@ -558,24 +474,18 @@ describe("ContentStack SDK Tests", () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
       const queryField = "isspecial";
       const field = "updated_at";
+      const entries = await Query.notExists(queryField).toJSON().find();
 
-      try {
-        const entries = await Query.notExists(queryField).toJSON().find();
+      // Check if entries are returned
+      expect("entries" in entries).toBeTruthy();
 
-        // Check if entries are returned
-        expect("entries" in entries).toBeTruthy();
-
-        // Verify sorting order if entries exist
-        if (entries && entries.length && entries[0].length) {
-          let prev = entries[0][0][field];
-          const _entries = entries[0].every(function (entry) {
-            return entry[field] <= prev;
-          });
-          expect(_entries).toBe(true);
-        }
-      } catch (err) {
-        console.error("error:", err);
-        fail(".notExists() test failed");
+      // Verify sorting order if entries exist
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].every(function (entry) {
+          return entry[field] <= prev;
+        });
+        expect(_entries).toBe(true);
       }
     });
   });
@@ -587,16 +497,11 @@ describe("ContentStack SDK Tests", () => {
       const field = "updated_at";
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(contentTypes.source).Query();
-          allEntries = await Query.toJSON().find();
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        allEntries = await Query.toJSON().find();
 
-          const SkipQuery = Stack.ContentType(contentTypes.source).Query();
-          skippedEntries = await SkipQuery.skip(1).toJSON().find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const SkipQuery = Stack.ContentType(contentTypes.source).Query();
+        skippedEntries = await SkipQuery.skip(1).toJSON().find();
       });
 
       test("All entries should be present in the resultset", () => {
@@ -635,16 +540,11 @@ describe("ContentStack SDK Tests", () => {
       const limitNumber = 2;
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(contentTypes.source).Query();
-          allEntries = await Query.toJSON().find();
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        allEntries = await Query.toJSON().find();
 
-          const LimitQuery = Stack.ContentType(contentTypes.source).Query();
-          limitedEntries = await LimitQuery.limit(limitNumber).toJSON().find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const LimitQuery = Stack.ContentType(contentTypes.source).Query();
+        limitedEntries = await LimitQuery.limit(limitNumber).toJSON().find();
       });
 
       test("All entries should be present in the resultset", () => {
@@ -680,13 +580,8 @@ describe("ContentStack SDK Tests", () => {
       let count;
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(contentTypes.source).Query();
-          count = await Query.count().toJSON().find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        count = await Query.count().toJSON().find();
       });
 
       test("Entries present in the resultset", () => {
@@ -700,20 +595,15 @@ describe("ContentStack SDK Tests", () => {
       let entries;
 
       beforeAll(async () => {
-        try {
-          const Query1 = Stack.ContentType(contentTypes.source)
-            .Query()
-            .where("title", "source2");
-          const Query2 = Stack.ContentType(contentTypes.source)
-            .Query()
-            .where("boolean", true);
-          const Query = Stack.ContentType(contentTypes.source).Query();
+        const Query1 = Stack.ContentType(contentTypes.source)
+          .Query()
+          .where("title", "source2");
+        const Query2 = Stack.ContentType(contentTypes.source)
+          .Query()
+          .where("boolean", true);
+        const Query = Stack.ContentType(contentTypes.source).Query();
 
-          entries = await Query.or(Query1, Query2).toJSON().find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        entries = await Query.or(Query1, Query2).toJSON().find();
       });
 
       test("Should return entries in the resultset", () => {
@@ -738,20 +628,15 @@ describe("ContentStack SDK Tests", () => {
       let entries;
 
       beforeAll(async () => {
-        try {
-          const Query1 = Stack.ContentType(contentTypes.source)
-            .Query()
-            .where("title", "source1");
-          const Query2 = Stack.ContentType(contentTypes.source)
-            .Query()
-            .where("boolean", true);
-          const Query = Stack.ContentType(contentTypes.source).Query();
+        const Query1 = Stack.ContentType(contentTypes.source)
+          .Query()
+          .where("title", "source1");
+        const Query2 = Stack.ContentType(contentTypes.source)
+          .Query()
+          .where("boolean", true);
+        const Query = Stack.ContentType(contentTypes.source).Query();
 
-          entries = await Query.and(Query1, Query2).toJSON().find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        entries = await Query.and(Query1, Query2).toJSON().find();
       });
 
       test("Should return one entry in the resultset", () => {
@@ -772,17 +657,12 @@ describe("ContentStack SDK Tests", () => {
       let entries;
 
       beforeAll(async () => {
-        try {
-          const Query = Stack.ContentType(contentTypes.source).Query();
-          entries = await Query.query({
-            $or: [{ title: "source2" }, { boolean: "true" }],
-          })
-            .toJSON()
-            .find();
-        } catch (err) {
-          error = err;
-          console.error("Error:", err);
-        }
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.query({
+          $or: [{ title: "source2" }, { boolean: "true" }],
+        })
+          .toJSON()
+          .find();
       });
 
       test("Should return entries in the resultset", () => {
@@ -808,13 +688,8 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.toJSON().search("source2").find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.toJSON().search("source2").find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -828,16 +703,11 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.includeCount()
-              .includeContentType()
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeCount()
+            .includeContentType()
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -865,13 +735,8 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.includeEmbeddedItems().toJSON().find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeEmbeddedItems().toJSON().find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -883,16 +748,11 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.includeSchema()
-              .includeContentType()
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeSchema()
+            .includeContentType()
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -916,17 +776,12 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.includeCount()
-              .includeSchema()
-              .includeContentType()
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeCount()
+            .includeSchema()
+            .includeContentType()
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -957,16 +812,11 @@ describe("ContentStack SDK Tests", () => {
         const _in = ["ja-jp"];
 
         beforeAll(async () => {
-          try {
-            entries = await Stack.ContentType(contentTypes.source)
-              .Query()
-              .language("ja-jp")
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          entries = await Stack.ContentType(contentTypes.source)
+            .Query()
+            .language("ja-jp")
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -988,17 +838,12 @@ describe("ContentStack SDK Tests", () => {
         const _in = ["ja-jp", "en-us"];
 
         beforeAll(async () => {
-          try {
-            entries = await Stack.ContentType(contentTypes.source)
-              .Query()
-              .language("ja-jp")
-              .includeFallback()
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          entries = await Stack.ContentType(contentTypes.source)
+            .Query()
+            .language("ja-jp")
+            .includeFallback()
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1021,14 +866,9 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            entries = await Stack.getContentTypes({
-              include_global_field_schema: true,
-            });
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          entries = await Stack.getContentTypes({
+            include_global_field_schema: true,
+          });
         });
 
         test("Global field schema should be present when applicable", () => {
@@ -1048,13 +888,8 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.only("title").toJSON().find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.only("title").toJSON().find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1076,13 +911,8 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.only("BASE", "title").toJSON().find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.only("BASE", "title").toJSON().find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1104,13 +934,8 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.only(["title", "url"]).toJSON().find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.only(["title", "url"]).toJSON().find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1133,17 +958,12 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.includeReference("reference")
-              .only("BASE", ["reference"])
-              .only("reference", "title")
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeReference("reference")
+            .only("BASE", ["reference"])
+            .only("reference", "title")
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1162,17 +982,12 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.includeReference("reference")
-              .only("BASE", ["reference"])
-              .only("reference", ["title"])
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeReference("reference")
+            .only("BASE", ["reference"])
+            .only("reference", ["title"])
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1193,13 +1008,8 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.except("title").toJSON().find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.except("title").toJSON().find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1218,13 +1028,8 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.except("BASE", "title").toJSON().find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.except("BASE", "title").toJSON().find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1243,13 +1048,8 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.except(["title", "file"]).toJSON().find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.except(["title", "file"]).toJSON().find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1268,17 +1068,12 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.includeReference("reference")
-              .only("BASE", ["reference"])
-              .except("reference", "title")
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeReference("reference")
+            .only("BASE", ["reference"])
+            .except("reference", "title")
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1324,17 +1119,12 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType(contentTypes.source).Query();
-            entries = await Query.includeReference("reference")
-              .only("BASE", ["reference"])
-              .except("reference", ["title"])
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeReference("reference")
+            .only("BASE", ["reference"])
+            .except("reference", ["title"])
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1382,15 +1172,10 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.Taxonomies();
-            entries = await Query.where("taxonomies.one", "term_one")
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.Taxonomies();
+          entries = await Query.where("taxonomies.one", "term_one")
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1402,18 +1187,13 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.Taxonomies();
-            entries = await Query.containedIn("taxonomies.one", [
-              "term_one",
-              "term_two",
-            ])
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.Taxonomies();
+          entries = await Query.containedIn("taxonomies.one", [
+            "term_one",
+            "term_two",
+          ])
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1425,22 +1205,11 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query1 = Stack.Taxonomies().where(
-              "taxonomies.one",
-              "term_one"
-            );
-            const Query2 = Stack.Taxonomies().where(
-              "taxonomies.two",
-              "term_two"
-            );
-            const Query = Stack.Taxonomies();
+          const Query1 = Stack.Taxonomies().where("taxonomies.one", "term_one");
+          const Query2 = Stack.Taxonomies().where("taxonomies.two", "term_two");
+          const Query = Stack.Taxonomies();
 
-            entries = await Query.or(Query1, Query2).toJSON().find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          entries = await Query.or(Query1, Query2).toJSON().find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1452,22 +1221,11 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query1 = Stack.Taxonomies().where(
-              "taxonomies.one",
-              "term_one"
-            );
-            const Query2 = Stack.Taxonomies().where(
-              "taxonomies.two",
-              "term_two"
-            );
-            const Query = Stack.Taxonomies();
+          const Query1 = Stack.Taxonomies().where("taxonomies.one", "term_one");
+          const Query2 = Stack.Taxonomies().where("taxonomies.two", "term_two");
+          const Query = Stack.Taxonomies();
 
-            entries = await Query.and(Query1, Query2).toJSON().find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          entries = await Query.and(Query1, Query2).toJSON().find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1479,13 +1237,8 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.Taxonomies();
-            entries = await Query.exists("taxonomies.one").toJSON().find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.Taxonomies();
+          entries = await Query.exists("taxonomies.one").toJSON().find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1499,15 +1252,10 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType("source").Query();
-            entries = await Query.where("taxonomies.one", "term_one")
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.where("taxonomies.one", "term_one")
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1519,18 +1267,13 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType("source").Query();
-            entries = await Query.containedIn("taxonomies.one", [
-              "term_one",
-              "term_two",
-            ])
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.containedIn("taxonomies.one", [
+            "term_one",
+            "term_two",
+          ])
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1542,20 +1285,15 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query1 = Stack.ContentType("source")
-              .Query()
-              .where("taxonomies.one", "term_one");
-            const Query2 = Stack.ContentType("source")
-              .Query()
-              .where("taxonomies.two", "term_two");
-            const Query = Stack.ContentType("source").Query();
+          const Query1 = Stack.ContentType("source")
+            .Query()
+            .where("taxonomies.one", "term_one");
+          const Query2 = Stack.ContentType("source")
+            .Query()
+            .where("taxonomies.two", "term_two");
+          const Query = Stack.ContentType("source").Query();
 
-            entries = await Query.or(Query1, Query2).toJSON().find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          entries = await Query.or(Query1, Query2).toJSON().find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1567,20 +1305,15 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query1 = Stack.ContentType("source")
-              .Query()
-              .where("taxonomies.one", "term_one");
-            const Query2 = Stack.ContentType("source")
-              .Query()
-              .where("taxonomies.two", "term_two");
-            const Query = Stack.ContentType("source").Query();
+          const Query1 = Stack.ContentType("source")
+            .Query()
+            .where("taxonomies.one", "term_one");
+          const Query2 = Stack.ContentType("source")
+            .Query()
+            .where("taxonomies.two", "term_two");
+          const Query = Stack.ContentType("source").Query();
 
-            entries = await Query.and(Query1, Query2).toJSON().find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          entries = await Query.and(Query1, Query2).toJSON().find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1592,13 +1325,8 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType("source").Query();
-            entries = await Query.exists("taxonomies.one").toJSON().find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.exists("taxonomies.one").toJSON().find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1610,15 +1338,10 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType("source").Query();
-            entries = await Query.equalAndBelow("taxonomies.one", "term_one")
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.equalAndBelow("taxonomies.one", "term_one")
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1630,15 +1353,10 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType("source").Query();
-            entries = await Query.below("taxonomies.one", "term_one")
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.below("taxonomies.one", "term_one")
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1650,15 +1368,10 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType("source").Query();
-            entries = await Query.equalAndAbove("taxonomies.one", "term_one")
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.equalAndAbove("taxonomies.one", "term_one")
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1670,15 +1383,10 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType("source").Query();
-            entries = await Query.above("taxonomies.one", "term_one_child")
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.above("taxonomies.one", "term_one_child")
+            .toJSON()
+            .find();
         });
 
         test("Should return entries in the resultset", () => {
@@ -1691,18 +1399,10 @@ describe("ContentStack SDK Tests", () => {
         let entries;
 
         beforeAll(async () => {
-          try {
-            const Query = Stack.ContentType("source").Query();
-            entries = await Query.variants([
-              "variant_entry_1",
-              "variant_entry_2",
-            ])
-              .toJSON()
-              .find();
-          } catch (err) {
-            error = err;
-            console.error("Error:", err);
-          }
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.variants(["variant_entry_1", "variant_entry_2"])
+            .toJSON()
+            .find();
         });
 
         test("Should return variant entries in the resultset", () => {
