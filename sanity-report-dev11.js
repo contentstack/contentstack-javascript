@@ -84,9 +84,6 @@ const sendSlackMessage = async () => {
   }
 };
 
-sendSlackMessage();
-
-
 const sendFailureDetails = async (threadTs) => {
   const failedTestSuites = testResults.testResults.filter(
     (suite) => suite.numFailingTests > 0
