@@ -30,7 +30,7 @@ describe('Contentstack Live Preview Tests', () => {
     expect(livePreviewObject).not.toBe('undefined');
     expect(livePreviewObject.enable).not.toBe('undefined');
     expect(livePreviewObject.host).not.toBe('undefined');
-    expect(stack.config.host).toBe('cdn.contentstack.i'); // rest-preview.contentstack.com
+    expect(stack.config.host).toBe('cdn.contentstack.io'); // rest-preview.contentstack.com
   });
 
   test('should check host when live preview is disabled and management token is provided', () => {
