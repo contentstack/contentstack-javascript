@@ -14,7 +14,7 @@
   "_id": "contentstack@3.19.3",
   "scripts": {
     "test": "npm run test:e2e && npm run test:typescript",
-    "test:e2e": "tape test/index.js | tap-html --out ./tap-html.html",
+    "test:e2e": "jest --config jest.js.config.js",
     "test:typescript": "jest --config jest.config.js --testPathPattern=test/typescript",
     "automate": "node test.js",
     "build:node": "webpack --config webpack/webpack.node.js",
