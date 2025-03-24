@@ -72,7 +72,7 @@ const sendSlackMessage = async () => {
   try {
     const result = await app.client.chat.postMessage({
       token: process.env.SLACK_BOT_TOKEN,
-      channel: process.env.SLACK_CHANNEL,
+      channel: process.env.SLACK_CHANNEL2,
       text: slackMessage.text, // Ensure this is the full object
     });
 
