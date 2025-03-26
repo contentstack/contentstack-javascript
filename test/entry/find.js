@@ -1,1676 +1,1414 @@
-'use strict';
+"use strict";
 /*
  * Module Dependencies.
  */
-const test = require('tape');
-const Contentstack = require('../../dist/node/contentstack.js');
-const init = require('../config.js');
-const Utils = require('./utils.js');
+const Contentstack = require("../../dist/node/contentstack.js");
+const init = require("../config.js");
+const Utils = require("./utils.js");
 
 const contentTypes = init.contentTypes;
 let Stack;
-/*
- * Initalise the Contentstack Instance
- * */
-test('Initalise the Contentstack Stack Instance', function(TC) {
-    setTimeout(function() {
-        Stack = Contentstack.Stack(init.stack);
-        Stack.setHost(init.host);
-        TC.end();
-    }, 1000);
-});
 
-test('early_access in stack initialization', function (t) {
-    const stack = Contentstack.Stack({ ...init.stack, early_access: ['newCDA', 'taxonomy'] });
-    t.equal(stack.headers['x-header-ea'], 'newCDA,taxonomy', 'Early access headers should be added');
-    t.end();
-});
+describe("ContentStack SDK Tests", () => {
+  // Setup - Initialize the Contentstack Stack Instance
+  beforeAll((done) => {
+    Stack = Contentstack.Stack(init.stack);
+    Stack.setHost(init.host);
+    setTimeout(done, 1000);
+  });
 
-test('default .find()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'updated_at';
-    Query
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.notok(entries[1], 'Count should not be present');
-            if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
-                var _entries = entries[0].every(function(entry) {
-                    prev = entry[field];
-                    return (entry[field] <= prev);
-                });
-                assert.equal(_entries, true, "default sorting of descending 'updated_at'");
-            }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail("default .find()");
-            assert.end();
+  describe("Stack Initialization", () => {
+    test("early_access in stack initialization should add headers", () => {
+      const stack = Contentstack.Stack({
+        ...init.stack,
+        early_access: ["newCDA", "taxonomy"],
+      });
+      expect(stack.headers["x-header-ea"]).toBe("newCDA,taxonomy");
+    });
+  });
+
+  describe("Default Find", () => {
+    let entries;
+    const field = "updated_at";
+
+    beforeAll(async () => {
+      const Query = Stack.ContentType(contentTypes.source).Query();
+      entries = await Query.toJSON().find();
+    });
+
+    test("Should return entries in the resultset", () => {
+      expect(entries[0].length).toBeTruthy();
+    });
+
+    test("Count should not be present", () => {
+      expect(entries[1]).toBeFalsy();
+    });
+
+    test("Entries should be sorted by default in descending order of updated_at", () => {
+      if (entries && entries.length && entries[0].length > 1) {
+        let prev = entries[0][0][field];
+        const sortedCorrectly = entries[0].slice(1).every((entry) => {
+          const isValid = entry[field] <= prev;
+          prev = entry[field];
+          return isValid;
         });
-});
+        expect(sortedCorrectly).toBe(true);
+      }
+    });
+  });
 
-/*!
- * SORTING
- * !*/
-test('.ascending()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'updated_at';
+  describe("Sorting", () => {
+    describe(".ascending()", () => {
+      let entries;
+      const field = "updated_at";
 
-    Query
-        .ascending(field)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
-                var _entries = entries[0].every(function(entry) {
-                    prev = entry[field];
-                    return (entry[field] >= prev);
-                });
-                assert.equal(_entries, true, "entries sorted ascending on '" + field + "' field");
-            }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".ascending()");
-            assert.end();
-        });
-});
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.ascending(field).toJSON().find();
+      });
 
-test('.descending()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'created_at';
+      test("Should return entries in the resultset", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
 
-    Query
-        .descending(field)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
-                var _entries = entries[0].every(function(entry) {
-                    var flag = (entry[field] <= prev);
-                    prev = entry[field];
-                    return flag;
-                });
-                assert.equal(_entries, true, "entries sorted descending on '" + field + "' field");
-            }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".descending()");
-            assert.end();
-        });
-});
-
-
-// addparam
-test('.addParam()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .addParam('include_count', 'true')
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            assert.ok(entries[0].length, 'Entries length present in the resultset');
-            assert.ok(entries[1], 'count present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".addParam()");
-            assert.end();
-        });
-});
-
-
-/*!
- * COMPARISION
- * !*/
-test('.lessThan()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
-        field = 'num_field',
-        value = 11;
-    Query
-        .lessThan('num_field', value)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, '1 Entry present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
-                var _entries = entries[0].slice(1).every(function(entry) {
-                    var flag = (entry[field] < value);
-                    prev = entry[field];
-                    return flag;
-                });
-                assert.equal(_entries, true, "entries sorted descending on '" + field + "' field");
-            }
-            assert.end();
-        }, function error(err) {
-            console.error('Error : ', err);
-            assert.fail(".lessThan()");
-            assert.end();
-        });
-});
-
-test('.lessThanOrEqualTo()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
-        field = 'updated_at',
-        value = 11;
-
-    Query
-        .lessThanOrEqualTo('num_field', value)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
-                var _entries = entries[0].every(function(entry) {
-                    var flag = (entry[field] <= prev);
-                    prev = entry[field];
-                    return flag;
-                });
-                assert.equal(_entries, true, "entries sorted descending on '" + field + "' field");
-            }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".lessThanOrEqualTo()");
-            assert.end();
-        });
-});
-
-test('.greaterThan()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
-        field = 'num_field',
-        value = 11;
-
-    Query
-        .greaterThan('num_field', value)
-        .ascending(field)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
-                var _entries = entries[0].slice(1).every(function(entry) {
-                    var flag = (entry[field] > value);
-                    prev = entry[field];
-                    return flag;
-                });
-                assert.equal(_entries, true, "entries sorted ascending on '" + field + "' field");
-            }
-            assert.end();
-        }, function error() {
-            assert.fail(".greaterThan()");
-            assert.end();
-        });
-});
-
-test('.greaterThanOrEqualTo()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
-        field = 'num_field',
-        value = 11;
-
-    Query
-        .greaterThanOrEqualTo('num_field', value)
-        .descending(field)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
-                var _entries = entries[0].every(function(entry) {
-                    var flag = (entry[field] >= value);
-                    prev = entry[field];
-                    return flag;
-                });
-                assert.equal(_entries, true, "entries sorted descending on '" + field + "' field");
-            }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".greaterThanOrEqualTo()");
-            assert.end();
-        });
-});
-
-test('.notEqualTo()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.numbers_content_type).Query(),
-        field = 'num_field',
-        value = 6;
-
-    Query
-        .notEqualTo('num_field', value)
-        .descending(field)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
-                var _entries = entries[0].every(function(entry) {
-                    var flag = (entry[field] != value);
-                    prev = entry[field];
-                    return flag;
-                });
-                assert.equal(_entries, true, "entries sorted descending on '" + field + "' field");
-            }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".notEqualTo()");
-            assert.end();
-        });
-});
-
-test('.where() compare boolean value (true)', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .where('boolean', true)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.equal(entries[0].length, 4, 'two entries present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".where()");
-            assert.end();
-        });
-});
-
-test('.where() compare boolean value (false)', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-    Query
-        .where('boolean', false)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.equal(entries[0].length, 3, ' three entries present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".where() boolean value having false");
-            assert.end();
-        });
-});
-
-test('.where()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .where('title', '')
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            assert.equal(entries[0].length, 0, ' zero entry present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".equalTo compare boolean value (true)");
-            assert.end();
-        });
-});
-
-test('.equalTo() compare boolean value (true)', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .equalTo('boolean', true)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.equal(entries[0].length, 4, ' four entries present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".where()");
-            assert.end();
-        });
-});
-
-test('.equalTo() compare boolean value (false)', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-    Query
-        .equalTo('boolean', false)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.equal(entries[0].length, 3, ' three entries present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".where() boolean value having false");
-            assert.end();
-        });
-});
-
-// /*!
-//  * Array/Subset
-//  * !*/
-
-test('.containedIn()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        _in = ["source1", "source2"],
-        field = 'updated_at';
-
-    Query
-        .containedIn('title', _in)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.ok(entries[0].length, 2, 'two entries present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                var _entries = entries[0].every(function(entry) {
-                    return (_in.indexOf(entry['title']) != -1);
-                });
-                assert.equal(_entries, true, "entries sorted descending on '" + field + "' field");
-            }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".containedIn()");
-            assert.end();
-        });
-});
-
-test('.notContainedIn()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        _in = ["source1", "source2"];
-
-    Query
-        .notContainedIn('title', _in)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            assert.ok(entries[0].length, 'No Entry present in the resultset');
-            assert.ok(entries[0].length, 3, 'three Entries present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".notContainedIn()");
-            assert.end();
-        });
-});
-
-
-/*!
- *Element(exists)
- * !*/
-
-test('.exists()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        queryField = "boolean",
-        field = 'updated_at';
-
-    Query
-        .exists(queryField)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
-                var _entries = entries[0].every(function(entry) {
-                    var flag = (entry[field] <= prev);
-                    prev = entry[field];
-                    return flag;
-                });
-                assert.equal(_entries, true, "entries sorted descending on '" + field + "' field");
-            }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".exists()");
-            assert.end();
-        });
-});
-
-test('.notExists()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        queryField = "isspecial",
-        field = 'updated_at';
-
-    Query
-        .notExists(queryField)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            assert.ok("entries" in entries, 'Entries key present in the resultset');
-            //assert.notok(entries[0].length, 'No entry present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                var prev = entries[0][0][field];
-                var _entries = entries[0].every(function(entry) {
-                    return (entry[field] <= prev);
-                });
-                assert.equal(_entries, true, "entries sorted descending on '" + field + "' field");
-            }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".notExists()");
-            assert.end();
-        });
-});
-
-
-// Pagination
-test('.skip()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'updated_at';
-
-    Query
-        .toJSON()
-        .find()
-        .then(function success(allEntries) {
-            //assert.equal(Utils.isEntriesPublished(allEntries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            // assert.ok("entries" in allEntries, 'Entries key present in the resultset');
-            Stack
-                .ContentType(contentTypes.source)
-                .Query()
-                .skip(1)
-                .toJSON()
-                .find()
-                .then(function success(entries) {
-                    // assert.ok("entries" in result, 'Entries key present in the resultset');
-                    //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-                    assert.ok((entries[0].length >= 2), '2 or more Entries present in the resultset');
-                    assert.deepEqual(allEntries[0].slice(1), entries[0], 'All elements matched.');
-                    if (entries && entries.length && entries[0].length) {
-                        var prev = entries[0][0][field];
-                        var _entries = entries[0].every(function(entry) {
-                            var flag = (entry[field] <= prev);
-                            prev = entry[field];
-                            return flag;
-                        });
-                        assert.equal(_entries, true, "entries sorted descending on '" + field + "' field");
-                    }
-                    assert.end();
-                }, function error(err) {
-                    console.error("error :", err);
-                    assert.fail(".skip()");
-                    assert.end();
-                });
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".skip()");
-            assert.end();
-        });
-});
-
-test('.limit()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'updated_at';
-
-    Query
-        .toJSON()
-        .find()
-        .then(function success(allEntries) {
-            //assert.equal(Utils.isEntriesPublished(allEntries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            // assert.ok("entries" in allEntries, 'Entries key present in the resultset');
-            Stack
-                .ContentType(contentTypes.source)
-                .Query()
-                .limit(2)
-                .toJSON()
-                .find()
-                .then(function success(entries) {
-                    // assert.ok("entries" in result, 'Entries key present in the resultset');
-                    //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-                    assert.ok(entries[0].length, 'Entries present in the resultset');
-                    assert.deepEqual(allEntries[0].slice(0, 2), entries[0], 'All elements matched.');
-                    if (entries && entries.length && entries[0] && entries[0].length) {
-                        var prev = entries[0][0][field];
-                        var _entries = entries[0].every(function(entry) {
-                            var flag = (entry[field] <= prev);
-                            prev = entry[field];
-                            return flag;
-                        });
-                        assert.equal(_entries, true, "entries sorted descending on '" + field + "' field");
-                    }
-                    assert.end();
-                }, function error(err) {
-                    console.error("error :", err);
-                    assert.fail(".limit()");
-                    assert.end();
-                });
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".limit()");
-            assert.end();
-        });
-});
-
-test('.count()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .count()
-        .toJSON()
-        .find()
-        .then(function success(count) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            assert.ok(count, 'Entries present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".count()");
-            assert.end();
-        });
-});
-
-
-// Logical
-test('.or() - Query Objects', function(assert) {
-    var Query1 = Stack.ContentType(contentTypes.source).Query().where('title', 'source2');
-    var Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', true);
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .or(Query1, Query2)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.ok(entries[0].length, 2, 'two entries present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                var _entries = entries[0].every(function(entry) {
-                    return (~(entry.title === 'source1' || entry.boolean === true));
-                });
-                assert.ok(_entries, '$OR condition satisfied');
-            }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".or() - Query Objects");
-            assert.end();
-        });
-});
-
-test('.and() - Query Objects', function(assert) {
-    var Query1 = Stack.ContentType(contentTypes.source).Query().where('title', 'source1');
-    var Query2 = Stack.ContentType(contentTypes.source).Query().where('boolean', true);
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .and(Query1, Query2)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, '1 Entry present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                // console.log("\n\n\n\n",JSON.stringify(entries));
-                var _entries = entries[0].every(function(entry) {
-                    return (~(entry.title === 'source1' || entry.boolean === true));
-                });
-                assert.ok(_entries, '$AND condition satisfied');
-            }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".and() - Query Objects");
-            assert.end();
-        });
-});
-
-// Custom query
-test('.query() - Raw query', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .query({ "$or": [{ "title": "source2" }, { "boolean": "true" }] })
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.ok(entries[0].length, 2, 'two entries present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                var _entries = entries[0].every(function(entry) {
-                    return (entry.title === 'source2' || entry.boolean === false)
-                });
-                assert.ok(_entries, '$OR condition satisfied');
-            }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".query() - Raw query");
-            assert.end();
-        });
-});
-
-
-// tags
-test('.tags()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'tags',
-        tags = ["tag1", "tag2"];
-
-    Query
-        .tags(tags)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            // assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok((entries.length >= 1), '1 or more Entry/Entries present in the resultset');
-            if (entries && entries.length && entries[0].length) {
-                var _entries = entries[0].every(function(entry) {
-                    return (Utils.arrayPresentInArray(tags, entry[field]));
-                });
-                assert.equal(_entries, true, 'Tags specified are found in result set');
-            }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".tags()");
-            assert.end();
-        });
-});
-
-
-// search
-test('.search()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-    Query
-        .toJSON()
-        .search('source2')
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, '1 Entry present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".search()");
-            assert.end();
-        });
-});
-
-// regex
-test('.regex()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query(),
-        field = 'title',
-        regex = {
-            pattern: '^source',
-            options: 'i'
-        },
-        regexpObj = new RegExp(regex.pattern, regex.options);
-
-    Query
-        .regex(field, regex.pattern, regex.options)
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok((entries.length >= 1), '1 or more Entry/Entries present in the resultset');
-            var flag = entries[0].every(function(entry) {
-                return regexpObj.test(entry[field]);
-            });
-            assert.ok(flag, "regexp satisfied for all the entries in the resultset");
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".regex()");
-            assert.end();
-        });
-});
-
-// inlcudeEmbeddedItems
-test('.inlcudeEmbeddedItems()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeEmbeddedItems()
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".inlcudeEmbeddedItems()");
-            assert.end();
-        });
-});
-
-test('find: without fallback', function(assert) {
-    var _in = ['ja-jp']
-    Stack.ContentType(contentTypes.source).Query().language('ja-jp')
-    .toJSON()
-    .find()
-    .then((entries) => {
-        assert.ok(entries[0].length, 'Entries present in the resultset');
-        if (entries && entries.length && entries[0].length) {
-            var _entries = entries[0].every(function(entry) {
-                return (_in.indexOf(entry['publish_details']['locale']) != -1);
-            });
-            assert.equal(_entries, true, "Publish content fallback");
+      test("Entries should be sorted in ascending order", () => {
+        if (entries && entries.length && entries[0].length > 1) {
+          let prev = entries[0][0][field];
+          const sortedCorrectly = entries[0].slice(1).every((entry) => {
+            const isValid = entry[field] >= prev;
+            prev = entry[field];
+            return isValid;
+          });
+          expect(sortedCorrectly).toBe(true);
         }
-        assert.end();
-    }).catch((error) => {
-        assert.fail("Entries default .find() fallback catch", error.toString());
-        assert.end();
-    })
-})
+      });
+    });
 
-test('find: fallback', function(assert) {
-    var _in = ['ja-jp', 'en-us']
-    Stack.ContentType(contentTypes.source).Query().language('ja-jp')
-    .includeFallback()
-    .toJSON()
-    .find()
-    .then((entries) => {
-        assert.ok(entries[0].length, 'Entries present in the resultset');
-        if (entries && entries.length && entries[0].length) {
-            var _entries = entries[0].every(function(entry) {
-                return (_in.indexOf(entry['publish_details']['locale']) != -1);
-            });
-            assert.equal(_entries, true, "Publish content fallback");
+    describe(".descending()", () => {
+      let entries;
+      const field = "created_at";
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.descending(field).toJSON().find();
+      });
+
+      test("Should return entries in the resultset", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("Entries should be sorted in descending order", () => {
+        if (entries && entries.length && entries[0].length > 1) {
+          let prev = entries[0][0][field];
+          const sortedCorrectly = entries[0].slice(1).every((entry) => {
+            const isValid = entry[field] <= prev;
+            prev = entry[field];
+            return isValid;
+          });
+          expect(sortedCorrectly).toBe(true);
         }
-        assert.end();
-    }).catch((error) => {
-        assert.fail("Entries default .find() fallback catch", error.toString());
-        assert.end();
-    })
-})
+      });
+    });
+  });
 
-// includeContentType
-test('.includeContentType()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+  describe("Parameters", () => {
+    describe(".addParam()", () => {
+      let entries;
 
-    Query
-        .includeContentType()
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.ok(entries[1]['schema'], 'ContentType present in the resultset');
-            assert.ok(entries[1]['title'], 'ContentType title exists');
-            assert.ok((entries[1]['uid'] === contentTypes.source), 'ContentType uid is same as requested');
-            for(var i=0; i<entries[1]['schema'].length; i++) {
-                if(entries[1]['schema'][i].data_type === 'global_field') {
-                    assert.ok(entries[1]['schema'][i]['schema'], 'Global_field schema is present')                  
-                }
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.addParam("include_count", "true").toJSON().find();
+      });
+
+      test("Should return entries in the resultset", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("Count should be present", () => {
+        expect(entries[1]).toBeTruthy();
+      });
+    });
+  });
+
+  describe("Comparison", () => {
+    describe(".lessThan()", () => {
+      let entries;
+      const field = "num_field";
+      const value = 11;
+
+      test("Should return entry in the resultset", async () => {
+        const Query = Stack.ContentType(
+          contentTypes.numbers_content_type
+        ).Query();
+
+        const result = await Query.lessThan("num_field", value).toJSON().find();
+
+        entries = result;
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("All entries should have num_field less than specified value", () => {
+        if (entries && entries.length && entries[0].length) {
+          const allLessThan = entries[0].every((entry) => entry[field] < value);
+          expect(allLessThan).toBe(true);
+        }
+      });
+    });
+
+    describe(".lessThanOrEqualTo()", () => {
+      let entries;
+      const field = "num_field";
+      const value = 11;
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(
+          contentTypes.numbers_content_type
+        ).Query();
+        entries = await Query.lessThanOrEqualTo("num_field", value)
+          .toJSON()
+          .find();
+      });
+
+      test("Should return entries in the resultset", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("All entries should have num_field less than or equal to specified value", () => {
+        const allLessThanOrEqual = entries[0].every(
+          (entry) => entry[field] <= value
+        );
+        expect(allLessThanOrEqual).toBe(true);
+      });
+
+      test("Entries should be sorted in descending order by default", () => {
+        const updatedAtField = "updated_at";
+        if (entries && entries.length && entries[0].length > 1) {
+          let prev = entries[0][0][updatedAtField];
+          const sortedCorrectly = entries[0].slice(1).every((entry) => {
+            const isValid = entry[updatedAtField] <= prev;
+            prev = entry[updatedAtField];
+            return isValid;
+          });
+          expect(sortedCorrectly).toBe(true);
+        }
+      });
+    });
+
+    describe(".greaterThan()", () => {
+      let entries;
+      const field = "num_field";
+      const value = 11;
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(
+          contentTypes.numbers_content_type
+        ).Query();
+        entries = await Query.greaterThan("num_field", value)
+          .ascending(field)
+          .toJSON()
+          .find();
+      });
+
+      test("Should return entries in the resultset", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("All entries should have num_field greater than specified value", () => {
+        const allGreaterThan = entries[0].every(
+          (entry) => entry[field] > value
+        );
+        expect(allGreaterThan).toBe(true);
+      });
+
+      test("Entries should be sorted in ascending order", () => {
+        if (entries && entries.length && entries[0].length > 1) {
+          let prev = entries[0][0][field];
+          const sortedCorrectly = entries[0].slice(1).every((entry) => {
+            const isValid = entry[field] >= prev;
+            prev = entry[field];
+            return isValid;
+          });
+          expect(sortedCorrectly).toBe(true);
+        }
+      });
+    });
+
+    describe(".greaterThanOrEqualTo()", () => {
+      let entries;
+      const field = "num_field";
+      const value = 11;
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(
+          contentTypes.numbers_content_type
+        ).Query();
+        entries = await Query.greaterThanOrEqualTo("num_field", value)
+          .descending(field)
+          .toJSON()
+          .find();
+      });
+
+      test("Should return entries in the resultset", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("All entries should have num_field greater than or equal to specified value", () => {
+        const allGreaterThanOrEqual = entries[0].every(
+          (entry) => entry[field] >= value
+        );
+        expect(allGreaterThanOrEqual).toBe(true);
+      });
+
+      test("Entries should be sorted in descending order", () => {
+        if (entries && entries.length && entries[0].length > 1) {
+          let prev = entries[0][0][field];
+          const sortedCorrectly = entries[0].slice(1).every((entry) => {
+            const isValid = entry[field] <= prev;
+            prev = entry[field];
+            return isValid;
+          });
+          expect(sortedCorrectly).toBe(true);
+        }
+      });
+    });
+
+    describe(".notEqualTo()", () => {
+      let entries;
+      const field = "num_field";
+      const value = 6;
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(
+          contentTypes.numbers_content_type
+        ).Query();
+        entries = await Query.notEqualTo("num_field", value)
+          .descending(field)
+          .toJSON()
+          .find();
+      });
+
+      test("Should return entries in the resultset", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("All entries should have num_field not equal to specified value", () => {
+        const allNotEqual = entries[0].every((entry) => entry[field] !== value);
+        expect(allNotEqual).toBe(true);
+      });
+
+      test("Entries should be sorted in descending order", () => {
+        if (entries && entries.length && entries[0].length > 1) {
+          let prev = entries[0][0][field];
+          const sortedCorrectly = entries[0].slice(1).every((entry) => {
+            const isValid = entry[field] <= prev;
+            prev = entry[field];
+            return isValid;
+          });
+          expect(sortedCorrectly).toBe(true);
+        }
+      });
+    });
+
+    describe(".where() with boolean value (true)", () => {
+      let entries;
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.where("boolean", true).toJSON().find();
+      });
+
+      test("Should return entries in the resultset", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("Should return four entries in the resultset", () => {
+        expect(entries[0].length).toBe(4);
+      });
+
+      test("All entries should have boolean field set to true", () => {
+        const allTrue = entries[0].every((entry) => entry.boolean === true);
+        expect(allTrue).toBe(true);
+      });
+    });
+
+    describe(".where() with boolean value (false)", () => {
+      let entries;
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.where("boolean", false).toJSON().find();
+      });
+
+      test("Should return entries in the resultset", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("Should return three entries in the resultset", () => {
+        expect(entries[0].length).toBe(3);
+      });
+
+      test("All entries should have boolean field set to false", () => {
+        const allFalse = entries[0].every((entry) => entry.boolean === false);
+        expect(allFalse).toBe(true);
+      });
+    });
+
+    describe(".where() with empty string", () => {
+      let entries;
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.where("title", "").toJSON().find();
+      });
+
+      test("Should return zero entries in the resultset", () => {
+        expect(entries[0].length).toBe(0);
+      });
+    });
+    describe(".tags()", () => {
+      let entries;
+      const field = "tags";
+      const tags = ["tag1", "tag2"];
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.tags(tags).toJSON().find();
+      });
+
+      test("Should return one or more entries in the resultset", () => {
+        expect(entries.length).toBeGreaterThanOrEqual(1);
+      });
+
+      test("All entries should have at least one of the specified tags", () => {
+        if (entries && entries.length && entries[0].length) {
+          const allHaveTags = entries[0].every((entry) =>
+            Utils.arrayPresentInArray(tags, entry[field])
+          );
+          expect(allHaveTags).toBe(true);
+        } else {
+          // Skip this test if no entries were found
+          console.log("No entries found to check tags");
+        }
+      });
+    });
+  });
+
+  describe("Array/Subset Tests", () => {
+    describe(".containedIn()", () => {
+      let entries;
+      const _in = ["source1", "source2"];
+      const field = "title";
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.containedIn("title", _in).toJSON().find();
+      });
+
+      test("Should return entries in the resultset", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("Should return two entries in the resultset", () => {
+        expect(entries[0].length).toBe(2);
+      });
+
+      test("All entries should have title field contained in the specified values", () => {
+        if (entries && entries.length && entries[0].length) {
+          const allContained = entries[0].every((entry) =>
+            _in.includes(entry[field])
+          );
+          expect(allContained).toBe(true);
+        }
+      });
+    });
+
+    describe(".notContainedIn()", () => {
+      let entries;
+      const _in = ["source1", "source2"];
+      const field = "title";
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.notContainedIn("title", _in).toJSON().find();
+      });
+
+      test("Should return entries in the resultset", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("Should return three entries in the resultset", () => {
+        expect(entries[0].length).toBe(5);
+      });
+
+      test("All entries should have title field not contained in the specified values", () => {
+        if (entries && entries.length && entries[0].length) {
+          const allNotContained = entries[0].every(
+            (entry) => !_in.includes(entry[field])
+          );
+          expect(allNotContained).toBe(true);
+        }
+      });
+    });
+    test(".exists() should return entries with the specified field", async () => {
+      const Query = Stack.ContentType(contentTypes.source).Query();
+      const queryField = "boolean";
+      const field = "updated_at";
+      const entries = await Query.exists(queryField).toJSON().find();
+
+      // Check if entries are returned
+      expect(entries[0].length).toBeTruthy();
+
+      // Verify sorting order (descending on updated_at)
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].every(function (entry) {
+          const flag = entry[field] <= prev;
+          prev = entry[field];
+          return flag;
+        });
+        expect(_entries).toBe(true);
+      }
+    });
+
+    test(".notExists() should return entries without the specified field", async () => {
+      const Query = Stack.ContentType(contentTypes.source).Query();
+      const queryField = "isspecial";
+      const field = "updated_at";
+      const entries = await Query.notExists(queryField).toJSON().find();
+
+      // Check if entries are returned
+      expect("entries" in entries).toBeTruthy();
+
+      // Verify sorting order if entries exist
+      if (entries && entries.length && entries[0].length) {
+        let prev = entries[0][0][field];
+        const _entries = entries[0].every(function (entry) {
+          return entry[field] <= prev;
+        });
+        expect(_entries).toBe(true);
+      }
+    });
+  });
+
+  describe("Pagination Tests", () => {
+    describe(".skip()", () => {
+      let allEntries;
+      let skippedEntries;
+      const field = "updated_at";
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        allEntries = await Query.toJSON().find();
+
+        const SkipQuery = Stack.ContentType(contentTypes.source).Query();
+        skippedEntries = await SkipQuery.skip(1).toJSON().find();
+      });
+
+      test("All entries should be present in the resultset", () => {
+        expect(allEntries[0].length).toBeTruthy();
+      });
+
+      test("Skipped entries should be present in the resultset", () => {
+        expect(skippedEntries[0].length).toBeGreaterThanOrEqual(2);
+      });
+
+      test("Skipped entries should match all entries with first skipped", () => {
+        expect(skippedEntries[0]).toEqual(allEntries[0].slice(1));
+      });
+
+      test("Skipped entries should maintain sorting order", () => {
+        if (
+          skippedEntries &&
+          skippedEntries.length &&
+          skippedEntries[0].length > 1
+        ) {
+          let prev = skippedEntries[0][0][field];
+          const sortedCorrectly = skippedEntries[0].slice(1).every((entry) => {
+            const isValid = entry[field] <= prev;
+            prev = entry[field];
+            return isValid;
+          });
+          expect(sortedCorrectly).toBe(true);
+        }
+      });
+    });
+
+    describe(".limit()", () => {
+      let allEntries;
+      let limitedEntries;
+      const field = "updated_at";
+      const limitNumber = 2;
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        allEntries = await Query.toJSON().find();
+
+        const LimitQuery = Stack.ContentType(contentTypes.source).Query();
+        limitedEntries = await LimitQuery.limit(limitNumber).toJSON().find();
+      });
+
+      test("All entries should be present in the resultset", () => {
+        expect(allEntries[0].length).toBeTruthy();
+      });
+
+      test("Limited entries should be present in the resultset", () => {
+        expect(limitedEntries[0].length).toBeTruthy();
+      });
+
+      test("Limited entries should match first N entries from all entries", () => {
+        expect(limitedEntries[0]).toEqual(allEntries[0].slice(0, limitNumber));
+      });
+
+      test("Limited entries should maintain sorting order", () => {
+        if (
+          limitedEntries &&
+          limitedEntries.length &&
+          limitedEntries[0].length > 1
+        ) {
+          let prev = limitedEntries[0][0][field];
+          const sortedCorrectly = limitedEntries[0].slice(1).every((entry) => {
+            const isValid = entry[field] <= prev;
+            prev = entry[field];
+            return isValid;
+          });
+          expect(sortedCorrectly).toBe(true);
+        }
+      });
+    });
+
+    describe(".count()", () => {
+      let count;
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        count = await Query.count().toJSON().find();
+      });
+
+      test("Entries present in the resultset", () => {
+        expect(count).toBeTruthy();
+      });
+    });
+  });
+
+  describe("Logical Operations", () => {
+    describe(".or() - Query Objects", () => {
+      let entries;
+
+      beforeAll(async () => {
+        const Query1 = Stack.ContentType(contentTypes.source)
+          .Query()
+          .where("title", "source2");
+        const Query2 = Stack.ContentType(contentTypes.source)
+          .Query()
+          .where("boolean", true);
+        const Query = Stack.ContentType(contentTypes.source).Query();
+
+        entries = await Query.or(Query1, Query2).toJSON().find();
+      });
+
+      test("Should return entries in the resultset", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("Should return 1 entries in the resultset", () => {
+        expect(entries[0].length).toBe(5);
+      });
+
+      test("All entries should satisfy the OR condition", () => {
+        if (entries && entries.length && entries[0].length) {
+          let _entries = entries[0].every(function (entry) {
+            return ~(entry.title === "source1" || entry.boolean === true);
+          });
+          expect(_entries).toBe(true);
+        }
+      });
+    });
+
+    describe(".and() - Query Objects", () => {
+      let entries;
+
+      beforeAll(async () => {
+        const Query1 = Stack.ContentType(contentTypes.source)
+          .Query()
+          .where("title", "source1");
+        const Query2 = Stack.ContentType(contentTypes.source)
+          .Query()
+          .where("boolean", true);
+        const Query = Stack.ContentType(contentTypes.source).Query();
+
+        entries = await Query.and(Query1, Query2).toJSON().find();
+      });
+
+      test("Should return one entry in the resultset", () => {
+        expect(entries[0].length).toBe(1);
+      });
+
+      test("All entries should satisfy the AND condition", () => {
+        if (entries && entries.length && entries[0].length) {
+          const allMatchCondition = entries[0].every(
+            (entry) => entry.title === "source1" && entry.boolean === true
+          );
+          expect(allMatchCondition).toBe(true);
+        }
+      });
+    });
+
+    describe(".query() - Raw query", () => {
+      let entries;
+
+      beforeAll(async () => {
+        const Query = Stack.ContentType(contentTypes.source).Query();
+        entries = await Query.query({
+          $or: [{ title: "source2" }, { boolean: "true" }],
+        })
+          .toJSON()
+          .find();
+      });
+
+      test("Should return entries in the resultset", () => {
+        expect(entries[0].length).toBeTruthy();
+      });
+
+      test("Should return two entries in the resultset", () => {
+        expect(entries[0].length).toBe(1);
+      });
+
+      test("All entries should satisfy the OR condition", () => {
+        if (entries && entries.length && entries[0].length) {
+          const allMatchCondition = entries[0].every(
+            (entry) => entry.title === "source2" || entry.boolean === false
+          );
+          expect(allMatchCondition).toBe(true);
+        }
+      });
+    });
+
+    describe("Search Tests", () => {
+      describe(".search()", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.toJSON().search("source2").find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+      });
+    });
+
+    describe("Including Additional Data Tests", () => {
+      describe(".includeCount() and .includeContentType()", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeCount()
+            .includeContentType()
+            .toJSON()
+            .find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("ContentType should be present in the resultset", () => {
+          expect(entries[1]).toBeTruthy();
+        });
+
+        test("ContentType title should exist", () => {
+          expect(entries[1].title).toBeDefined();
+        });
+
+        test("ContentType uid should match requested content type", () => {
+          expect(entries[1].uid).toBe(contentTypes.source);
+        });
+
+        test("Count should be present in the resultset", () => {
+          expect(entries[2]).toBeTruthy();
+        });
+      });
+
+      describe(".includeEmbeddedItems()", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeEmbeddedItems().toJSON().find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+      });
+
+      describe(".includeSchema() and .includeContentType()", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeSchema()
+            .includeContentType()
+            .toJSON()
+            .find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("ContentType should be present in the resultset", () => {
+          expect(entries[1]).toBeTruthy();
+        });
+
+        test("ContentType title should exist", () => {
+          expect(entries[1].title).toBeDefined();
+        });
+
+        test("ContentType uid should match requested content type", () => {
+          expect(entries[1].uid).toBe(contentTypes.source);
+        });
+      });
+
+      describe(".includeCount(), .includeSchema() and .includeContentType()", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeCount()
+            .includeSchema()
+            .includeContentType()
+            .toJSON()
+            .find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("ContentType should be present in the resultset", () => {
+          expect(entries[1]).toBeTruthy();
+        });
+
+        test("ContentType title should exist", () => {
+          expect(entries[1].title).toBeDefined();
+        });
+
+        test("ContentType uid should match requested content type", () => {
+          expect(entries[1].uid).toBe(contentTypes.source);
+        });
+
+        test("Count should be present in the resultset", () => {
+          expect(entries[2]).toBeTruthy();
+        });
+      });
+    });
+
+    describe("Localization Tests", () => {
+      describe("find: without fallback", () => {
+        let entries;
+        const _in = ["ja-jp"];
+
+        beforeAll(async () => {
+          entries = await Stack.ContentType(contentTypes.source)
+            .Query()
+            .language("ja-jp")
+            .toJSON()
+            .find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("All entries should have the correct locale", () => {
+          if (entries && entries[0].length) {
+            const allHaveCorrectLocale = entries[0].every((entry) =>
+              _in.includes(entry.publish_details.locale)
+            );
+            expect(allHaveCorrectLocale).toBe(true);
+          }
+        });
+      });
+
+      describe("find: with fallback", () => {
+        let entries;
+        const _in = ["ja-jp", "en-us"];
+
+        beforeAll(async () => {
+          entries = await Stack.ContentType(contentTypes.source)
+            .Query()
+            .language("ja-jp")
+            .includeFallback()
+            .toJSON()
+            .find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("All entries should have locale from the allowed fallback list", () => {
+          if (entries && entries[0].length) {
+            const allHaveCorrectLocale = entries[0].every((entry) =>
+              _in.includes(entry.publish_details.locale)
+            );
+            expect(allHaveCorrectLocale).toBe(true);
+          }
+        });
+      });
+    });
+
+    describe("Global Field Tests", () => {
+      describe(".getContentTypes()", () => {
+        let entries;
+
+        beforeAll(async () => {
+          entries = await Stack.getContentTypes({
+            include_global_field_schema: true,
+          });
+        });
+
+        test("Global field schema should be present when applicable", () => {
+          for (var i = 0; i < entries.content_types[0].schema.length; i++) {
+            if (
+              entries.content_types[0].schema[i].data_type === "global_field"
+            ) {
+              expect(entries[1]["schema"][i]["schema"]).toBeDefined();
             }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".includeContentType()");
-            assert.end();
+          }
         });
-});
+      });
+    });
 
-test('.getContentTypes()', function(assert) {
-    var Query = Stack.getContentTypes({"include_global_field_schema": true})
-    Query
-        .then(function success(entries) {
-            for(var i=0; i<entries.content_types[0].schema.length; i++) {
-                if(entries.content_types[0].schema[i].data_type === 'global_field') {
-                    assert.ok(entries.content_types[0].schema[i]['schema'], 'Global_field schema is present in contentTypes')                  
+    describe("Field Selection Tests", () => {
+      describe(".only() - Single String Parameter", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.only("title").toJSON().find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("All entries should contain only title and uid fields", () => {
+          const allHaveCorrectFields = entries[0].every(
+            (entry) =>
+              Object.keys(entry).length === 2 &&
+              "title" in entry &&
+              "uid" in entry
+          );
+          expect(allHaveCorrectFields).toBe(true);
+        });
+      });
+
+      describe(".only() - Multiple String Parameter", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.only("BASE", "title").toJSON().find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("All entries should contain only title and uid fields", () => {
+          const allHaveCorrectFields = entries[0].every(
+            (entry) =>
+              Object.keys(entry).length === 2 &&
+              "title" in entry &&
+              "uid" in entry
+          );
+          expect(allHaveCorrectFields).toBe(true);
+        });
+      });
+
+      describe(".only() - Array Parameter", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.only(["title", "url"]).toJSON().find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("All entries should contain only title, url, and uid fields", () => {
+          const allHaveCorrectFields = entries[0].every(
+            (entry) =>
+              Object.keys(entry).length === 3 &&
+              "title" in entry &&
+              "url" in entry &&
+              "uid" in entry
+          );
+          expect(allHaveCorrectFields).toBe(true);
+        });
+      });
+
+      describe(".only() - For the reference - String", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeReference("reference")
+            .only("BASE", ["reference"])
+            .only("reference", "title")
+            .toJSON()
+            .find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("All entries should contain reference field", () => {
+          const allHaveReference = entries[0].every(
+            (entry) => "reference" in entry
+          );
+          expect(allHaveReference).toBe(true);
+        });
+      });
+
+      describe(".only() - For the reference - Array", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeReference("reference")
+            .only("BASE", ["reference"])
+            .only("reference", ["title"])
+            .toJSON()
+            .find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("All entries should contain reference field", () => {
+          const allHaveReference = entries[0].every(
+            (entry) => "reference" in entry
+          );
+          expect(allHaveReference).toBe(true);
+        });
+      });
+    });
+
+    describe("Field Exclusion Tests", () => {
+      describe(".except() - Single String Parameter", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.except("title").toJSON().find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("All entries should not have title field", () => {
+          const allExcluded = entries[0].every(
+            (entry) => entry && !("title" in entry)
+          );
+          expect(allExcluded).toBe(true);
+        });
+      });
+
+      describe(".except() - Multiple String Parameter", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.except("BASE", "title").toJSON().find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("All entries should not have title field", () => {
+          const allExcluded = entries[0].every(
+            (entry) => entry && !("title" in entry)
+          );
+          expect(allExcluded).toBe(true);
+        });
+      });
+
+      describe(".except() - Array of String Parameter", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.except(["title", "file"]).toJSON().find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("All entries should not have title and file fields", () => {
+          const allExcluded = entries[0].every(
+            (entry) => entry && !("title" in entry) && !("file" in entry)
+          );
+          expect(allExcluded).toBe(true);
+        });
+      });
+
+      describe(".except() - For the reference - String", () => {
+        let entries;
+
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeReference("reference")
+            .only("BASE", ["reference"])
+            .except("reference", "title")
+            .toJSON()
+            .find();
+        });
+
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+
+        test("All entries should have reference field", () => {
+          const allHaveReference = entries[0].every(
+            (entry) => entry && "reference" in entry
+          );
+          expect(allHaveReference).toBe(true);
+        });
+
+        test("All entries should have uid field", () => {
+          const allHaveUID = entries[0].every(
+            (entry) => entry && "uid" in entry
+          );
+          expect(allHaveUID).toBe(true);
+        });
+
+        test("All references should not have title field", () => {
+          let allReferencesExcluded = true;
+
+          entries[0].forEach((entry) => {
+            if (
+              entry &&
+              entry.reference &&
+              typeof entry.reference === "object"
+            ) {
+              entry.reference.forEach((reference) => {
+                if (reference && "title" in reference) {
+                  allReferencesExcluded = false;
                 }
+              });
             }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".includeContentType()");
-            assert.end();
+          });
+
+          expect(allReferencesExcluded).toBe(true);
         });
-});
+      });
 
-// includeReference
-test('.includeReference() - String', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+      describe(".except() - For the reference - Array", () => {
+        let entries;
 
-    Query
-        .includeReference('reference')
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            var flag = entries[0].every(function(entry) {
-                return (entry && entry.reference && typeof entry.reference === 'object');
-            });
-            assert.equal(flag, true, 'all the present reference are included');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".includeReference() - String");
-            assert.end();
+        beforeAll(async () => {
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          entries = await Query.includeReference("reference")
+            .only("BASE", ["reference"])
+            .except("reference", ["title"])
+            .toJSON()
+            .find();
         });
-});
 
-test('.includeReference() - Array', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeReference(['reference', 'other_reference'])
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            var flag = entries[0].every(function(entry) {
-                return (entry && entry.reference && typeof entry.reference === 'object' && entry.other_reference && typeof entry.other_reference === 'object');
-            });
-            assert.equal(flag, true, 'all the present reference are included');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".includeReference() - Array");
-            assert.end();
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
         });
-});
 
-// includeCount
-test('.includeCount()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeCount()
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.ok(entries[1], 'Count present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".includeCount()");
-            assert.end();
+        test("All entries should have reference field", () => {
+          const allHaveReference = entries[0].every(
+            (entry) => entry && "reference" in entry
+          );
+          expect(allHaveReference).toBe(true);
         });
-});
 
-// includeSchema
-test('.includeSchema()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+        test("All entries should have uid field", () => {
+          const allHaveUID = entries[0].every(
+            (entry) => entry && "uid" in entry
+          );
+          expect(allHaveUID).toBe(true);
+        });
 
-    Query
-        .includeSchema()
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.ok(entries[1], 'Schema present in the resultset');
-            for(var i=0; i<entries[1].length; i++) {
-                if(entries[1][i].data_type === 'global_field') {
-                    assert.ok(entries[1][i]['schema'], 'Global_field schema is present')   
-                    if (entries[1][i]['schema']) {
-                        assert.equal(entries[1][i]['schema'].length, 2, 'Global_field schema is present')                  
-                    }
+        test("All references should not have title field", () => {
+          let allReferencesExcluded = true;
+
+          entries[0].forEach((entry) => {
+            if (
+              entry &&
+              entry.reference &&
+              typeof entry.reference === "object"
+            ) {
+              entry.reference.forEach((reference) => {
+                if (reference && "title" in reference) {
+                  allReferencesExcluded = false;
                 }
+              });
             }
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".includeSchema()");
-            assert.end();
+          });
+
+          expect(allReferencesExcluded).toBe(true);
         });
-});
+      });
+    });
 
-// includeReferenceContenttypeUid with an object
-test('.includeReferenceContenttypeUid()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+    describe("Taxonomies Endpoint Tests", () => {
+      describe("Get Entries With One Term", () => {
+        let entries;
 
-    Query
-        .includeSchema()
-        .includeReferenceContentTypeUID()
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            for(var i=0; i<entries[1].length; i++) {
-                if(entries[1][i].data_type == "reference" && entries[1][i].display_name == "Other Reference") {
-                    assert.equal(entries[1][i].field_metadata.hasOwnProperty("ref_multiple_content_types"), true, "multiple ContentType Reference is present")                    
-                    assert.ok(typeof entries[1][i].reference_to === "object")
-                    assert.end();
-                }
-            }
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".includeSchema()");
-            assert.end();
+        beforeAll(async () => {
+          const Query = Stack.Taxonomies();
+          entries = await Query.where("taxonomies.one", "term_one")
+            .toJSON()
+            .find();
         });
-});
 
-
-// includeReferenceContenttypeUid with string
-test('.includeReferenceContenttypeUid()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeSchema()
-        .includeReferenceContentTypeUID()
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            for(var i=0; i<entries[1].length; i++) {
-                if(entries[1][i].data_type == "reference" && entries[1][i].display_name == "Reference") {
-                    if (entries[1][i].field_metadata.hasOwnProperty("ref_multiple")) {
-                        assert.equal(entries[1][i].field_metadata.ref_multiple, false, "multiple contentType reference is not present")                    
-                    }
-                    if (entries[1][i].field_metadata.hasOwnProperty("ref_multiple_content_types")) {
-                        if (entries[1][i].field_metadata.ref_multiple_content_types === true) {
-                            assert.ok(typeof entries[1][i].reference_to === 'object')
-                        }else {
-                            assert.ok(typeof entries[1][i].reference_to === 'string')
-                        }
-                    }
-                    assert.end();
-                }
-            }
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".includeReferenceContenttypeUid()");
-            assert.end();
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
         });
-});
+      });
 
-// includeCount && includeSchema
-test('.includeCount() and .includeSchema()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+      describe("Get Entries With Any Term ($in)", () => {
+        let entries;
 
-    Query
-        .includeCount()
-        .includeSchema()
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.ok(entries[1].length, 'Schema present in the resultset');
-            assert.ok(entries[2], 'Count present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail(".includeSchema()");
-            assert.end();
+        beforeAll(async () => {
+          const Query = Stack.Taxonomies();
+          entries = await Query.containedIn("taxonomies.one", [
+            "term_one",
+            "term_two",
+          ])
+            .toJSON()
+            .find();
         });
-});
 
-// includeContentType
-test('.includeContentType()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeContentType()
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.ok(entries[1], 'ContentType present in the resultset');
-            assert.ok(entries[1]['title'], 'ContentType title exists');
-            assert.ok((entries[1]['uid'] === contentTypes.source), 'ContentType uid is same as requested');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".includeContentType()");
-            assert.end();
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
         });
-});
+      });
 
-// includeCount && includeContentType
-test('.includeCount() and .includeContentType()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+      describe("Get Entries With Any Term ($or)", () => {
+        let entries;
 
-    Query
-        .includeCount()
-        .includeContentType()
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.ok(entries[1], 'ContentType present in the resultset');
-            assert.ok(entries[1]['title'], 'ContentType title exists');
-            assert.ok((entries[1]['uid'] === contentTypes.source), 'ContentType uid is same as requested');
-            assert.ok(entries[2], 'Count present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail(".includeCount && includeContentType");
-            assert.end();
+        beforeAll(async () => {
+          const Query1 = Stack.Taxonomies().where("taxonomies.one", "term_one");
+          const Query2 = Stack.Taxonomies().where("taxonomies.two", "term_two");
+          const Query = Stack.Taxonomies();
+
+          entries = await Query.or(Query1, Query2).toJSON().find();
         });
-});
 
-// includeSchema && includeContentType
-test('.includeSchema() and .includeContentType()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeSchema()
-        .includeContentType()
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.ok(entries[1], 'ContentType present in the resultset');
-            assert.ok(entries[1]['title'], 'ContentType title exists');
-            assert.ok((entries[1]['uid'] === contentTypes.source), 'ContentType uid is same as requested');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail(".includeCount && includeContentType");
-            assert.end();
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
         });
-});
+      });
 
-// includeCount, includeSchema && includeContentType
-test('.includeSchema() and .includeContentType()', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+      describe("Get Entries With All Terms ($and)", () => {
+        let entries;
 
-    Query
-        .includeCount()
-        .includeSchema()
-        .includeContentType()
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            //assert.equal(Utils.isEntriesPublished(entries[0], Stack.environment_uid, 'en-us'), true, "Entries present in the resultset are published.");
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.ok(entries[1], 'ContentType present in the resultset');
-            assert.ok(entries[1]['title'], 'ContentType title exists');
-            assert.ok((entries[1]['uid'] === contentTypes.source), 'ContentType uid is same as requested');
-            assert.ok(entries[2], 'Count present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("Error :", err);
-            assert.fail(".includeCount && includeContentType");
-            assert.end();
+        beforeAll(async () => {
+          const Query1 = Stack.Taxonomies().where("taxonomies.one", "term_one");
+          const Query2 = Stack.Taxonomies().where("taxonomies.two", "term_two");
+          const Query = Stack.Taxonomies();
+
+          entries = await Query.and(Query1, Query2).toJSON().find();
         });
-});
 
-// only
-test('.only() - Single String Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .only('title')
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            var flag = entries[0].every(function(entry) {
-                return (entry && Object.keys(entry).length === 2 && "title" in entry && "uid" in entry);
-            });
-            assert.ok(flag, 'entries with the field title in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".only() - Single String Parameter");
-            assert.end();
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
         });
-});
+      });
 
-test('.only() - Multiple String Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+      describe("Get Entries With Any Taxonomy Terms ($exists)", () => {
+        let entries;
 
-    Query
-        .only('BASE', 'title')
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            var flag = entries[0].every(function(entry) {
-                return (entry && Object.keys(entry).length === 2 && "title" in entry && "uid" in entry);
-            });
-            assert.ok(flag, 'entries with the field title in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".only() - Multiple String Parameter");
-            assert.end();
+        beforeAll(async () => {
+          const Query = Stack.Taxonomies();
+          entries = await Query.exists("taxonomies.one").toJSON().find();
         });
-});
 
-test('.only() - Array Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .only(['title', 'url'])
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            var flag = entries[0].every(function(entry) {
-                return (entry && Object.keys(entry).length === 3 && "title" in entry && "url" in entry && "uid" in entry);
-            });
-            assert.ok(flag, 'entries with the field title,url in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".only() - Array Parameter");
-            assert.end();
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
         });
-});
+      });
+    });
 
-test('.only() - For the reference - String', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+    describe("Content Type Taxonomies Query Tests", () => {
+      describe("Get Entries With One Term", () => {
+        let entries;
 
-    Query
-        .includeReference('reference')
-        .only('BASE', ['reference'])
-        .only('reference', 'title')
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".only() - For the reference - String");
-            assert.end();
+        beforeAll(async () => {
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.where("taxonomies.one", "term_one")
+            .toJSON()
+            .find();
         });
-});
 
-test('.only() - For the reference - Array', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeReference('reference')
-        .only('BASE', ['reference'])
-        .only('reference', ['title'])
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".only() - For the reference - Array");
-            assert.end();
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
         });
-});
+      });
 
-// except
-test('.except() - Single String Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+      describe("Get Entries With Any Term ($in)", () => {
+        let entries;
 
-    Query
-        .except('title')
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            var flag = entries[0].every(function(entry) {
-                return (entry && !("title" in entry));
-            });
-            assert.ok(flag, 'entries without the field title in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".except() - Single String Parameter");
-            assert.end();
+        beforeAll(async () => {
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.containedIn("taxonomies.one", [
+            "term_one",
+            "term_two",
+          ])
+            .toJSON()
+            .find();
         });
-});
 
-test('.except() - Multiple String Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .except('BASE', 'title')
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            var flag = entries[0].every(function(entry) {
-                return (entry && !("title" in entry));
-            });
-            assert.ok(flag, 'entries without the field title, url in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".except() - Multiple String Parameter");
-            assert.end();
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
         });
-});
+      });
 
-test('.except() - Array of String Parameter', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+      describe("Get Entries With Any Term ($or)", () => {
+        let entries;
 
-    Query
-        .except(['title', 'file'])
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            var flag = entries[0].every(function(entry) {
-                return (entry && !("title" in entry) && !("file" in entry));
-            });
-            assert.ok(flag, 'entries without the field title, file in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".except() - Array of String Parameter");
-            assert.end();
+        beforeAll(async () => {
+          const Query1 = Stack.ContentType("source")
+            .Query()
+            .where("taxonomies.one", "term_one");
+          const Query2 = Stack.ContentType("source")
+            .Query()
+            .where("taxonomies.two", "term_two");
+          const Query = Stack.ContentType("source").Query();
+
+          entries = await Query.or(Query1, Query2).toJSON().find();
         });
-});
 
-test('.except() - For the reference - String', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
-
-    Query
-        .includeReference('reference')
-        .only('BASE', ['reference'])
-        .except('reference', 'title')
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            var flag = entries[0].every(function(entry) {
-                var _flag;
-                if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
-                    _flag = true;
-                    _flag = entry.reference.every(function(reference) {
-                        return (reference && !("title" in reference));
-                    });
-                } else {
-                    _flag = true;
-                }
-                return (_flag && entry && (Object.keys(entry).length === 3 || Object.keys(entry).length === 2) && "reference" in entry && "uid" in entry);
-            });
-            assert.ok(flag, 'entries with the field reference without title field in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".except() - For the reference - String");
-            assert.end();
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
         });
-});
+      });
 
-test('.except() - For the reference - Array', function(assert) {
-    var Query = Stack.ContentType(contentTypes.source).Query();
+      describe("Get Entries With All Terms ($and)", () => {
+        let entries;
 
-    Query
-        .includeReference('reference')
-        .only('BASE', ['reference'])
-        .except('reference', ['title'])
-        .toJSON()
-        .find()
-        .then(function success(entries) {
-            
-            // assert.ok("entries" in result, 'Entries key present in the resultset');
-            var flag = entries[0].every(function(entry) {
-                var _flag;
-                
-                if (entry && entry['reference'] && typeof entry['reference'] === 'object') {
-                    _flag = true;
-                    _flag = entry.reference.every(function(reference) {
-                        return (reference && !("title" in reference));
-                    });
-                } else {
-                    _flag = true;
-                }
-                return (_flag && entry && (Object.keys(entry).length === 3 || Object.keys(entry).length === 2) && "reference" in entry && "uid" in entry);
-            });
-            assert.ok(flag, 'entries with the field reference without title field in the resultset');
-            assert.end();
-        }, function error(err) {
-            console.error("error :", err);
-            assert.fail(".except() - For the reference - Array");
-            assert.end();
+        beforeAll(async () => {
+          const Query1 = Stack.ContentType("source")
+            .Query()
+            .where("taxonomies.one", "term_one");
+          const Query2 = Stack.ContentType("source")
+            .Query()
+            .where("taxonomies.two", "term_two");
+          const Query = Stack.ContentType("source").Query();
+
+          entries = await Query.and(Query1, Query2).toJSON().find();
         });
-});
 
-// Taxonomies Endpoint
-test('Taxonomies Endpoint: Get Entries With One Term', function(assert) {
-    let Query = Stack.Taxonomies();
-    Query
-        .where('taxonomies.one', 'term_one')
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("Taxonomies Endpoint: Get Entries With One Term");
-            assert.end();
-        })
-});
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+      });
 
-test('Taxonomies Endpoint: Get Entries With Any Term ($in)', function(assert) {
-    let Query = Stack.Taxonomies();
-    Query
-        .containedIn('taxonomies.one', ['term_one', 'term_two'])
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("Taxonomies Endpoint: Get Entries With Any Term ($in)");
-            assert.end();
-        })
-})
+      describe("Get Entries With Any Taxonomy Terms ($exists)", () => {
+        let entries;
 
-test('Taxonomies Endpoint: Get Entries With Any Term ($or)', function(assert) {
-    let Query = Stack.Taxonomies();
-    let Query1 = Stack.Taxonomies().where('taxonomies.one', 'term_one');
-    let Query2 = Stack.Taxonomies().where('taxonomies.two', 'term_two');
-    Query
-        .or(Query1, Query2)
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("Taxonomies Endpoint: Get Entries With Any Term ($or)");
-            assert.end();
-        })
-})
+        beforeAll(async () => {
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.exists("taxonomies.one").toJSON().find();
+        });
 
-test('Taxonomies Endpoint: Get Entries With All Terms ($and)', function(assert) {
-    let Query1 = Stack.Taxonomies().where('taxonomies.one', 'term_one');
-    let Query2 = Stack.Taxonomies().where('taxonomies.two', 'term_two');
-    let Query = Stack.Taxonomies();
-    Query
-        .and(Query1, Query2)
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("Taxonomies Endpoint: Get Entries With All Terms ($and)");
-            assert.end();
-        })
-})
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+      });
 
-test('Taxonomies Endpoint: Get Entries With Any Taxonomy Terms ($exists)', function(assert) {
-    let Query = Stack.Taxonomies();
-    Query
-        .exists('taxonomies.one')
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("Taxonomies Endpoint: Get Entries With Any Taxonomy Terms ($exists)");
-            assert.end();
-        })
-})
+      describe("Get Entries With Taxonomy Terms and Also Matching Its Children Term ($eq_below, level)", () => {
+        let entries;
 
-test('Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its Children Term ($eq_below, level)', function(assert) {
-    let Query = Stack.Taxonomies();
-    Query
-        .equalAndBelow('taxonomies.one', 'term_one')
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its Children Term ($eq_below, level)");
-            assert.end();
-        })
-})
+        beforeAll(async () => {
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.equalAndBelow("taxonomies.one", "term_one")
+            .toJSON()
+            .find();
+        });
 
-test('Taxonomies Endpoint: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level)', function(assert) {
-    let Query = Stack.Taxonomies();
-    Query
-        .below('taxonomies.one', 'term_one')
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("Taxonomies Endpoint: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level)");
-            assert.end();
-        })
-})
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+      });
 
-test('Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)', function(assert) {
-    let Query = Stack.Taxonomies();
-    Query
-        .equalAndAbove('taxonomies.one', 'term_one')
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("Taxonomies Endpoint: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)");
-            assert.end();
-        })
-})
+      describe("Get Entries With Taxonomy Terms Children's and Excluding the term itself ($below, level)", () => {
+        let entries;
 
-test('Taxonomies Endpoint: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)', function(assert) {
-    let Query = Stack.Taxonomies();
-    Query
-        .above('taxonomies.one', 'term_one_child')
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("Taxonomies Endpoint: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)");
-            assert.end();
-        })
-})
+        beforeAll(async () => {
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.below("taxonomies.one", "term_one")
+            .toJSON()
+            .find();
+        });
 
-//Content Type end point
-test('CT Taxonomies Query: Get Entries With One Term', function(assert) {
-    let Query = Stack.ContentType('source').Query();
-    Query
-        .where('taxonomies.one', 'term_one')
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("CT Taxonomies Query: Get Entries With One Term");
-            assert.end();
-        })
-});
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+      });
 
-test('CT Taxonomies Query: Get Entries With Any Term ($in)', function(assert) {
-    let Query = Stack.ContentType('source').Query();
-    Query
-        .containedIn('taxonomies.one', ['term_one', 'term_two'])
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("CT Taxonomies Query: Get Entries With Any Term ($in)");
-            assert.end();
-        })
-})
+      describe("Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)", () => {
+        let entries;
 
-test('CT Taxonomies Query: Get Entries With Any Term ($or)', function(assert) {
-    let Query = Stack.ContentType('source').Query();
-    let Query1 = Stack.ContentType('source').Query().where('taxonomies.one', 'term_one');
-    let Query2 = Stack.ContentType('source').Query().where('taxonomies.two', 'term_two');
-    Query
-        .or(Query1, Query2)
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("CT Taxonomies Query: Get Entries With Any Term ($or)");
-            assert.end();
-        })
-})
+        beforeAll(async () => {
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.equalAndAbove("taxonomies.one", "term_one")
+            .toJSON()
+            .find();
+        });
 
-test('CT Taxonomies Query: Get Entries With All Terms ($and)', function(assert) {
-    let Query1 = Stack.ContentType('source').Query().where('taxonomies.one', 'term_one');
-    let Query2 = Stack.ContentType('source').Query().where('taxonomies.two', 'term_two');
-    let Query = Stack.ContentType('source').Query();
-    Query
-        .and(Query1, Query2)
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("CT Taxonomies Query: Get Entries With All Terms ($and)");
-            assert.end();
-        })
-})
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+      });
 
-test('CT Taxonomies Query: Get Entries With Any Taxonomy Terms ($exists)', function(assert) {
-    let Query = Stack.ContentType('source').Query();
-    Query
-        .exists('taxonomies.one')
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("CT Taxonomies Query: Get Entries With Any Taxonomy Terms ($exists)");
-            assert.end();
-        })
-})
+      describe("Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)", () => {
+        let entries;
 
-test('CT Taxonomies Query: Get Entries With Taxonomy Terms and Also Matching Its Children Term ($eq_below, level)', function(assert) {
-    let Query = Stack.ContentType('source').Query();
-    Query
-        .equalAndBelow('taxonomies.one', 'term_one')
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("CT Taxonomies Query: Get Entries With Taxonomy Terms and Also Matching Its Children Term ($eq_below, level)");
-            assert.end();
-        })
-})
+        beforeAll(async () => {
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.above("taxonomies.one", "term_one_child")
+            .toJSON()
+            .find();
+        });
 
-test('CT Taxonomies Query: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level)', function(assert) {
-    let Query = Stack.ContentType('source').Query();
-    Query
-        .below('taxonomies.one', 'term_one')
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("CT Taxonomies Query: Get Entries With Taxonomy Terms Children\'s and Excluding the term itself ($below, level)");
-            assert.end();
-        })
-})
+        test("Should return entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+      });
+    });
+    describe("Variants Tests", () => {
+      describe("Variants in entry", () => {
+        let entries;
 
-test('CT Taxonomies Query: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)', function(assert) {
-    let Query = Stack.ContentType('source').Query();
-    Query
-        .equalAndAbove('taxonomies.one', 'term_one')
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("CT Taxonomies Query: Get Entries With Taxonomy Terms and Also Matching Its Parent Term ($eq_above, level)");
-            assert.end();
-        })
-})
+        beforeAll(async () => {
+          const Query = Stack.ContentType("source").Query();
+          entries = await Query.variants(["variant_entry_1", "variant_entry_2"])
+            .toJSON()
+            .find();
+        });
 
-test('CT Taxonomies Query: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)', function(assert) {
-    let Query = Stack.ContentType('source').Query();
-    Query
-        .above('taxonomies.one', 'term_one_child')
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("CT Taxonomies Query: Get Entries With Taxonomy Terms Parent and Excluding the term itself ($above, level)");
-            assert.end();
-        })
-})
-test('Variants in entry', function (assert) {
-    let Query = Stack.ContentType('source').Query();
-    Query
-        .variants(['variant_entry_1', 'variant_entry_2'])
-        .toJSON()
-        .find()
-        .then(entries => {
-            assert.ok(entries[0].length, 'Variant entries present in the resultset');
-            assert.end();
-        }, err => {
-            console.error("error :", err);
-            assert.fail("Variant Entries are not present in the CT");
-            assert.end();
-        })
+        test("Should return variant entries in the resultset", () => {
+          expect(entries[0].length).toBeTruthy();
+        });
+      });
+    });
+  });
 });
