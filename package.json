@@ -14,7 +14,7 @@
   "_id": "contentstack@3.19.3",
   "scripts": {
     "test": "npm run test:e2e && npm run test:typescript",
-    "test:e2e": "tape test/index.js | tap-html --out ./tap-html.html",
+    "test:e2e": "jest --config jest.js.config.js",
     "test:typescript": "jest --config jest.config.js --testPathPattern=test/typescript",
     "automate": "node test.js",
     "build:node": "webpack --config webpack/webpack.node.js",
@@ -100,10 +100,10 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "@contentstack/utils": "^1.3.15",
-    "@fetch-mock/jest": "^0.2.10",
+    "@contentstack/utils": "^1.3.18",
+    "@fetch-mock/jest": "^0.2.12",
     "es6-promise": "^4.2.8",
-    "fetch-mock": "^12.2.0",
+    "fetch-mock": "^12.4.0",
     "localStorage": "1.0.4",
     "qs": "^6.14.0"
   }
