@@ -102,7 +102,7 @@ const sendFailureDetails = async (threadTs) => {
     try {
       await app.client.chat.postMessage({
         token: process.env.SLACK_BOT_TOKEN,
-        channel: process.env.SLACK_CHANNEL,
+        channel: process.env.SLACK_CHANNEL2,
         text: failureDetails,
         thread_ts: threadTs,
       });
