@@ -1,5 +1,10 @@
 ## Change log
 
+### Version: 3.25.1
+#### Date:  April-07-2025
+##### Fix:
+ - Dependency Updated
+
 ### Version: 3.25.0
 #### Date:  March-10-2025
 ##### Fix:
