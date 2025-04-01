@@ -1,5 +1,11 @@
 ## Change log
 
+### Version: 3.25.1
+#### Date:  April-01-2025
+##### Fix:
+ - Update dependencies
+ - Update slack notification
+ 
 ### Version: 3.25.0
 #### Date:  March-10-2025
 ##### Fix:
