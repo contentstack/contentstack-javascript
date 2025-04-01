@@ -2,42 +2,52 @@ const fs = require('fs');
 const { App } = require('@slack/bolt');
 const { JSDOM } = require("jsdom");
 const dotenv = require('dotenv')
+const path = require("path");
+
 dotenv.config()
 
-const tapHtmlContent = fs.readFileSync('./tap-html.html', 'utf8');
-const report = `./tap-html.html`
-const dom = new JSDOM(tapHtmlContent);
-const $ = require("jquery")(dom.window);
+const data = fs.readFileSync(path.join(__dirname, 'tap-html.html'), 'utf8');
+const dom = new JSDOM(data);
+const report = './tap-html.html'
+const textarea = dom.window.document.querySelector("#jest-html-reports-result-data");
+const testResults = JSON.parse(textarea.textContent.trim());
 
-const totalTime = $('.nav a:nth-child(1)').text().trim().replace('Total Time', '');
-const totalCount = $('.nav a:nth-child(2)').text().trim().replace('Total Count', '');
-const totalPass = $('.nav a:nth-child(3)').text().trim().replace('Total Pass', '');
-const totalFail = $('.nav a:nth-child(4)').text().trim().replace('Total Fail', '');
-const totalSkip = $('.nav a:nth-child(5)').text().trim().replace('Total Skip', '');
-const totalTodo = $('.nav a:nth-child(6)').text().trim().replace('Total Todo', '');
+const startTime = testResults.startTime;
+const endTime = Math.max(...testResults.testResults.map(t => t.perfStats.end));
+const totalSeconds = (endTime - startTime) / 1000;
+const minutes = Math.floor(totalSeconds / 60);
+const seconds = (totalSeconds % 60).toFixed(2);
+const duration = `${minutes}m ${seconds}s`;
 
-const milliseconds = parseInt(totalTime.replace(/\D/g, ''), 10);
-const totalSeconds = Math.floor(milliseconds / 1000);
-const durationInMinutes = Math.floor(totalSeconds / 60);
-const durationInSeconds = totalSeconds % 60;
+const summary = {
+  totalSuites: testResults.numTotalTestSuites,
+  passedSuites: testResults.numPassedTestSuites,
+  failedSuites: testResults.numFailedTestSuites,
+  totalTests: testResults.numTotalTests,
+  passedTests: testResults.numPassedTests,
+  failedTests: testResults.numFailedTests,
+  skippedTests: testResults.numPendingTests + testResults.numTodoTests,
+  pendingTests: testResults.numPendingTests,
+  duration: duration,
+};
 
-console.log('Total Test Suits:', '9')
-console.log('Total Tests:', totalCount);
-console.log('Total Pass:', totalPass);
-console.log('Total Fail:', totalFail);
-console.log('Total Skip:', totalSkip);
-console.log('Total Pending:', totalTodo);
-console.log('Total Duration:', `${durationInMinutes}m`,`${durationInSeconds.toFixed(2)}s`);
+console.log('Total Test Suits:', summary.totalSuites)
+console.log('Total Tests:', summary.totalTests);
+console.log('Total Pass:', summary.passedTests);
+console.log('Total Fail:', summary.failedTests);
+console.log('Total Skip:', summary.skippedTests);
+console.log('Total Pending:', summary.pendingTests);
+console.log('Total Duration:', summary.duration);
 
 const slackMessage = `
 *Test Summary of JS Delivery SDK*
-• Total Test Suits: *9*
-• Total Tests: *${totalCount}*
-• Total Pass:: *${totalPass}*
-• Total Fail: *${totalFail}*
-• Total Skip:: *${totalSkip}*
-• Total Pending: *${totalTodo}*
-• Total Duration: *${durationInMinutes}m ${durationInSeconds}s*
+• Total Test Suits: *${summary.totalSuites}*
+• Total Tests: *${summary.totalTests}*
+• Total Pass:: *${summary.passedTests}*
+• Total Fail: *${summary.failedTests}*
+• Total Skip:: *${summary.skippedTests}*
+• Total Pending: *${summary.pendingTests}*
+• Total Duration: *${duration}*
 `
 
 const app = new App({
