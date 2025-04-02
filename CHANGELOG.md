@@ -1,5 +1,10 @@
 ## Change log
 
+### Version: 3.25.2
+#### Date:  April-02-2025
+##### Fix:
+ - allow number, string, object, boolean, and RegExp as valid query parameters in sync method
+
 ### Version: 3.25.1
 #### Date:  April-01-2025
 ##### Fix:
