@@ -603,9 +603,16 @@ export default class Stack {
 
         if (params) {
             for (const key in params) {
+                const value = params[key];
                 if (params.hasOwnProperty(key)) {
-                    if (typeof params[key] !== "string" && typeof params[key] !== "number") {
-                        throw new Error(`Invalid parameter value for key "${key}": must be a string or number.`);
+                    if (
+                        typeof value !== "string" &&
+                        typeof value !== "number" &&
+                        typeof value !== "boolean" &&
+                        !(value instanceof RegExp) &&
+                        (typeof value !== "object" || value === null)
+                    ) {
+                        throw new Error(`Invalid parameter value for key "${key}": must be a string, number, object, boolean, or RegExp.`);
                     }
                     this._query[key] = params[key];
                 }
