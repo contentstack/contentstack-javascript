@@ -18,6 +18,7 @@ describe('Contentstack Live Preview Tests', () => {
   });
 
   test('should check host when live preview is enabled and management token is provided', () => {
+    init.stack.live_preview = init.stack.live_preview || {};
     init.stack.live_preview.enable = true;
     init.stack.live_preview.management_token = 'management_token';
     const stack = Contentstack.Stack(init.stack);
