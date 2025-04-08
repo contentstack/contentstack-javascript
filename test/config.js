@@ -1,7 +1,7 @@
 'use strict';
 require('dotenv').config();
 
-const requiredVars = ['HOST', 'EMAIL', 'PASSWORD', 'ORGANIZATION', 'API_KEY'];
+const requiredVars = ['HOST', 'API_KEY', 'DELIVERY_TOKEN', 'ENVIRONMENT'];
 const missingVars = requiredVars.filter((key) => !process.env[key]);
 
 if (missingVars.length > 0) {
