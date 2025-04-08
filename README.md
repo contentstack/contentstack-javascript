@@ -19,11 +19,11 @@ For browsers, we recommend to download the library via npm or yarn to ensure 100
 If you'd like to use a standalone built file you can use the following script tag or download it from [jsDelivr](https://www.jsdelivr.com/package/npm/contentstack), under the `dist` directory:
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/contentstack@latest/dist/web/contentstack.min.js" integrity="9u29niwIJG3dEc7vPUc1ZA1Dl/uaiR4+s7k55kb/CCkzTzyFuZHNM165BQ10+Hiw%" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/contentstack@latest/dist/web/contentstack.min.js" integrity="12nVcFP1kBh/0Q5rLUvKE34exDRK2DpHUFkGkhRSXTcwGC2PI1D9h64C5arpt5OY" crossorigin="anonymous"></script>
 ```
 You can also specify a specific version number.
 ```html
-<script src="https://cdn.jsdelivr.net/npm/contentstack@3.20.3/dist/web/contentstack.min.js" integrity="9u29niwIJG3dEc7vPUc1ZA1Dl/uaiR4+s7k55kb/CCkzTzyFuZHNM165BQ10+Hiw%" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/contentstack@3.25.2/dist/web/contentstack.min.js" integrity="fXmq+b/kd2EenBR7APjzzy0hLTOhAhrir3C6HZYZKuF9O+g+HuSIU7Usi8Ccy9I5" crossorigin="anonymous"></script>
 ```
 
 To initialize the SDK, you will need to specify the API Key, Delivery Token, and Environment Name of your stack.
