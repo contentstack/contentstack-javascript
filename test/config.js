@@ -1,18 +1,14 @@
 'use strict';
-require('dotenv').config()
+require('dotenv').config();
 
-const requiredVars = ['API_KEY', 'DELIVERY_TOKEN', 'ENVIRONMENT', 'HOST'];
+const requiredVars = ['HOST', 'EMAIL', 'PASSWORD', 'ORGANIZATION', 'API_KEY'];
 const missingVars = requiredVars.filter((key) => !process.env[key]);
 
 if (missingVars.length > 0) {
     const errorMessage = `\x1b[31mError: Missing environment variables - ${missingVars.join(', ')}`;
-    
-    if (process.env.NODE_ENV === 'test' || process.env.JEST_WORKER_ID !== undefined) {
-        throw new Error(errorMessage);
-    } else {
-        console.error(errorMessage);
-        process.exit(1);
-    }
+    const error = new Error(errorMessage);
+    error.stack = error.message;
+    throw error;
 }
 
 module.exports = {
