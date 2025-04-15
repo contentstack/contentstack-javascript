@@ -5,7 +5,7 @@ require('./entry/findone');
 require('./entry/findone-result-wrapper');
 require('./entry/spread');
 
-//require('./sync/sync-testcases');
+require('./sync/sync-testcases');
 
 // Assets
 require('./asset/find');
