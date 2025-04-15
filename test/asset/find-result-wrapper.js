@@ -438,8 +438,8 @@ describe("Contentstack Asset Tests", () => {
           expect(assets[0].length).toBeTruthy();
         });
 
-        test("should return assets matching the condition", async () => {
-          expect(assets[0].length).toBeDefined();
+        test("should return exactly 5 assets matching the condition", async () => {
+          expect(assets[0].length).toBe(5);
         });
 
         test("should return only assets with is_dir set to false", async () => {
