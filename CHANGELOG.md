@@ -3,7 +3,7 @@
 ### Version: 3.25.3
 #### Date:  April-21-2025
 ##### Fix:
- - Handle the sanity tests when ENVs are not provided
+ - Handle the sanity tests when ENVs are not provided.
 
 ### Version: 3.25.2
 #### Date:  April-02-2025
