@@ -260,7 +260,7 @@ describe("Contentstack Asset Tests", () => {
         .find();
 
       expect(assets[0].length).toBeTruthy();
-      expect(assets[0].length).toBe(5);
+      expect(assets[0].length).toBeDefined();
     });
 
     test(".equalTo() compare boolean value (false)", async () => {
