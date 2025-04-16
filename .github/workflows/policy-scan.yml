@@ -24,4 +24,4 @@ jobs:
       - uses: actions/checkout@master
       - name: Checks for License file
         run: |
-          if ! [[ -f "LICENSE" || -f "License.txt" || -f "LICENSE.md" ]]; then exit 1; fi
+          if ! [[ -f "LICENSE" || -f "License.txt" || -f "LICENSE.md" || -f "LICENSE.txt" ]]; then exit 1; fi
