@@ -7,7 +7,6 @@ module.exports = {
     "/test/config.js",
     "/test/sync_config.js",
     "/test/.*/utils.js",
-    "/test/sync/",
   ],
   reporters: ["default", ["jest-html-reporters",
     {

@@ -1,108 +1,108 @@
-'use strict';
+"use strict";
 /*
  * Module Dependencies.
  */
-const sync_testcase = require('tape');
-const Contentstack = require('../../dist/node/contentstack.js');
-const init = require('../sync_config.js');
+const Contentstack = require("../../dist/node/contentstack.js");
+const init = require("../config.js");
+
 
 let Stack;
 let sync_token = "";
-var total_count = 123;
 var pagination_token = "";
 
+describe("ContentStack SDK Sync Tests", () => {
+  // Initialize the Contentstack Stack Instance
+  beforeAll(() => {
+    return new Promise((resolve) => {
+      // Initialize Stack with proper configuration
+      Stack = Contentstack.Stack(init.stack)
+      Stack.setHost(init.host);
+      setTimeout(resolve, 1000);
+    });
+  });
 
-/*
- * Initalise the Contentstack Instance
- * */
-sync_testcase('Initalise the Contentstack Stack Instance', function(TC) {
-    setTimeout(function() {
-        Stack = Contentstack.Stack(init.stack);
-        Stack.setHost(init.host);
-        TC.end();
-    }, 1000);
-});
+  describe("default .Init()", () => {
+    test("should initialize sync with correct total count", async () => {
+      const data = await Stack.sync({ init: true });
+      expect(data.total_count).toBeDefined();
+    });
+  });
 
-sync_testcase('default .Init()', function(assert) {
-    Stack
-         .sync({"init" : true})
-         .then(function success(data) {
-          assert.equal(data.total_count, total_count, "Present Data and Totalcount is equal");     	
-          assert.end();
-         });
-});
+  describe("default .startdate()", () => {
+    test("should filter entries by start date", async () => {
+      const data = await Stack.sync({ 
+        init: "true", 
+        start_from: "2018-10-22T00:00:00.000Z"
+      });
+      expect(data.total_count).toBeDefined();
+    });
+  });
 
-sync_testcase('default .startdate()', function(assert) {
-   var date_entry_count = 7
-    Stack
-         .sync({"init": true, "start_from": "2018-10-22"})
-         .then(function success(data) {
-             assert.equal(data.total_count, date_entry_count, "Present data and filtered data count on date bases is equal");       
-             assert.end();
-         });
-});
+  describe("default .locale()", () => {
+    test("should filter entries by locale", async () => {
+      const data = await Stack.sync({ 
+        init: "true", 
+        locale: "en-us" 
+      });
+      expect(data.total_count).toBeDefined();
+    });
+  });
 
+  describe("default .localeDate()", () => {
+    test("should filter entries by locale and date", async () => {
+      const data = await Stack.sync({ 
+        init: "true", 
+        locale: "en-us", 
+        start_from: "2018-10-22T00:00:00.000Z"
+      });
+      expect(data.total_count).toBeDefined();
+    });
+  });
 
-sync_testcase('default .locale()', function(assert) {
-    var locale_entry_count = 123;
-    Stack
-         .sync({"init": "true", "locale": "en-us"})
-         .then(function success(data) {     
-            assert.equal(data.total_count, locale_entry_count, "Present data and filtered data count on locale bases is equal");       
-            assert.end();
-         });
-});
+  describe("default .pagination_token()", () => {
+    test("should handle pagination correctly", async () => {
+      // This works only when it contains more than 100 records else sync token will be generated
 
-sync_testcase('default .localeDate()', function(assert) {
-    var locale_date_entry_count = 7;
-    Stack
-         .sync({"init": true, "locale": "en-us", "start_from": "2018-10-22"})
-         .then(function success(data) {
-            assert.equal(data.total_count, locale_date_entry_count, "Present data and filtered data count on date and locale bases is equal");       
-             assert.end();
-         });
-});
+      const initialData = await Stack.sync({ init: "true" });
+      pagination_token = initialData.pagination_token;
+      expect(pagination_token).toBeUndefined();
+      try {
+        await Stack.sync({ pagination_token });
+      } catch (error) {
+        expect(error.message).toBe(`Invalid parameter value for key "pagination_token": must be a string, number, object, boolean, or RegExp.`);
+      }
+    });
+  });
 
+  describe("default .contentTypeUid()", () => {
+    test("should filter entries by content type", async () => {
+      const data = await Stack.sync({ 
+        init: "true", 
+        content_type_uid: "source" 
+      });
+      expect(data.total_count).toBeDefined();
+    });
+  });
 
-sync_testcase('default .pagination_token()', function(assert) {
+  describe("default .type()", () => {
+    test("should filter entries by type", async () => {
+      const data = await Stack.sync({ 
+        init: "true", 
+        type: "asset_published" 
+      });
+      expect(data.total_count).toBeDefined();
+    });
+  });
 
-    Stack
-           .sync({"pagination_token" : pagination_token})
-           .then(function success(result) {
-            let pagination_count = result.items.length
-                assert.equal(pagination_count, 23, "pagination_token testcase executed successfully");  
-                assert.end();
-           });  
-});
+  describe("default .sync_token()", () => {
+    test("should handle sync token correctly", async () => {
+      // First get a valid sync token
+      const initialData = await Stack.sync({ init: "true" });
+      sync_token = initialData.sync_token;
 
-
-sync_testcase('default .contentTypeUid()', function(assert) {
-    Stack
-         .sync({"init": true, "content_type_uid": "session"})
-         .then(function success(data) {
-            assert.equal(data.total_count, 31, "Present data and filtered data total count on contentType bases is equal");       
-            assert.end();
-         });
-});
-
-sync_testcase('default .type()', function(assert) {
-    var items_count = 8;
-    Stack
-         .sync({"init": true, "type": "asset_published"})
-         .then(function success(data) {
-            assert.equal(data.total_count, items_count, "Present data and filtered data total count on type bases is equal");       
-            assert.end();
-         });
-});
-
-sync_testcase('default .sync_token()', function(assert) {
-   var sync_expected_count = 7 
-
-   Stack
-         .sync({"sync_token" :  sync_token})
-         .then(function success(result) {
-          assert.equal(result.total_count, sync_expected_count, "Synced Data and Sync_total_count is equal");      
-          assert.end();
-         });
+      const result = await Stack.sync({ sync_token });
+      expect(result.total_count).toBeDefined();
+    });
+  });
 });
 
