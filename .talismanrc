@@ -1,16 +1,18 @@
 fileignoreconfig:
-- filename: package-lock.json
-  checksum: 28f8e6d0e7856b4a568fd260dcc4deb531bcdbebbbff956b008ce7dd26a0475d
-- filename: test/typescript/taxonomy.test.ts
-  checksum: e4bdf633e147fd60d929d379f20c814eed5f68b11421d7b53ec8826e9142de37
-- filename: src/core/modules/taxonomy.js
-  checksum: 84589be9805c1be5fd6c56021c41d18365126cf82059ad2cbef1d418c70d08e0
-- filename: src/core/lib/utils.js
-  checksum: 8a37566d0372573b8fe4ec506a43f1074981c5218e9adbc551c87922c8914922
-- filename: src/core/modules/query.js
-  checksum: c88b336f9a271397ffedcf8c5085941ceb0bd1cd7e25ed9ada3acd8ce4f8970c
-- filename: test/typescript/stack.test.ts
-  checksum: bbb3c425f8e1a63d4793f69ee9eaba9559294ff53f163a28f70ae54b1792276a
-- filename: src/core/contentstack.js
-  checksum: 90a3b07300155a34f67dc3df87363107eec202123a21bc0cefda324e477a676d
+  - filename: package-lock.json
+    checksum: b9d3f334fcb23e80c5c48e4fc1068c53d9be7f9f6a3211352d14e37550071fcd
+  - filename: test/typescript/taxonomy.test.ts
+    checksum: e4bdf633e147fd60d929d379f20c814eed5f68b11421d7b53ec8826e9142de37
+  - filename: src/core/modules/taxonomy.js
+    checksum: 84589be9805c1be5fd6c56021c41d18365126cf82059ad2cbef1d418c70d08e0
+  - filename: src/core/lib/utils.js
+    checksum: 8a37566d0372573b8fe4ec506a43f1074981c5218e9adbc551c87922c8914922
+  - filename: src/core/modules/query.js
+    checksum: c88b336f9a271397ffedcf8c5085941ceb0bd1cd7e25ed9ada3acd8ce4f8970c
+  - filename: test/typescript/stack.test.ts
+    checksum: bbb3c425f8e1a63d4793f69ee9eaba9559294ff53f163a28f70ae54b1792276a
+  - filename: src/core/contentstack.js
+    checksum: 90a3b07300155a34f67dc3df87363107eec202123a21bc0cefda324e477a676d
+  - filename: .husky/pre-commit
+    checksum: 5baabd7d2c391648163f9371f0e5e9484f8fb90fa2284cfc378732ec3192c193
 version: ""
