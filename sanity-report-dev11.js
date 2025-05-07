@@ -56,7 +56,7 @@ if (summary.failedTests > 0) {
 }
 
 const slackMessage = {
-  text: `Dev11, SDK-CDA Sanity
+  text: `Dev11, SDK-JS-CDA Sanity
 *Result:* ${resultMessage}. ${summary.duration}s
 *Failed Tests:* ${summary.failedTests + summary.skippedTests}
 <${reportUrl}|View Report>
