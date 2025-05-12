@@ -42,7 +42,7 @@ console.log('Total Duration:', summary.duration);
 const host = process.env.HOST || ''
 let region = 'UNKNOWN REGION'
 
-const match = host.match(/^([^-]+(?:-[^-]+)*)-api/)
+const match = host.match(/^([^-]+(?:-[^-]+)*)-cdn/)
 if (match && match[1]) {
   region = match[1].toUpperCase()
 }
