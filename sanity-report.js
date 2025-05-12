@@ -39,8 +39,16 @@ console.log('Total Skip:', summary.skippedTests);
 console.log('Total Pending:', summary.pendingTests);
 console.log('Total Duration:', summary.duration);
 
+const host = process.env.HOST || ''
+let region = 'UNKNOWN REGION'
+
+const match = host.match(/^([^-]+(?:-[^-]+)*)-api/)
+if (match && match[1]) {
+  region = match[1].toUpperCase()
+}
+
 const slackMessage = `
-*Test Summary of JS Delivery SDK*
+*JavaScript CMA Report - ${region}*
 • Total Test Suits: *${summary.totalSuites}*
 • Total Tests: *${summary.totalTests}*
 • Total Pass:: *${summary.passedTests}*
