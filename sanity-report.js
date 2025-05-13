@@ -40,7 +40,7 @@ console.log('Total Pending:', summary.pendingTests);
 console.log('Total Duration:', summary.duration);
 
 const host = process.env.HOST || ''
-let region = 'UNKNOWN REGION'
+let region = 'AWS-NA'
 
 const match = host.match(/^([^-]+(?:-[^-]+)*)-cdn/)
 if (match && match[1]) {
