@@ -3,4 +3,6 @@ fileignoreconfig:
     checksum: 22c6a7fe4027d6b2c9adf0cbeb9c525ab79b15210b07ec5189693992e6800a66
   - filename: test/typescript/stack.test.ts
     checksum: 50b764c0ca6f6f27d7306a4e54327bef9b178e8436c6e3fad0d67d77343d10b3
+  - filename: .github/workflows/secrets-scan.yml
+    checksum: d79ec3f3288964f7d117b9ad319a54c0ebc152e35f69be8fde95522034fdfb2a
 version: ""
