@@ -1,5 +1,10 @@
 ## Change log
 
+### Version: 3.26.0
+#### Date:  July-01-2025
+##### Fix:
+ - Added AWS-AU support
+
 ### Version: 3.25.3
 #### Date:  April-21-2025
 ##### Fix:
@@ -15,7 +20,7 @@
 ##### Fix:
  - Update dependencies
  - Update slack notification
- 
+
 ### Version: 3.25.0
 #### Date:  March-10-2025
 ##### Fix:
@@ -118,14 +123,14 @@
 ### Version: 3.18.0
 #### Date: January-15-2024
 ##### New Features:
- - added taxonomy support  
- - X-User-Agent updated 
+ - added taxonomy support
+ - X-User-Agent updated
  - added region gcp_na
 ### Version: 3.17.2
 #### Date: November-15-2023
 ##### Bug fix:
  - Same management token in Live Preview in different stack object fixed
- - X-User-Agent updated 
+ - X-User-Agent updated
 ##### New Features
  - Early Access added to stack config
 
@@ -178,19 +183,19 @@
 #### Date: May-26-2021
 ##### Dependency:
  - Update Utils SDK dependency version
- 
+
 ### Version: 3.13.1
 #### Date: Apr-16-2021
 ##### Bug fix:
  - IE 11 request method issue resolved
- 
+
 ### Version: 3.13.0
 #### Date: Apr-05-2021
 
 ##### Update API:
  - [Query]: Added support for method includeEmbeddedItems
  - [Entry]: Added support for method includeEmbeddedItems
- 
+
 ### Version: 3.12.2
 #### Date: Feb-19-2021
 
@@ -218,7 +223,7 @@
 #### Date: Sept-25-2020
 
 ##### Update API:
- - Retry limit for fetch request 
+ - Retry limit for fetch request
  - Retry delay options for fetch request
  - Retry on error occur for fetch request
  - Typescript definition added
@@ -328,8 +333,8 @@
 
 ##### New API:
  - [Asset] Image delivery support
-    - find 
-    - fetch 
+    - find
+    - fetch
 
 ### Version: 3.1.1
 #### Date: Oct-13-2017
