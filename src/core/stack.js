@@ -18,6 +18,7 @@ let errorRetry = [408, 429]
      * @param param.environment - Stack Environment name.
      * @param param.region - DB region for Stack.
      * @param param.branch - Name of the branch you want to fetch data from
+     * @param param.version - Version of the stack API
      * @param param.live_preview - Live preview configuration.
      * @param param.plugins - List of plugins objects.
      * @param param.fetchOptions - Custom setting for the request.
@@ -36,6 +37,7 @@ let errorRetry = [408, 429]
      *      'delivery_token':'delivery_token',
      *      'environment':'environment_name',
      *      'region': 'us',
+     *      'version': 'v3',
      *      'fetchOptions': {
      *          
      *      }
@@ -115,6 +117,9 @@ export default class Stack {
                     }
                     if (typeof stack_arguments[0].branch === "string" && stack_arguments[0].branch !== undefined) {
                         this.headers.branch = stack_arguments[0].branch
+                    }
+                    if (typeof stack_arguments[0].version === "string" && stack_arguments[0].version !== undefined) {
+                        this.config['version'] = stack_arguments[0].version
                     }
                     if (typeof stack_arguments[0].early_access == "object" && Array.isArray(stack_arguments[0].early_access) && stack_arguments[0].early_access.length > 0) {
                         this.headers['x-header-ea'] = stack_arguments[0].early_access.join(',')
