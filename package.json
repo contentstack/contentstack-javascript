@@ -103,7 +103,7 @@
     "@contentstack/utils": "^1.3.20",
     "@fetch-mock/jest": "^0.2.15",
     "es6-promise": "^4.2.8",
-    "fetch-mock": "^12.5.2",
+    "fetch-mock": "^12.5.3",
     "localStorage": "1.0.4",
     "qs": "^6.14.0"
   }
