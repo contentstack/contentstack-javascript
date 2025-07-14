@@ -101,7 +101,7 @@
   },
   "dependencies": {
     "@contentstack/utils": "^1.3.20",
-    "@fetch-mock/jest": "^0.2.15",
+    "@fetch-mock/jest": "^0.2.16",
     "es6-promise": "^4.2.8",
     "fetch-mock": "^12.5.2",
     "localStorage": "1.0.4",
