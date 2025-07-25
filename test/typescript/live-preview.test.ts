@@ -117,7 +117,7 @@ describe("Live preview realtime URL switch", () => {
             await stack.ContentType("he").Entry("ser").fetch();
         } catch (e) {}
 
-        expect(tester).toBeCalledTimes(1);
+        expect(tester).toHaveBeenCalledTimes(1);
         expect(tester.mock.calls[0][0].url).toContain("cdn.contentstack.io");
         expect(tester.mock.calls[0][0].option.headers.access_token).toBe(
             "delivery_token"
@@ -155,7 +155,7 @@ describe("Live preview realtime URL switch", () => {
             stack.ContentType("he").Entry("ser").fetch().catch();
         } catch (e) {}
 
-        expect(tester).toBeCalledTimes(1);
+        expect(tester).toHaveBeenCalledTimes(1);
         expect(tester.mock.calls[0][0].url).toContain(
             "preview-api.contentstack.io"
         );
@@ -201,7 +201,7 @@ describe("Live preview realtime URL switch", () => {
             stack.ContentType("he").Entry("ser").fetch().catch();
         } catch (e) {}
 
-        expect(tester).toBeCalledTimes(1);
+        expect(tester).toHaveBeenCalledTimes(1);
         expect(tester.mock.calls[0][0].url).toContain("api.contentstack.io");
 
         expect(tester.mock.calls[0][0].option.headers.authorization).toBe(
