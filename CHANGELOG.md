@@ -1,13 +1,19 @@
 ## Change log
 
+### Version: 3.26.1
+#### Date:  July-28-2025
+##### Fix:
+ - Cleared unused dependencies
+ - Fixed installation warnings
+
 ### Version: 3.26.0
 #### Date:  July-01-2025
-##### Fix:
+##### Feat:
  - Added AWS-AU support
 
 ### Version: 3.25.3
 #### Date:  April-21-2025
-##### Fix:
+##### Feat:
  - Handle the sanity tests when ENVs are not provided.
 
 ### Version: 3.25.2
@@ -17,7 +23,7 @@
 
 ### Version: 3.25.1
 #### Date:  April-01-2025
-##### Fix:
+##### Feat:
  - Update dependencies
  - Update slack notification
 
