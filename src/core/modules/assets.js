@@ -1,27 +1,27 @@
 import * as Utils from '../lib/utils';
 
 /**
- * @class 
-  Assets  
+ * @class
+  Assets
 * @summary Creates an instance of `Assets`.
 * @description Retrieves all assets of a stack by default. To retrieve a single asset, specify its UID.
 * @param {String} uid - uid of asset you want to retrieve
-* @example 
+* @example
 * let data = Stack.Assets('asset_uid').toJSON().fetch()
 *      data
 *      .then(function(result) {
-*           // ‘result’ is a single asset object of specified uid       
+*           // ‘result’ is a single asset object of specified uid
 *      }, function(error) {
 *           // error function
 *      })
-* @example 
+* @example
 * // Retrieves all assets*
 * let data = Stack.Assets().Query().toJSON().find()
 *      data
 *      .then(function(result) {
 *          // All the asset with limit of 100
 *          // Use skip and limit functions to paginate
-*          // ‘result’ will display all assets present in stack       
+*          // ‘result’ will display all assets present in stack
 *      }, function(error) {
 *           // error function
 *      })
@@ -30,17 +30,17 @@ import * as Utils from '../lib/utils';
 */
 
 export default class Assets {
-    constructor() {
-        this._query = {};        
-        this.only = Utils.transform('only');
-        return this;
-    }
+  constructor () {
+    this._query = {};
+    this.only = Utils.transform('only');
+    return this;
+  }
 
- /**
+  /**
    * Converts your response into plain JavasScript object
    * @memberOf Assets
    * @example var Query = Stack.ContentType('blog').Query()
-    Query   
+    Query
          .toJSON()
          .find()
          .then(function (result) {
@@ -51,13 +51,13 @@ export default class Assets {
    * @returns {Assets}
    * @instance
    */
-  
-    toJSON() {
-        this.tojson = true;
-        return this;
-    }
 
-/**
+  toJSON () {
+    this.tojson = true;
+    return this;
+  }
+
+  /**
    * Includes query parameters in your queries.
    * @memberOf Assets
    * @example var data = Stack.Assets(assetUid).addParam('include_dimension', 'true').toJSON().fetch()
@@ -69,17 +69,17 @@ export default class Assets {
      * @returns {Assets}
      * @instance
    */
-  
-    addParam(key, value) {
-        if (key && typeof key === 'string' && value && typeof value === 'string') {        
-            this._query[key] = value;
-            return this;
-        } else {
-            if(this.fetchOptions.debug)  this.fetchOptions.logHandler('error',"Kindly provide a valid parameters.");
-        }
-    }
 
-    /**
+  addParam (key, value) {
+    if (key && typeof key === 'string' && value && typeof value === 'string') {
+      this._query[key] = value;
+      return this;
+    } else {
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide a valid parameters.');
+    }
+  }
+
+  /**
      * @method includeFallback
      * @memberOf Asset
      * @description Include the fallback locale publish content, if specified locale content is not publish.
@@ -87,11 +87,12 @@ export default class Assets {
      * @returns {Asset}
      * @instance
      */
-    includeFallback() {
-        this._query['include_fallback'] = true;
-        return this;
-    }
-    /**
+  includeFallback () {
+    this._query.include_fallback = true;
+    return this;
+  }
+
+  /**
      * @method includeMetadata
      * @memberOf Asset
      * @description Include the metadata for getting metadata content for the asset.
@@ -99,38 +100,38 @@ export default class Assets {
      * @returns {Asset}
      * @instance
      */
-    includeMetadata() {
-        this._query['include_metadata'] = true;
-        return this;
-    }
-/**
+  includeMetadata () {
+    this._query.include_metadata = true;
+    return this;
+  }
+  /**
    * Fetches a particular asset based on the provided asset UID.
    * @memberOf Assets
    * @example
    * Stack.Assets('assets_uid').toJSON().fetch()
    * @example
    * Stack.Assets('assets_uid').toJSON().fetch({
-   *         
+   *
    *      })
    * @returns {promise}
    * @instance
    */
 
-    fetch(fetchOptions) {
-        if (this.asset_uid) {
-            this.requestParams = {
-                method: 'POST',
-                headers: Utils.mergeDeep({}, this.headers),
-                url: this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.assets + this.asset_uid,
-                body: {
-                    _method: 'GET',
-                    query: this._query
-                }
-            }
-            var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
-            return Utils.sendRequest(Utils.mergeDeep({}, this), options);
-        } else {
-            if(fetchOptions.debug)  fetchOptions.logHandler('error', "Kindly provide an asset uid. e.g. .Assets('asset_uid')");
+  fetch (fetchOptions) {
+    if (this.asset_uid) {
+      this.requestParams = {
+        method: 'POST',
+        headers: Utils.mergeDeep({}, this.headers),
+        url: this.config.protocol + '://' + this.config.host + ':' + this.config.port + '/' + this.config.version + this.config.urls.assets + this.asset_uid,
+        body: {
+          _method: 'GET',
+          query: this._query
         }
+      };
+      const options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
+      return Utils.sendRequest(Utils.mergeDeep({}, this), options);
+    } else {
+      if (fetchOptions.debug) fetchOptions.logHandler('error', "Kindly provide an asset uid. e.g. .Assets('asset_uid')");
     }
+  }
 }
