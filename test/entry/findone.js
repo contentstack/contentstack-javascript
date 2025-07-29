@@ -3,7 +3,6 @@
  * Module Dependencies.
  */
 const Contentstack = require('../../dist/node/contentstack.js');
-const Utils = require('./utils.js');
 const init = require('../config.js');
 
 const contentTypes = init.contentTypes;
@@ -20,7 +19,6 @@ describe('FindOne Tests', () => {
 
   describe('Default FindOne', () => {
     let entry;
-    const error = null;
 
     beforeAll(async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
@@ -47,7 +45,6 @@ describe('FindOne Tests', () => {
   describe('Sorting', () => {
     describe('Ascending', () => {
       let entry;
-      const error = null;
       const field = 'created_at';
 
       beforeAll(async () => {
@@ -74,7 +71,6 @@ describe('FindOne Tests', () => {
 
     describe('Descending', () => {
       let entry;
-      const error = null;
       const field = 'created_at';
 
       beforeAll(async () => {
@@ -103,7 +99,6 @@ describe('FindOne Tests', () => {
   describe('Comparison', () => {
     describe('lessThan', () => {
       let entry;
-      const error = null;
       const value = 11;
 
       beforeAll(async () => {
@@ -136,7 +131,6 @@ describe('FindOne Tests', () => {
 
     describe('lessThanOrEqualTo', () => {
       let entry;
-      const error = null;
       const value = 11;
 
       beforeAll(async () => {
@@ -173,7 +167,6 @@ describe('FindOne Tests', () => {
   describe('Array/Subset', () => {
     describe('containedIn', () => {
       let entry;
-      const error = null;
       const _in = ['source1', 'source2'];
 
       beforeAll(async () => {
@@ -204,7 +197,6 @@ describe('FindOne Tests', () => {
 
     describe('notContainedIn', () => {
       let entry;
-      const error = null;
       const _in = ['source1', 'source2', 'source3', 'source4'];
 
       beforeAll(async () => {
@@ -232,7 +224,6 @@ describe('FindOne Tests', () => {
   describe('Element Existence', () => {
     describe('exists', () => {
       let entry;
-      const error = null;
       const queryField = 'boolean';
 
       beforeAll(async () => {
@@ -263,7 +254,6 @@ describe('FindOne Tests', () => {
 
     describe('notExists', () => {
       let entry;
-      const error = null;
       const queryField = 'isspecial';
 
       beforeAll(async () => {
@@ -291,7 +281,6 @@ describe('FindOne Tests', () => {
     describe('skip', () => {
       let allEntries;
       let skippedEntry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
@@ -314,7 +303,6 @@ describe('FindOne Tests', () => {
   describe('Logical Operations', () => {
     describe('OR Query Objects', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query1 = Stack.ContentType(contentTypes.source)
@@ -355,7 +343,6 @@ describe('FindOne Tests', () => {
 
     describe('AND Query Objects', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query1 = Stack.ContentType(contentTypes.source)
@@ -393,7 +380,6 @@ describe('FindOne Tests', () => {
 
     describe('Raw Query', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
@@ -430,7 +416,6 @@ describe('FindOne Tests', () => {
   describe('Localization', () => {
     describe('Without Fallback', () => {
       let entry;
-      const error = null;
       const _in = ['ja-jp'];
 
       beforeAll(async () => {
@@ -452,7 +437,6 @@ describe('FindOne Tests', () => {
 
     describe('With Fallback', () => {
       let entry;
-      const error = null;
       const _in = ['ja-jp', 'en-us'];
 
       beforeAll(async () => {
@@ -476,7 +460,6 @@ describe('FindOne Tests', () => {
   describe('Including References', () => {
     describe('includeReference - String', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
@@ -496,7 +479,6 @@ describe('FindOne Tests', () => {
 
     describe('includeReference - Array', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
@@ -523,7 +505,6 @@ describe('FindOne Tests', () => {
 
   describe('Including Schema', () => {
     let entry;
-    const error = null;
 
     beforeAll(async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
@@ -538,7 +519,6 @@ describe('FindOne Tests', () => {
   describe('Including ContentType', () => {
     let entry;
     let contentType;
-    const error = null;
 
     beforeAll(async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
@@ -562,7 +542,6 @@ describe('FindOne Tests', () => {
   describe('Including Schema and ContentType', () => {
     let entry;
     let contentType;
-    const error = null;
 
     beforeAll(async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
@@ -587,7 +566,6 @@ describe('FindOne Tests', () => {
   describe('Field Selection - Only', () => {
     describe('only - Single String Parameter', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
@@ -607,7 +585,6 @@ describe('FindOne Tests', () => {
 
     describe('only - Multiple String Parameters', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
@@ -627,7 +604,6 @@ describe('FindOne Tests', () => {
 
     describe('only - Array Parameter', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
@@ -648,7 +624,6 @@ describe('FindOne Tests', () => {
 
     describe('only - For reference - String', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
@@ -683,7 +658,6 @@ describe('FindOne Tests', () => {
 
     describe('only - For reference - Array', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
@@ -724,7 +698,6 @@ describe('FindOne Tests', () => {
   describe('Field Selection - Except', () => {
     describe('except - Single String Parameter', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
@@ -742,7 +715,6 @@ describe('FindOne Tests', () => {
 
     describe('except - Multiple String Parameters', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
@@ -760,7 +732,6 @@ describe('FindOne Tests', () => {
 
     describe('except - Array Parameter', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
@@ -782,7 +753,6 @@ describe('FindOne Tests', () => {
 
     describe('except - For reference - String', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
@@ -814,7 +784,6 @@ describe('FindOne Tests', () => {
 
     describe('except - For reference - Array', () => {
       let entry;
-      const error = null;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();

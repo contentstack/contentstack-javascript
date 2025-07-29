@@ -5,7 +5,6 @@ const Contentstack = require('../../dist/node/contentstack.js');
 
 describe('Contentstack Live Preview Tests', () => {
   test('should check for values initialized', () => {
-    const stack1 = Contentstack.Stack(init.stack);
     const stack = Contentstack.Stack({
       api_key: process.env.API_KEY,
       delivery_token: process.env.DELIVERY_TOKEN,
