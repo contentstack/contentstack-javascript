@@ -24,6 +24,20 @@ module.exports = {
   ],
   rules: {
     'semi': ['error', 'always'],
-    'semi-spacing': ['error', { before: false, after: true }]
+    'semi-spacing': ['error', { before: false, after: true }],
+    'camelcase': 'off',
+    'no-tabs': 'off',
+    'eqeqeq': 'off',
+    'no-unused-vars': 'warn',
+    'no-undef': 'warn',
+    'no-prototype-builtins': 'off',
+    'no-extend-native': 'off',
+    'no-fallthrough': 'off',
+    'prefer-promise-reject-errors': 'off',
+    'prefer-regex-literals': 'off',
+    'no-useless-escape': 'off',
+    'n/handle-callback-err': 'off',
+    'n/no-callback-literal': 'off',
+    'no-async-promise-executor': 'off'
   }
 }; 
