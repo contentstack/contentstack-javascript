@@ -1,14 +1,14 @@
-"use strict";
+'use strict';
 /*
  * Module Dependencies.
  */
-const Contentstack = require("../../dist/node/contentstack.js");
-const init = require("../config.js");
-const Utils = require("../entry/utils.js");
+const Contentstack = require('../../dist/node/contentstack.js');
+const init = require('../config.js');
+const Utils = require('../entry/utils.js');
 
 let Stack;
 
-describe("Contentstack Asset Tests", () => {
+describe('Contentstack Asset Tests', () => {
   // Initialize the Contentstack Stack Instance
   beforeAll(() => {
     return new Promise((resolve) => {
@@ -18,60 +18,60 @@ describe("Contentstack Asset Tests", () => {
     });
   });
 
-  describe("default .find() No fallback", () => {
-    const _in = ["ja-jp"];
+  describe('default .find() No fallback', () => {
+    const _in = ['ja-jp'];
     let assets;
 
     // Setup - run the query once for all tests
     beforeAll(async () => {
       try {
-        assets = await Stack.Assets().Query().language("ja-jp").toJSON().find();
+        assets = await Stack.Assets().Query().language('ja-jp').toJSON().find();
       } catch (error) {
-        console.error("Error in beforeAll:", error);
+        console.error('Error in beforeAll:', error);
         throw error;
       }
     });
 
-    test("should return a non-empty array of assets", async () => {
+    test('should return a non-empty array of assets', async () => {
       expect(assets).toBeDefined();
       expect(Array.isArray(assets)).toBe(true);
       expect(assets[0]).toBeDefined();
       expect(assets[0].length).toBeTruthy();
     });
 
-    test("should not include count when not requested", async () => {
+    test('should not include count when not requested', async () => {
       expect(assets[1]).toBeFalsy();
     });
 
-    test("should return assets only in the requested locale", async () => {
+    test('should return assets only in the requested locale', async () => {
       if (assets && assets.length && assets[0].length) {
         const allAssetsInRequestedLocale = assets[0].every((asset) => {
-          return _in.indexOf(asset["publish_details"]["locale"]) !== -1;
+          return _in.indexOf(asset.publish_details.locale) !== -1;
         });
         expect(allAssetsInRequestedLocale).toBe(true);
       } else {
         // Skip this test if no assets are returned
-        console.warn("No assets returned to verify locale");
+        console.warn('No assets returned to verify locale');
       }
     });
 
-    test("should have the correct structure for each asset", async () => {
+    test('should have the correct structure for each asset', async () => {
       if (assets && assets.length && assets[0].length) {
         const firstAsset = assets[0][0];
-        expect(firstAsset).toHaveProperty("uid");
-        expect(firstAsset).toHaveProperty("title");
-        expect(firstAsset).toHaveProperty("publish_details");
-        expect(firstAsset.publish_details).toHaveProperty("locale");
-        expect(firstAsset.publish_details.locale).toBe("ja-jp");
+        expect(firstAsset).toHaveProperty('uid');
+        expect(firstAsset).toHaveProperty('title');
+        expect(firstAsset).toHaveProperty('publish_details');
+        expect(firstAsset.publish_details).toHaveProperty('locale');
+        expect(firstAsset.publish_details.locale).toBe('ja-jp');
       } else {
         // Skip this test if no assets are returned
-        console.warn("No assets returned to verify structure");
+        console.warn('No assets returned to verify structure');
       }
     });
   });
 
-  describe("default .find() with fallback", () => {
-    const _in = ["ja-jp", "en-us"];
+  describe('default .find() with fallback', () => {
+    const _in = ['ja-jp', 'en-us'];
     let assets;
 
     // Setup - run the query once for all tests
@@ -79,69 +79,69 @@ describe("Contentstack Asset Tests", () => {
       try {
         assets = await Stack.Assets()
           .Query()
-          .language("ja-jp")
+          .language('ja-jp')
           .includeFallback()
           .toJSON()
           .find();
       } catch (error) {
-        console.error("Error in beforeAll:", error);
+        console.error('Error in beforeAll:', error);
         throw error;
       }
     });
 
-    test("should return a non-empty array of assets", async () => {
+    test('should return a non-empty array of assets', async () => {
       expect(assets).toBeDefined();
       expect(Array.isArray(assets)).toBe(true);
       expect(assets[0]).toBeDefined();
       expect(assets[0].length).toBeTruthy();
     });
 
-    test("should not include count when not requested", async () => {
+    test('should not include count when not requested', async () => {
       expect(assets[1]).toBeFalsy();
     });
 
-    test("should return assets from both primary and fallback locales", async () => {
+    test('should return assets from both primary and fallback locales', async () => {
       if (assets && assets.length && assets[0].length) {
         const allAssetsInAllowedLocales = assets[0].every((asset) => {
-          return _in.indexOf(asset["publish_details"]["locale"]) !== -1;
+          return _in.indexOf(asset.publish_details.locale) !== -1;
         });
         expect(allAssetsInAllowedLocales).toBe(true);
       } else {
         // Skip this test if no assets are returned
-        console.warn("No assets returned to verify locales with fallback");
+        console.warn('No assets returned to verify locales with fallback');
       }
     });
 
-    test("should include some assets in primary locale", async () => {
+    test('should include some assets in primary locale', async () => {
       if (assets && assets.length && assets[0].length) {
         const anyAssetsInPrimaryLocale = assets[0].some((asset) => {
-          return asset["publish_details"]["locale"] === "ja-jp";
+          return asset.publish_details.locale === 'ja-jp';
         });
         expect(anyAssetsInPrimaryLocale).toBe(true);
       } else {
-        console.warn("No assets returned to verify primary locale presence");
+        console.warn('No assets returned to verify primary locale presence');
       }
     });
 
-    test("should have the correct structure for each asset", async () => {
+    test('should have the correct structure for each asset', async () => {
       if (assets && assets.length && assets[0].length) {
         const firstAsset = assets[0][0];
-        expect(firstAsset).toHaveProperty("uid");
-        expect(firstAsset).toHaveProperty("title");
-        expect(firstAsset).toHaveProperty("publish_details");
-        expect(firstAsset.publish_details).toHaveProperty("locale");
+        expect(firstAsset).toHaveProperty('uid');
+        expect(firstAsset).toHaveProperty('title');
+        expect(firstAsset).toHaveProperty('publish_details');
+        expect(firstAsset.publish_details).toHaveProperty('locale');
         expect(
-          ["ja-jp", "en-us"].includes(firstAsset.publish_details.locale)
+          ['ja-jp', 'en-us'].includes(firstAsset.publish_details.locale)
         ).toBe(true);
       } else {
-        console.warn("No assets returned to verify structure");
+        console.warn('No assets returned to verify structure');
       }
     });
   });
 
-  describe("default .find()", () => {
+  describe('default .find()', () => {
     let assets;
-    const field = "updated_at";
+    const field = 'updated_at';
 
     // Setup - run the query once for all tests
     beforeAll(async () => {
@@ -149,23 +149,23 @@ describe("Contentstack Asset Tests", () => {
         const Query = Stack.Assets().Query();
         assets = await Query.toJSON().find();
       } catch (error) {
-        console.error("Error in beforeAll:", error);
+        console.error('Error in beforeAll:', error);
         throw error;
       }
     });
 
-    test("should return a non-empty array of assets", async () => {
+    test('should return a non-empty array of assets', async () => {
       expect(assets).toBeDefined();
       expect(Array.isArray(assets)).toBe(true);
       expect(assets[0]).toBeDefined();
       expect(assets[0].length).toBeTruthy();
     });
 
-    test("should not include count when not requested", async () => {
+    test('should not include count when not requested', async () => {
       expect(assets[1]).toBeFalsy();
     });
 
-    test("should return assets sorted by updated_at by default in descending order", async () => {
+    test('should return assets sorted by updated_at by default in descending order', async () => {
       if (assets && assets.length && assets[0].length) {
         let prev = assets[0][0][field];
         const allAssetsSorted = assets[0].every((asset) => {
@@ -175,15 +175,15 @@ describe("Contentstack Asset Tests", () => {
         });
         expect(allAssetsSorted).toBe(true);
       } else {
-        console.warn("No assets returned to verify sorting");
+        console.warn('No assets returned to verify sorting');
       }
     });
   });
 
-  describe("sorting", () => {
-    test(".ascending()", async () => {
+  describe('sorting', () => {
+    test('.ascending()', async () => {
       const Query = Stack.Assets().Query();
-      const field = "updated_at";
+      const field = 'updated_at';
       try {
         const assets = await Query.ascending(field).toJSON().find();
 
@@ -198,14 +198,14 @@ describe("Contentstack Asset Tests", () => {
           expect(_assets).toBe(true);
         }
       } catch (err) {
-        console.error("Error:", err);
-        fail(".ascending()");
+        console.error('Error:', err);
+        fail('.ascending()');
       }
     });
 
-    test(".descending()", async () => {
+    test('.descending()', async () => {
       const Query = Stack.Assets().Query();
-      const field = "created_at";
+      const field = 'created_at';
       try {
         const assets = await Query.descending(field).toJSON().find();
 
@@ -221,29 +221,29 @@ describe("Contentstack Asset Tests", () => {
           expect(_assets).toBe(true);
         }
       } catch (err) {
-        console.error("Error:", err);
-        fail(".descending()");
+        console.error('Error:', err);
+        fail('.descending()');
       }
     });
   });
 
-  test(".addParam()", async () => {
+  test('.addParam()', async () => {
     const Query = Stack.Assets().Query();
 
     try {
-      const assets = await Query.addParam("include_dimension", "true")
+      const assets = await Query.addParam('include_dimension', 'true')
         .toJSON()
         .find();
-      expect(assets[0][0].hasOwnProperty("dimension")).toBeTruthy();
+      expect(assets[0][0].hasOwnProperty('dimension')).toBeTruthy();
     } catch (err) {
-      console.error("Error:", err);
-      fail(".addParam()");
+      console.error('Error:', err);
+      fail('.addParam()');
     }
   });
 
-  describe("comparison", () => {
-    describe(".lessThan()", () => {
-      const field = "file_size";
+  describe('comparison', () => {
+    describe('.lessThan()', () => {
+      const field = 'file_size';
       const value = 5122;
       let assets;
 
@@ -252,27 +252,27 @@ describe("Contentstack Asset Tests", () => {
         assets = await Query.lessThan(field, value).toJSON().find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should return only assets with file_size less than the specified value", async () => {
+      test('should return only assets with file_size less than the specified value', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsMatchCondition = assets[0].every(
             (asset) => asset[field] < value
           );
           expect(allAssetsMatchCondition).toBe(true);
         } else {
-          console.warn("No assets returned to verify lessThan condition");
+          console.warn('No assets returned to verify lessThan condition');
         }
       });
     });
 
-    describe(".lessThanOrEqualTo()", () => {
-      const field = "file_size";
+    describe('.lessThanOrEqualTo()', () => {
+      const field = 'file_size';
       const value = 5122;
       let assets;
 
@@ -281,14 +281,14 @@ describe("Contentstack Asset Tests", () => {
         assets = await Query.lessThanOrEqualTo(field, value).toJSON().find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should return only assets with file_size less than or equal to the specified value", async () => {
+      test('should return only assets with file_size less than or equal to the specified value', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsMatchCondition = assets[0].every(
             (asset) => asset[field] <= value
@@ -296,18 +296,18 @@ describe("Contentstack Asset Tests", () => {
           expect(allAssetsMatchCondition).toBe(true);
         } else {
           console.warn(
-            "No assets returned to verify lessThanOrEqualTo condition"
+            'No assets returned to verify lessThanOrEqualTo condition'
           );
         }
       });
     });
 
-    test(".greaterThan()", async () => {
+    test('.greaterThan()', async () => {
       const Query = Stack.Assets().Query();
-      const field = "file_size";
+      const field = 'file_size';
       const value = 5122;
       try {
-        const assets = await Query.greaterThan("file_size", value)
+        const assets = await Query.greaterThan('file_size', value)
           .ascending(field)
           .toJSON()
           .find();
@@ -324,16 +324,16 @@ describe("Contentstack Asset Tests", () => {
           expect(_assets).toBe(true);
         }
       } catch (err) {
-        fail(".greaterThan()");
+        fail('.greaterThan()');
       }
     });
 
-    test(".greaterThanOrEqualTo()", async () => {
+    test('.greaterThanOrEqualTo()', async () => {
       const Query = Stack.Assets().Query();
-      const field = "file_size";
+      const field = 'file_size';
       const value = 5122;
       try {
-        const assets = await Query.greaterThanOrEqualTo("file_size", 5122)
+        const assets = await Query.greaterThanOrEqualTo('file_size', 5122)
           .descending(field)
           .toJSON()
           .find();
@@ -350,13 +350,13 @@ describe("Contentstack Asset Tests", () => {
           expect(_assets).toBe(true);
         }
       } catch (err) {
-        console.error("Error:", err);
-        fail(".greaterThanOrEqualTo()");
+        console.error('Error:', err);
+        fail('.greaterThanOrEqualTo()');
       }
     });
 
-    describe(".notEqualTo()", () => {
-      const field = "file_size";
+    describe('.notEqualTo()', () => {
+      const field = 'file_size';
       const value = 5122;
       let assets;
 
@@ -368,101 +368,101 @@ describe("Contentstack Asset Tests", () => {
           .find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should return only assets with file_size not equal to the specified value", async () => {
+      test('should return only assets with file_size not equal to the specified value', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsMatchCondition = assets[0].every(
             (asset) => asset[field] !== value
           );
           expect(allAssetsMatchCondition).toBe(true);
         } else {
-          console.warn("No assets returned to verify notEqualTo condition");
+          console.warn('No assets returned to verify notEqualTo condition');
         }
       });
     });
 
-    describe(".where()", () => {
-      const title = "image1";
+    describe('.where()', () => {
+      const title = 'image1';
       let assets;
 
       beforeAll(async () => {
         const Query = Stack.Assets().Query();
-        assets = await Query.where("title", title).toJSON().find();
+        assets = await Query.where('title', title).toJSON().find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should return exactly one asset matching the title", async () => {
+      test('should return exactly one asset matching the title', async () => {
         expect(assets[0].length).toBe(1);
       });
 
-      test("should return only assets with the specified title", async () => {
+      test('should return only assets with the specified title', async () => {
         if (assets && assets.length && assets[0].length) {
           const matchingTitle = assets[0].every(
             (asset) => asset.title === title
           );
           expect(matchingTitle).toBe(true);
         } else {
-          console.warn("No assets returned to verify where condition");
+          console.warn('No assets returned to verify where condition');
         }
       });
     });
 
-    describe(".equalTo() with boolean values", () => {
-      describe("when comparing with false", () => {
+    describe('.equalTo() with boolean values', () => {
+      describe('when comparing with false', () => {
         let assets;
 
         beforeAll(async () => {
           const Query = Stack.Assets().Query();
-          assets = await Query.language("en-us")
-            .equalTo("is_dir", false)
+          assets = await Query.language('en-us')
+            .equalTo('is_dir', false)
             .toJSON()
             .find();
         });
 
-        test("should return a non-empty array of assets", async () => {
+        test('should return a non-empty array of assets', async () => {
           expect(assets).toBeDefined();
           expect(Array.isArray(assets)).toBe(true);
           expect(assets[0]).toBeDefined();
           expect(assets[0].length).toBeTruthy();
         });
 
-        test("should return exactly 5 assets matching the condition", async () => {
+        test('should return exactly 5 assets matching the condition', async () => {
           expect(assets[0].length).toBe(5);
         });
 
-        test("should return only assets with is_dir set to false", async () => {
+        test('should return only assets with is_dir set to false', async () => {
           if (assets && assets.length && assets[0].length) {
             const allAssetsMatchCondition = assets[0].every(
               (asset) => asset.is_dir === false
             );
             expect(allAssetsMatchCondition).toBe(true);
           } else {
-            console.warn("No assets returned to verify equalTo condition");
+            console.warn('No assets returned to verify equalTo condition');
           }
         });
       });
 
-      describe("when comparing with true", () => {
+      describe('when comparing with true', () => {
         let assets;
 
         beforeAll(async () => {
           const Query = Stack.Assets().Query();
-          assets = await Query.equalTo("is_dir", true).toJSON().find();
+          assets = await Query.equalTo('is_dir', true).toJSON().find();
         });
 
-        test("should return an empty array of assets", async () => {
+        test('should return an empty array of assets', async () => {
           expect(assets).toBeDefined();
           expect(Array.isArray(assets)).toBe(true);
           expect(assets[0]).toBeDefined();
@@ -472,35 +472,35 @@ describe("Contentstack Asset Tests", () => {
     });
   });
 
-  describe("Array/Subset Tests", () => {
-    describe(".containedIn()", () => {
-      const _in = ["image1", "image2"];
+  describe('Array/Subset Tests', () => {
+    describe('.containedIn()', () => {
+      const _in = ['image1', 'image2'];
       let assets;
 
       beforeAll(async () => {
         const Query = Stack.Assets().Query();
-        assets = await Query.containedIn("title", _in).toJSON().find();
+        assets = await Query.containedIn('title', _in).toJSON().find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should return only assets with titles contained in the specified array", async () => {
+      test('should return only assets with titles contained in the specified array', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsMatchCondition = assets[0].every((asset) => {
-            return _in.indexOf(asset["title"]) !== -1;
+            return _in.indexOf(asset.title) !== -1;
           });
           expect(allAssetsMatchCondition).toBe(true);
         } else {
-          console.warn("No assets returned to verify containedIn condition");
+          console.warn('No assets returned to verify containedIn condition');
         }
       });
 
-      test("should include at least one asset with each of the specified titles", async () => {
+      test('should include at least one asset with each of the specified titles', async () => {
         if (assets && assets.length && assets[0].length) {
           // Check if at least one asset exists for each title in the array
           const foundTitles = _in.filter((title) =>
@@ -508,56 +508,56 @@ describe("Contentstack Asset Tests", () => {
           );
           expect(foundTitles.length).toBe(_in.length);
         } else {
-          console.warn("No assets returned to verify all titles are present");
+          console.warn('No assets returned to verify all titles are present');
         }
       });
     });
 
-    describe(".notContainedIn()", () => {
-      const _in = ["image1", "image2"];
+    describe('.notContainedIn()', () => {
+      const _in = ['image1', 'image2'];
       let assets;
 
       beforeAll(async () => {
         const Query = Stack.Assets().Query();
-        assets = await Query.notContainedIn("title", _in).toJSON().find();
+        assets = await Query.notContainedIn('title', _in).toJSON().find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should return only assets with titles not contained in the specified array", async () => {
+      test('should return only assets with titles not contained in the specified array', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsMatchCondition = assets[0].every((asset) => {
-            return _in.indexOf(asset["title"]) === -1;
+            return _in.indexOf(asset.title) === -1;
           });
           expect(allAssetsMatchCondition).toBe(true);
         } else {
-          console.warn("No assets returned to verify notContainedIn condition");
+          console.warn('No assets returned to verify notContainedIn condition');
         }
       });
 
-      test("should not include any assets with the specified titles", async () => {
+      test('should not include any assets with the specified titles', async () => {
         if (assets && assets.length && assets[0].length) {
           const foundForbiddenTitles = assets[0].filter((asset) =>
             _in.includes(asset.title)
           );
           expect(foundForbiddenTitles.length).toBe(0);
         } else {
-          console.warn("No assets returned to verify excluded titles");
+          console.warn('No assets returned to verify excluded titles');
         }
       });
     });
   });
 
-  describe("Element Existence Tests", () => {
-    test(".exists()", async () => {
+  describe('Element Existence Tests', () => {
+    test('.exists()', async () => {
       const Query = Stack.Assets().Query();
-      const queryField = "is_dir";
-      const field = "updated_at";
+      const queryField = 'is_dir';
+      const field = 'updated_at';
       try {
         const assets = await Query.exists(queryField).toJSON().find();
 
@@ -573,38 +573,38 @@ describe("Contentstack Asset Tests", () => {
           expect(_assets).toBe(true);
         }
       } catch (err) {
-        console.error("Error:", err);
-        fail(".exists()");
+        console.error('Error:', err);
+        fail('.exists()');
       }
     });
 
-    test(".notExists()", async () => {
+    test('.notExists()', async () => {
       const Query = Stack.Assets().Query();
-      const queryField = "is_dir";
-      const field = "updated_at";
+      const queryField = 'is_dir';
+      const field = 'updated_at';
       try {
         const assets = await Query.notExists(queryField).toJSON().find();
 
         expect(assets[0].length).toBeFalsy();
 
         if (assets && assets.length && assets[0].length) {
-          let prev = assets[0][0][field];
+          const prev = assets[0][0][field];
           const _assets = assets[0].every((asset) => {
             return asset[field] <= prev;
           });
           expect(_assets).toBe(true);
         }
       } catch (err) {
-        console.error("Error:", err);
-        fail(".notExists()");
+        console.error('Error:', err);
+        fail('.notExists()');
       }
     });
   });
 
-  describe("Pagination Tests", () => {
-    test(".skip()", async () => {
+  describe('Pagination Tests', () => {
+    test('.skip()', async () => {
       const Query = Stack.Assets().Query();
-      const field = "updated_at";
+      const field = 'updated_at';
       try {
         const allassets = await Query.toJSON().find();
         const assets = await Stack.Assets().Query().skip(1).toJSON().find();
@@ -622,14 +622,14 @@ describe("Contentstack Asset Tests", () => {
           expect(_assets).toBe(true);
         }
       } catch (err) {
-        console.error("Error:", err);
-        fail(".skip()");
+        console.error('Error:', err);
+        fail('.skip()');
       }
     });
 
-    test(".limit()", async () => {
+    test('.limit()', async () => {
       const Query = Stack.Assets().Query();
-      const field = "updated_at";
+      const field = 'updated_at';
       try {
         const allassets = await Query.toJSON().find();
         const assets = await Stack.Assets().Query().limit(2).toJSON().find();
@@ -647,86 +647,86 @@ describe("Contentstack Asset Tests", () => {
           expect(_assets).toBe(true);
         }
       } catch (err) {
-        console.error("Error:", err);
-        fail(".limit()");
+        console.error('Error:', err);
+        fail('.limit()');
       }
     });
 
-    test(".count()", async () => {
+    test('.count()', async () => {
       const Query = Stack.Assets().Query();
       try {
         const count = await Query.count().toJSON().find();
         expect(count).toBeTruthy();
       } catch (err) {
-        console.error("Error:", err);
-        fail(".count()");
+        console.error('Error:', err);
+        fail('.count()');
       }
     });
   });
 
-  describe("Logical Operators Tests", () => {
-    describe(".or() - Query Objects", () => {
+  describe('Logical Operators Tests', () => {
+    describe('.or() - Query Objects', () => {
       let assets;
-      const title = "image1";
+      const title = 'image1';
       const isDir = true;
 
       beforeAll(async () => {
-        const Query1 = Stack.Assets().Query().where("title", title);
-        const Query2 = Stack.Assets().Query().where("is_dir", isDir);
+        const Query1 = Stack.Assets().Query().where('title', title);
+        const Query2 = Stack.Assets().Query().where('is_dir', isDir);
         const Query = Stack.Assets().Query();
         assets = await Query.or(Query1, Query2).toJSON().find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should return only assets matching at least one of the specified conditions", async () => {
+      test('should return only assets matching at least one of the specified conditions', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsMatchCondition = assets[0].every(
             (asset) => asset.title === title || asset.is_dir === isDir
           );
           expect(allAssetsMatchCondition).toBe(true);
         } else {
-          console.warn("No assets returned to verify OR condition");
+          console.warn('No assets returned to verify OR condition');
         }
       });
 
-      test("should include at least one asset matching the title condition", async () => {
+      test('should include at least one asset matching the title condition', async () => {
         if (assets && assets.length && assets[0].length) {
           const anyAssetMatchesTitleCondition = assets[0].some(
             (asset) => asset.title === title
           );
           expect(anyAssetMatchesTitleCondition).toBe(true);
         } else {
-          console.warn("No assets returned to verify first condition");
+          console.warn('No assets returned to verify first condition');
         }
       });
     });
 
-    describe(".and() - Query Objects", () => {
+    describe('.and() - Query Objects', () => {
       let assets;
-      const title = "image1";
+      const title = 'image1';
       const isDir = true;
 
       beforeAll(async () => {
-        const Query1 = Stack.Assets().Query().where("title", title);
-        const Query2 = Stack.Assets().Query().where("is_dir", isDir);
+        const Query1 = Stack.Assets().Query().where('title', title);
+        const Query2 = Stack.Assets().Query().where('is_dir', isDir);
         const Query = Stack.Assets().Query();
         assets = await Query.and(Query1, Query2).toJSON().find();
       });
 
-      test("should return an empty array when conditions cannot be satisfied simultaneously", async () => {
+      test('should return an empty array when conditions cannot be satisfied simultaneously', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeFalsy();
       });
 
-      test("should verify that no assets match both conditions", async () => {
+      test('should verify that no assets match both conditions', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsMatchCondition = assets[0].every(
             (asset) => asset.title === title && asset.is_dir === isDir
@@ -736,84 +736,84 @@ describe("Contentstack Asset Tests", () => {
       });
     });
 
-    describe(".query() - Raw query", () => {
+    describe('.query() - Raw query', () => {
       let assets;
-      const title = "image2";
+      const title = 'image2';
       const isDir = true;
 
       beforeAll(async () => {
         const Query = Stack.Assets().Query();
         assets = await Query.query({
-          $or: [{ title: title }, { is_dir: isDir }],
+          $or: [{ title }, { is_dir: isDir }]
         })
           .toJSON()
           .find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should return only assets matching at least one of the specified conditions", async () => {
+      test('should return only assets matching at least one of the specified conditions', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsMatchCondition = assets[0].every(
             (asset) => asset.title === title || asset.is_dir === isDir
           );
           expect(allAssetsMatchCondition).toBe(true);
         } else {
-          console.warn("No assets returned to verify raw query conditions");
+          console.warn('No assets returned to verify raw query conditions');
         }
       });
 
-      test("should include at least one asset matching the title condition", async () => {
+      test('should include at least one asset matching the title condition', async () => {
         if (assets && assets.length && assets[0].length) {
           const anyAssetMatchesTitleCondition = assets[0].some(
             (asset) => asset.title === title
           );
           expect(anyAssetMatchesTitleCondition).toBe(true);
         } else {
-          console.warn("No assets returned to verify first condition");
+          console.warn('No assets returned to verify first condition');
         }
       });
     });
   });
 
-  describe("Tags Tests", () => {
-    describe(".tags() - empty results", () => {
+  describe('Tags Tests', () => {
+    describe('.tags() - empty results', () => {
       let assets;
-      const tags = ["asset3"];
+      const tags = ['asset3'];
 
       beforeAll(async () => {
         const Query = Stack.Assets().Query();
         assets = await Query.tags(tags).toJSON().find();
       });
 
-      test("should return a properly structured response", async () => {
+      test('should return a properly structured response', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets.length).toBeGreaterThanOrEqual(1);
       });
 
-      test("should return an empty array when no assets match the tags", async () => {
+      test('should return an empty array when no assets match the tags', async () => {
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBe(0);
       });
     });
 
-    describe(".tags() - with results", () => {
+    describe('.tags() - with results', () => {
       let assets;
-      const field = "tags";
-      const tags = ["asset1", "asset2"];
+      const field = 'tags';
+      const tags = ['asset1', 'asset2'];
 
       beforeAll(async () => {
         const Query = Stack.Assets().Query();
         assets = await Query.tags(tags).toJSON().find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets.length).toBeGreaterThanOrEqual(1);
@@ -821,18 +821,18 @@ describe("Contentstack Asset Tests", () => {
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should return only assets with at least one matching tag", async () => {
+      test('should return only assets with at least one matching tag', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsHaveMatchingTags = assets[0].every((asset) => {
             return Utils.arrayPresentInArray(tags, asset[field]);
           });
           expect(allAssetsHaveMatchingTags).toBe(true);
         } else {
-          console.warn("No assets returned to verify tags");
+          console.warn('No assets returned to verify tags');
         }
       });
 
-      test("should include assets with tags that overlap with the specified tags", async () => {
+      test('should include assets with tags that overlap with the specified tags', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsHaveOverlappingTags = assets[0].every((asset) => {
             // Check that asset tags overlap with requested tags
@@ -840,30 +840,30 @@ describe("Contentstack Asset Tests", () => {
           });
           expect(allAssetsHaveOverlappingTags).toBe(true);
         } else {
-          console.warn("No assets returned to verify tag overlap");
+          console.warn('No assets returned to verify tag overlap');
         }
       });
     });
   });
 
-  describe("Search Tests", () => {
-    describe(".search()", () => {
+  describe('Search Tests', () => {
+    describe('.search()', () => {
       let assets;
-      const searchTerm = "image1";
+      const searchTerm = 'image1';
 
       beforeAll(async () => {
         const Query = Stack.Assets().Query();
         assets = await Query.toJSON().search(searchTerm).find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should return assets matching the search term", async () => {
+      test('should return assets matching the search term', async () => {
         if (assets && assets.length && assets[0].length) {
           // Verify that each asset contains the search term in some field
           // This is a simplified check since search can match across multiple fields
@@ -874,17 +874,17 @@ describe("Contentstack Asset Tests", () => {
           );
           expect(anyAssetMatchesSearchTerm).toBe(true);
         } else {
-          console.warn("No assets returned to verify search results");
+          console.warn('No assets returned to verify search results');
         }
       });
     });
 
-    describe(".regex()", () => {
+    describe('.regex()', () => {
       let assets;
-      const field = "title";
+      const field = 'title';
       const regex = {
-        pattern: "^image",
-        options: "i",
+        pattern: '^image',
+        options: 'i'
       };
       const regexpObj = new RegExp(regex.pattern, regex.options);
 
@@ -895,7 +895,7 @@ describe("Contentstack Asset Tests", () => {
           .find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets.length).toBeGreaterThanOrEqual(1);
@@ -903,32 +903,32 @@ describe("Contentstack Asset Tests", () => {
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should return only assets with titles matching the regex pattern", async () => {
+      test('should return only assets with titles matching the regex pattern', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsTitlesMatchRegex = assets[0].every((asset) => {
             return regexpObj.test(asset[field]);
           });
           expect(allAssetsTitlesMatchRegex).toBe(true);
         } else {
-          console.warn("No assets returned to verify regex match");
+          console.warn('No assets returned to verify regex match');
         }
       });
 
       test('should include assets whose titles start with "image"', async () => {
         if (assets && assets.length && assets[0].length) {
           const allTitlesStartWithImage = assets[0].every((asset) =>
-            asset.title.toLowerCase().startsWith("image")
+            asset.title.toLowerCase().startsWith('image')
           );
           expect(allTitlesStartWithImage).toBe(true);
         } else {
-          console.warn("No assets returned to verify specific regex pattern");
+          console.warn('No assets returned to verify specific regex pattern');
         }
       });
     });
   });
 
-  describe("Include Options", () => {
-    describe(".includeCount()", () => {
+  describe('Include Options', () => {
+    describe('.includeCount()', () => {
       let assets;
 
       beforeAll(async () => {
@@ -936,82 +936,82 @@ describe("Contentstack Asset Tests", () => {
         assets = await Query.includeCount().toJSON().find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should include count information in the result", async () => {
+      test('should include count information in the result', async () => {
         expect(assets[1]).toBeDefined();
         expect(assets[1]).toBeTruthy();
       });
 
-      test("should return count as a number", async () => {
-        expect(typeof assets[1]).toBe("number");
+      test('should return count as a number', async () => {
+        expect(typeof assets[1]).toBe('number');
       });
 
-      test("should return count equal to the number of returned assets", async () => {
+      test('should return count equal to the number of returned assets', async () => {
         expect(assets[1]).toBeGreaterThanOrEqual(assets[0].length);
       });
     });
   });
 
-  describe("Field Projections", () => {
-    describe(".only() - Single String Parameter", () => {
+  describe('Field Projections', () => {
+    describe('.only() - Single String Parameter', () => {
       let assets;
-      const selectedField = "title";
+      const selectedField = 'title';
 
       beforeAll(async () => {
         const Query = Stack.Assets().Query();
         assets = await Query.only(selectedField).toJSON().find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should include the selected field in each asset", async () => {
+      test('should include the selected field in each asset', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsHaveSelectedField = assets[0].every(
             (asset) => selectedField in asset
           );
           expect(allAssetsHaveSelectedField).toBe(true);
         } else {
-          console.warn("No assets returned to verify field projection");
+          console.warn('No assets returned to verify field projection');
         }
       });
 
-      test("should include system fields along with the selected field", async () => {
+      test('should include system fields along with the selected field', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsHaveRequiredFields = assets[0].every(
-            (asset) => "title" in asset && "uid" in asset && "url" in asset
+            (asset) => 'title' in asset && 'uid' in asset && 'url' in asset
           );
           expect(allAssetsHaveRequiredFields).toBe(true);
         } else {
-          console.warn("No assets returned to verify system fields");
+          console.warn('No assets returned to verify system fields');
         }
       });
 
-      test("should limit the total number of fields in each asset", async () => {
+      test('should limit the total number of fields in each asset', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsHaveLimitedFields = assets[0].every(
             (asset) => Object.keys(asset).length === 5
           );
           expect(allAssetsHaveLimitedFields).toBe(true);
         } else {
-          console.warn("No assets returned to verify field count");
+          console.warn('No assets returned to verify field count');
         }
       });
     });
 
-    describe(".only() - Multiple String Parameters", () => {
+    describe('.only() - Multiple String Parameters', () => {
       let assets;
-      const selectedFields = ["BASE", "title"];
+      const selectedFields = ['BASE', 'title'];
 
       beforeAll(async () => {
         const Query = Stack.Assets().Query();
@@ -1020,93 +1020,93 @@ describe("Contentstack Asset Tests", () => {
           .find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should include the title field in each asset", async () => {
+      test('should include the title field in each asset', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsHaveTitle = assets[0].every(
-            (asset) => "title" in asset
+            (asset) => 'title' in asset
           );
           expect(allAssetsHaveTitle).toBe(true);
         } else {
-          console.warn("No assets returned to verify field projection");
+          console.warn('No assets returned to verify field projection');
         }
       });
 
-      test("should include system fields in each asset", async () => {
+      test('should include system fields in each asset', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsHaveSystemFields = assets[0].every(
-            (asset) => "uid" in asset && "url" in asset
+            (asset) => 'uid' in asset && 'url' in asset
           );
           expect(allAssetsHaveSystemFields).toBe(true);
         } else {
-          console.warn("No assets returned to verify system fields");
+          console.warn('No assets returned to verify system fields');
         }
       });
 
-      test("should limit the total number of fields in each asset", async () => {
+      test('should limit the total number of fields in each asset', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsHaveLimitedFields = assets[0].every(
             (asset) => Object.keys(asset).length === 5
           );
           expect(allAssetsHaveLimitedFields).toBe(true);
         } else {
-          console.warn("No assets returned to verify field count");
+          console.warn('No assets returned to verify field count');
         }
       });
     });
 
-    describe(".only() - Array Parameter", () => {
+    describe('.only() - Array Parameter', () => {
       let assets;
-      const selectedFields = ["title", "filename"];
+      const selectedFields = ['title', 'filename'];
 
       beforeAll(async () => {
         const Query = Stack.Assets().Query();
         assets = await Query.only(selectedFields).toJSON().find();
       });
 
-      test("should return a non-empty array of assets", async () => {
+      test('should return a non-empty array of assets', async () => {
         expect(assets).toBeDefined();
         expect(Array.isArray(assets)).toBe(true);
         expect(assets[0]).toBeDefined();
         expect(assets[0].length).toBeTruthy();
       });
 
-      test("should include all the selected fields in each asset", async () => {
+      test('should include all the selected fields in each asset', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsHaveSelectedFields = assets[0].every((asset) =>
             selectedFields.every((field) => field in asset)
           );
           expect(allAssetsHaveSelectedFields).toBe(true);
         } else {
-          console.warn("No assets returned to verify field projection");
+          console.warn('No assets returned to verify field projection');
         }
       });
 
-      test("should include system fields in each asset", async () => {
+      test('should include system fields in each asset', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsHaveSystemFields = assets[0].every(
-            (asset) => "uid" in asset && "url" in asset
+            (asset) => 'uid' in asset && 'url' in asset
           );
           expect(allAssetsHaveSystemFields).toBe(true);
         } else {
-          console.warn("No assets returned to verify system fields");
+          console.warn('No assets returned to verify system fields');
         }
       });
 
-      test("should limit the total number of fields in each asset", async () => {
+      test('should limit the total number of fields in each asset', async () => {
         if (assets && assets.length && assets[0].length) {
           const allAssetsHaveLimitedFields = assets[0].every(
             (asset) => Object.keys(asset).length === 5
           );
           expect(allAssetsHaveLimitedFields).toBe(true);
         } else {
-          console.warn("No assets returned to verify field count");
+          console.warn('No assets returned to verify field count');
         }
       });
     });

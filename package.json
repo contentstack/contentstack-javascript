@@ -1,6 +1,6 @@
 {
   "name": "contentstack",
-  "version": "3.26.1",
+  "version": "3.26.2",
   "description": "Contentstack Javascript SDK",
   "homepage": "https://www.contentstack.com/",
   "author": {
@@ -23,10 +23,11 @@
     "build:native-script": "webpack --config webpack/webpack.nativescript.js",
     "build": "npm run build:node && npm run build:web && npm run build:react-native && npm run build:native-script",
     "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose",
-    "prepare": "husky",
-    "husky-check": "npx husky && chmod +x .husky/pre-commit",
+    "prepare": "npm run build",
+    "husky-check": "husky install && npx husky && chmod +x .husky/pre-commit",
     "pretest": "npm run build",
-    "lint": "eslint lib test"
+    "lint": "eslint src test",
+    "format": "eslint src test --fix"
   },
   "repository": {
     "type": "git",
@@ -68,12 +69,19 @@
   },
   "devDependencies": {
     "@babel/core": "^7.28.0",
+    "@babel/eslint-parser": "^7.28.0",
     "@babel/preset-env": "^7.28.0",
     "@slack/bolt": "^4.4.0",
     "@types/jest": "^30.0.0",
     "babel-loader": "^10.0.0",
     "clean-webpack-plugin": "^4.0.0",
     "dotenv": "^17.2.1",
+    "eslint": "^8.57.1",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^6.6.0",
+    "eslint-plugin-standard": "^4.1.0",
     "jest": "^30.0.5",
     "jest-html-reporters": "^3.1.7",
     "jsdoc": "^4.0.4",
