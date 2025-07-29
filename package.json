@@ -23,9 +23,10 @@
     "build:native-script": "webpack --config webpack/webpack.nativescript.js",
     "build": "npm run build:node && npm run build:web && npm run build:react-native && npm run build:native-script",
     "generate-docs": "node_modules/.bin/jsdoc --configure docs-config.json --verbose",
-    "prepare": "npm run build",
-    "husky-check": "npm run build && husky && chmod +x .husky/pre-commit",
-    "pretest": "npm run build"
+    "prepare": "husky",
+    "husky-check": "npx husky && chmod +x .husky/pre-commit",
+    "pretest": "npm run build",
+    "lint": "eslint lib test"
   },
   "repository": {
     "type": "git",
@@ -72,7 +73,7 @@
     "@types/jest": "^30.0.0",
     "babel-loader": "^10.0.0",
     "clean-webpack-plugin": "^4.0.0",
-    "dotenv": "^17.2.0",
+    "dotenv": "^17.2.1",
     "jest": "^30.0.5",
     "jest-html-reporters": "^3.1.7",
     "jsdoc": "^4.0.4",
@@ -84,7 +85,7 @@
     "tap-json": "1.0.0",
     "ts-jest": "^29.4.0",
     "typescript": "^5.8.3",
-    "webpack": "^5.100.2",
+    "webpack": "^5.101.0",
     "webpack-cli": "^6.0.1",
     "webpack-merge": "6.0.1",
     "webpack-node-externals": "^3.0.0"
@@ -92,6 +93,7 @@
   "dependencies": {
     "@contentstack/utils": "^1.4.1",
     "es6-promise": "^4.2.8",
+    "husky": "^9.1.7",
     "localStorage": "1.0.4"
   }
 }

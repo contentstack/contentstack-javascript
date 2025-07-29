@@ -1,10 +1,29 @@
 #!/usr/bin/env sh
-# Pre-commit hook to run Snyk and Talisman scans, completing both before deciding to commit
+# Pre-commit hook to run lint, Snyk and Talisman scans, completing all before deciding to commit
 
 # Function to check if a command exists
 command_exists() {
   command -v "$1" >/dev/null 2>&1
 }
+
+# Allow bypassing the hook with an environment variable
+if [ "$SKIP_HOOK" = "1" ]; then
+  echo "Skipping lint, Snyk and Talisman scans (SKIP_HOOK=1)."
+  exit 0
+fi
+
+# Run ESLint check first
+echo "Running ESLint check..."
+npm run lint
+lint_exit_code=$?
+
+if [ $lint_exit_code -ne 0 ]; then
+  echo "ESLint check failed. Please fix the linting issues and try again."
+  echo "You can run 'npm run format' to auto-fix most issues."
+  exit 1
+fi
+
+echo "ESLint check passed."
 
 # Check if Snyk is installed
 if ! command_exists snyk; then
@@ -16,12 +35,6 @@ fi
 if ! command_exists talisman; then
   echo "Error: Talisman is not installed. Please install it and try again."
   exit 1
-fi
-
-# Allow bypassing the hook with an environment variable
-if [ "$SKIP_HOOK" = "1" ]; then
-  echo "Skipping Snyk and Talisman scans (SKIP_HOOK=1)."
-  exit 0
 fi
 
 # Initialize variables to track scan results
@@ -63,7 +76,7 @@ if [ "$snyk_failed" = true ] || [ "$talisman_failed" = true ]; then
   exit 1
 fi
 
-# If both scans pass, allow the commit
-echo "All scans passed. Proceeding with commit.cd ."
+# If all checks pass, allow the commit
+echo "All checks passed (ESLint, Snyk, Talisman). Proceeding with commit."
 rm -f snyk_output.log talisman_output.log
 exit 0
