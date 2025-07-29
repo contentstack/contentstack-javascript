@@ -2,7 +2,6 @@
 
 const path = require('path');
 const { merge }  = require('webpack-merge');
-const TerserPlugin = require("terser-webpack-plugin");
 var nodeExternals = require('webpack-node-externals');
 
 const commonConfig = require('./webpack.common.js');
