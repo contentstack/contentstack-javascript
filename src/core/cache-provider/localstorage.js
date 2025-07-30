@@ -1,6 +1,6 @@
 import * as cache from './../cache';
 
-const localStorage = {};
+let localStorage = {}; // eslint-disable-line
 
 localStorage.get = function (key, callback) {
   try {
