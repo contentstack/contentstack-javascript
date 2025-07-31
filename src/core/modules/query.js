@@ -2,79 +2,79 @@ import * as Utils from '../lib/utils.js';
 import Entry from './entry';
 
 const _extend = {
-    compare: function(type) {
-        return function(key, value) {
-            if (key && value && typeof key === 'string' && typeof value !== 'undefined') {
-                this._query['query'][key] = this._query['query']['file_size'] || {};
-                this._query['query'][key][type] = value;
-                return this;
-            } else {
-                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
-            }
-        };
-    },
-    contained: function(bool) {
-        let type = (bool) ? '$in' : '$nin';
-        return function(key, value) {
-            if (key && value && typeof key === 'string' && Array.isArray(value)) {
-                this._query['query'][key] = this._query['query'][key] || {};
-                this._query['query'][key][type] = this._query['query'][key][type] || [];
-                this._query['query'][key][type] = this._query['query'][key][type].concat(value);
-                return this;
-            } else {
-                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
-            }
-        };
-    },
-    exists: function(bool) {
-        return function(key) {
-            if (key && typeof key === 'string') {
-                this._query['query'][key] = this._query['query'][key] || {};
-                this._query['query'][key]['$exists'] = bool;
-                return this;
-            } else {
-                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
-            }
-        };
-    },
-    logical: function(type) {
-        return function() {
-            let _query = [];
-            for (let i = 0, _i = arguments.length; i < _i; i++) {
-                if (arguments[i] instanceof Query && arguments[i]._query.query) {
-                    _query.push(arguments[i]._query.query);
-                } else if (typeof arguments[i] === "object") {
-                    _query.push(arguments[i]);
-                }
-            }
-            if (this._query['query'][type]) {
-                this._query['query'][type] = this._query['query'][type].concat(_query);
-            } else {
-                this._query['query'][type] = _query;
-            }
-            return this;
-        };
-    },
-    sort: function(type) {
-        return function(key) {
-            if (key && typeof key === 'string') {
-                this._query[type] = key;
-                return this;
-            } else {
-                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Argument should be a string.");
-            }
-        };
-    },
-    pagination: function(type) {
-        return function(value) {
-            if (typeof value === 'number') {
-                this._query[type] = value;
-                return this;
-            } else {
-                if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Argument should be a number.");
-            }
+  compare: function (type) {
+    return function (key, value) {
+      if (key && value && typeof key === 'string' && typeof value !== 'undefined') {
+        this._query.query[key] = this._query.query.file_size || {};
+        this._query.query[key][type] = value;
+        return this;
+      } else {
+        if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide valid parameters.');
+      }
+    };
+  },
+  contained: function (bool) {
+    const type = (bool) ? '$in' : '$nin';
+    return function (key, value) {
+      if (key && value && typeof key === 'string' && Array.isArray(value)) {
+        this._query.query[key] = this._query.query[key] || {};
+        this._query.query[key][type] = this._query.query[key][type] || [];
+        this._query.query[key][type] = this._query.query[key][type].concat(value);
+        return this;
+      } else {
+        if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide valid parameters.');
+      }
+    };
+  },
+  exists: function (bool) {
+    return function (key) {
+      if (key && typeof key === 'string') {
+        this._query.query[key] = this._query.query[key] || {};
+        this._query.query[key].$exists = bool;
+        return this;
+      } else {
+        if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide valid parameters.');
+      }
+    };
+  },
+  logical: function (type) {
+    return function () {
+      const _query = [];
+      for (let i = 0, _i = arguments.length; i < _i; i++) {
+        if (arguments[i] instanceof Query && arguments[i]._query.query) {
+          _query.push(arguments[i]._query.query);
+        } else if (typeof arguments[i] === 'object') {
+          _query.push(arguments[i]);
         }
-    }
+      }
+      if (this._query.query[type]) {
+        this._query.query[type] = this._query.query[type].concat(_query);
+      } else {
+        this._query.query[type] = _query;
+      }
+      return this;
+    };
+  },
+  sort: function (type) {
+    return function (key) {
+      if (key && typeof key === 'string') {
+        this._query[type] = key;
+        return this;
+      } else {
+        if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Argument should be a string.');
+      }
+    };
+  },
+  pagination: function (type) {
+    return function (value) {
+      if (typeof value === 'number') {
+        this._query[type] = value;
+        return this;
+      } else {
+        if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Argument should be a number.');
+      }
+    };
+  }
 };
 
 /**
@@ -83,26 +83,26 @@ const _extend = {
  * @param  {Object} this `this` variable from Query class
  * @return {string} returns the url that will be used to make API calls
  */
-function getRequestUrl(type, config, content_type_uid, baseURL) {
-    let url;
-    switch(type) {
-        case 'asset':
-            url = baseURL + config.urls.assets;
-            break;
-        case 'taxonomy':
-            url = baseURL + config.urls.taxonomies;
-            break;
-        case 'contentType':
-        default:
-            url = baseURL + config.urls.content_types + content_type_uid + config.urls.entries;
-            break;
-    }
-    return url;
+function getRequestUrl (type, config, content_type_uid, baseURL) {
+  let url;
+  switch (type) {
+    case 'asset':
+      url = baseURL + config.urls.assets;
+      break;
+    case 'taxonomy':
+      url = baseURL + config.urls.taxonomies;
+      break;
+    case 'contentType':
+    default:
+      url = baseURL + config.urls.content_types + content_type_uid + config.urls.entries;
+      break;
+  }
+  return url;
 }
 
 /**
- * @class 
-   Query  
+ * @class
+   Query
  * @description
  * An initializer is responsible for creating Query object.Provides support for all search queries
  * @example
@@ -112,12 +112,11 @@ function getRequestUrl(type, config, content_type_uid, baseURL) {
  * @returns {Query}
  */
 export default class Query extends Entry {
-
-    constructor() {
-        super();
-        this._query = this._query || {};
-        this._query['query'] = this._query['query'] || {};
-         /**
+  constructor () {
+    super();
+    this._query = this._query || {};
+    this._query.query = this._query.query || {};
+    /**
          * @method lessThan
          * @memberOf Query
          * @description Retrieves entries in which the value of a field is lesser than the provided value
@@ -133,9 +132,9 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.lessThan = _extend.compare('$lt');
+    this.lessThan = _extend.compare('$lt');
 
-         /**
+    /**
          * @method lessThanOrEqualTo
          * @memberOf Query
          * @description Retrieves entries in which the value of a field is lesser than or equal to the provided value.
@@ -151,14 +150,14 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.lessThanOrEqualTo = _extend.compare('$lte');
-         /**
+    this.lessThanOrEqualTo = _extend.compare('$lte');
+    /**
          * @method greaterThan
          * @memberOf Query
          * @description Retrieves entries in which the value for a field is greater than the provided value.
          * @param {String} key - uid of the field
          * @param {*} value -  value used to match or compare
-         * @example 
+         * @example
          *          let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.greaterThan('created_at','2015-03-12').find()
          *                     data.then(function(result) {
@@ -169,13 +168,13 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.greaterThan = _extend.compare('$gt');
+    this.greaterThan = _extend.compare('$gt');
 
-        /**
+    /**
          * @method greaterThanOrEqualTo
          * @memberOf Query
          * @description Retrieves entries in which the value for a field is greater than or equal to the provided value.
-         * @param {String} key - uid of the field 
+         * @param {String} key - uid of the field
          * @param {*} value - Value used to match or compare
          * @example let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.greaterThanOrEqualTo('created_at','2015-03-12').find()
@@ -187,13 +186,13 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.greaterThanOrEqualTo = _extend.compare('$gte');
+    this.greaterThanOrEqualTo = _extend.compare('$gte');
 
-        /**
+    /**
          * @method notEqualTo
          * @memberOf Query
          * @description Retrieves entries in which the value for a field does not match the provided value.
-         * @param {String} key - uid of the field 
+         * @param {String} key - uid of the field
          * @param {*} value - Value used to match or compare
          * @example let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.notEqualTo('title','Demo').find()
@@ -205,9 +204,9 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.notEqualTo = _extend.compare('$ne');
+    this.notEqualTo = _extend.compare('$ne');
 
-        /**
+    /**
          * @method containedIn
          * @memberOf Query
          * @description Retrieve entries in which the value of a field matches with any of the provided array of values
@@ -223,9 +222,9 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.containedIn = _extend.contained(true);
+    this.containedIn = _extend.contained(true);
 
-       /**
+    /**
          * @method notContainedIn
          * @memberOf Query
          * @description Retrieve entries in which the value of a field does not match with any of the provided array of values.
@@ -241,10 +240,10 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.notContainedIn = _extend.contained(false);
+    this.notContainedIn = _extend.contained(false);
 
-         /**
-         * @method exists 
+    /**
+         * @method exists
          * @memberOf Query
          * @description Retrieve entries if value of the field, mentioned in the condition, exists.
          * @param {String} key - uid of the field
@@ -259,9 +258,9 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.exists = _extend.exists(true);
+    this.exists = _extend.exists(true);
 
-         /**
+    /**
          * @method notExists
          * @memberOf Query
          * @description Retrieve entries if value of the field, mentioned in the condition, does not exists.
@@ -277,9 +276,9 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.notExists = _extend.exists(false);
+    this.notExists = _extend.exists(false);
 
-         /**
+    /**
          * @method ascending
          * @memberOf Query
          * @description Sort fetched entries in the ascending order with respect to a specific field.
@@ -287,16 +286,16 @@ export default class Query extends Entry {
          * @example let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.ascending('created_at').find()
          *          data.then(function(result) {
-         *           // ‘result’ contains the list of entries which is sorted in ascending order on the basis of ‘created_at’. 
+         *           // ‘result’ contains the list of entries which is sorted in ascending order on the basis of ‘created_at’.
          *       },function (error) {
          *          // error function
          *      })
          * @returns {Query}
          * @instance
          */
-        this.ascending = _extend.sort('asc');
+    this.ascending = _extend.sort('asc');
 
-        /**
+    /**
          * @method descending
          * @memberOf Query
          * @description Sort fetched entries in the descending order with respect to a specific field
@@ -304,16 +303,16 @@ export default class Query extends Entry {
          * @example let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.descending('created_at').find()
          *          data.then(function(result) {
-         *           // ‘result’ contains the list of entries which is sorted in descending order on the basis of ‘created_at’. 
+         *           // ‘result’ contains the list of entries which is sorted in descending order on the basis of ‘created_at’.
          *       },function (error) {
          *          // error function
          *      })
          * @returns {Query}
          * @instance
          */
-        this.descending = _extend.sort('desc');
+    this.descending = _extend.sort('desc');
 
-         /**
+    /**
          * @method beforeUid
          * @memberOf Query
          * @description Sort fetched entries in the descending order with respect to a specific field
@@ -322,9 +321,9 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.beforeUid = _extend.sort('before_uid');
+    this.beforeUid = _extend.sort('before_uid');
 
-        /**
+    /**
          * @method afterUid
          * @memberOf Query
          * @description This method provides only the entries after the specified entry id.
@@ -333,9 +332,9 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.afterUid = _extend.sort('after_uid');
+    this.afterUid = _extend.sort('after_uid');
 
-         /**
+    /**
          * @method skip
          * @memberOf Query
          * @description Skips at specific number of entries.
@@ -344,16 +343,16 @@ export default class Query extends Entry {
          * @example let blogQuery = Stack().ContentType('example').Query();
          *          let data = blogQuery.skip(5).find()
          *          data.then(function(result) {
-         *          // result contains the list of data which is sorted in descending order on 'created_at' bases. 
+         *          // result contains the list of data which is sorted in descending order on 'created_at' bases.
          *       },function (error) {
          *          // error function
          *      })
          * @returns {Query}
          * @instance
          */
-        this.skip = _extend.pagination('skip');
+    this.skip = _extend.pagination('skip');
 
-         /**
+    /**
          * @method limit
          * @memberOf Query
          * @description Returns a specific number of entries based on the set limit
@@ -368,9 +367,9 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.limit = _extend.pagination('limit');
+    this.limit = _extend.pagination('limit');
 
-         /**
+    /**
          * @method or
          * @memberOf Query
          * @description Retrieves entries that satisfy at least one of the given conditions
@@ -388,9 +387,9 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.or = _extend.logical('$or');
+    this.or = _extend.logical('$or');
 
-        /**
+    /**
          * @method and
          * @memberOf Query
          * @description Retrieve entries that satisfy all the provided conditions.
@@ -408,21 +407,20 @@ export default class Query extends Entry {
          * @returns {Query}
          * @instance
          */
-        this.and = _extend.logical('$and');
+    this.and = _extend.logical('$and');
+  }
+
+  equalTo (key, value) {
+    if (key && typeof key === 'string') {
+      this._query.query[key] = value;
+
+      return this;
+    } else {
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide valid parameters.');
     }
+  }
 
-   
-    equalTo(key, value) {
-        if (key && typeof key === 'string') {
-            this._query['query'][key] = value;
-
-            return this;
-        } else {
-            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
-        }
-    }
-
-    /**
+  /**
      * @method where
      * @memberOf Query
      * @description Retrieve entries in which a specific field satisfies the value provided
@@ -431,7 +429,7 @@ export default class Query extends Entry {
      * @example let blogQuery = Stack().ContentType('example').Query();
      *          let data = blogQuery.where('title','Demo').find()
      *          data.then(function(result) {
-     *            // ‘result’ contains the list of entries where value of ‘title’ is equal to ‘Demo’. 
+     *            // ‘result’ contains the list of entries where value of ‘title’ is equal to ‘Demo’.
      *       },function (error) {
      *          // error function
      *      })
@@ -439,16 +437,16 @@ export default class Query extends Entry {
      * @instance
      */
 
-    where(key, value) {
-        if (key && typeof key === 'string') {
-            this._query['query'][key] = value;
-            return this;
-        } else {
-            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
-        }
+  where (key, value) {
+    if (key && typeof key === 'string') {
+      this._query.query[key] = value;
+      return this;
+    } else {
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide valid parameters.');
     }
+  }
 
-    /**
+  /**
      * @method count
      * @memberOf Query
      * @description Returns the total number of entries
@@ -456,142 +454,141 @@ export default class Query extends Entry {
      * @example let blogQuery = Stack().ContentType('example').Query();
      *          let data = blogQuery.count().find()
      *          data.then(function(result) {
-     *           // ‘result’ contains the total count. 
+     *           // ‘result’ contains the total count.
      *       },function (error) {
      *          // error function
      *      })
      * @returns {Query}
      * @instance
      */
-    count() {
-        const host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version,
-            url = getRequestUrl(this.type, this.config, this.content_type_uid, host);
-        this._query['count'] = true;
-        this.requestParams = {
-            method: 'POST',
-            headers: Utils.mergeDeep({}, this.headers),
-            url: url,
-            body: {
-                _method: 'GET',
-                query: this._query
-            }
-        };
-        return this;
-    }
+  count () {
+    const host = this.config.protocol + '://' + this.config.host + ':' + this.config.port + '/' + this.config.version;
+    const url = getRequestUrl(this.type, this.config, this.content_type_uid, host);
+    this._query.count = true;
+    this.requestParams = {
+      method: 'POST',
+      headers: Utils.mergeDeep({}, this.headers),
+      url,
+      body: {
+        _method: 'GET',
+        query: this._query
+      }
+    };
+    return this;
+  }
 
-    /**
+  /**
      * @method query
      * @memberOf Query
      * @description Retrieve entries based on raw queries
-     * @param {object} query - RAW (JSON) queries 
+     * @param {object} query - RAW (JSON) queries
      * @returns {Query}
      * @instance
-     * @example 
+     * @example
      * let blogQuery = Stack().ContentType('example').Query();
      * let data = blogQuery.query({"brand": {"$nin_query": {"title": "Apple Inc."}}}).find()
      * data.then(function(result) {
-     *    // ‘result’ contains the total count. 
+     *    // ‘result’ contains the total count.
      * },function (error) {
      *    // error function
      * })
      */
-    query(query) {
-        if (typeof query === "object") {
-            this._query['query'] = Utils.mergeDeep(this._query['query'], query);
-            return this;
-        } else {
-            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters");
-        }
+  query (query) {
+    if (typeof query === 'object') {
+      this._query.query = Utils.mergeDeep(this._query.query, query);
+      return this;
+    } else {
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide valid parameters');
     }
+  }
 
-    /**
+  /**
      * @method referenceIn
      * @memberOf Query
      * @description Retrieve entries that satisfy the query conditions made on referenced fields.
-     * @param {Query} query - RAW (JSON) queries 
+     * @param {Query} query - RAW (JSON) queries
      * @returns {Query}
      * @instance
-     * @example 
+     * @example
      * <caption> referenceIn with Query instances</caption>
      * let blogQuery = Stack().ContentType('example').Query();
      * let Query = Stack.ContentType('blog').Query().where('title', 'Demo')
      * let data = blogQuery.referenceIn("brand", Query).find()
      * data.then(function(result) {
-     *    // ‘result’ contains the total count. 
+     *    // ‘result’ contains the total count.
      * },function (error) {
      *    // error function
      * })
-     * 
-     * @example 
+     *
+     * @example
      * <caption> referenceIn with raw queries</caption>
      * let blogQuery = Stack().ContentType('example').Query();
      * let data = blogQuery.referenceIn("brand", {'title': 'Demo'}).find()
      * data.then(function(result) {
-     *    // ‘result’ contains the total count. 
+     *    // ‘result’ contains the total count.
      * },function (error) {
      *    // error function
      * })
      */
-    referenceIn(key, query) {
-        var _query = {}
-        if (query instanceof Query && query._query.query) {
-            _query["$in_query"] =  query._query.query;
-        } else if (typeof query === "object") {
-            _query["$in_query"] =  query;
-        }
-        if (this._query['query'][key]) {
-            this._query['query'][key] = this._query['query'][key].concat(_query);
-        } else {
-            this._query['query'][key] = _query;
-        }
-        return this;
+  referenceIn (key, query) {
+    const _query = {};
+    if (query instanceof Query && query._query.query) {
+      _query.$in_query = query._query.query;
+    } else if (typeof query === 'object') {
+      _query.$in_query = query;
     }
+    if (this._query.query[key]) {
+      this._query.query[key] = this._query.query[key].concat(_query);
+    } else {
+      this._query.query[key] = _query;
+    }
+    return this;
+  }
 
-
-    /**
+  /**
      * @method referenceNotIn
      * @memberOf Query
      * @description Retrieve entries that does not satisfy the query conditions made on referenced fields.
-     * @param {Query} query - RAW (JSON) queries 
+     * @param {Query} query - RAW (JSON) queries
      * @returns {Query}
      * @instance
-     * @example 
+     * @example
      * <caption> referenceNotIn with Query instances</caption>
      * let blogQuery = Stack().ContentType('example').Query();
      * let data = blogQuery.referenceNotIn("brand", {'title': 'Demo'}).find()
      * data.then(function(result) {
-     *    // ‘result’ contains the total count. 
+     *    // ‘result’ contains the total count.
      * },function (error) {
      *    // error function
      * })
-     * 
-     * @example 
+     *
+     * @example
      * <caption> referenceNotIn with raw queries</caption>
      * let blogQuery = Stack().ContentType('example').Query();
      * let Query = Stack.ContentType('blog').Query().where('title', 'Demo')
      * let data = blogQuery.referenceNotIn("brand", Query).find()
      * data.then(function(result) {
-     *    // ‘result’ contains the total count. 
+     *    // ‘result’ contains the total count.
      * },function (error) {
      *    // error function
      * })
      */
-    referenceNotIn(key, query) {
-        var _query = {}
-        if (query instanceof Query && query._query.query) {
-            _query["$nin_query"] =  query._query.query;
-        } else if (typeof query === "object") {
-            _query["$nin_query"] =  query;
-        }
-        if (this._query['query'][key]) {
-            this._query['query'][key] = this._query['query'][key].concat(_query);
-        } else {
-            this._query['query'][key] = _query;
-        }
-        return this;
+  referenceNotIn (key, query) {
+    const _query = {};
+    if (query instanceof Query && query._query.query) {
+      _query.$nin_query = query._query.query;
+    } else if (typeof query === 'object') {
+      _query.$nin_query = query;
     }
+    if (this._query.query[key]) {
+      this._query.query[key] = this._query.query[key].concat(_query);
+    } else {
+      this._query.query[key] = _query;
+    }
+    return this;
+  }
 
-    /**
+  /**
      * @method tags
      * @memberOf Query
      * @description Retrieves entries based on the provided tags
@@ -606,38 +603,37 @@ export default class Query extends Entry {
      * @returns {Query}
      * @instance
      */
-    tags(values) {
-        if (Array.isArray(values)) {
-            this._query['tags'] = values;
-            return this;
-        } else {
-            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters");
-        }
+  tags (values) {
+    if (Array.isArray(values)) {
+      this._query.tags = values;
+      return this;
+    } else {
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide valid parameters');
     }
+  }
 
-    /**
+  /**
      * @method includeReferenceContentTypeUid
      * @memberOf Query
      * @description  This method also includes the content type UIDs of the referenced entries returned in the response.
      * @example Stack.ContentType("contentType_uid").Query().includeReferenceContentTypeUID().find()
-     * @example 
+     * @example
      * let blogQuery = Stack.ContentType("contentType_uid").Query();
      *          let data = blogQuery.includeReferenceContentTypeUID().find()
      *          data.then(function(result) {
-     *         // ‘result’ contains a list of entries in which content type UIDs is present. 
+     *         // ‘result’ contains a list of entries in which content type UIDs is present.
      *       },function (error) {
      *          // error function
      *      })
      * @returns {Query}
      * @instance
      */
-    includeReferenceContentTypeUID() {
-        this._query['include_reference_content_type_uid'] = true;
-        return this;
-    }
+  includeReferenceContentTypeUID () {
+    this._query.include_reference_content_type_uid = true;
+    return this;
+  }
 
-
-    /**
+  /**
      * @method includeCount
      * @memberOf Query
      * @description Includes the total number of entries returned in the response.
@@ -645,19 +641,19 @@ export default class Query extends Entry {
      * @example let blogQuery = Stack().ContentType('example').Query();
      *          let data = blogQuery.includeCount().find()
      *          data.then(function(result) {
-     *         // ‘result’ contains a list of entries in which count of object is present at array[1] position. 
+     *         // ‘result’ contains a list of entries in which count of object is present at array[1] position.
      *       },function (error) {
      *          // error function
      *      })
      * @returns {Query}
      * @instance
      */
-    includeCount() {
-        this._query['include_count'] = true;
-        return this;
-    }
+  includeCount () {
+    this._query.include_count = true;
+    return this;
+  }
 
-    /**
+  /**
      * @method addParam
      * @description Includes query parameters in your queries.
      * @memberOf Query
@@ -670,16 +666,16 @@ export default class Query extends Entry {
      * @returns {Query}
      * @instance
      */
-    addParam(key, value) {
-        if (key && value && typeof key === 'string' && typeof value === 'string') {
-                this._query[key] = value;
-                return this;
-        } else {
-            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
-        }
+  addParam (key, value) {
+    if (key && value && typeof key === 'string' && typeof value === 'string') {
+      this._query[key] = value;
+      return this;
+    } else {
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide valid parameters.');
     }
+  }
 
-    /**
+  /**
      * @method getQuery
      * @memberOf Query
      * @description Returns the raw (JSON) query based on the filters applied on Query object.
@@ -687,11 +683,11 @@ export default class Query extends Entry {
      * @returns {Query}
      * @instance
      */
-    getQuery() {
-        return this._query.query || {};
-    }
+  getQuery () {
+    return this._query.query || {};
+  }
 
-    /**
+  /**
      * @method regex
      * @memberOf Query
      * @description Retrieve entries that match the provided regular expressions
@@ -707,19 +703,19 @@ export default class Query extends Entry {
      * @returns {Query}
      * @instance
      */
-    regex(key, value, options) {
-        if (key && value && typeof key === 'string' && typeof value === 'string') {
-            this._query['query'][key] = {
-                $regex: value
-            };
-            if (options) this._query['query'][key]['$options'] = options;
-            return this;
-        } else {
-            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
-        }
+  regex (key, value, options) {
+    if (key && value && typeof key === 'string' && typeof value === 'string') {
+      this._query.query[key] = {
+        $regex: value
+      };
+      if (options) this._query.query[key].$options = options;
+      return this;
+    } else {
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide valid parameters.');
     }
+  }
 
-    /**
+  /**
      * @method search
      * @memberOf Query
      * @deprecated since version 3.15.0
@@ -735,33 +731,33 @@ export default class Query extends Entry {
      *      })
      * @returns {Query}
      * @instance
-     */     
-    search(value) {
-        if (value && typeof value === 'string') {
-            this._query['typeahead'] = value;
-            return this;
-        } else {
-            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
-        }
+     */
+  search (value) {
+    if (value && typeof value === 'string') {
+      this._query.typeahead = value;
+      return this;
+    } else {
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide valid parameters.');
     }
+  }
 
-    /**
+  /**
      * @method find
      * @memberOf Query
      * @description Retrieves entries that satisfied the specified query
      * @example let blogQuery = Stack().ContentType('example').Query().find();
      *          blogQuery.then(function(result) {
-     *          // result contains the list of object. 
+     *          // result contains the list of object.
      *       },function (error) {
      *          // error function
      *      })
      * blogQuery.find()
      * @example
      * let blogQuery = Stack.ContentType(contentTypeUid).Query().find({
-     *        
+     *
      *      });
      * blogQuery.then(function(result) {
-     *          // result contains the list of object. 
+     *          // result contains the list of object.
      *       },function (error) {
      *          // error function
      *      })
@@ -769,52 +765,52 @@ export default class Query extends Entry {
      * @returns {promise}
      * @instance
      */
-    find(fetchOptions) {
-        var host = this.config.host + ':' + this.config.port
-        if (this.type && this.type !== 'asset' && this.live_preview && this.live_preview.enable === true && this.live_preview.live_preview && this.live_preview.live_preview !== "init") {
-            host = this.live_preview.host;
-        }
-        const baseURL = this.config.protocol + "://" + host + '/' + this.config.version
-        const url = getRequestUrl(this.type, this.config, this.content_type_uid, baseURL)
-        
-
-        this.requestParams = {
-            method: 'POST',
-            headers: Utils.mergeDeep({}, this.headers),
-            url: url,
-            body: {
-                _method: 'GET',
-                query: this._query
-            }
-        };
-        var options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
-        return Utils.sendRequest(Utils.mergeDeep({}, this), options);
+  find (fetchOptions) {
+    let host = this.config.host + ':' + this.config.port;
+    if (this.type && this.type !== 'asset' && this.live_preview && this.live_preview.enable === true && this.live_preview.live_preview && this.live_preview.live_preview !== 'init') {
+      host = this.live_preview.host;
     }
-    /**
+    const baseURL = this.config.protocol + '://' + host + '/' + this.config.version;
+    const url = getRequestUrl(this.type, this.config, this.content_type_uid, baseURL);
+
+    this.requestParams = {
+      method: 'POST',
+      headers: Utils.mergeDeep({}, this.headers),
+      url,
+      body: {
+        _method: 'GET',
+        query: this._query
+      }
+    };
+    const options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
+    return Utils.sendRequest(Utils.mergeDeep({}, this), options);
+  }
+
+  /**
      * @method Variants
      * @memberOf Query
-     * @param {String} uid - uid of the variants entry 
+     * @param {String} uid - uid of the variants entry
      * @description An initializer is responsible for creating Variants Entry object
      * @returns {Variants}
-     * @instance 
+     * @instance
      */
-    variants(variant_headers) {
-        if (Array.isArray(variant_headers) && variant_headers.length > 0) {
-            this.headers['x-cs-variant-uid'] = variant_headers.join(',')
-        }else{
-            this.headers['x-cs-variant-uid'] = variant_headers;
-        }
-        return this;
+  variants (variant_headers) {
+    if (Array.isArray(variant_headers) && variant_headers.length > 0) {
+      this.headers['x-cs-variant-uid'] = variant_headers.join(',');
+    } else {
+      this.headers['x-cs-variant-uid'] = variant_headers;
     }
+    return this;
+  }
 
-     /**
+  /**
      * @method findOne
      * @memberOf Query
      * @deprecated since version 3.3.0
      * @description Retrieve a single entry from the result
      * @example let blogQuery = Stack().ContentType('example').Query().findOne();
      *          blogQuery.then(function(result) {
-     *          // result contains the single item object. 
+     *          // result contains the single item object.
      *       },function (error) {
      *          // error function
      *      })
@@ -822,34 +818,34 @@ export default class Query extends Entry {
      * @returns {promise}
      * @instance
      */
-    findOne() {
-        let host = this.config.protocol + "://" + this.config.host + ':' + this.config.port + '/' + this.config.version
-        if(this.type && this.type !== 'asset' && this.live_preview && this.live_preview.enable === true && this.live_preview.live_preview && this.live_preview.live_preview !== "init" ) {
-            host = this.config.protocol + "://" + this.live_preview.host + '/' + this.config.version
-        }
-        const url = getRequestUrl(this.type, this.config, this.content_type_uid, host)
-        this.singleEntry = true;
-        this._query.limit = 1;
-        this.requestParams = {
-            method: 'POST',
-            headers: Utils.mergeDeep({}, this.headers),
-            url: url,
-            body: {
-                _method: 'GET',
-                query: this._query
-            }
-        };
-        const options = Utils.mergeDeep({}, this.fetchOptions);
-        return Utils.sendRequest(Utils.mergeDeep({}, this), options).catch(error => {
-            // Add HTTP status code to the error object if it exists
-            if (error.status) {
-                return Promise.reject({
-                    ...error,
-                    http_code: error.status, // Adding the HTTP status code explicitly
-                    http_message: error.statusText || 'An error occurred'
-                });
-            }
-            return Promise.reject(error); // Fallback for other errors
-        });
+  findOne () {
+    let host = this.config.protocol + '://' + this.config.host + ':' + this.config.port + '/' + this.config.version;
+    if (this.type && this.type !== 'asset' && this.live_preview && this.live_preview.enable === true && this.live_preview.live_preview && this.live_preview.live_preview !== 'init') {
+      host = this.config.protocol + '://' + this.live_preview.host + '/' + this.config.version;
     }
+    const url = getRequestUrl(this.type, this.config, this.content_type_uid, host);
+    this.singleEntry = true;
+    this._query.limit = 1;
+    this.requestParams = {
+      method: 'POST',
+      headers: Utils.mergeDeep({}, this.headers),
+      url,
+      body: {
+        _method: 'GET',
+        query: this._query
+      }
+    };
+    const options = Utils.mergeDeep({}, this.fetchOptions);
+    return Utils.sendRequest(Utils.mergeDeep({}, this), options).catch(error => {
+      // Add HTTP status code to the error object if it exists
+      if (error.status) {
+        return Promise.reject({
+          ...error,
+          http_code: error.status, // Adding the HTTP status code explicitly
+          http_message: error.statusText || 'An error occurred'
+        });
+      }
+      return Promise.reject(error); // Fallback for other errors
+    });
+  }
 }

@@ -1,16 +1,16 @@
 /**
  * Created by Aamod Pisat on 09-06-2017.
  */
-"use strict";
+'use strict';
 /*
  * Module Dependencies.
  */
-const Contentstack = require("../../dist/node/contentstack.js");
-const init = require("../config.js");
+const Contentstack = require('../../dist/node/contentstack.js');
+const init = require('../config.js');
 
 let Stack;
 
-describe("Contentstack Asset Tests", () => {
+describe('Contentstack Asset Tests', () => {
   // Initialize the Contentstack Stack Instance
   beforeAll(() => {
     return new Promise((resolve) => {
@@ -20,9 +20,9 @@ describe("Contentstack Asset Tests", () => {
     });
   });
 
-  test("assets as first argument", async () => {
+  test('assets as first argument', async () => {
     const Query = Stack.Assets().Query();
-    const field = "updated_at";
+    const field = 'updated_at';
 
     const result = await Query.limit(1).toJSON().find();
 
@@ -40,9 +40,9 @@ describe("Contentstack Asset Tests", () => {
     }
   });
 
-  test("with assets and count argument", async () => {
+  test('with assets and count argument', async () => {
     const Query = Stack.Assets().Query();
-    const field = "updated_at";
+    const field = 'updated_at';
 
     const result = await Query.includeCount().toJSON().find();
 

@@ -1,4 +1,4 @@
-// Entries 
+// Entries
 require('./entry/find');
 require('./entry/find-result-wrapper');
 require('./entry/findone');
@@ -14,4 +14,4 @@ require('./asset/spread');
 require('./asset/image-transformation.js');
 
 // Live-preview
-require('./live-preview/live-preview-test.js')
+require('./live-preview/live-preview-test.js');
