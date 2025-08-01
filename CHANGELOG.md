@@ -1,4 +1,9 @@
 ## Change log
+### Version: 3.26.2
+#### Date:  Aug-04-2025
+##### Fix:
+ - Dependency Updated
+ - Lint issues resolved
 
 ### Version: 3.26.1
 #### Date:  July-28-2025
