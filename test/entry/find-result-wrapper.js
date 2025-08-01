@@ -1,16 +1,16 @@
-"use strict";
+'use strict';
 /*
  * Module Dependencies.
  */
-const Contentstack = require("../../dist/node/contentstack.js");
-const init = require("../config.js");
-const Utils = require("./utils.js");
+const Contentstack = require('../../dist/node/contentstack.js');
+const init = require('../config.js');
+const Utils = require('./utils.js');
 
 const contentTypes = init.contentTypes;
 let Stack;
-let error = null;
+const error = null;
 
-describe("ContentStack SDK Tests", () => {
+describe('ContentStack SDK Tests', () => {
   // Initialize the Contentstack Stack Instance
   beforeAll(() => {
     return new Promise((resolve) => {
@@ -20,9 +20,9 @@ describe("ContentStack SDK Tests", () => {
     });
   });
 
-  describe("default .find()", () => {
+  describe('default .find()', () => {
     let entries;
-    const field = "updated_at";
+    const field = 'updated_at';
 
     // Setup - run the query once for all tests
     beforeAll(async () => {
@@ -30,18 +30,18 @@ describe("ContentStack SDK Tests", () => {
       entries = await Query.toJSON().find();
     });
 
-    test("should return a non-empty array of entries", async () => {
+    test('should return a non-empty array of entries', async () => {
       expect(entries).toBeDefined();
       expect(Array.isArray(entries)).toBe(true);
       expect(entries[0]).toBeDefined();
       expect(entries[0].length).toBeTruthy();
     });
 
-    test("should not include count when not requested", async () => {
+    test('should not include count when not requested', async () => {
       expect(entries[1]).toBeFalsy();
     });
 
-    test("should return entries sorted by updated_at in descending order by default", async () => {
+    test('should return entries sorted by updated_at in descending order by default', async () => {
       if (entries && entries.length && entries[0].length) {
         let prev = entries[0][0][field];
         const _entries = entries[0].every(function (entry) {
@@ -50,26 +50,26 @@ describe("ContentStack SDK Tests", () => {
         });
         expect(_entries).toBe(true);
       } else {
-        console.warn("Not enough entries returned to verify default sorting");
+        console.warn('Not enough entries returned to verify default sorting');
       }
     });
 
-    test("should have entries with valid structure", async () => {
+    test('should have entries with valid structure', async () => {
       if (entries && entries.length && entries[0].length) {
         const firstEntry = entries[0][0];
-        expect(firstEntry).toHaveProperty("uid");
-        expect(firstEntry).toHaveProperty("title");
-        expect(firstEntry).toHaveProperty("updated_at");
+        expect(firstEntry).toHaveProperty('uid');
+        expect(firstEntry).toHaveProperty('title');
+        expect(firstEntry).toHaveProperty('updated_at');
       } else {
-        console.warn("No entries returned to verify structure");
+        console.warn('No entries returned to verify structure');
       }
     });
   });
 
-  describe("sorting", () => {
-    test(".ascending()", async () => {
+  describe('sorting', () => {
+    test('.ascending()', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const field = "updated_at";
+      const field = 'updated_at';
 
       const entries = await Query.ascending(field).toJSON().find();
 
@@ -85,9 +85,9 @@ describe("ContentStack SDK Tests", () => {
       }
     });
 
-    test(".descending()", async () => {
+    test('.descending()', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const field = "created_at";
+      const field = 'created_at';
 
       const entries = await Query.descending(field).toJSON().find();
 
@@ -104,15 +104,15 @@ describe("ContentStack SDK Tests", () => {
     });
   });
 
-  describe("comparison", () => {
-    test(".lessThan()", async () => {
+  describe('comparison', () => {
+    test('.lessThan()', async () => {
       const Query = Stack.ContentType(
         contentTypes.numbers_content_type
       ).Query();
       const value = 11;
-      const field = "updated_at";
+      const field = 'updated_at';
 
-      const entries = await Query.lessThan("num_field", value).toJSON().find();
+      const entries = await Query.lessThan('num_field', value).toJSON().find();
 
       expect(entries[0].length).toBeTruthy();
 
@@ -127,14 +127,14 @@ describe("ContentStack SDK Tests", () => {
       }
     });
 
-    test(".lessThanOrEqualTo()", async () => {
+    test('.lessThanOrEqualTo()', async () => {
       const Query = Stack.ContentType(
         contentTypes.numbers_content_type
       ).Query();
-      const field = "updated_at";
+      const field = 'updated_at';
       const value = 11;
 
-      const entries = await Query.lessThanOrEqualTo("num_field", value)
+      const entries = await Query.lessThanOrEqualTo('num_field', value)
         .toJSON()
         .find();
 
@@ -151,14 +151,14 @@ describe("ContentStack SDK Tests", () => {
       }
     });
 
-    test(".greaterThan()", async () => {
+    test('.greaterThan()', async () => {
       const Query = Stack.ContentType(
         contentTypes.numbers_content_type
       ).Query();
-      const field = "num_field";
+      const field = 'num_field';
       const value = 11;
 
-      const entries = await Query.greaterThan("num_field", value)
+      const entries = await Query.greaterThan('num_field', value)
         .ascending(field)
         .toJSON()
         .find();
@@ -176,14 +176,14 @@ describe("ContentStack SDK Tests", () => {
       }
     });
 
-    test(".greaterThanOrEqualTo()", async () => {
+    test('.greaterThanOrEqualTo()', async () => {
       const Query = Stack.ContentType(
         contentTypes.numbers_content_type
       ).Query();
-      const field = "num_field";
+      const field = 'num_field';
       const value = 11;
 
-      const entries = await Query.greaterThanOrEqualTo("num_field", value)
+      const entries = await Query.greaterThanOrEqualTo('num_field', value)
         .descending(field)
         .toJSON()
         .find();
@@ -201,14 +201,14 @@ describe("ContentStack SDK Tests", () => {
       }
     });
 
-    test(".notEqualTo()", async () => {
+    test('.notEqualTo()', async () => {
       const Query = Stack.ContentType(
         contentTypes.numbers_content_type
       ).Query();
-      const field = "num_field";
+      const field = 'num_field';
       const value = 6;
 
-      const entries = await Query.notEqualTo("num_field", value)
+      const entries = await Query.notEqualTo('num_field', value)
         .descending(field)
         .toJSON()
         .find();
@@ -227,39 +227,39 @@ describe("ContentStack SDK Tests", () => {
     });
   });
 
-  describe("array/subset", () => {
-    test(".containedIn()", async () => {
+  describe('array/subset', () => {
+    test('.containedIn()', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const _in = ["source1", "source2"];
-      const field = "updated_at";
+      const _in = ['source1', 'source2'];
+      const field = 'updated_at';
 
-      const entries = await Query.containedIn("title", _in).toJSON().find();
+      const entries = await Query.containedIn('title', _in).toJSON().find();
 
       expect(entries[0].length).toBeTruthy();
 
       if (entries && entries.length && entries[0].length) {
         const _entries = entries[0].every(function (entry) {
-          return _in.indexOf(entry["title"]) != -1;
+          return _in.indexOf(entry.title) != -1;
         });
         expect(_entries).toBe(true);
       }
     });
 
-    test(".notContainedIn()", async () => {
+    test('.notContainedIn()', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const _in = ["sourceddd1", "sourceddddd2"];
+      const _in = ['sourceddd1', 'sourceddddd2'];
 
-      const entries = await Query.notContainedIn("title", _in).toJSON().find();
+      const entries = await Query.notContainedIn('title', _in).toJSON().find();
 
       expect(entries[0].length).toBeTruthy();
     });
   });
 
-  describe("exists", () => {
-    test(".exists()", async () => {
+  describe('exists', () => {
+    test('.exists()', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const queryField = "boolean";
-      const field = "updated_at";
+      const queryField = 'boolean';
+      const field = 'updated_at';
 
       const entries = await Query.exists(queryField).toJSON().find();
 
@@ -276,17 +276,17 @@ describe("ContentStack SDK Tests", () => {
       }
     });
 
-    test(".notExists()", async () => {
+    test('.notExists()', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const queryField = "isspecial";
-      const field = "updated_at";
+      const queryField = 'isspecial';
+      const field = 'updated_at';
 
       const entries = await Query.notExists(queryField).toJSON().find();
 
-      expect("entries" in entries).toBeTruthy();
+      expect('entries' in entries).toBeTruthy();
 
       if (entries && entries.length && entries[0].length) {
-        let prev = entries[0][0][field];
+        const prev = entries[0][0][field];
         const _entries = entries[0].every(function (entry) {
           return entry[field] <= prev;
         });
@@ -295,10 +295,10 @@ describe("ContentStack SDK Tests", () => {
     });
   });
 
-  describe("pagination", () => {
-    test(".skip()", async () => {
+  describe('pagination', () => {
+    test('.skip()', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const field = "updated_at";
+      const field = 'updated_at';
 
       const allEntries = await Query.toJSON().find();
 
@@ -323,9 +323,9 @@ describe("ContentStack SDK Tests", () => {
       }
     });
 
-    test(".limit()", async () => {
+    test('.limit()', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const field = "updated_at";
+      const field = 'updated_at';
 
       const allEntries = await Query.toJSON().find();
 
@@ -349,7 +349,7 @@ describe("ContentStack SDK Tests", () => {
       }
     });
 
-    test(".count()", async () => {
+    test('.count()', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
 
       const entries = await Query.count().toJSON().find();
@@ -358,164 +358,164 @@ describe("ContentStack SDK Tests", () => {
     });
   });
 
-  describe("logical", () => {
-    describe(".or() - Query Objects", () => {
+  describe('logical', () => {
+    describe('.or() - Query Objects', () => {
       let entries;
-      const titles = ["source1", "source2"];
+      const titles = ['source1', 'source2'];
 
       beforeAll(async () => {
         const Query1 = Stack.ContentType(contentTypes.source)
           .Query()
-          .containedIn("title", titles);
+          .containedIn('title', titles);
         const Query2 = Stack.ContentType(contentTypes.source)
           .Query()
-          .where("boolean", true);
+          .where('boolean', true);
         const Query = Stack.ContentType(contentTypes.source).Query();
 
         entries = await Query.or(Query1, Query2).toJSON().find();
       });
 
-      test("should return a non-empty array of entries", async () => {
+      test('should return a non-empty array of entries', async () => {
         expect(entries).toBeDefined();
         expect(Array.isArray(entries)).toBe(true);
         expect(entries[0]).toBeDefined();
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should return entries matching at least one of the conditions", async () => {
+      test('should return entries matching at least one of the conditions', async () => {
         if (entries && entries.length && entries[0].length) {
           const allEntriesMatchAnyCondition = entries[0].every(
             (entry) => titles.includes(entry.title) || entry.boolean === true
           );
           expect(allEntriesMatchAnyCondition).toBe(true);
         } else {
-          console.warn("No entries returned to verify OR condition");
+          console.warn('No entries returned to verify OR condition');
         }
       });
 
-      test("should include entries with title in the specified list", async () => {
+      test('should include entries with title in the specified list', async () => {
         if (entries && entries.length && entries[0].length) {
           const hasEntryWithTitle = entries[0].some((entry) =>
             titles.includes(entry.title)
           );
           expect(hasEntryWithTitle).toBe(true);
         } else {
-          console.warn("No entries returned to verify first condition");
+          console.warn('No entries returned to verify first condition');
         }
       });
 
-      test("should include entries with boolean field set to true", async () => {
+      test('should include entries with boolean field set to true', async () => {
         if (entries && entries.length && entries[0].length) {
           const hasEntryWithBoolean = entries[0].some(
             (entry) => entry.boolean === true
           );
           expect(hasEntryWithBoolean).toBe(true);
         } else {
-          console.warn("No entries returned to verify second condition");
+          console.warn('No entries returned to verify second condition');
         }
       });
     });
 
-    describe(".and() - Query Objects", () => {
+    describe('.and() - Query Objects', () => {
       let entries;
 
       beforeAll(async () => {
         const Query1 = Stack.ContentType(contentTypes.source)
           .Query()
-          .where("title", "source1");
+          .where('title', 'source1');
         const Query2 = Stack.ContentType(contentTypes.source)
           .Query()
-          .where("boolean", true);
+          .where('boolean', true);
         const Query = Stack.ContentType(contentTypes.source).Query();
 
         entries = await Query.and(Query1, Query2).toJSON().find();
       });
 
-      test("should return a non-empty array of entries", async () => {
+      test('should return a non-empty array of entries', async () => {
         expect(entries).toBeDefined();
         expect(Array.isArray(entries)).toBe(true);
         expect(entries[0]).toBeDefined();
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should return only entries matching all specified conditions", async () => {
+      test('should return only entries matching all specified conditions', async () => {
         if (entries && entries.length && entries[0].length) {
           const allEntriesMatchAllConditions = entries[0].every(
-            (entry) => entry.title === "source1" && entry.boolean === true
+            (entry) => entry.title === 'source1' && entry.boolean === true
           );
           expect(allEntriesMatchAllConditions).toBe(true);
         } else {
-          console.warn("No entries returned to verify AND condition");
+          console.warn('No entries returned to verify AND condition');
         }
       });
 
       test('should include entries with title set to "source1"', async () => {
         if (entries && entries.length && entries[0].length) {
           const allEntriesHaveCorrectTitle = entries[0].every(
-            (entry) => entry.title === "source1"
+            (entry) => entry.title === 'source1'
           );
           expect(allEntriesHaveCorrectTitle).toBe(true);
         } else {
-          console.warn("No entries returned to verify title condition");
+          console.warn('No entries returned to verify title condition');
         }
       });
 
-      test("should include entries with boolean field set to true", async () => {
+      test('should include entries with boolean field set to true', async () => {
         if (entries && entries.length && entries[0].length) {
           const allEntriesHaveBooleanTrue = entries[0].every(
             (entry) => entry.boolean === true
           );
           expect(allEntriesHaveBooleanTrue).toBe(true);
         } else {
-          console.warn("No entries returned to verify boolean condition");
+          console.warn('No entries returned to verify boolean condition');
         }
       });
     });
 
-    describe(".query() - Raw query", () => {
+    describe('.query() - Raw query', () => {
       let entries;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
         entries = await Query.query({
-          $or: [{ title: "source1" }, { boolean: true }],
+          $or: [{ title: 'source1' }, { boolean: true }]
         })
           .toJSON()
           .find();
       });
 
-      test("should return a non-empty array of entries", async () => {
+      test('should return a non-empty array of entries', async () => {
         expect(entries).toBeDefined();
         expect(Array.isArray(entries)).toBe(true);
         expect(entries[0]).toBeDefined();
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should return entries matching at least one of the conditions in the raw query", async () => {
+      test('should return entries matching at least one of the conditions in the raw query', async () => {
         if (entries && entries.length && entries[0].length) {
           const allEntriesMatchAnyCondition = entries[0].every(
-            (entry) => entry.title === "source1" || entry.boolean === true
+            (entry) => entry.title === 'source1' || entry.boolean === true
           );
           expect(allEntriesMatchAnyCondition).toBe(true);
         } else {
-          console.warn("No entries returned to verify raw query conditions");
+          console.warn('No entries returned to verify raw query conditions');
         }
       });
 
       test('should include entries with title "source1"', async () => {
         if (entries && entries.length && entries[0].length) {
           const hasEntryWithTitle = entries[0].some(
-            (entry) => entry.title === "source1"
+            (entry) => entry.title === 'source1'
           );
           expect(hasEntryWithTitle).toBe(true);
         } else {
           console.warn(
-            "No entries returned to verify first raw query condition"
+            'No entries returned to verify first raw query condition'
           );
         }
       });
 
-      test("should include entries with boolean field set to true", async () => {
+      test('should include entries with boolean field set to true', async () => {
         if (entries && entries.length && entries[0].length) {
           const hasEntryWithBoolean = entries[0].some(
             (entry) => entry.boolean === true
@@ -523,19 +523,19 @@ describe("ContentStack SDK Tests", () => {
           expect(hasEntryWithBoolean).toBe(true);
         } else {
           console.warn(
-            "No entries returned to verify second raw query condition"
+            'No entries returned to verify second raw query condition'
           );
         }
       });
     });
   });
 
-  describe("custom query", () => {
-    test(".query() - Raw query with basic OR condition", async () => {
+  describe('custom query', () => {
+    test('.query() - Raw query with basic OR condition', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
 
       const entries = await Query.query({
-        $or: [{ title: "source1" }, { boolean: "true" }],
+        $or: [{ title: 'source1' }, { boolean: 'true' }]
       })
         .toJSON()
         .find();
@@ -544,17 +544,17 @@ describe("ContentStack SDK Tests", () => {
 
       if (entries && entries.length && entries[0].length) {
         const _entries = entries[0].every(function (entry) {
-          return entry.title === "source1" || entry.boolean === true;
+          return entry.title === 'source1' || entry.boolean === true;
         });
         expect(_entries).toBeTruthy();
       }
     });
 
-    test(".query() - Raw query with AND condition", async () => {
+    test('.query() - Raw query with AND condition', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
 
       const entries = await Query.query({
-        $and: [{ title: "source1" }, { boolean: true }],
+        $and: [{ title: 'source1' }, { boolean: true }]
       })
         .toJSON()
         .find();
@@ -562,19 +562,19 @@ describe("ContentStack SDK Tests", () => {
       expect(entries[0].length).toBeTruthy();
 
       const allMatchBothConditions = entries[0].every(
-        (entry) => entry.title === "source1" && entry.boolean === true
+        (entry) => entry.title === 'source1' && entry.boolean === true
       );
       expect(allMatchBothConditions).toBeTruthy();
     });
 
-    test(".query() - Raw query with nested conditions", async () => {
+    test('.query() - Raw query with nested conditions', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
 
       const entries = await Query.query({
         $and: [
-          { title: "source1" },
-          { $or: [{ boolean: true }, { url: { $exists: true } }] },
-        ],
+          { title: 'source1' },
+          { $or: [{ boolean: true }, { url: { $exists: true } }] }
+        ]
       })
         .toJSON()
         .find();
@@ -583,18 +583,18 @@ describe("ContentStack SDK Tests", () => {
 
       const allMatchConditions = entries[0].every(
         (entry) =>
-          entry.title === "source1" &&
+          entry.title === 'source1' &&
           (entry.boolean === true || entry.url !== undefined)
       );
       expect(allMatchConditions).toBeTruthy();
     });
   });
 
-  describe("tags", () => {
-    test(".tags() - Multiple tags filter", async () => {
+  describe('tags', () => {
+    test('.tags() - Multiple tags filter', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const field = "tags";
-      const tags = ["tag1", "tag2"];
+      const field = 'tags';
+      const tags = ['tag1', 'tag2'];
 
       const entries = await Query.tags(tags).toJSON().find();
 
@@ -608,10 +608,10 @@ describe("ContentStack SDK Tests", () => {
       }
     });
 
-    test(".tags() - Single tag filter", async () => {
+    test('.tags() - Single tag filter', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const field = "tags";
-      const tags = ["tag1"];
+      const field = 'tags';
+      const tags = ['tag1'];
 
       const entries = await Query.tags(tags).toJSON().find();
 
@@ -625,9 +625,9 @@ describe("ContentStack SDK Tests", () => {
       }
     });
 
-    test(".tags() - Empty results with non-existent tag", async () => {
+    test('.tags() - Empty results with non-existent tag', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const nonExistentTag = ["non_existent_tag_123456"];
+      const nonExistentTag = ['non_existent_tag_123456'];
 
       const entries = await Query.tags(nonExistentTag).toJSON().find();
 
@@ -638,59 +638,59 @@ describe("ContentStack SDK Tests", () => {
     });
   });
 
-  describe("search", () => {
-    test(".search() - Exact match", async () => {
+  describe('search', () => {
+    test('.search() - Exact match', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
 
-      const entries = await Query.search("source1").toJSON().find();
+      const entries = await Query.search('source1').toJSON().find();
 
       expect(entries[0].length).toBeTruthy();
 
       const hasMatchingEntries = entries[0].some(
         (entry) =>
-          entry.title === "source1" || JSON.stringify(entry).includes("source1")
+          entry.title === 'source1' || JSON.stringify(entry).includes('source1')
       );
       expect(hasMatchingEntries).toBe(true);
     });
 
-    test(".search() - Partial match", async () => {
+    test('.search() - Partial match', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
 
-      const entries = await Query.search("source").toJSON().find();
+      const entries = await Query.search('source').toJSON().find();
 
       expect(entries[0].length).toBeTruthy();
 
       const hasMatchingEntries = entries[0].some(
         (entry) =>
-          (entry.title && entry.title.includes("source")) ||
-          JSON.stringify(entry).includes("source")
+          (entry.title && entry.title.includes('source')) ||
+          JSON.stringify(entry).includes('source')
       );
       expect(hasMatchingEntries).toBe(true);
     });
 
-    test(".search() - Case insensitive match", async () => {
+    test('.search() - Case insensitive match', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
 
-      const entries = await Query.search("SOURCE1").toJSON().find();
+      const entries = await Query.search('SOURCE1').toJSON().find();
 
       expect(entries[0].length).toBeTruthy();
 
       const hasMatchingEntries = entries[0].some(
         (entry) =>
-          (entry.title && entry.title.toLowerCase() === "source1") ||
-          JSON.stringify(entry).toLowerCase().includes("source1")
+          (entry.title && entry.title.toLowerCase() === 'source1') ||
+          JSON.stringify(entry).toLowerCase().includes('source1')
       );
       expect(hasMatchingEntries).toBe(true);
     });
   });
 
-  describe("regex", () => {
-    test(".regex() - Basic pattern match", async () => {
+  describe('regex', () => {
+    test('.regex() - Basic pattern match', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const field = "title";
+      const field = 'title';
       const regex = {
-        pattern: "^source",
-        options: "i",
+        pattern: '^source',
+        options: 'i'
       };
       const regexpObj = new RegExp(regex.pattern, regex.options);
 
@@ -706,12 +706,12 @@ describe("ContentStack SDK Tests", () => {
       expect(flag).toBeTruthy();
     });
 
-    test(".regex() - Specific suffix pattern", async () => {
+    test('.regex() - Specific suffix pattern', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const field = "title";
+      const field = 'title';
       const regex = {
-        pattern: "1$", // Matches strings ending with 1
-        options: "",
+        pattern: '1$', // Matches strings ending with 1
+        options: ''
       };
       const regexpObj = new RegExp(regex.pattern, regex.options);
 
@@ -728,18 +728,18 @@ describe("ContentStack SDK Tests", () => {
         expect(matchesPattern).toBeTruthy();
 
         const endsWithOne = entries[0].every(
-          (entry) => entry[field] && entry[field].endsWith("1")
+          (entry) => entry[field] && entry[field].endsWith('1')
         );
         expect(endsWithOne).toBeTruthy();
       }
     });
 
-    test(".regex() - With wildcard pattern", async () => {
+    test('.regex() - With wildcard pattern', async () => {
       const Query = Stack.ContentType(contentTypes.source).Query();
-      const field = "title";
+      const field = 'title';
       const regex = {
-        pattern: "source.*",
-        options: "i",
+        pattern: 'source.*',
+        options: 'i'
       };
       const regexpObj = new RegExp(regex.pattern, regex.options);
 
@@ -758,9 +758,9 @@ describe("ContentStack SDK Tests", () => {
     });
   });
 
-  describe("locale and fallback", () => {
-    test("find: with specific locale", async () => {
-      const locale = "ja-jp";
+  describe('locale and fallback', () => {
+    test('find: with specific locale', async () => {
+      const locale = 'ja-jp';
 
       const entries = await Stack.ContentType(contentTypes.source)
         .Query()
@@ -779,9 +779,9 @@ describe("ContentStack SDK Tests", () => {
       }
     });
 
-    test("find: with fallback enabled for partially localized content", async () => {
-      const primaryLocale = "ja-jp";
-      const fallbackLocale = "en-us";
+    test('find: with fallback enabled for partially localized content', async () => {
+      const primaryLocale = 'ja-jp';
+      const fallbackLocale = 'en-us';
 
       const entries = await Stack.ContentType(contentTypes.source)
         .Query()
@@ -814,8 +814,8 @@ describe("ContentStack SDK Tests", () => {
       }
     });
 
-    test("find: comparing results with and without fallback", async () => {
-      const locale = "ja-jp";
+    test('find: comparing results with and without fallback', async () => {
+      const locale = 'ja-jp';
 
       const entriesWithoutFallback = await Stack.ContentType(
         contentTypes.source
@@ -845,68 +845,68 @@ describe("ContentStack SDK Tests", () => {
     });
   });
 
-  describe("include reference", () => {
-    describe(".includeReference() - String", () => {
+  describe('include reference', () => {
+    describe('.includeReference() - String', () => {
       let entries;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
-        entries = await Query.includeReference("reference").toJSON().find();
+        entries = await Query.includeReference('reference').toJSON().find();
       });
 
-      test("should return entries with the reference field", () => {
+      test('should return entries with the reference field', () => {
         expect(entries[0].length).toBeGreaterThan(0);
       });
 
-      test("should include the reference field as an object", () => {
+      test('should include the reference field as an object', () => {
         const allEntriesHaveReference = entries[0].every(
           (entry) =>
             entry &&
-            entry["reference"] &&
-            typeof entry["reference"] === "object"
+            entry.reference &&
+            typeof entry.reference === 'object'
         );
         expect(allEntriesHaveReference).toBe(true);
       });
     });
 
-    describe(".includeReference() - Array", () => {
+    describe('.includeReference() - Array', () => {
       let entries;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
-        entries = await Query.includeReference(["reference", "other_reference"])
+        entries = await Query.includeReference(['reference', 'other_reference'])
           .toJSON()
           .find();
       });
 
-      test("should return entries with data", () => {
+      test('should return entries with data', () => {
         expect(entries[0].length).toBeGreaterThan(0);
       });
 
-      test("should include the first reference field as an object", () => {
+      test('should include the first reference field as an object', () => {
         const allEntriesHaveFirstReference = entries[0].every(
           (entry) =>
             entry &&
-            entry["reference"] &&
-            typeof entry["reference"] === "object"
+            entry.reference &&
+            typeof entry.reference === 'object'
         );
         expect(allEntriesHaveFirstReference).toBe(true);
       });
 
-      test("should include the second reference field as an object", () => {
+      test('should include the second reference field as an object', () => {
         const allEntriesHaveSecondReference = entries[0].every(
           (entry) =>
             entry &&
-            entry["other_reference"] &&
-            typeof entry["other_reference"] === "object"
+            entry.other_reference &&
+            typeof entry.other_reference === 'object'
         );
         expect(allEntriesHaveSecondReference).toBe(true);
       });
     });
   });
 
-  describe("include count and schema", () => {
-    describe(".includeCount()", () => {
+  describe('include count and schema', () => {
+    describe('.includeCount()', () => {
       let entries;
 
       beforeAll(async () => {
@@ -914,16 +914,16 @@ describe("ContentStack SDK Tests", () => {
         entries = await Query.includeCount().toJSON().find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should include count information", () => {
+      test('should include count information', () => {
         expect(entries[1]).toBeTruthy();
       });
     });
 
-    describe(".includeSchema()", () => {
+    describe('.includeSchema()', () => {
       let entries;
 
       beforeAll(async () => {
@@ -931,16 +931,16 @@ describe("ContentStack SDK Tests", () => {
         entries = await Query.includeSchema().toJSON().find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should include schema information", () => {
+      test('should include schema information', () => {
         expect(entries[1].length).toBeTruthy();
       });
     });
 
-    describe(".includeCount() and .includeSchema()", () => {
+    describe('.includeCount() and .includeSchema()', () => {
       let entries;
 
       beforeAll(async () => {
@@ -948,22 +948,22 @@ describe("ContentStack SDK Tests", () => {
         entries = await Query.includeCount().includeSchema().toJSON().find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should include schema information", () => {
+      test('should include schema information', () => {
         expect(entries[1].length).toBeTruthy();
       });
 
-      test("should include count information", () => {
+      test('should include count information', () => {
         expect(entries[2]).toBeTruthy();
       });
     });
   });
 
-  describe("include contenttypes", () => {
-    describe(".includeContentType()", () => {
+  describe('include contenttypes', () => {
+    describe('.includeContentType()', () => {
       let entries;
 
       beforeAll(async () => {
@@ -971,24 +971,24 @@ describe("ContentStack SDK Tests", () => {
         entries = await Query.includeContentType().toJSON().find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should include content type information", () => {
+      test('should include content type information', () => {
         expect(entries[1]).toBeTruthy();
       });
 
-      test("should include content type title", () => {
-        expect(entries[1]["title"]).toBeTruthy();
+      test('should include content type title', () => {
+        expect(entries[1].title).toBeTruthy();
       });
 
-      test("should have the correct content type UID", () => {
-        expect(entries[1]["uid"]).toBe(contentTypes.source);
+      test('should have the correct content type UID', () => {
+        expect(entries[1].uid).toBe(contentTypes.source);
       });
     });
 
-    describe(".includeCount() and .includeContentType()", () => {
+    describe('.includeCount() and .includeContentType()', () => {
       let entries;
 
       beforeAll(async () => {
@@ -999,28 +999,28 @@ describe("ContentStack SDK Tests", () => {
           .find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should include content type information", () => {
+      test('should include content type information', () => {
         expect(entries[1]).toBeTruthy();
       });
 
-      test("should include content type title", () => {
-        expect(entries[1]["title"]).toBeTruthy();
+      test('should include content type title', () => {
+        expect(entries[1].title).toBeTruthy();
       });
 
-      test("should have the correct content type UID", () => {
-        expect(entries[1]["uid"]).toBe(contentTypes.source);
+      test('should have the correct content type UID', () => {
+        expect(entries[1].uid).toBe(contentTypes.source);
       });
 
-      test("should include count information", () => {
+      test('should include count information', () => {
         expect(entries[2]).toBeTruthy();
       });
     });
 
-    describe(".includeSchema() and .includeContentType()", () => {
+    describe('.includeSchema() and .includeContentType()', () => {
       let entries;
 
       beforeAll(async () => {
@@ -1031,24 +1031,24 @@ describe("ContentStack SDK Tests", () => {
           .find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should include content type information", () => {
+      test('should include content type information', () => {
         expect(entries[1]).toBeTruthy();
       });
 
-      test("should include content type title", () => {
-        expect(entries[1]["title"]).toBeTruthy();
+      test('should include content type title', () => {
+        expect(entries[1].title).toBeTruthy();
       });
 
-      test("should have the correct content type UID", () => {
-        expect(entries[1]["uid"]).toBe(contentTypes.source);
+      test('should have the correct content type UID', () => {
+        expect(entries[1].uid).toBe(contentTypes.source);
       });
     });
 
-    describe(".includeCount(), .includeSchema() and .includeContentType()", () => {
+    describe('.includeCount(), .includeSchema() and .includeContentType()', () => {
       let entries;
 
       beforeAll(async () => {
@@ -1060,196 +1060,196 @@ describe("ContentStack SDK Tests", () => {
           .find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should include content type information", () => {
+      test('should include content type information', () => {
         expect(entries[1]).toBeTruthy();
       });
 
-      test("should include content type title", () => {
-        expect(entries[1]["title"]).toBeTruthy();
+      test('should include content type title', () => {
+        expect(entries[1].title).toBeTruthy();
       });
 
-      test("should have the correct content type UID", () => {
-        expect(entries[1]["uid"]).toBe(contentTypes.source);
+      test('should have the correct content type UID', () => {
+        expect(entries[1].uid).toBe(contentTypes.source);
       });
 
-      test("should include count information", () => {
+      test('should include count information', () => {
         expect(entries[2]).toBeTruthy();
       });
     });
   });
 
-  describe("field projections", () => {
-    describe(".only() - Single String Parameter", () => {
+  describe('field projections', () => {
+    describe('.only() - Single String Parameter', () => {
       let entries;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
-        entries = await Query.only("title").toJSON().find();
+        entries = await Query.only('title').toJSON().find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should include only the title and uid fields", () => {
+      test('should include only the title and uid fields', () => {
         const correctFieldsOnly = entries[0].every(
           (entry) =>
             entry &&
             Object.keys(entry).length === 2 &&
-            "title" in entry &&
-            "uid" in entry
+            'title' in entry &&
+            'uid' in entry
         );
         expect(correctFieldsOnly).toBeTruthy();
       });
     });
 
-    describe(".only() - Multiple String Parameter", () => {
+    describe('.only() - Multiple String Parameter', () => {
       let entries;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
-        entries = await Query.only("BASE", "title").toJSON().find();
+        entries = await Query.only('BASE', 'title').toJSON().find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should include only the title and uid fields", () => {
+      test('should include only the title and uid fields', () => {
         const correctFieldsOnly = entries[0].every(
           (entry) =>
             entry &&
             Object.keys(entry).length === 2 &&
-            "title" in entry &&
-            "uid" in entry
+            'title' in entry &&
+            'uid' in entry
         );
         expect(correctFieldsOnly).toBeTruthy();
       });
     });
 
-    describe(".only() - Array Parameter", () => {
+    describe('.only() - Array Parameter', () => {
       let entries;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
-        entries = await Query.only(["title", "url"]).toJSON().find();
+        entries = await Query.only(['title', 'url']).toJSON().find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should include only the title, url, and uid fields", () => {
+      test('should include only the title, url, and uid fields', () => {
         const correctFieldsOnly = entries[0].every(
           (entry) =>
             entry &&
             Object.keys(entry).length === 3 &&
-            "title" in entry &&
-            "url" in entry &&
-            "uid" in entry
+            'title' in entry &&
+            'url' in entry &&
+            'uid' in entry
         );
         expect(correctFieldsOnly).toBeTruthy();
       });
     });
 
-    describe(".except() - Single String Parameter", () => {
+    describe('.except() - Single String Parameter', () => {
       let entries;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
-        entries = await Query.except("title").toJSON().find();
+        entries = await Query.except('title').toJSON().find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should exclude the title field", () => {
+      test('should exclude the title field', () => {
         const titleExcluded = entries[0].every(
-          (entry) => entry && !("title" in entry)
+          (entry) => entry && !('title' in entry)
         );
         expect(titleExcluded).toBeTruthy();
       });
     });
 
-    describe(".except() - Multiple String Parameter", () => {
+    describe('.except() - Multiple String Parameter', () => {
       let entries;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
-        entries = await Query.except("BASE", "title").toJSON().find();
+        entries = await Query.except('BASE', 'title').toJSON().find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should exclude the title field", () => {
+      test('should exclude the title field', () => {
         const titleExcluded = entries[0].every(
-          (entry) => entry && !("title" in entry)
+          (entry) => entry && !('title' in entry)
         );
         expect(titleExcluded).toBeTruthy();
       });
     });
 
-    describe(".except() - Array of String Parameter", () => {
+    describe('.except() - Array of String Parameter', () => {
       let entries;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
-        entries = await Query.except(["title", "file"]).toJSON().find();
+        entries = await Query.except(['title', 'file']).toJSON().find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should exclude the title field", () => {
+      test('should exclude the title field', () => {
         const titleExcluded = entries[0].every(
-          (entry) => entry && !("title" in entry)
+          (entry) => entry && !('title' in entry)
         );
         expect(titleExcluded).toBeTruthy();
       });
 
-      test("should exclude the file field", () => {
+      test('should exclude the file field', () => {
         const fileExcluded = entries[0].every(
-          (entry) => entry && !("file" in entry)
+          (entry) => entry && !('file' in entry)
         );
         expect(fileExcluded).toBeTruthy();
       });
     });
 
-    describe(".except() - For the reference - String", () => {
+    describe('.except() - For the reference - String', () => {
       let entries;
 
       beforeAll(async () => {
         const Query = Stack.ContentType(contentTypes.source).Query();
-        entries = await Query.includeReference("reference")
-          .only("BASE", ["reference"])
-          .except("reference", "title")
+        entries = await Query.includeReference('reference')
+          .only('BASE', ['reference'])
+          .except('reference', 'title')
           .toJSON()
           .find();
       });
 
-      test("should return entries", () => {
+      test('should return entries', () => {
         expect(entries[0].length).toBeTruthy();
       });
 
-      test("should properly format entries with reference but without title in references", () => {
+      test('should properly format entries with reference but without title in references', () => {
         const correctFormat = entries[0].every((entry) => {
           let hasCorrectReferenceFormat = false;
           if (
             entry &&
-            entry["reference"] &&
-            typeof entry["reference"] === "object"
+            entry.reference &&
+            typeof entry.reference === 'object'
           ) {
             hasCorrectReferenceFormat = true;
             hasCorrectReferenceFormat = entry.reference.every((reference) => {
-              return reference && !("title" in reference);
+              return reference && !('title' in reference);
             });
           }
 
@@ -1257,8 +1257,8 @@ describe("ContentStack SDK Tests", () => {
             hasCorrectReferenceFormat &&
             entry &&
             Object.keys(entry).length === 2 &&
-            "reference" in entry &&
-            "uid" in entry
+            'reference' in entry &&
+            'uid' in entry
           );
         });
 

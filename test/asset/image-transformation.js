@@ -26,8 +26,8 @@ describe('Image Transformation Tests', () => {
         const assets = await Stack.Assets().Query().toJSON().find();
         Asset = assets[0][0];
       } catch (error) {
-        console.error("error:", error);
-        throw new Error("Failed to get assets");
+        console.error('error:', error);
+        throw new Error('Failed to get assets');
       }
     });
 
@@ -41,9 +41,9 @@ describe('Image Transformation Tests', () => {
     const Params = {
       quality: 50
     };
-    
+
     beforeAll(() => {
-      const URL = Asset['url'];
+      const URL = Asset.url;
       Image = Stack.imageTransform(URL, Params);
     });
 
@@ -67,9 +67,9 @@ describe('Image Transformation Tests', () => {
       auto: 'webp',
       format: 'jpg'
     };
-    
+
     beforeAll(() => {
-      const URL = Asset['url'];
+      const URL = Asset.url;
       Image = Stack.imageTransform(URL, Params);
     });
 
@@ -99,9 +99,9 @@ describe('Image Transformation Tests', () => {
     const Params = {
       quality: 50
     };
-    
+
     beforeAll(() => {
-      const URL = Asset['url'] + '?';
+      const URL = Asset.url + '?';
       Image = Stack.imageTransform(URL, Params);
     });
 
@@ -125,9 +125,9 @@ describe('Image Transformation Tests', () => {
       auto: 'webp',
       format: 'jpg'
     };
-    
+
     beforeAll(() => {
-      const URL = Asset['url'] + '?';
+      const URL = Asset.url + '?';
       Image = Stack.imageTransform(URL, Params);
     });
 
