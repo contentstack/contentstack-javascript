@@ -6,5 +6,5 @@ fileignoreconfig:
   - filename: .github/workflows/secrets-scan.yml
     checksum: d79ec3f3288964f7d117b9ad319a54c0ebc152e35f69be8fde95522034fdfb2a
   - filename: package-lock.json
-    checksum: f9d78235efa541f481a7966b0a95af27e30a6ecb6bf3049b7ae0053fbc6f2b48
+    checksum: 215757874c719e0192e440dd4b98f4dfb6824f72e526047182fcd60cc03e3e80
 version: ""

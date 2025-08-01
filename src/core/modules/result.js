@@ -1,4 +1,4 @@
-import * as Utils  from '../lib/utils'
+import * as Utils from '../lib/utils';
 
 /**
  * @class Result
@@ -18,20 +18,19 @@ import * as Utils  from '../lib/utils'
  *      // error function
  * })
  * @returns {Result}
- * @instance 
+ * @instance
  */
 export default class Result {
-    constructor(object){
-        if(object) {
-            this.object = function() {
-                return object;
-            }
-        }
-        return this;
+  constructor (object) {
+    if (object) {
+      this.object = function () {
+        return object;
+      };
     }
+    return this;
+  }
 
-
-    /**
+  /**
      * @method toJSON
      * @memberOf Result
      * @description Converts `Result` to plain javascript object.
@@ -48,13 +47,13 @@ export default class Result {
      *      // error function
      * })
      * @returns {object}
-     * @instance 
+     * @instance
      */
-    toJSON() {
-        return (this.object()) ? Utils.mergeDeep(JSON.parse(JSON.stringify({})), this.object()) : null;
-    }
+  toJSON () {
+    return (this.object()) ? Utils.mergeDeep(JSON.parse(JSON.stringify({})), this.object()) : null;
+  }
 
-   /**
+  /**
      * @method get
      * @memberOf Result
      * @description Retrieve details of a field based on the UID provided
@@ -72,20 +71,19 @@ export default class Result {
      *      // error function
      * })
      * @returns {promise}
-     * @instance  
+     * @instance
      */
-    get(key){
-        if(this.object() && key) {
-            let fields = key.split('.');
-            let value = fields.reduce(function(prev, field) {
-                return prev[field];
-            }, this.object());
-            return value;
-        }
-        return ;
+  get (key) {
+    if (this.object() && key) {
+      const fields = key.split('.');
+      const value = fields.reduce(function (prev, field) {
+        return prev[field];
+      }, this.object());
+      return value;
     }
+  }
 
-     /**
+  /**
      * @method getDownloadUrl
      * @memberOf Result
      * @description Retrieves the download URL based on the disposition value.
@@ -97,13 +95,13 @@ export default class Result {
      *      // error function
      * })
      * @returns {Object}
-     * @instance    
+     * @instance
      */
-     getDownloadUrl(disposition) {
-        if (this.object()) {
-            let url = (this.object().url) ? this.object().url : null,
-                _disposition = (disposition && typeof disposition === 'string') ? disposition: 'attachment';
-            return (url) ? url + '?disposition=' + _disposition : null;    
-        }
-     }    
+  getDownloadUrl (disposition) {
+    if (this.object()) {
+      const url = (this.object().url) ? this.object().url : null;
+      const _disposition = (disposition && typeof disposition === 'string') ? disposition : 'attachment';
+      return (url) ? url + '?disposition=' + _disposition : null;
+    }
+  }
 }
