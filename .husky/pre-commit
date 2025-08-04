@@ -1,0 +1,82 @@
+#!/usr/bin/env sh
+# Pre-commit hook to run lint, Snyk and Talisman scans, completing all before deciding to commit
+
+# Function to check if a command exists
+command_exists() {
+  command -v "$1" >/dev/null 2>&1
+}
+
+# Allow bypassing the hook with an environment variable
+if [ "$SKIP_HOOK" = "1" ]; then
+  echo "Skipping lint, Snyk and Talisman scans (SKIP_HOOK=1)."
+  exit 0
+fi
+
+# Run ESLint check first
+echo "Running ESLint check..."
+npm run lint
+lint_exit_code=$?
+
+if [ $lint_exit_code -ne 0 ]; then
+  echo "ESLint check failed. Please fix the linting issues and try again."
+  echo "You can run 'npm run format' to auto-fix most issues."
+  exit 1
+fi
+
+echo "ESLint check passed."
+
+# Check if Snyk is installed
+if ! command_exists snyk; then
+  echo "Error: Snyk is not installed. Please install it and try again."
+  exit 1
+fi
+
+# Check if Talisman is installed
+if ! command_exists talisman; then
+  echo "Error: Talisman is not installed. Please install it and try again."
+  exit 1
+fi
+
+# Initialize variables to track scan results
+snyk_failed=false
+talisman_failed=false
+
+# Run Snyk vulnerability scan
+echo "Running Snyk vulnerability scan..."
+snyk test --all-projects > snyk_output.log 2>&1
+snyk_exit_code=$?
+
+if [ $snyk_exit_code -eq 0 ]; then
+  echo "Snyk scan passed: No vulnerabilities found."
+elif [ $snyk_exit_code -eq 1 ]; then
+  echo "Snyk found vulnerabilities. See snyk_output.log for details."
+  snyk_failed=true
+else
+  echo "Snyk scan failed with error (exit code $snyk_exit_code). See snyk_output.log for details."
+  snyk_failed=true
+fi
+
+# Run Talisman secret scan (continues even if Snyk failed)
+echo "Running Talisman secret scan..."
+talisman --githook pre-commit > talisman_output.log 2>&1
+talisman_exit_code=$?
+
+if [ $talisman_exit_code -eq 0 ]; then
+  echo "Talisman scan passed: No secrets found."
+else
+  echo "Talisman scan failed (exit code $talisman_exit_code). See talisman_output.log for details."
+  talisman_failed=true
+fi
+
+# Evaluate results after both scans
+if [ "$snyk_failed" = true ] || [ "$talisman_failed" = true ]; then
+  echo "Commit aborted due to issues found in one or both scans."
+  [ "$snyk_failed" = true ] && echo "- Snyk issues: Check snyk_output.log"
+  [ "$talisman_failed" = true ] && echo "- Talisman issues: Check talisman_output.log"
+  exit 1
+fi
+
+# If all checks pass, allow the commit
+echo "All checks passed (ESLint, Snyk, Talisman). Proceeding with commit."
+rm -f snyk_output.log talisman_output.log
+exit 0

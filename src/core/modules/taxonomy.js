@@ -1,25 +1,25 @@
-import Query from "./query";
+import Query from './query';
 
 // Overrideing compare function to include level
 const _extend = {
-  compare: function(type) {
-    return function(key, value, levels) {
-        if (key && value && typeof key === 'string' && typeof value !== 'undefined') {
-            this._query['query'][key] = this._query['query']['file_size'] || {};
-            this._query['query'][key][type] = value;
-            if (levels && typeof levels === "number") {
-              this._query['query'][key]['levels'] = levels
-            }
-            return this;
-        } else {
-            if (this.fetchOptions.debug)  this.fetchOptions.logHandler('error', "Kindly provide valid parameters.");
+  compare: function (type) {
+    return function (key, value, levels) {
+      if (key && value && typeof key === 'string' && typeof value !== 'undefined') {
+        this._query.query[key] = this._query.query.file_size || {};
+        this._query.query[key][type] = value;
+        if (levels && typeof levels === 'number') {
+          this._query.query[key].levels = levels;
         }
+        return this;
+      } else {
+        if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide valid parameters.');
+      }
     };
   }
-}
+};
 
 export default class Taxonomy extends Query {
-  constructor() {
+  constructor () {
     super();
     /**
      * @method above
@@ -39,7 +39,7 @@ export default class Taxonomy extends Query {
      * @returns {Query}
      * @instance
      */
-    this.above = _extend.compare('$above')
+    this.above = _extend.compare('$above');
 
     /**
      * @method equalAndAbove
@@ -59,8 +59,8 @@ export default class Taxonomy extends Query {
      * @returns {Query}
      * @instance
      */
-    this.equalAndAbove = _extend.compare('$eq_above')
-    
+    this.equalAndAbove = _extend.compare('$eq_above');
+
     /**
      * @method below
      * @memberOf Query
@@ -79,8 +79,8 @@ export default class Taxonomy extends Query {
      * @returns {Query}
      * @instance
      */
-    this.below = _extend.compare('$below')
-    
+    this.below = _extend.compare('$below');
+
     /**
      * @method equalAndBelow
      * @memberOf Query
@@ -99,6 +99,6 @@ export default class Taxonomy extends Query {
      * @returns {Query}
      * @instance
      */
-    this.equalAndBelow = _extend.compare('$eq_below')
+    this.equalAndBelow = _extend.compare('$eq_below');
   }
 }
