@@ -28,8 +28,7 @@ const MESSAGES = {
   TRANSFORM_INVALID_PARAM_COUNT: 'Invalid parameters. Provide either one parameter (field name or array) or two parameters (reference field UID and field name or array).',
 
   // Request/Error Messages
-  REQUEST_ERROR_OCCURRED: (error) => `An error occurred: ${error}`,
+  REQUEST_ERROR_OCCURRED: (error) => `An error occurred: ${error}`
 };
 
 export default MESSAGES;
-
