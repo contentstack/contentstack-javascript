@@ -1,5 +1,6 @@
 import Request from './request';
 import Result from '../modules/result';
+import MESSAGES from '../messages';
 
 /**
  * @method addSpread
@@ -28,7 +29,7 @@ export function transform (type) {
           this._query[type].BASE = query;
           return this;
         } else {
-          console.error('Invalid parameters. Expected a string or an array of field names.');
+          console.error(MESSAGES.TRANSFORM_INVALID_SINGLE_PARAM);
         }
         break;
       case 2:
@@ -38,11 +39,11 @@ export function transform (type) {
           this._query[type][arguments[0]] = query;
           return this;
         } else {
-          console.error('Invalid parameters. Expected first parameter as a string (reference field UID) and second parameter as a string or an array of field names.');
+          console.error(MESSAGES.TRANSFORM_INVALID_DOUBLE_PARAM);
         }
         break;
       default:
-        console.error('Invalid parameters. Provide either one parameter (field name or array) or two parameters (reference field UID and field name or array).');
+        console.error(MESSAGES.TRANSFORM_INVALID_PARAM_COUNT);
     }
   };
 }
