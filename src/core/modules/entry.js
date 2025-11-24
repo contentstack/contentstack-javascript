@@ -294,7 +294,7 @@ export default class Entry {
      * @instance
      */
   includeOwner () {
-    console.warn('The includeOwner function is deprecated.');
+    console.warn('The includeOwner function is deprecated. This functionality is no longer supported. Please remove this method from your code.');
     this._query.include_owner = true;
     return this;
   }

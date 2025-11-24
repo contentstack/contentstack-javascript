@@ -28,7 +28,7 @@ export function transform (type) {
           this._query[type].BASE = query;
           return this;
         } else {
-          console.error('Kindly provide valid parameters');
+          console.error('Invalid parameters. Expected a string or an array of field names.');
         }
         break;
       case 2:
@@ -38,11 +38,11 @@ export function transform (type) {
           this._query[type][arguments[0]] = query;
           return this;
         } else {
-          console.error('Kindly provide valid parameters');
+          console.error('Invalid parameters. Expected first parameter as a string (reference field UID) and second parameter as a string or an array of field names.');
         }
         break;
       default:
-        console.error('Kindly provide valid parameters');
+        console.error('Invalid parameters. Provide either one parameter (field name or array) or two parameters (reference field UID and field name or array).');
     }
   };
 }
