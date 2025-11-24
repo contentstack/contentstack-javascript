@@ -1,5 +1,5 @@
 import localstorage from './localstorage';
-import MESSAGES from './messages';
+import MESSAGES from '../messages';
 
 const CacheProvider = {};
 
