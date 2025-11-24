@@ -57,11 +57,11 @@ export default class Stack {
       debug: false,
       logHandler: (level, data) => {
         if (level === 'error' && data) {
-          console.error(`[error] ${data}`);
+          console.error(`Error: ${data}`);
         } else if (level === 'warning' && data) {
-          console.warn(`[warning] ${data}`);
+          console.warn(`Warning: ${data}`);
         } else if (level === 'info' && data) {
-          console.info(`[info] ${data}`);
+          console.info(`Info: ${data}`);
         }
       }
     };
@@ -426,7 +426,7 @@ export default class Stack {
      *    .then(function(result) {
      *      // 'result' is a single contentType information.
      *     }).catch((error) => {
-     *        console.log(error)
+     *        console.error('An error occurred:', error.message || error)
      *  });
      * @returns {promise}
      * @instance

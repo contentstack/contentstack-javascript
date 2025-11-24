@@ -5,7 +5,7 @@ CacheProvider.providers = function (provider) {
   if (provider) {
     return localstorage;
   } else {
-    console.error('Kindly provide valid provider.');
+    console.error('Missing cache provider. Provide a valid provider and try again.');
   }
 };
 
