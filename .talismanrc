@@ -36,5 +36,5 @@ fileignoreconfig:
   - filename: src/core/lib/utils.js
     checksum: 7ae53c3be5cdcd1468d66577c9450adc53e9c6aaeaeabc4275e87a47aa709850
   - filename: src/core/messages.js
-    checksum: 7da74b6911bb30b238459646c84e5094393a0067757de45c2361c49dcfa28719
+    checksum: 2ea5e1ecac5bc143da22c4e0a675d31f587dc907312c05bcace020cb7f76165c
 version: ""
