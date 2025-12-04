@@ -1,4 +1,9 @@
 ## Change log
+### Version: 3.26.3
+#### Date:  Dec-08-2025
+##### Feat:
+ - Improved error messages
+
 ### Version: 3.26.2
 #### Date:  Aug-04-2025
 ##### Fix:
