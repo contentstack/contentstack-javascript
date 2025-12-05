@@ -1,5 +1,6 @@
 import Request from './request';
 import Result from '../modules/result';
+import MESSAGES from '../messages';
 
 /**
  * @method addSpread
@@ -28,7 +29,7 @@ export function transform (type) {
           this._query[type].BASE = query;
           return this;
         } else {
-          console.error('Kindly provide valid parameters');
+          console.error(MESSAGES.TRANSFORM_INVALID_SINGLE_PARAM);
         }
         break;
       case 2:
@@ -38,11 +39,11 @@ export function transform (type) {
           this._query[type][arguments[0]] = query;
           return this;
         } else {
-          console.error('Kindly provide valid parameters');
+          console.error(MESSAGES.TRANSFORM_INVALID_DOUBLE_PARAM);
         }
         break;
       default:
-        console.error('Kindly provide valid parameters');
+        console.error(MESSAGES.TRANSFORM_INVALID_PARAM_COUNT);
     }
   };
 }
