@@ -1,11 +1,13 @@
 import localstorage from './localstorage';
+import MESSAGES from '../messages';
+
 const CacheProvider = {};
 
 CacheProvider.providers = function (provider) {
   if (provider) {
     return localstorage;
   } else {
-    console.error('Kindly provide valid provider.');
+    console.error(MESSAGES.CACHE_PROVIDER_MISSING);
   }
 };
 
