@@ -99,7 +99,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
-    "@contentstack/utils": "^1.4.1",
+    "@contentstack/utils": "^1.6.2",
     "es6-promise": "^4.2.8",
     "husky": "^9.1.7",
     "localStorage": "1.0.4"
