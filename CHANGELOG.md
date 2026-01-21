@@ -1,4 +1,9 @@
 ## Change log
+### Version: 3.26.4
+#### Date:  Jan-27-2026
+##### Feat:
+ - Update the internal dependency of qs to latest version to fix the CVE-2025-15284 issue
+
 ### Version: 3.26.3
 #### Date:  Dec-08-2025
 ##### Feat:

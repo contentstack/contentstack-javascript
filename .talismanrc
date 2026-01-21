@@ -6,7 +6,7 @@ fileignoreconfig:
   - filename: .github/workflows/secrets-scan.yml
     checksum: d79ec3f3288964f7d117b9ad319a54c0ebc152e35f69be8fde95522034fdfb2a
   - filename: package-lock.json
-    checksum: 215757874c719e0192e440dd4b98f4dfb6824f72e526047182fcd60cc03e3e80
+    checksum: c7c4feda727fae78c6fa03665b1d8f2a6363060631dd57b475f09307991ad305
   - filename: src/core/modules/assets.js
     checksum: 00f19d659b830b0f145b4db0ccf3211a4048d9488f30a224fe3c31cacca6dcd2
   - filename: .husky/pre-commit
