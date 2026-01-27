@@ -15,4 +15,42 @@ fileignoreconfig:
   checksum: 681543c7c982eba430189b541116ffeb06c7955da220b5fd8c6b034b1e9a5e43
 - filename: test/integration/QueryTests/ExistsSearchOperators.test.js
   checksum: e4774c805f1d0876cdc03439ed14a2f35a0ceb6028d86370a49ef0558a7bc46e
+- filename: index.d.ts
+  checksum: 22c6a7fe4027d6b2c9adf0cbeb9c525ab79b15210b07ec5189693992e6800a66
+- filename: test/typescript/stack.test.ts
+  checksum: 50b764c0ca6f6f27d7306a4e54327bef9b178e8436c6e3fad0d67d77343d10b3
+- filename: .github/workflows/secrets-scan.yml
+  checksum: d79ec3f3288964f7d117b9ad319a54c0ebc152e35f69be8fde95522034fdfb2a
+- filename: package-lock.json
+  checksum: c7c4feda727fae78c6fa03665b1d8f2a6363060631dd57b475f09307991ad305
+- filename: src/core/modules/assets.js
+  checksum: 00f19d659b830b0f145b4db0ccf3211a4048d9488f30a224fe3c31cacca6dcd2
+- filename: .husky/pre-commit
+  checksum: 52a664f536cf6d1be0bea19cb6031ca6e8107b45b6314fe7d47b7fad7d800632
+- filename: src/core/cache.js
+  checksum: 85025b63df8db4a3f94ace5c7f088ea0e4d55eb8324d2265ea4a470b0c610ce
+- filename: src/core/cache-provider/localstorage.js
+  checksum: 33266a67a003b665957e4a445e821b9295632cff75be0a71baf35b3576c55aa4
+- filename: src/core/modules/entry.js
+  checksum: 49d6742d014ce111735611ebab16dc8c888ce8d678dfbc99620252257e780ec5
+- filename: src/core/contentstack.js
+  checksum: 22e723507c1fed8b3175b57791f4249889c9305b79e5348d59d741bdf4f006ba
+- filename: test/config.js
+  checksum: 4ada746af34f2868c038f53126c08c21d750ddbd037d0a62e88824dd5d9e20be
+- filename: test/live-preview/live-preview-test.js
+  checksum: d742465789e00a17092a7e9664adda4342a13bc4975553371a26df658f109952
+- filename: src/core/lib/request.js
+  checksum: 0404fd184a96c57d0eb9e7134ae6ff65f8e9039c38c852c9a0f00825b4c69f1
+- filename: test/sync/sync-testcases.js
+  checksum: 391b557a147c658a50256b49dcdd20fd053eb32966e9244d98c93142e4dcbf2e
+- filename: src/core/modules/taxonomy.js
+  checksum: 115e63b4378809b29a037e2889f51e300edfd18682b3b6c0a4112c270fc32526
+- filename: src/core/modules/query.js
+  checksum: aa6596a353665867586d00cc64225f0dea7edacc3bcfab60002a5727bd927132
+- filename: src/core/stack.js
+  checksum: a467e56edcb43858512c47bd82c76dbf8799d57837f03c247e2cebe27ca5eaa8
+- filename: src/core/lib/utils.js
+  checksum: 7ae53c3be5cdcd1468d66577c9450adc53e9c6aaeaeabc4275e87a47aa709850
+- filename: src/core/messages.js
+  checksum: 2ea5e1ecac5bc143da22c4e0a675d31f587dc907312c05bcace020cb7f76165c
 version: "1.0"

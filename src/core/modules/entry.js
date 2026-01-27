@@ -1,4 +1,5 @@
 import * as Utils from '../lib/utils';
+import MESSAGES from '../messages';
 
 /**
  * @class
@@ -83,7 +84,7 @@ export default class Entry {
         this.queryCachePolicy = policy;
       }
     } else {
-      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide the valid policy');
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', MESSAGES.CACHE_POLICY_INVALID);
     }
     return this;
   }
@@ -135,7 +136,7 @@ export default class Entry {
       }
       return this;
     } else {
-      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Argument should be a String or an Array.');
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', MESSAGES.ENTRY_INVALID_ARGUMENT);
     }
   }
 
@@ -160,7 +161,7 @@ export default class Entry {
       this._query.locale = language_code;
       return this;
     } else {
-      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Argument should be a String.');
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', MESSAGES.ENTRY_LANGUAGE_INVALID);
     }
   }
 
@@ -179,7 +180,7 @@ export default class Entry {
       this._query[key] = value;
       return this;
     } else {
-      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'First argument should be a String.');
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', MESSAGES.ENTRY_ADD_QUERY_INVALID);
     }
   }
 
@@ -294,7 +295,7 @@ export default class Entry {
      * @instance
      */
   includeOwner () {
-    console.warn('The includeOwner function is deprecated.');
+    console.warn(MESSAGES.ENTRY_INCLUDE_OWNER_DEPRECATED);
     this._query.include_owner = true;
     return this;
   }
@@ -338,7 +339,7 @@ export default class Entry {
       this._query[key] = value;
       return this;
     } else {
-      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', 'Kindly provide valid parameters.');
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', MESSAGES.ENTRY_ADD_PARAM_INVALID);
     }
   }
 
@@ -391,7 +392,7 @@ export default class Entry {
       const options = Utils.mergeDeep(this.fetchOptions, fetchOptions);
       return Utils.sendRequest(Utils.mergeDeep({}, this), options);
     } else {
-      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', "Kindly provide an entry uid. e.g. .Entry('asset_uid')");
+      if (this.fetchOptions.debug) this.fetchOptions.logHandler('error', MESSAGES.ENTRY_UID_REQUIRED);
     }
   }
 }
