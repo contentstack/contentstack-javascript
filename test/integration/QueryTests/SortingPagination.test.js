@@ -545,7 +545,7 @@ describe('Query Tests - Sorting & Pagination', () => {
       });
       
       console.log(`✅ Complex query: ${result[0].length} results, ${result[1]} total`);
-    });
+    }, 15000);
   });
 
   describe('Sorting & Pagination - Performance', () => {

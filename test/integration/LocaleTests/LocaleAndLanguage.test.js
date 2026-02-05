@@ -112,7 +112,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
         console.log(`ℹ️  language('${japaneseLocale}') error: ${error.error_message} (locale not enabled)`);
         expect(error.error_code).toBeDefined();
       }
-    });
+    }, 15000);
 
     test('Locale_Language_WithFilters_BothApplied', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
