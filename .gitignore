@@ -14,3 +14,4 @@ coverage
 .dccache
 dist/*
 *.log
+docs-internal/
