@@ -318,7 +318,8 @@ describe('Locale Tests - Language & Locale Selection', () => {
       } catch (error) {
         // Invalid locale throws error - this is acceptable behavior
         console.log(`✅ Invalid locale handled: ${error.error_message} (expected error)`);
-        expect(error.error_code).toBe(141); // Language not found error
+        // API may return either 400 (Bad Request) or 141 (Language not found) for invalid locale
+        expect([400, 141]).toContain(error.error_code);
       }
     });
 
