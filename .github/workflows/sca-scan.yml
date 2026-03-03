@@ -13,3 +13,6 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           args: --all-projects --fail-on=all
+          json: true
+        continue-on-error: true
+      - uses: contentstack/sca-policy@main
