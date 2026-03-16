@@ -3,8 +3,6 @@ import fetch from 'runtime/http.js';
 
 // JS SDK version
 const version = '{{VERSION}}';
-let environment,
-  api_key;
 export default function Request (stack, fetchOptions) {
   const requestParams = stack.requestParams;
   return new Promise(function (resolve, reject) {
