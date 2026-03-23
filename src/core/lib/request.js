@@ -3,8 +3,6 @@ import fetch from 'runtime/http.js';
 
 // JS SDK version
 const version = '{{VERSION}}';
-let environment,
-  api_key;
 export default function Request (stack, fetchOptions) {
   const requestParams = stack.requestParams;
   return new Promise(function (resolve, reject) {
@@ -112,6 +110,14 @@ function fetchRetry (stack, queryParams, fetchOptions, resolve, reject, retryDel
           for (let index = 0; index < plugins.length && typeof plugins[index].onResponse === 'function'; index++) { json = plugins[index].onResponse(stack, request, response, json); }
 
           resolve(json);
+        }).catch((err) => {
+          if (fetchOptions.debug) fetchOptions.logHandler('error', err);
+          const isSocketOrAbort = (err && (err.message === 'terminated' || (err.cause && (err.cause.code === 'UND_ERR_SOCKET' || err.cause.code === 'UND_ERR_ABORTED'))));
+          if (isSocketOrAbort && retryLimit > 0) {
+            onError(err);
+          } else {
+            reject(err);
+          }
         });
       } else {
         const { status, statusText } = response;
@@ -124,13 +130,23 @@ function fetchRetry (stack, queryParams, fetchOptions, resolve, reject, retryDel
             if (fetchOptions.debug) fetchOptions.logHandler('error', errorDetails);
             reject(errorDetails);
           }
-        }).catch(() => {
-          if (fetchOptions.debug) fetchOptions.logHandler('error', { status, statusText });
-          reject({ status, statusText });
+        }).catch((err) => {
+          if (fetchOptions.debug) fetchOptions.logHandler('error', err);
+          const isSocketOrAbort = (err && (err.message === 'terminated' || (err.cause && (err.cause.code === 'UND_ERR_SOCKET' || err.cause.code === 'UND_ERR_ABORTED'))));
+          if (isSocketOrAbort && retryLimit > 0) {
+            onError(err);
+          } else {
+            reject(err || { status, statusText });
+          }
         });
       }
     }).catch((error) => {
       if (fetchOptions.debug) fetchOptions.logHandler('error', error);
-      reject(error);
+      const isSocketOrAbort = (error && (error.message === 'terminated' || (error.cause && (error.cause.code === 'UND_ERR_SOCKET' || error.cause.code === 'UND_ERR_ABORTED'))));
+      if (isSocketOrAbort && retryLimit > 0) {
+        onError(error);
+      } else {
+        reject(error);
+      }
     });
 }
