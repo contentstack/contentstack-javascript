@@ -1,0 +1,36 @@
+---
+description: "Jest e2e and TypeScript tests for the CDA SDK"
+globs:
+  - "test/**/*.js"
+  - "test/**/*.ts"
+alwaysApply: false
+---
+
+# Testing — `contentstack` (CDA)
+
+## Frameworks
+
+| Suite | Runner | Notes |
+|-------|--------|--------|
+| **JS e2e / integration-style** | **Jest** (`jest.js.config.js`) | `testMatch`: `**/test/**/*.js`; ignores `test/index.js`, `test/config.js`, `test/sync_config.js`, some `utils.js` paths |
+| **TypeScript** | **Jest** + **ts-jest** (`jest.config.js`) | `npm run test:typescript`; `test/typescript/**/*.test.ts` |
+
+## Env & live stack
+
+- **Canonical required vars** for suites that `require('./config')` or `require('../config.js')`: **`HOST`**, **`API_KEY`**, **`DELIVERY_TOKEN`**, **`ENVIRONMENT`** — validated in **`test/config.js`** (loads **dotenv**). Missing any variable throws on import.
+- Use a **`.env`** file locally; do not commit secrets. **`HOST`** should match the delivery API host for your stack/region.
+- Built SDK: many tests **`require('../../dist/node/contentstack.js')`**. **`npm test`** runs **`pretest`** → **`npm run build`** first.
+
+## Layout
+
+- **Suite entry (JS):** `test/index.js` `require`s individual test files.
+- **TypeScript:** colocate under **`test/typescript/`** with `*.test.ts` naming.
+
+## Hygiene
+
+- No committed **`only`** / **`skip`** for tests that must run in CI.
+- Prefer deterministic assertions; mock or scope live tests when adding new cases so CI behavior stays predictable if env is absent.
+
+## Coverage
+
+- Jest / reporter config is in **`jest.js.config.js`** and **`jest.config.js`**; HTML reports paths are configured there.
