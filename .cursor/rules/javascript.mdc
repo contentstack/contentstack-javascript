@@ -1,0 +1,30 @@
+---
+description: "JavaScript/TypeScript conventions for src, webpack, and index.d.ts"
+globs:
+  - "src/**/*.js"
+  - "webpack/**/*.js"
+  - "index.d.ts"
+alwaysApply: false
+---
+
+# JavaScript & types (this repo)
+
+## Runtime & modules
+
+- **Source** is **ES modules** under `src/` (`import` / `export`). Webpack resolves aliases such as **`runtime/http.js`** per target (`webpack/webpack.*.js`).
+- **`index.d.ts`** is the public TypeScript surface for npm consumers; keep it aligned with `src/core/` JSDoc and exports.
+
+## Style & tooling
+
+- **ESLint** uses **`eslint-config-standard`** and **`@babel/eslint-parser`**. This repo **requires semicolons** and related rules in **`.eslintrc.js`** — match existing `src/core/` style rather than semicolon-free Standard.
+- **Environment**: ESLint `es2020`, `node`, `browser`, `jest`.
+
+## Patterns
+
+- Use **JSDoc** (`@description`, `@param`, `@returns`, `@example`) on **public** API consistent with `src/core/contentstack.js` and `src/core/stack.js`.
+- **Dependencies**: **`@contentstack/utils`** is exposed on the main class; follow existing import paths (including `.js` suffixes where the codebase uses them in ESM files).
+
+## Logging
+
+- Avoid noisy logging in library code except via existing **`fetchOptions.logHandler`** / **`fetchOptions.debug`** patterns in `src/core/lib/request.js` and `stack.js`.
+- Never log full **delivery_token**, **preview_token**, **management_token**, or API keys.
