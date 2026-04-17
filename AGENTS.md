@@ -1,61 +1,43 @@
-# AGENTS.md — AI / automation context
+# Contentstack JavaScript Delivery SDK – Agent guide
 
-## Project
+**Universal entry point** for contributors and AI agents. Detailed conventions live in **`skills/*/SKILL.md`**.
 
-| | |
-|---|---|
-| **Name** | **`contentstack`** (npm) — **Contentstack JavaScript Content Delivery SDK** |
-| **Purpose** | Client for the **Content Delivery API (CDA)**: read published content, assets, taxonomies, sync, and live preview from a stack. *(This is not the Content Management API / CMA client — see `@contentstack/management`.)* |
-| **Repository** | [contentstack/contentstack-javascript](https://github.com/contentstack/contentstack-javascript.git) |
+## What this repo is
 
-## Tech stack
+| Field | Detail |
+|--------|--------|
+| **Name:** | [contentstack-javascript](https://github.com/contentstack/contentstack-javascript) (npm package **`contentstack`**) |
+| **Purpose:** | Legacy **JavaScript** Content Delivery SDK for browsers, Node.js, React Native, and NativeScript—stack initialization, queries, entries, assets. |
+| **Out of scope:** | Not the TypeScript-first **`@contentstack/delivery-sdk`** (`contentstack-typescript`); new TypeScript projects should prefer that package when appropriate. |
+
+## Tech stack (at a glance)
 
 | Area | Details |
 |------|---------|
-| **Language** | JavaScript **ES modules** in `src/core/` and `src/runtime/`; public types in root **`index.d.ts`** |
-| **Runtime** | Node `>= 10.14.2` per `package.json` `engines` |
-| **Build** | **Webpack** bundles for `node`, `web`, `react-native`, `nativescript` → `dist/` (`npm run build`) |
-| **Lint / style** | **ESLint** with `eslint-config-standard`, **`@babel/eslint-parser`**; **semicolons required** (see `.eslintrc.js`) |
-| **Tests** | **Jest**: JS e2e-style suite (`jest.js.config.js`, `test/**/*.js`) and **TypeScript** tests (`jest.config.js`, `test/typescript/**/*.test.ts`) |
-| **HTTP** | Platform **`fetch`** via webpack alias `runtime/http.js` and `runtime/localstorage.js` (Node / web / React Native / NativeScript) |
-| **Helpers** | **`@contentstack/utils`** re-exported on the `Contentstack` instance |
+| Language | JavaScript in **`src/`**; TypeScript tests via Jest (`test/typescript`) |
+| Build | Webpack configs under **`webpack/`**; outputs under **`dist/`** per target (`npm run build`) |
+| Tests | Jest: **`test:e2e`** (`jest.js.config.js`) and **`test:typescript`** (`jest.config.js`); **`pretest`** runs **`build`** first |
+| Lint / coverage | ESLint on `src` and `test` (`npm run lint`) |
+| CI | `.github/workflows/check-branch.yml`, `npm-publish.yml`, `sca-scan.yml`, `policy-scan.yml`, `codeql-analysis.yml`, `link-check.yml`, `issues-jira.yml` |
 
-## Source layout & public entrypoints
+## Commands (quick reference)
 
-| Path | Role |
-|------|------|
-| `src/core/contentstack.js` | Package facade: `Stack()`, `CachePolicy`, `Region`, `Utils` |
-| `src/core/stack.js` | `Stack` class: delivery config, queries, sync, plugins, `fetchOptions` |
-| `src/core/lib/request.js` | CDA requests: query serialization, retries, plugins `onRequest` / `onResponse` |
-| `src/core/lib/utils.js` | Shared helpers |
-| `src/core/modules/*` | Entry, Query, Assets, Taxonomy, Result, etc. |
-| `src/core/cache*.js`, `src/core/cache-provider/` | Cache policies and providers |
-| `src/runtime/**` | Per-platform `http` and `localstorage` implementations |
-| `config.js` | Default CDN host, API version, URL paths (imported by `stack.js`) |
-| `webpack/` | Build configs per target |
-| `dist/**` | Built artifacts (`package.json` `main` / `browser` / `react-native`) |
+| Command type | Command |
+|--------------|---------|
+| Build | `npm run build` |
+| Test | `npm test` (build via `pretest`, then e2e + TypeScript Jest suites) |
+| Lint | `npm run lint` |
 
-## Common commands
+## Where the documentation lives: skills
 
-```bash
-npm install
-npm run build          # all webpack targets (also runs on prepare / pretest)
-npm run lint           # eslint src test
-npm run format         # eslint src test --fix
-npm run test           # test:e2e + test:typescript (pretest runs build)
-npm run test:e2e       # Jest JS tests under test/ (see jest.js.config.js)
-npm run test:typescript # Jest + ts-jest for test/typescript
-npm run generate-docs  # JSDoc (docs-config.json)
-```
+| Skill | Path | What it covers |
+|-------|------|----------------|
+| **Development workflow** | [`skills/dev-workflow/SKILL.md`](skills/dev-workflow/SKILL.md) | Branches, npm scripts, Husky, CI |
+| **JavaScript SDK** | [`skills/contentstack-javascript-sdk/SKILL.md`](skills/contentstack-javascript-sdk/SKILL.md) | Public API (`Stack`, regions), `@contentstack/utils` |
+| **JavaScript tooling** | [`skills/javascript/SKILL.md`](skills/javascript/SKILL.md) | Webpack targets, `dist/` layout, Babel |
+| **Testing** | [`skills/testing/SKILL.md`](skills/testing/SKILL.md) | Jest configs, e2e vs TypeScript tests |
+| **Code review** | [`skills/code-review/SKILL.md`](skills/code-review/SKILL.md) | PR checklist |
 
-**Live API tests**
+## Using Cursor (optional)
 
-- **`test/config.js`** loads **`.env`** and **requires** `HOST`, `API_KEY`, `DELIVERY_TOKEN`, `ENVIRONMENT`. Without them, importing `test/config.js` throws.
-- Jest e2e tests use **`dist/node/contentstack.js`** (built output). Run **`npm run build`** (or `npm test`, which runs `pretest`) before relying on fresh `src/` changes.
-
-## Further guidance
-
-- **Cursor rules:** [`.cursor/rules/README.md`](.cursor/rules/README.md)
-- **Deeper playbooks:** [`skills/README.md`](skills/README.md)
-
-When unsure about API behavior, prefer the official [Content Delivery API](https://www.contentstack.com/docs/developers/apis/content-delivery-api/) documentation and existing JSDoc in `src/core/`.
+If you use **Cursor**, [`.cursor/rules/README.md`](.cursor/rules/README.md) only points to **`AGENTS.md`**—same docs as everyone else.

@@ -1,49 +1,26 @@
 ---
 name: testing
-description: How to run and extend tests — Jest e2e (test/*.js), TypeScript tests, test/config.js env, dist build.
+description: Use for Jest e2e and TypeScript test suites, jest configs, and test layout in contentstack-javascript.
 ---
 
-# Testing skill — `contentstack` (CDA)
+# Testing – contentstack-javascript
 
-## Commands (from `package.json`)
+## When to use
 
-| Goal | Command |
-|------|---------|
-| Lint | `npm run lint` |
-| Full test (includes build) | `npm test` — runs **`pretest`** → **`npm run build`**, then **`test:e2e`** + **`test:typescript`** |
-| JS Jest suite only | `npm run test:e2e` — config: **`jest.js.config.js`** |
-| TypeScript / Jest | `npm run test:typescript` — config: **`jest.config.js`** |
-| Build | `npm run build` — required before trusting **`dist/`** against updated `src/` |
+- Adding tests under **`test/`** or adjusting **`jest.js.config.js`** / **`jest.config.js`**
+- Debugging failures that only appear after **`pretest` / build**
 
-## JS tests (`test/**/*.js`)
+## Instructions
 
-- Wired from **`test/index.js`** via `require(...)`.
-- **`jest.js.config.js`** sets `testEnvironment: node`, HTML reporters, and **ignore patterns** for `test/index.js`, `test/config.js`, `test/sync_config.js`, and certain `utils.js` paths — check the config when adding files.
+### Suites
 
-## Environment variables (live stack)
+- **`npm run test:e2e`** — Jest with **`jest.js.config.js`**.
+- **`npm run test:typescript`** — Jest with **`jest.config.js`**, limited to **`test/typescript`** paths.
 
-**Authoritative validation:** **`test/config.js`** (uses **dotenv**).
+### Order
 
-**Required** when importing `test/config.js` (used by tests that need stack credentials):
+- Full **`npm test`** runs e2e then TypeScript tests; both assume a fresh **`build`** (via **`pretest`**).
 
-- **`HOST`** — delivery API host for your region/stack
-- **`API_KEY`**
-- **`DELIVERY_TOKEN`**
-- **`ENVIRONMENT`**
+### Hygiene
 
-If any are missing, the process throws on import. Use a local **`.env`**; never commit real tokens.
-
-## TypeScript tests (`test/typescript/`)
-
-- **`jest.config.js`**: **ts-jest**, transforms for TS/JS; HTML report under **`typescript-html-report/`** per config.
-- Use for type-level and behavioral checks against the public SDK shape; keep assertions aligned with **`index.d.ts`**.
-
-## Hygiene
-
-- No committed **`only`** / **`skip`** for CI-mandatory tests.
-- Prefer stable ordering and avoid time-dependent assertions unless unavoidable.
-
-## References
-
-- `.cursor/rules/testing.mdc`
-- `test/README.md`
+- Do not commit stack secrets; use fixtures or env patterns documented for this repo.
