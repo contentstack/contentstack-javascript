@@ -1,11 +1,12 @@
 module.exports = {
   testEnvironment: "node",
-  testMatch: ["**/test/**/*.js"],
+  testMatch: ["**/test/integration/**/*.test.js"],
   testPathIgnorePatterns: [
     "/node_modules/",
     "/test/index.js",
     "/test/config.js",
     "/test/sync_config.js",
+    "/test/helpers/",
     "/test/.*/utils.js",
   ],
   reporters: ["default", ["jest-html-reporters",
