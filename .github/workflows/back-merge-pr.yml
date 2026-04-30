@@ -1,0 +1,54 @@
+name: Back-merge master to development
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  open-back-merge-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Open back-merge PR if needed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          BASE_BRANCH="development"
+          SOURCE_BRANCH="master"
+
+          git fetch origin "$BASE_BRANCH" "$SOURCE_BRANCH"
+
+          if ! git show-ref --verify --quiet "refs/remotes/origin/$BASE_BRANCH"; then
+            echo "Base branch '$BASE_BRANCH' does not exist on origin; skipping."
+            exit 0
+          fi
+
+          SOURCE_SHA=$(git rev-parse "origin/$SOURCE_BRANCH")
+          BASE_SHA=$(git rev-parse "origin/$BASE_BRANCH")
+
+          if [ "$SOURCE_SHA" = "$BASE_SHA" ]; then
+            echo "$SOURCE_BRANCH and $BASE_BRANCH are at the same commit; nothing to back-merge."
+            exit 0
+          fi
+
+          EXISTING=$(gh pr list --repo "${{ github.repository }}"             --base "$BASE_BRANCH"             --head "$SOURCE_BRANCH"             --state open             --json number             --jq 'length')
+
+          if [ "$EXISTING" -gt 0 ]; then
+            echo "An open PR from $SOURCE_BRANCH to $BASE_BRANCH already exists; skipping."
+            exit 0
+          fi
+
+          gh pr create --repo "${{ github.repository }}"             --base "$BASE_BRANCH"             --head "$SOURCE_BRANCH"             --title "chore: back-merge $SOURCE_BRANCH into $BASE_BRANCH"             --body "Automated back-merge after changes landed on \\`$SOURCE_BRANCH\\`. Review and merge to keep \\`$BASE_BRANCH\\` in sync."
+
+          echo "Created back-merge PR $SOURCE_BRANCH -> $BASE_BRANCH."
