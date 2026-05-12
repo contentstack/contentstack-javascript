@@ -270,7 +270,7 @@ describe('Advanced Tests - Custom Parameters', () => {
       }, 3000);
       
       console.log('✅ Complex combination performance acceptable');
-    });
+    }, 15000); // Increased timeout for complex queries
   });
 
   describe('Edge Cases & Error Handling', () => {

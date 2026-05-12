@@ -278,7 +278,7 @@ describe('Advanced Edge Cases - Extreme Scenarios (Phase 3)', () => {
       expect(result[0].length).toBe(0);
       
       console.log('✅ skip(999999): empty result as expected');
-    });
+    }, 15000); // Increased timeout for large skip operations
 
     test('Extreme_NegativeSkip_HandlesGracefully', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);

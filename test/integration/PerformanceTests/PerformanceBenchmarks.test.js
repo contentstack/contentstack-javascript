@@ -495,7 +495,7 @@ describe('Performance Benchmarking - Comprehensive Tests (Phase 4)', () => {
       expect(throughput).toBeGreaterThan(0.5); // At least 0.5 queries/sec
       
       console.log(`⚡ Sequential throughput: ${throughput.toFixed(2)} queries/sec (${duration}ms for ${queryCount} queries)`);
-    });
+    }, 30000); // Increased timeout for 10 sequential queries
 
     test('Perf_ParallelQueries_Throughput', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);

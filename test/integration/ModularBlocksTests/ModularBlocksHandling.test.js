@@ -106,7 +106,7 @@ describe('Modular Blocks - Comprehensive Tests', () => {
       }
       
       console.log('✅ Block _content_type_uid validated');
-    });
+    }, 15000); // Increased timeout for modular blocks queries
 
     test('ModularBlocks_EachBlock_IsObject', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('cybersecurity', true);

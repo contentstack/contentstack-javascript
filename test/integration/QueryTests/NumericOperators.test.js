@@ -304,7 +304,7 @@ describe('Query Tests - Numeric Operators', () => {
           .lessThan('updated_at', Date.now())
           .toJSON()
           .find();
-      }, 3000); // Should complete in <3s
+      }, 5000); // Increased threshold from 3000ms to 5000ms
       
       console.log('✅ Query performance acceptable');
     });

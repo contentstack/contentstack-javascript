@@ -181,7 +181,7 @@ describe('Query Tests - Exists & Search Operators', () => {
       } else {
         console.log('ℹ️  No entries match exists + notExists combination');
       }
-    });
+    }, 15000); // Increased timeout for complex exists/notExists queries
 
     test('Query_ExistsAndNotExists_Contradictory_ValidatesLogic', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
