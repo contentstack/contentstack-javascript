@@ -132,11 +132,20 @@ class TestDataHelper {
   
   /**
    * Get global field name
-   * @param {string} name - Global field name (seo, search, video_experience, content_block, gallery, referenced_data)
+   * @param {string} name - Global field name (seo, search, video_experience, content_block, gallery, referenced_data, nested)
    * @returns {string} Global field name
    */
   static getGlobalField(name) {
     return config.globalFields[name];
+  }
+  
+  /**
+   * Get nested global field UID
+   * Value from NESTED_GLOBAL_FIELD_UID in .env
+   * @returns {string} Nested global field UID
+   */
+  static getNestedGlobalFieldUID() {
+    return config.globalFields.nested;
   }
   
   /**

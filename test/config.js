@@ -90,12 +90,14 @@ module.exports = {
   },
   
   // Global field UIDs (values from environment variables, keys are descriptive)
+  // Supports both old naming (GLOBAL_FIELD_SIMPLE) and new naming (SIMPLE_GLOBAL_FIELD_UID)
   globalFields: {
-    seo: process.env.GLOBAL_FIELD_SIMPLE,               // Simple global field
-    gallery: process.env.GLOBAL_FIELD_MEDIUM,           // Medium complexity
-    content_block: process.env.GLOBAL_FIELD_COMPLEX,    // Complex global field
+    seo: process.env.GLOBAL_FIELD_SIMPLE || process.env.GLOBAL_FIELD_UID || process.env.SIMPLE_GLOBAL_FIELD_UID,  // Simple global field
+    gallery: process.env.GLOBAL_FIELD_MEDIUM || process.env.MEDIUM_GLOBAL_FIELD_UID,           // Medium complexity
+    content_block: process.env.GLOBAL_FIELD_COMPLEX || process.env.COMPLEX_GLOBAL_FIELD_UID,    // Complex global field
     video_experience: process.env.GLOBAL_FIELD_VIDEO,   // Video field
-    referenced_data: 'referenced_data'                  // Generic field name (optional)
+    referenced_data: 'referenced_data',                  // Generic field name (optional)
+    nested: process.env.NESTED_GLOBAL_FIELD_UID         // Nested global field (parent)
   },
   
   // Reference field name (generic/common field name)
