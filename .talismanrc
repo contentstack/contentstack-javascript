@@ -22,7 +22,7 @@ fileignoreconfig:
 - filename: .github/workflows/secrets-scan.yml
   checksum: d79ec3f3288964f7d117b9ad319a54c0ebc152e35f69be8fde95522034fdfb2a
 - filename: package-lock.json
-  checksum: c7c4feda727fae78c6fa03665b1d8f2a6363060631dd57b475f09307991ad305
+  checksum: 3d18d543ed9c7b87bcfca8f7af99bb3058ffa67b84a1ff888623686a84d06672
 - filename: src/core/modules/assets.js
   checksum: 00f19d659b830b0f145b4db0ccf3211a4048d9488f30a224fe3c31cacca6dcd2
 - filename: .husky/pre-commit
@@ -40,7 +40,7 @@ fileignoreconfig:
 - filename: test/live-preview/live-preview-test.js
   checksum: d742465789e00a17092a7e9664adda4342a13bc4975553371a26df658f109952
 - filename: src/core/lib/request.js
-  checksum: 0404fd184a96c57d0eb9e7134ae6ff65f8e9039c38c852c9a0f00825b4c69f1
+  checksum: 775c2e74b4135747600a3f34535f97f7dcbf822e4d2dc68568f5b227d499fdbb
 - filename: test/sync/sync-testcases.js
   checksum: 391b557a147c658a50256b49dcdd20fd053eb32966e9244d98c93142e4dcbf2e
 - filename: src/core/modules/taxonomy.js

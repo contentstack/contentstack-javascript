@@ -1,4 +1,13 @@
 ## Change log
+
+### Version: 3.27.0
+#### Date:  Mar-23-2026
+##### Fix:
+  -  Handle connection drops and socket closures so they no longer cause unhandled rejections and process crashes. The SDK now:
+  - Catches body-read failures by adding `.catch()` on the `response.json()` promise in both 200 and non-200 response branches.
+  - Applies the same catch-and-retry behavior for fetch-level rejections (e.g. connection closed before or during response).
+  - Rejects the Request promise with the actual error when retries are exhausted, so callers can handle or log failures without the Node process crashing.
+
 ### Version: 3.26.4
 #### Date:  Jan-27-2026
 ##### Feat:
