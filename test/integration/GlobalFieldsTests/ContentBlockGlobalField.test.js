@@ -2,7 +2,7 @@
 
 /**
  * Content Block Global Field - COMPREHENSIVE Tests
- * 
+ *
  * Content Block is the MOST COMPLEX global field with:
  * - JSON RTE with embedded items
  * - Links with complex permissions
@@ -10,7 +10,7 @@
  * - Multiple link appearances
  * - Images with presets
  * - Max width settings
- * 
+ *
  * This test demonstrates TRUE comprehensive testing:
  * 1. Deep nested structure validation
  * 2. JSON RTE embedded items resolution
@@ -18,7 +18,7 @@
  * 4. Array validation (multiple links)
  * 5. Complex enum validations
  * 6. Edge cases in nested structures
- * 
+ *
  * Focus: Find bugs in complex structures, not just simple fields!
  */
 
@@ -61,7 +61,7 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
         if (entry[contentBlockField].length > 0) {
           const block = entry[contentBlockField][0];
           expect(typeof block).toBe('object');
-          
+
           // Content block should have title or html or json_rte
           const hasContent = block.title || block.html || block.json_rte;
           expect(hasContent).toBeTruthy();
@@ -91,7 +91,7 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
             if (block.title) {
               expect(typeof block.title).toBe('string');
               expect(block.title.length).toBeGreaterThan(0);
-              
+
               // Data quality check - trailing/leading whitespace
               const trimmedTitle = block.title.trim();
               if (trimmedTitle !== block.title) {
@@ -105,11 +105,11 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
             if (block.content_block_id) {
               expect(typeof block.content_block_id).toBe('string');
               expect(block.content_block_id.length).toBeGreaterThan(0);
-              
+
               // Data quality check - anchor IDs should not have spaces
               if (!/^[a-zA-Z0-9_-]+$/.test(block.content_block_id)) {
                 console.log(`  ⚠️  DATA QUALITY: content_block_id has invalid characters: "${block.content_block_id}"`);
-                console.log(`     Anchor IDs should only contain: a-z, A-Z, 0-9, _, -`);
+                console.log('     Anchor IDs should only contain: a-z, A-Z, 0-9, _, -');
                 console.log(`     Entry: ${entry.uid}, Block: ${index}`);
                 // This is a data quality issue - IDs with spaces won't work as HTML anchors
               }
@@ -128,7 +128,7 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
 
       const entry = await Stack.ContentType(contentTypeUID)
         .Entry(entryUID)
-        .includeEmbeddedItems()  // Critical for embedded resolution!
+        .includeEmbeddedItems() // Critical for embedded resolution!
         .toJSON()
         .fetch();
 
@@ -145,13 +145,13 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
               // Check for embedded items
               if (entry._embedded_items) {
                 expect(typeof entry._embedded_items).toBe('object');
-                
+
                 // Embedded items should be resolved objects, not just UIDs
                 Object.keys(entry._embedded_items).forEach(key => {
                   const item = entry._embedded_items[key];
                   expect(typeof item).toBe('object');
                   expect(typeof item).not.toBe('string'); // Not just UID!
-                  
+
                   if (item.uid) {
                     console.log(`  ✅ Embedded item resolved: ${item.uid}`);
                   }
@@ -189,7 +189,7 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
                 // Link.link validation
                 if (link.link) {
                   expect(typeof link.link).toBe('object');
-                  
+
                   // Link should have title and/or href
                   if (link.link.title) {
                     expect(typeof link.link.title).toBe('string');
@@ -225,10 +225,10 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
                 // Permissions validation (nested group)
                 if (link.permissions) {
                   expect(typeof link.permissions).toBe('object');
-                  
+
                   if (link.permissions.level) {
                     expect(Array.isArray(link.permissions.level)).toBe(true);
-                    
+
                     // Each permission level should be valid
                     const validLevels = ['full', 'basic', 'registered', 'public'];
                     link.permissions.level.forEach(level => {
@@ -240,7 +240,7 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
                 // Modal reference validation
                 if (link.reference) {
                   expect(typeof link.reference).toBe('object');
-                  
+
                   // If it's resolved, should have uid
                   if (Array.isArray(link.reference)) {
                     link.reference.forEach(ref => {
@@ -275,13 +275,13 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
             // Image validation
             if (block.image) {
               expect(typeof block.image).toBe('object');
-              
+
               // Image should have asset properties
               if (block.image.uid) {
                 expect(typeof block.image.uid).toBe('string');
                 expect(block.image.uid).toMatch(/^blt[a-f0-9]+$/);
               }
-              
+
               if (block.image.url) {
                 expect(typeof block.image.url).toBe('string');
                 expect(block.image.url).toMatch(/^https?:\/\//);
@@ -314,13 +314,13 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
             if (block.max_width !== undefined && block.max_width !== null) {
               // Should be a number
               expect(typeof block.max_width).toBe('number');
-              
+
               // Should be positive
               expect(block.max_width).toBeGreaterThan(0);
-              
+
               // Should be reasonable (not millions)
               expect(block.max_width).toBeLessThan(10000);
-              
+
               console.log(`  ✅ Max width validated: ${block.max_width}px`);
             }
           });
@@ -347,7 +347,7 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
           if (Array.isArray(entry[contentBlockField])) {
             entry[contentBlockField].forEach(block => {
               totalBlocks++;
-              
+
               // Check if block is essentially empty
               const hasTitle = block.title && block.title.length > 0;
               const hasHTML = block.html && block.html.length > 0;
@@ -366,7 +366,7 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
         });
 
         console.log(`✅ Checked ${totalBlocks} blocks, found ${emptyBlocks} empty blocks`);
-        
+
         // Data quality check - too many empty blocks might indicate issue
         if (totalBlocks > 0) {
           const emptyPercentage = (emptyBlocks / totalBlocks) * 100;
@@ -399,17 +399,17 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
                 // appearance, icon, target are marked as mandatory in schema
                 // Let's verify they're actually present
                 if (!link.appearance) {
-                  console.log(`  ⚠️  WARNING: Link missing required 'appearance' field`);
+                  console.log('  ⚠️  WARNING: Link missing required \'appearance\' field');
                   linksWithIssues++;
                 }
-                
+
                 if (!link.icon) {
-                  console.log(`  ⚠️  WARNING: Link missing required 'icon' field`);
+                  console.log('  ⚠️  WARNING: Link missing required \'icon\' field');
                   linksWithIssues++;
                 }
-                
+
                 if (!link.target) {
-                  console.log(`  ⚠️  WARNING: Link missing required 'target' field`);
+                  console.log('  ⚠️  WARNING: Link missing required \'target\' field');
                   linksWithIssues++;
                 }
               });
@@ -418,7 +418,7 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
         });
 
         console.log(`✅ Checked ${linksChecked} links, found ${linksWithIssues} with missing required fields`);
-        
+
         // If too many links have missing required fields, that's a data quality issue
         if (linksChecked > 0 && linksWithIssues > 0) {
           console.log(`  ⚠️  Data Quality Issue: ${((linksWithIssues / linksChecked) * 100).toFixed(1)}% of links missing required fields`);
@@ -454,7 +454,7 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
       // This validates SDK's field projection logic
       const keys = Object.keys(entry);
       const expectedKeys = ['uid', 'title', contentBlockField, '_version', '_content_type_uid', 'locale', 'created_at', 'updated_at', 'created_by', 'updated_by', 'publish_details', 'ACL'];
-      
+
       keys.forEach(key => {
         // Allow system fields, but not other custom fields
         if (!expectedKeys.includes(key) && !key.startsWith('_')) {
@@ -489,10 +489,9 @@ describe('Global Fields - Content Block (MOST COMPLEX) Comprehensive Tests', () 
 
       console.log(`✅ Query completed in ${duration}ms`);
       console.log(`   Retrieved ${result[0].length} entries with ${totalBlocks} total content blocks`);
-      
+
       // Data quality check - validate structure is consistent
       AssertionHelper.assertQueryResultStructure(result);
     });
   });
 });
-

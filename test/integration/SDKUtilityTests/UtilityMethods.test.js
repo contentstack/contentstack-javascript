@@ -2,15 +2,15 @@
 
 /**
  * COMPREHENSIVE SDK UTILITY METHODS TESTS
- * 
+ *
  * Tests SDK utility features and helper methods.
- * 
+ *
  * SDK Features Covered:
  * - .spread() method for promise result destructuring
  * - early_access headers
  * - Promise chain utilities
  * - Result handling methods
- * 
+ *
  * Bug Detection Focus:
  * - Spread method behavior
  * - Early access header injection
@@ -26,7 +26,6 @@ const config = TestDataHelper.getConfig();
 let Stack;
 
 describe('SDK Utility Methods - Comprehensive Tests', () => {
-  
   beforeAll(() => {
     Stack = Contentstack.Stack(config.stack);
     Stack.setHost(config.host);
@@ -37,10 +36,9 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
   // =============================================================================
 
   describe('Spread Method', () => {
-    
     test('Spread_BasicQuery_ReturnsEntriesAsFirstArg', (done) => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       Stack.ContentType(contentTypeUID)
         .Query()
         .limit(5)
@@ -50,7 +48,7 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
           expect(entries).toBeDefined();
           expect(Array.isArray(entries)).toBe(true);
           expect(entries.length).toBeGreaterThan(0);
-          
+
           console.log(`✅ Spread method: ${entries.length} entries in first argument`);
           done();
         })
@@ -59,7 +57,7 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
 
     test('Spread_WithIncludeCount_ReturnsBothArgs', (done) => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       Stack.ContentType(contentTypeUID)
         .Query()
         .includeCount()
@@ -70,11 +68,11 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
           expect(entries).toBeDefined();
           expect(Array.isArray(entries)).toBe(true);
           expect(entries.length).toBeGreaterThan(0);
-          
+
           expect(count).toBeDefined();
           expect(typeof count).toBe('number');
           expect(count).toBeGreaterThanOrEqual(entries.length);
-          
+
           console.log(`✅ Spread with includeCount: ${entries.length} entries, count=${count}`);
           done();
         })
@@ -83,7 +81,7 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
 
     test('Spread_WithIncludeContentType_ReturnsSchema', (done) => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       Stack.ContentType(contentTypeUID)
         .Query()
         .includeContentType()
@@ -93,15 +91,15 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
         .spread((entries, schema) => {
           expect(entries).toBeDefined();
           expect(Array.isArray(entries)).toBe(true);
-          
+
           // Schema should be second argument when includeContentType is used
           if (schema) {
             expect(schema).toBeDefined();
-            console.log(`✅ Spread with includeContentType: entries + schema`);
+            console.log('✅ Spread with includeContentType: entries + schema');
           } else {
-            console.log(`⚠️ Spread with includeContentType: schema not in spread args (may be in entries)`);
+            console.log('⚠️ Spread with includeContentType: schema not in spread args (may be in entries)');
           }
-          
+
           done();
         })
         .catch(done);
@@ -118,7 +116,7 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
             // Should not reach here
             expect(true).toBe(false);
           });
-        
+
         // If spread doesn't catch, we'll get here
         expect(true).toBe(false);
       } catch (error) {
@@ -131,7 +129,7 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
 
     test('Spread_ChainAfterSpread_Works', (done) => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       Stack.ContentType(contentTypeUID)
         .Query()
         .limit(3)
@@ -152,7 +150,7 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
 
     test('Spread_EmptyResult_HandlesGracefully', (done) => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       // Query that should return empty (skip beyond available entries)
       Stack.ContentType(contentTypeUID)
         .Query()
@@ -164,13 +162,12 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
           expect(entries).toBeDefined();
           expect(Array.isArray(entries)).toBe(true);
           expect(entries.length).toBe(0);
-          
+
           console.log('✅ Spread handles empty results gracefully');
           done();
         })
         .catch(done);
     });
-
   });
 
   // =============================================================================
@@ -178,17 +175,16 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
   // =============================================================================
 
   describe('Early Access Headers', () => {
-    
     test('EarlyAccess_SingleFeature_HeaderAdded', () => {
       const stack = Contentstack.Stack({
         ...config.stack,
         early_access: ['taxonomy']
       });
-      
+
       expect(stack.headers).toBeDefined();
       expect(stack.headers['x-header-ea']).toBeDefined();
       expect(stack.headers['x-header-ea']).toBe('taxonomy');
-      
+
       console.log(`✅ Single early access feature: ${stack.headers['x-header-ea']}`);
     });
 
@@ -197,11 +193,11 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
         ...config.stack,
         early_access: ['taxonomy', 'newCDA', 'variants']
       });
-      
+
       expect(stack.headers).toBeDefined();
       expect(stack.headers['x-header-ea']).toBeDefined();
       expect(stack.headers['x-header-ea']).toBe('taxonomy,newCDA,variants');
-      
+
       console.log(`✅ Multiple early access features: ${stack.headers['x-header-ea']}`);
     });
 
@@ -210,9 +206,9 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
         ...config.stack,
         early_access: []
       });
-      
+
       expect(stack.headers).toBeDefined();
-      
+
       // Empty array should either not add header or add empty string
       if (stack.headers['x-header-ea']) {
         expect(stack.headers['x-header-ea']).toBe('');
@@ -224,9 +220,9 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
 
     test('EarlyAccess_NoEarlyAccess_NoHeader', () => {
       const stack = Contentstack.Stack(config.stack);
-      
+
       expect(stack.headers).toBeDefined();
-      
+
       // Without early_access, header should not exist
       if (!stack.headers['x-header-ea']) {
         console.log('✅ No early access: no header added');
@@ -241,24 +237,23 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
         early_access: ['taxonomy']
       });
       stack.setHost(config.host);
-      
+
       expect(stack.headers['x-header-ea']).toBe('taxonomy');
-      
+
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       // Execute query - header should persist
       const result = await stack.ContentType(contentTypeUID)
         .Query()
         .limit(2)
         .toJSON()
         .find();
-      
+
       expect(result[0]).toBeDefined();
       expect(stack.headers['x-header-ea']).toBe('taxonomy');
-      
+
       console.log('✅ Early access header persists across queries');
     });
-
   });
 
   // =============================================================================
@@ -266,10 +261,9 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
   // =============================================================================
 
   describe('Promise Utilities', () => {
-    
     test('Then_BasicChain_Works', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(5)
@@ -283,7 +277,7 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
           expect(count).toBeGreaterThan(0);
           return count * 2;
         });
-      
+
       expect(result).toBeGreaterThan(0);
       console.log('✅ Promise .then() chain works correctly');
     });
@@ -300,7 +294,7 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
             expect(error.error_code).toBeDefined();
             throw error; // Re-throw to test outer catch
           });
-        
+
         expect(true).toBe(false); // Should not reach here
       } catch (error) {
         expect(error.error_code).toBeDefined();
@@ -311,7 +305,7 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
     test('Finally_AlwaysExecutes_AfterSuccess', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       let finallyExecuted = false;
-      
+
       await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(2)
@@ -320,14 +314,14 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
         .finally(() => {
           finallyExecuted = true;
         });
-      
+
       expect(finallyExecuted).toBe(true);
       console.log('✅ Promise .finally() executes after success');
     });
 
     test('Finally_AlwaysExecutes_AfterError', async () => {
       let finallyExecuted = false;
-      
+
       try {
         await Stack.ContentType('invalid_ct_12345')
           .Query()
@@ -340,11 +334,10 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
       } catch (error) {
         // Expected error
       }
-      
+
       expect(finallyExecuted).toBe(true);
       console.log('✅ Promise .finally() executes even after error');
     });
-
   });
 
   // =============================================================================
@@ -352,20 +345,19 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
   // =============================================================================
 
   describe('Async/Await Compatibility', () => {
-    
     test('AsyncAwait_BasicQuery_Works', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(5)
         .toJSON()
         .find();
-      
+
       expect(result[0]).toBeDefined();
       expect(Array.isArray(result[0])).toBe(true);
       expect(result[0].length).toBeGreaterThan(0);
-      
+
       console.log('✅ Async/await works with SDK queries');
     });
 
@@ -376,7 +368,7 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
           .limit(5)
           .toJSON()
           .find();
-        
+
         expect(true).toBe(false); // Should not reach here
       } catch (error) {
         expect(error).toBeDefined();
@@ -387,42 +379,41 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
 
     test('AsyncAwait_MultipleQueries_Sequential', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const startTime = Date.now();
-      
+
       const result1 = await Stack.ContentType(contentTypeUID).Query().limit(2).toJSON().find();
       const result2 = await Stack.ContentType(contentTypeUID).Query().limit(2).toJSON().find();
       const result3 = await Stack.ContentType(contentTypeUID).Query().limit(2).toJSON().find();
-      
+
       const duration = Date.now() - startTime;
-      
+
       expect(result1[0]).toBeDefined();
       expect(result2[0]).toBeDefined();
       expect(result3[0]).toBeDefined();
-      
+
       console.log(`✅ Sequential async/await queries: ${duration}ms`);
     });
 
     test('AsyncAwait_MultipleQueries_Parallel', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const startTime = Date.now();
-      
+
       const [result1, result2, result3] = await Promise.all([
         Stack.ContentType(contentTypeUID).Query().limit(2).toJSON().find(),
         Stack.ContentType(contentTypeUID).Query().limit(2).toJSON().find(),
         Stack.ContentType(contentTypeUID).Query().limit(2).toJSON().find()
       ]);
-      
+
       const duration = Date.now() - startTime;
-      
+
       expect(result1[0]).toBeDefined();
       expect(result2[0]).toBeDefined();
       expect(result3[0]).toBeDefined();
-      
+
       console.log(`✅ Parallel async/await queries: ${duration}ms`);
     });
-
   });
 
   // =============================================================================
@@ -430,14 +421,13 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
   // =============================================================================
 
   describe('Edge Cases', () => {
-    
     test('EdgeCase_NullEarlyAccess_HandlesGracefully', () => {
       try {
         const stack = Contentstack.Stack({
           ...config.stack,
           early_access: null
         });
-        
+
         console.log('⚠️ Null early_access accepted');
       } catch (error) {
         console.log('✅ Null early_access handled');
@@ -450,7 +440,7 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
           ...config.stack,
           early_access: 'not-an-array'
         });
-        
+
         console.log('⚠️ Invalid early_access type accepted');
       } catch (error) {
         console.log('✅ Invalid early_access type handled');
@@ -459,7 +449,7 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
 
     test('EdgeCase_SpreadWithNoArgs_Works', (done) => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       Stack.ContentType(contentTypeUID)
         .Query()
         .limit(2)
@@ -472,8 +462,5 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
         })
         .catch(done);
     });
-
   });
-
 });
-

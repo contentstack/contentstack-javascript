@@ -4,11 +4,11 @@ fileignoreconfig:
 - filename: test/integration/GlobalFieldsTests/SEOGlobalField.test.js
   checksum: c5df5b9fa8756ced5f37879dff17aa0f31f50fd64470195064e0b22450cde29d
 - filename: test/integration/QueryTests/FieldProjection.test.js
-  checksum: c775ac0895df7f11865d627bad5309dd51ae5ea1f63959d5b8d1e420851a6077
+  checksum: 9a15e9a222a18b99881218abbe6b82012bb663137cca179a63858698127e0aba
 - filename: test/integration/LivePreviewTests/LivePreview.test.js
   checksum: dba41fa432524189234a3d0ec35885a8e5c51904b3114853a41b1ec3899ad4cb
 - filename: test/config.js
-  checksum: 61bf7129a251984c6114941211ce4ea3d29416ddf1288b605c3bb2a6639b17cc
+  checksum: b249021c7de18f76039fdb393e8d74ce476acdd3861bac58965500f2b1a42b2e
 - filename: test/integration/GlobalFieldsTests/ContentBlockGlobalField.test.js
   checksum: 8d2bc8cb6661336b57397649259f7e12786256706019efb644f133b336629d96
 - filename: test/integration/GlobalFieldsTests/NestedGlobalField.test.js
@@ -16,7 +16,7 @@ fileignoreconfig:
 - filename: test/integration/NetworkResilienceTests/RetryLogic.test.js
   checksum: 3b5fe23398bdc2327848b3caa95339e51a0aed059c1eb299e78d3dd215ecbd30
 - filename: test/integration/QueryTests/ExistsSearchOperators.test.js
-  checksum: e4774c805f1d0876cdc03439ed14a2f35a0ceb6028d86370a49ef0558a7bc46e
+  checksum: 9b1cec59275ba72fe4b753e956c5b24b237d24d12819434ab65109075cf50f86
 - filename: index.d.ts
   checksum: 22c6a7fe4027d6b2c9adf0cbeb9c525ab79b15210b07ec5189693992e6800a66
 - filename: test/typescript/stack.test.ts

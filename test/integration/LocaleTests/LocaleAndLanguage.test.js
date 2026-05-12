@@ -2,20 +2,20 @@
 
 /**
  * Locale & Language - COMPREHENSIVE Tests
- * 
+ *
  * Tests for locale and language functionality:
  * - language() - locale selection
  * - Locale fallback (includeFallback)
  * - Multiple locales
  * - Locale filtering
- * 
+ *
  * Focus Areas:
  * 1. Single locale queries
  * 2. Multi-locale content
  * 3. Locale fallback chains
  * 4. Locale-specific entries
  * 5. Performance with locales
- * 
+ *
  * Bug Detection:
  * - Wrong locale returned
  * - Fallback not working
@@ -41,21 +41,21 @@ describe('Locale Tests - Language & Locale Selection', () => {
     test('Locale_Language_PrimaryLocale_ReturnsCorrectContent', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const primaryLocale = TestDataHelper.getLocale('primary'); // en-us
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .language(primaryLocale)
         .limit(5)
         .toJSON()
         .find();
-      
+
       AssertionHelper.assertQueryResultStructure(result);
-      
+
       if (result[0].length > 0) {
         result[0].forEach(entry => {
           expect(entry.locale).toBe(primaryLocale);
         });
-        
+
         console.log(`✅ language('${primaryLocale}'): ${result[0].length} entries returned`);
       }
     });
@@ -63,7 +63,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
     test('Locale_Language_SecondaryLocale_ReturnsCorrectContent', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const secondaryLocale = TestDataHelper.getLocale('secondary'); // fr-fr
-      
+
       try {
         const result = await Stack.ContentType(contentTypeUID)
           .Query()
@@ -71,9 +71,9 @@ describe('Locale Tests - Language & Locale Selection', () => {
           .limit(5)
           .toJSON()
           .find();
-        
+
         AssertionHelper.assertQueryResultStructure(result);
-        
+
         if (result[0].length > 0) {
           // SDK might return primary locale even when requesting secondary
           const actualLocale = result[0][0].locale;
@@ -91,7 +91,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
     test('Locale_Language_JapaneseLocale_ReturnsCorrectContent', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const japaneseLocale = TestDataHelper.getLocale('japanese'); // ja-jp
-      
+
       try {
         const result = await Stack.ContentType(contentTypeUID)
           .Query()
@@ -99,9 +99,9 @@ describe('Locale Tests - Language & Locale Selection', () => {
           .limit(5)
           .toJSON()
           .find();
-        
+
         AssertionHelper.assertQueryResultStructure(result);
-        
+
         if (result[0].length > 0) {
           console.log(`✅ language('${japaneseLocale}'): ${result[0].length} entries`);
         } else {
@@ -117,7 +117,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
     test('Locale_Language_WithFilters_BothApplied', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const primaryLocale = TestDataHelper.getLocale('primary');
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .language(primaryLocale)
@@ -125,12 +125,12 @@ describe('Locale Tests - Language & Locale Selection', () => {
         .limit(5)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         result[0].forEach(entry => {
           expect(entry.locale).toBe(primaryLocale);
         });
-        
+
         console.log(`✅ language() + where() filters: ${result[0].length} entries`);
       }
     });
@@ -139,7 +139,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const primaryLocale = TestDataHelper.getLocale('primary');
       const authorField = TestDataHelper.getReferenceField('author');
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .language(primaryLocale)
@@ -147,12 +147,12 @@ describe('Locale Tests - Language & Locale Selection', () => {
         .limit(3)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         result[0].forEach(entry => {
           expect(entry.locale).toBe(primaryLocale);
         });
-        
+
         console.log(`✅ language() + includeReference(): ${result[0].length} entries`);
       }
     });
@@ -163,16 +163,16 @@ describe('Locale Tests - Language & Locale Selection', () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const entryUID = TestDataHelper.getMediumEntryUID();
       const primaryLocale = TestDataHelper.getLocale('primary');
-      
+
       const entry = await Stack.ContentType(contentTypeUID)
         .Entry(entryUID)
         .language(primaryLocale)
         .toJSON()
         .fetch();
-      
+
       AssertionHelper.assertEntryStructure(entry);
       expect(entry.locale).toBe(primaryLocale);
-      
+
       console.log(`✅ Entry.language('${primaryLocale}'): entry fetched successfully`);
     });
 
@@ -180,14 +180,14 @@ describe('Locale Tests - Language & Locale Selection', () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const entryUID = TestDataHelper.getMediumEntryUID();
       const secondaryLocale = TestDataHelper.getLocale('secondary');
-      
+
       try {
         const entry = await Stack.ContentType(contentTypeUID)
           .Entry(entryUID)
           .language(secondaryLocale)
           .toJSON()
           .fetch();
-        
+
         if (entry && entry.uid) {
           console.log(`✅ Entry.language('${secondaryLocale}'): entry found (locale: ${entry.locale})`);
         }
@@ -203,17 +203,17 @@ describe('Locale Tests - Language & Locale Selection', () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const entryUID = TestDataHelper.getMediumEntryUID();
       const primaryLocale = TestDataHelper.getLocale('primary');
-      
+
       const entry = await Stack.ContentType(contentTypeUID)
         .Entry(entryUID)
         .language(primaryLocale)
         .only(['title', 'locale'])
         .toJSON()
         .fetch();
-      
+
       expect(entry.title).toBeDefined();
       expect(entry.locale).toBe(primaryLocale);
-      
+
       console.log('✅ Entry.language() + only() combined successfully');
     });
   });
@@ -222,23 +222,23 @@ describe('Locale Tests - Language & Locale Selection', () => {
     test('Locale_Where_FilterByLocale_ReturnsMatchingEntries', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const primaryLocale = TestDataHelper.getLocale('primary');
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .where('locale', primaryLocale)
         .limit(10)
         .toJSON()
         .find();
-      
+
       AssertionHelper.assertQueryResultStructure(result);
-      
+
       if (result[0].length > 0) {
         AssertionHelper.assertAllEntriesMatch(
           result[0],
           entry => entry.locale === primaryLocale,
           `have locale = ${primaryLocale}`
         );
-        
+
         console.log(`✅ where('locale', '${primaryLocale}'): ${result[0].length} entries`);
       }
     });
@@ -247,19 +247,19 @@ describe('Locale Tests - Language & Locale Selection', () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const primaryLocale = TestDataHelper.getLocale('primary');
       const secondaryLocale = TestDataHelper.getLocale('secondary');
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .containedIn('locale', [primaryLocale, secondaryLocale])
         .limit(10)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         result[0].forEach(entry => {
           expect([primaryLocale, secondaryLocale]).toContain(entry.locale);
         });
-        
+
         console.log(`✅ containedIn('locale', [...]): ${result[0].length} entries from multiple locales`);
       }
     });
@@ -269,7 +269,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
     test('Locale_Language_Performance_AcceptableSpeed', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const primaryLocale = TestDataHelper.getLocale('primary');
-      
+
       await AssertionHelper.assertPerformance(async () => {
         await Stack.ContentType(contentTypeUID)
           .Query()
@@ -278,7 +278,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
           .toJSON()
           .find();
       }, 3000);
-      
+
       console.log('✅ language() performance acceptable');
     });
 
@@ -286,7 +286,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const primaryLocale = TestDataHelper.getLocale('primary');
       const secondaryLocale = TestDataHelper.getLocale('secondary');
-      
+
       await AssertionHelper.assertPerformance(async () => {
         await Stack.ContentType(contentTypeUID)
           .Query()
@@ -295,7 +295,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
           .toJSON()
           .find();
       }, 3000);
-      
+
       console.log('✅ Multi-locale query performance acceptable');
     });
   });
@@ -303,7 +303,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
   describe('Locale - Edge Cases', () => {
     test('Locale_Language_InvalidLocale_HandlesGracefully', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       try {
         const result = await Stack.ContentType(contentTypeUID)
           .Query()
@@ -311,7 +311,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
           .limit(3)
           .toJSON()
           .find();
-        
+
         // If successful, count as handled gracefully
         AssertionHelper.assertQueryResultStructure(result);
         console.log(`✅ Invalid locale handled gracefully: ${result[0].length} results`);
@@ -325,7 +325,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
 
     test('Locale_Language_EmptyLocale_HandlesGracefully', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       try {
         const result = await Stack.ContentType(contentTypeUID)
           .Query()
@@ -333,7 +333,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
           .limit(3)
           .toJSON()
           .find();
-        
+
         // Might return default locale or error
         console.log(`✅ Empty locale handled: ${result[0].length} results`);
       } catch (error) {
@@ -346,13 +346,13 @@ describe('Locale Tests - Language & Locale Selection', () => {
     test('Locale_NoLanguageSpecified_ReturnsDefaultLocale', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const primaryLocale = TestDataHelper.getLocale('primary');
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(5)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         // Without .language(), should return default/primary locale
         const firstLocale = result[0][0].locale;
@@ -365,12 +365,12 @@ describe('Locale Tests - Language & Locale Selection', () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const entryUID = TestDataHelper.getMediumEntryUID();
       const primaryLocale = TestDataHelper.getLocale('primary');
-      
+
       const entry = await Stack.ContentType(contentTypeUID)
         .Entry(entryUID)
         .toJSON()
         .fetch();
-      
+
       expect(entry.locale).toBe(primaryLocale);
       console.log(`✅ Entry default locale: ${entry.locale}`);
     });
@@ -380,7 +380,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
     test('Locale_Count_PerLocale_AccurateCounts', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const primaryLocale = TestDataHelper.getLocale('primary');
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .language(primaryLocale)
@@ -388,11 +388,11 @@ describe('Locale Tests - Language & Locale Selection', () => {
         .limit(5)
         .toJSON()
         .find();
-      
+
       expect(result[1]).toBeDefined();
       expect(typeof result[1]).toBe('number');
       expect(result[1]).toBeGreaterThanOrEqual(result[0].length);
-      
+
       console.log(`✅ Locale '${primaryLocale}' count: ${result[1]} total, ${result[0].length} fetched`);
     });
 
@@ -400,7 +400,7 @@ describe('Locale Tests - Language & Locale Selection', () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const primaryLocale = TestDataHelper.getLocale('primary');
       const secondaryLocale = TestDataHelper.getLocale('secondary');
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .containedIn('locale', [primaryLocale, secondaryLocale])
@@ -408,12 +408,11 @@ describe('Locale Tests - Language & Locale Selection', () => {
         .limit(10)
         .toJSON()
         .find();
-      
+
       expect(result[1]).toBeDefined();
       expect(result[1]).toBeGreaterThanOrEqual(result[0].length);
-      
+
       console.log(`✅ Multi-locale count: ${result[1]} total entries`);
     });
   });
 });
-

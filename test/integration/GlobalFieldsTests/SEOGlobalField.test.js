@@ -2,10 +2,10 @@
 
 /**
  * SEO Global Field - Comprehensive Tests
- * 
+ *
  * Purpose: Validate SEO global field structure, types, and behavior
  * Focus: Bug detection through comprehensive assertions
- * 
+ *
  * This test demonstrates the correct approach:
  * 1. Use TestDataHelper (no hardcoding!)
  * 2. Use AssertionHelper (comprehensive validation)
@@ -188,7 +188,7 @@ describe('Global Fields - SEO Field Comprehensive Tests', () => {
         // Validate it's an object (not null, not array)
         if (typeof structuredData === 'object' && !Array.isArray(structuredData)) {
           const keys = Object.keys(structuredData);
-          
+
           // Edge case: structured_data can be an empty object {}
           // This is valid JSON but might indicate incomplete data
           if (keys.length === 0) {
@@ -328,4 +328,3 @@ describe('Global Fields - SEO Field Comprehensive Tests', () => {
     });
   });
 });
-
