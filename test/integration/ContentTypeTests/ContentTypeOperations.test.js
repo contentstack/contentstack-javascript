@@ -2,20 +2,20 @@
 
 /**
  * Content Type Operations - COMPREHENSIVE Tests
- * 
+ *
  * Tests for content type operations:
  * - Stack.getContentTypes() - fetch all content types
  * - Content type metadata
  * - Content type with queries
  * - Content type validation
- * 
+ *
  * Focus Areas:
  * 1. Fetching content types
  * 2. Content type metadata
  * 3. Content type structure validation
  * 4. Performance
  * 5. Edge cases
- * 
+ *
  * Bug Detection:
  * - Missing content types
  * - Incomplete metadata
@@ -41,13 +41,13 @@ describe('Content Type Tests - Content Type Operations', () => {
     test('ContentType_GetAll_ReturnsContentTypes', async () => {
       try {
         const contentTypes = await Stack.getContentTypes();
-        
+
         expect(contentTypes).toBeDefined();
         expect(Array.isArray(contentTypes)).toBe(true);
-        
+
         if (contentTypes.length > 0) {
           console.log(`✅ Stack.getContentTypes(): ${contentTypes.length} content types found`);
-          
+
           // Validate first content type has required fields
           const firstCT = contentTypes[0];
           expect(firstCT.uid).toBeDefined();
@@ -64,16 +64,16 @@ describe('Content Type Tests - Content Type Operations', () => {
     test('ContentType_GetAll_HasCompleteMetadata', async () => {
       try {
         const contentTypes = await Stack.getContentTypes();
-        
+
         if (contentTypes && contentTypes.length > 0) {
           contentTypes.forEach(ct => {
             expect(ct.uid).toBeDefined();
             expect(typeof ct.uid).toBe('string');
             expect(ct.title).toBeDefined();
-            
+
             console.log(`  ✅ Content Type: ${ct.uid} - ${ct.title}`);
           });
-          
+
           console.log(`✅ All ${contentTypes.length} content types have complete metadata`);
         }
       } catch (error) {
@@ -84,23 +84,23 @@ describe('Content Type Tests - Content Type Operations', () => {
     test('ContentType_GetAll_ContainsKnownContentTypes', async () => {
       try {
         const contentTypes = await Stack.getContentTypes();
-        
+
         if (contentTypes && contentTypes.length > 0) {
           const ctUIDs = contentTypes.map(ct => ct.uid);
-          
+
           // Check for known content types from config
           const articleUID = TestDataHelper.getContentTypeUID('article', true);
           const productUID = TestDataHelper.getContentTypeUID('product', true);
-          
+
           if (ctUIDs.includes(articleUID)) {
             console.log(`  ✅ Found expected content type: ${articleUID}`);
           }
-          
+
           if (ctUIDs.includes(productUID)) {
             console.log(`  ✅ Found expected content type: ${productUID}`);
           }
-          
-          console.log(`✅ Validated known content types`);
+
+          console.log('✅ Validated known content types');
         }
       } catch (error) {
         console.log('ℹ️  getContentTypes() validation skipped');
@@ -111,49 +111,49 @@ describe('Content Type Tests - Content Type Operations', () => {
   describe('ContentType.Query() - Query Content Types', () => {
     test('ContentType_Query_FetchesEntries', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(5)
         .toJSON()
         .find();
-      
+
       AssertionHelper.assertQueryResultStructure(result);
       console.log(`✅ ContentType('${contentTypeUID}').Query(): ${result[0].length} entries`);
     });
 
     test('ContentType_Query_WithIncludeCount_ReturnsCount', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .includeCount()
         .limit(5)
         .toJSON()
         .find();
-      
+
       expect(result[1]).toBeDefined();
       expect(typeof result[1]).toBe('number');
-      
+
       console.log(`✅ ContentType count: ${result[1]} total entries`);
     });
 
     test('ContentType_MultipleTypes_AllWork', async () => {
       const contentTypes = ['article', 'product', 'author'];
-      
+
       for (const ctName of contentTypes) {
         const contentTypeUID = TestDataHelper.getContentTypeUID(ctName, true);
-        
+
         const result = await Stack.ContentType(contentTypeUID)
           .Query()
           .limit(1)
           .toJSON()
           .find();
-        
+
         expect(result[0]).toBeDefined();
         console.log(`  ✅ ContentType('${contentTypeUID}'): ${result[0].length} entries`);
       }
-      
+
       console.log(`✅ Queried ${contentTypes.length} different content types`);
     });
   });
@@ -161,13 +161,13 @@ describe('Content Type Tests - Content Type Operations', () => {
   describe('ContentType Structure Validation', () => {
     test('ContentType_Entries_HaveSystemFields', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(5)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         result[0].forEach(entry => {
           // System fields
@@ -179,58 +179,58 @@ describe('Content Type Tests - Content Type Operations', () => {
           expect(entry.created_by).toBeDefined();
           expect(entry.updated_by).toBeDefined();
         });
-        
+
         console.log(`✅ All ${result[0].length} entries have required system fields`);
       }
     });
 
     test('ContentType_Entries_HaveValidTimestamps', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(5)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         result[0].forEach(entry => {
           // Validate timestamps
           const createdDate = new Date(entry.created_at);
           const updatedDate = new Date(entry.updated_at);
-          
+
           expect(createdDate.getTime()).toBeGreaterThan(0);
           expect(updatedDate.getTime()).toBeGreaterThan(0);
-          
+
           // Updated should be >= created
           expect(updatedDate.getTime()).toBeGreaterThanOrEqual(createdDate.getTime());
         });
-        
-        console.log(`✅ All entries have valid timestamps`);
+
+        console.log('✅ All entries have valid timestamps');
       }
     });
 
     test('ContentType_Entries_HaveValidUIDs', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(10)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         const uids = new Set();
-        
+
         result[0].forEach(entry => {
           // UID should be unique
           expect(uids.has(entry.uid)).toBe(false);
           uids.add(entry.uid);
-          
+
           // UID should match pattern
           expect(entry.uid).toMatch(/^blt[a-f0-9]{14,16}$/);
         });
-        
+
         console.log(`✅ All ${uids.size} entries have unique, valid UIDs`);
       }
     });
@@ -239,46 +239,46 @@ describe('Content Type Tests - Content Type Operations', () => {
   describe('ContentType - Different Complexity Levels', () => {
     test('ContentType_Simple_ReturnsSimpleData', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('simple', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(3)
         .toJSON()
         .find();
-      
+
       AssertionHelper.assertQueryResultStructure(result);
       console.log(`✅ Simple content type: ${result[0].length} entries`);
     });
 
     test('ContentType_Medium_ReturnsMediumData', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('medium', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(3)
         .toJSON()
         .find();
-      
+
       AssertionHelper.assertQueryResultStructure(result);
       console.log(`✅ Medium content type: ${result[0].length} entries`);
     });
 
     test('ContentType_Complex_ReturnsComplexData', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('complex', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(3)
         .toJSON()
         .find();
-      
+
       AssertionHelper.assertQueryResultStructure(result);
-      
+
       if (result[0].length > 0) {
         // Complex content types should have more fields
         const firstEntry = result[0][0];
         const fieldCount = Object.keys(firstEntry).length;
-        
+
         expect(fieldCount).toBeGreaterThan(5);
         console.log(`✅ Complex content type: ${result[0].length} entries with ${fieldCount} fields`);
       }
@@ -286,13 +286,13 @@ describe('Content Type Tests - Content Type Operations', () => {
 
     test('ContentType_SelfReferencing_HandlesCorrectly', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('selfReferencing', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(3)
         .toJSON()
         .find();
-      
+
       AssertionHelper.assertQueryResultStructure(result);
       console.log(`✅ Self-referencing content type: ${result[0].length} entries`);
     });
@@ -304,7 +304,7 @@ describe('Content Type Tests - Content Type Operations', () => {
         await AssertionHelper.assertPerformance(async () => {
           await Stack.getContentTypes();
         }, 3000);
-        
+
         console.log('✅ getContentTypes() performance acceptable');
       } catch (error) {
         console.log('ℹ️  getContentTypes() performance test skipped');
@@ -313,7 +313,7 @@ describe('Content Type Tests - Content Type Operations', () => {
 
     test('ContentType_Query_Performance', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       await AssertionHelper.assertPerformance(async () => {
         await Stack.ContentType(contentTypeUID)
           .Query()
@@ -321,13 +321,13 @@ describe('Content Type Tests - Content Type Operations', () => {
           .toJSON()
           .find();
       }, 2000);
-      
+
       console.log('✅ ContentType Query performance acceptable');
     });
 
     test('ContentType_MultipleQueries_Performance', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       await AssertionHelper.assertPerformance(async () => {
         const promises = [];
         for (let i = 0; i < 3; i++) {
@@ -341,7 +341,7 @@ describe('Content Type Tests - Content Type Operations', () => {
         }
         await Promise.all(promises);
       }, 5000);
-      
+
       console.log('✅ Multiple concurrent queries performance acceptable');
     });
   });
@@ -354,7 +354,7 @@ describe('Content Type Tests - Content Type Operations', () => {
           .limit(1)
           .toJSON()
           .find();
-        
+
         // Should not reach here
         expect(true).toBe(false);
       } catch (error) {
@@ -370,7 +370,7 @@ describe('Content Type Tests - Content Type Operations', () => {
           .limit(1)
           .toJSON()
           .find();
-        
+
         expect(true).toBe(false);
       } catch (error) {
         expect(error).toBeDefined();
@@ -385,7 +385,7 @@ describe('Content Type Tests - Content Type Operations', () => {
           .limit(1)
           .toJSON()
           .find();
-        
+
         expect(true).toBe(false);
       } catch (error) {
         expect(error.error_code).toBeDefined();
@@ -397,30 +397,30 @@ describe('Content Type Tests - Content Type Operations', () => {
   describe('ContentType Count Tests', () => {
     test('ContentType_Count_AccurateForAll', async () => {
       const contentTypes = ['article', 'product', 'author'];
-      
+
       for (const ctName of contentTypes) {
         const contentTypeUID = TestDataHelper.getContentTypeUID(ctName, true);
-        
+
         const result = await Stack.ContentType(contentTypeUID)
           .Query()
           .includeCount()
           .limit(5)
           .toJSON()
           .find();
-        
+
         expect(result[1]).toBeDefined();
         expect(result[1]).toBeGreaterThanOrEqual(result[0].length);
-        
+
         console.log(`  ✅ ${contentTypeUID}: ${result[1]} total entries`);
       }
-      
+
       console.log(`✅ Counts verified for ${contentTypes.length} content types`);
     });
 
     test('ContentType_CountWithFilters_Accurate', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
       const primaryLocale = TestDataHelper.getLocale('primary');
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .where('locale', primaryLocale)
@@ -428,9 +428,9 @@ describe('Content Type Tests - Content Type Operations', () => {
         .limit(5)
         .toJSON()
         .find();
-      
+
       expect(result[1]).toBeGreaterThanOrEqual(result[0].length);
-      
+
       console.log(`✅ Filtered count: ${result[1]} entries in ${primaryLocale} locale`);
     }, 15000); // Increased timeout for count queries with filters
   });
@@ -439,25 +439,25 @@ describe('Content Type Tests - Content Type Operations', () => {
     test('ContentType_CompareComplexityLevels_DataDifference', async () => {
       const simpleUID = TestDataHelper.getContentTypeUID('simple', true);
       const complexUID = TestDataHelper.getContentTypeUID('complex', true);
-      
+
       const simpleResult = await Stack.ContentType(simpleUID)
         .Query()
         .limit(1)
         .toJSON()
         .find();
-      
+
       const complexResult = await Stack.ContentType(complexUID)
         .Query()
         .limit(1)
         .toJSON()
         .find();
-      
+
       if (simpleResult[0].length > 0 && complexResult[0].length > 0) {
         const simpleFields = Object.keys(simpleResult[0][0]).length;
         const complexFields = Object.keys(complexResult[0][0]).length;
-        
+
         console.log(`✅ Simple: ${simpleFields} fields, Complex: ${complexFields} fields`);
-        
+
         // Complex should have more fields
         expect(complexFields).toBeGreaterThanOrEqual(simpleFields);
       }
@@ -466,27 +466,26 @@ describe('Content Type Tests - Content Type Operations', () => {
     test('ContentType_CompareCounts_AllHaveData', async () => {
       const contentTypes = ['article', 'product', 'author', 'complex'];
       const counts = {};
-      
+
       for (const ctName of contentTypes) {
         const contentTypeUID = TestDataHelper.getContentTypeUID(ctName, true);
-        
+
         const result = await Stack.ContentType(contentTypeUID)
           .Query()
           .includeCount()
           .limit(1)
           .toJSON()
           .find();
-        
+
         counts[ctName] = result[1];
       }
-      
+
       Object.entries(counts).forEach(([name, count]) => {
         console.log(`  ${name}: ${count} entries`);
         expect(count).toBeGreaterThanOrEqual(0);
       });
-      
+
       console.log(`✅ Compared entry counts across ${contentTypes.length} content types`);
     });
   });
 });
-

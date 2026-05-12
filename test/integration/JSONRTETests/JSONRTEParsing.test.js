@@ -2,16 +2,16 @@
 
 /**
  * COMPREHENSIVE JSON RICH TEXT EDITOR (RTE) TESTS
- * 
+ *
  * Tests JSON RTE parsing, embedded objects, and complex content structures.
- * 
+ *
  * SDK Features Covered:
  * - JSON RTE field retrieval
  * - Embedded objects (entries, assets)
  * - RTE structure validation
  * - Nested content handling
  * - includeEmbeddedItems()
- * 
+ *
  * Bug Detection Focus:
  * - RTE structure integrity
  * - Embedded object resolution
@@ -27,7 +27,6 @@ const config = TestDataHelper.getConfig();
 let Stack;
 
 describe('JSON RTE - Comprehensive Tests', () => {
-  
   beforeAll(() => {
     Stack = Contentstack.Stack(config.stack);
     Stack.setHost(config.host);
@@ -38,22 +37,21 @@ describe('JSON RTE - Comprehensive Tests', () => {
   // =============================================================================
 
   describe('JSON RTE Structure', () => {
-    
     test('JSONRTE_BasicStructure_ValidFormat', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(5)
         .toJSON()
         .find();
-      
+
       expect(result[0]).toBeDefined();
-      
+
       if (result[0].length > 0) {
         // Look for JSON RTE fields in entries
         let hasJSONRTE = false;
-        
+
         result[0].forEach(entry => {
           Object.keys(entry).forEach(key => {
             const value = entry[key];
@@ -61,7 +59,7 @@ describe('JSON RTE - Comprehensive Tests', () => {
             if (value && typeof value === 'object' && !Array.isArray(value)) {
               if (value.type || value.children || value.attrs) {
                 hasJSONRTE = true;
-                
+
                 // Validate basic structure
                 if (value.children) {
                   expect(Array.isArray(value.children)).toBe(true);
@@ -70,20 +68,20 @@ describe('JSON RTE - Comprehensive Tests', () => {
             }
           });
         });
-        
+
         console.log(`✅ JSON RTE fields: ${hasJSONRTE ? 'found and validated' : 'not present in results'}`);
       }
     });
 
     test('JSONRTE_ChildrenArray_IsArray', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(5)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         result[0].forEach(entry => {
           Object.values(entry).forEach(value => {
@@ -93,23 +91,23 @@ describe('JSON RTE - Comprehensive Tests', () => {
           });
         });
       }
-      
+
       console.log('✅ JSON RTE children arrays validated');
     });
 
     test('JSONRTE_NodeTypes_Valid', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(5)
         .toJSON()
         .find();
-      
-      const validNodeTypes = ['doc', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 
-                              'blockquote', 'code', 'img', 'embed', 'a', 'text',
-                              'ul', 'ol', 'li', 'hr', 'table', 'tr', 'td', 'th'];
-      
+
+      const validNodeTypes = ['doc', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+        'blockquote', 'code', 'img', 'embed', 'a', 'text',
+        'ul', 'ol', 'li', 'hr', 'table', 'tr', 'td', 'th'];
+
       if (result[0].length > 0) {
         result[0].forEach(entry => {
           Object.values(entry).forEach(value => {
@@ -123,10 +121,9 @@ describe('JSON RTE - Comprehensive Tests', () => {
           });
         });
       }
-      
+
       console.log('✅ JSON RTE node types validated');
     });
-
   });
 
   // =============================================================================
@@ -134,71 +131,69 @@ describe('JSON RTE - Comprehensive Tests', () => {
   // =============================================================================
 
   describe('Embedded Objects', () => {
-    
     test('EmbeddedObjects_WithIncludeEmbedded_Resolved', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .includeEmbeddedItems()
         .limit(3)
         .toJSON()
         .find();
-      
+
       expect(result[0]).toBeDefined();
-      
+
       console.log('✅ includeEmbeddedItems() query executed');
     });
 
     test('EmbeddedObjects_Assets_Resolved', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .includeEmbeddedItems()
         .limit(5)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         let foundEmbeddedAssets = false;
-        
+
         result[0].forEach(entry => {
           if (entry._embedded_items) {
             foundEmbeddedAssets = true;
-            
+
             // Validate embedded items structure
             expect(entry._embedded_items).toBeDefined();
           }
         });
-        
+
         console.log(`✅ Embedded assets: ${foundEmbeddedAssets ? 'found' : 'not present'}`);
       }
     });
 
     test('EmbeddedObjects_Entries_Resolved', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('cybersecurity', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .includeEmbeddedItems()
         .limit(3)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         let foundEmbeddedEntries = false;
-        
+
         result[0].forEach(entry => {
           if (entry._embedded_items) {
             foundEmbeddedEntries = true;
           }
         });
-        
+
         console.log(`✅ Embedded entries: ${foundEmbeddedEntries ? 'found' : 'not present'}`);
       }
     });
-
   });
 
   // =============================================================================
@@ -206,17 +201,16 @@ describe('JSON RTE - Comprehensive Tests', () => {
   // =============================================================================
 
   describe('Complex RTE Scenarios', () => {
-    
     test('ComplexRTE_NestedStructures_Handled', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('cybersecurity', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .includeEmbeddedItems()
         .limit(3)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         result[0].forEach(entry => {
           Object.values(entry).forEach(value => {
@@ -224,7 +218,7 @@ describe('JSON RTE - Comprehensive Tests', () => {
               // Check for nested structures
               const checkNesting = (node, depth = 0) => {
                 if (depth > 10) return; // Prevent infinite recursion
-                
+
                 if (node.children && Array.isArray(node.children)) {
                   node.children.forEach(child => {
                     if (child && typeof child === 'object') {
@@ -233,19 +227,19 @@ describe('JSON RTE - Comprehensive Tests', () => {
                   });
                 }
               };
-              
+
               checkNesting(value);
             }
           });
         });
       }
-      
+
       console.log('✅ Nested RTE structures handled');
     });
 
     test('ComplexRTE_WithReferences_Combined', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .includeReference('author')
@@ -253,15 +247,15 @@ describe('JSON RTE - Comprehensive Tests', () => {
         .limit(2)
         .toJSON()
         .find();
-      
+
       expect(result[0]).toBeDefined();
-      
+
       console.log('✅ RTE with references combined');
     });
 
     test('ComplexRTE_WithFilters_WorksCorrectly', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .exists('title')
@@ -269,12 +263,11 @@ describe('JSON RTE - Comprehensive Tests', () => {
         .limit(3)
         .toJSON()
         .find();
-      
+
       expect(result[0]).toBeDefined();
-      
+
       console.log('✅ RTE with filters works');
     });
-
   });
 
   // =============================================================================
@@ -282,16 +275,15 @@ describe('JSON RTE - Comprehensive Tests', () => {
   // =============================================================================
 
   describe('RTE Content Validation', () => {
-    
     test('RTEContent_TextNodes_HaveText', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(5)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         result[0].forEach(entry => {
           Object.values(entry).forEach(value => {
@@ -309,19 +301,19 @@ describe('JSON RTE - Comprehensive Tests', () => {
           });
         });
       }
-      
+
       console.log('✅ Text nodes validated');
     });
 
     test('RTEContent_Links_HaveHref', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(5)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         result[0].forEach(entry => {
           Object.values(entry).forEach(value => {
@@ -342,10 +334,9 @@ describe('JSON RTE - Comprehensive Tests', () => {
           });
         });
       }
-      
+
       console.log('✅ Link nodes validated');
     });
-
   });
 
   // =============================================================================
@@ -353,27 +344,25 @@ describe('JSON RTE - Comprehensive Tests', () => {
   // =============================================================================
 
   describe('RTE Performance', () => {
-    
     test('Perf_RTEWithEmbedded_ReasonableTime', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const startTime = Date.now();
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .includeEmbeddedItems()
         .limit(10)
         .toJSON()
         .find();
-      
+
       const duration = Date.now() - startTime;
-      
+
       expect(result[0]).toBeDefined();
       expect(duration).toBeLessThan(5000);
-      
+
       console.log(`⚡ RTE with embedded items: ${duration}ms`);
     });
-
   });
 
   // =============================================================================
@@ -381,16 +370,15 @@ describe('JSON RTE - Comprehensive Tests', () => {
   // =============================================================================
 
   describe('RTE Edge Cases', () => {
-    
     test('EdgeCase_EmptyRTE_HandledGracefully', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(10)
         .toJSON()
         .find();
-      
+
       if (result[0].length > 0) {
         result[0].forEach(entry => {
           Object.values(entry).forEach(value => {
@@ -402,26 +390,23 @@ describe('JSON RTE - Comprehensive Tests', () => {
           });
         });
       }
-      
+
       console.log('✅ Empty RTE handled');
     });
 
     test('EdgeCase_RTEWithoutEmbedded_Works', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
-      
+
       // Query without includeEmbeddedItems
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
         .limit(5)
         .toJSON()
         .find();
-      
+
       expect(result[0]).toBeDefined();
-      
+
       console.log('✅ RTE without embedded items works');
     });
-
   });
-
 });
-
