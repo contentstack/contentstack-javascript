@@ -432,7 +432,7 @@ describe('Content Type Tests - Content Type Operations', () => {
       expect(result[1]).toBeGreaterThanOrEqual(result[0].length);
       
       console.log(`✅ Filtered count: ${result[1]} entries in ${primaryLocale} locale`);
-    });
+    }, 15000); // Increased timeout for count queries with filters
   });
 
   describe('ContentType - Comparison Tests', () => {

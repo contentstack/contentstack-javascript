@@ -71,7 +71,7 @@ describe('Sync API - Comprehensive Tests', () => {
       
       console.log(`✅ Initial sync returned ${result.items.length}/${result.total_count} items`);
       console.log(`✅ Sync token: ${result.sync_token.substring(0, 20)}...`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('InitialSync_ItemStructure_ValidFormat', async () => {
       const result = await Stack.sync({ init: true });
@@ -102,7 +102,7 @@ describe('Sync API - Comprehensive Tests', () => {
       expect(isEntry || isAsset || item.type === 'content_type_deleted').toBe(true);
       
       console.log(`✅ Sync item structure valid: type=${item.type}, uid=${item.data.uid}`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('InitialSync_MultipleEntries_Consistency', async () => {
       const result = await Stack.sync({ init: true });
@@ -130,7 +130,7 @@ describe('Sync API - Comprehensive Tests', () => {
       
       console.log(`✅ Sync items breakdown: ${entryCount} entries, ${assetCount} assets, ${deletedCount} deleted`);
       expect(entryCount + assetCount).toBeGreaterThan(0);
-    });
+    }, 30000); // Increased timeout for sync operations
 
   });
 
@@ -166,7 +166,7 @@ describe('Sync API - Comprehensive Tests', () => {
       }
       
       console.log(`✅ Locale-specific sync (${locale}): ${result.items.length} items`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('Sync_Locale_SecondaryLocale_ReturnsDataOrEmpty', async () => {
       const locale = TestDataHelper.getLocale('secondary');
@@ -187,7 +187,7 @@ describe('Sync API - Comprehensive Tests', () => {
         console.log(`⚠️ Secondary locale (${locale}) not available or no content`);
         expect(error.error_code).toBeDefined();
       }
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('Sync_Locale_InvalidLocale_HandlesGracefully', async () => {
       try {
@@ -204,7 +204,7 @@ describe('Sync API - Comprehensive Tests', () => {
         expect(error.error_code).toBeDefined();
         console.log('✅ Invalid locale properly rejected');
       }
-    });
+    }, 30000); // Increased timeout for sync operations
 
   });
 
@@ -232,7 +232,7 @@ describe('Sync API - Comprehensive Tests', () => {
       
       // Should return entries published/updated after the date
       console.log(`✅ Date-based sync (from ${startDate.substring(0, 10)}): ${result.items.length} items`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('Sync_StartDate_OldDate_ReturnsAllData', async () => {
       const oldDate = '2020-01-01T00:00:00.000Z';
@@ -247,7 +247,7 @@ describe('Sync API - Comprehensive Tests', () => {
       expect(result.total_count).toBeGreaterThan(0);
       
       console.log(`✅ Sync from old date (${oldDate.substring(0, 10)}): ${result.items.length} items`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('Sync_StartDate_FutureDate_ReturnsEmpty', async () => {
       // Use a future date
@@ -267,7 +267,7 @@ describe('Sync API - Comprehensive Tests', () => {
       expect(result.items.length).toBe(0);
       
       console.log(`✅ Sync from future date returns empty as expected`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('Sync_StartDate_InvalidFormat_HandlesGracefully', async () => {
       try {
@@ -284,7 +284,7 @@ describe('Sync API - Comprehensive Tests', () => {
         expect(error.error_code).toBeDefined();
         console.log('✅ Invalid date format properly rejected');
       }
-    });
+    }, 30000); // Increased timeout for sync operations
 
   });
 
@@ -316,7 +316,7 @@ describe('Sync API - Comprehensive Tests', () => {
       }
       
       console.log(`✅ Content type sync (${contentTypeUID}): ${result.items.length} items`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('Sync_ContentType_ComplexType_ReturnsData', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('cybersecurity', true);
@@ -330,7 +330,7 @@ describe('Sync API - Comprehensive Tests', () => {
       expect(result.items).toBeDefined();
       
       console.log(`✅ Complex content type sync (${contentTypeUID}): ${result.items.length} items`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('Sync_ContentType_NonExistent_HandlesGracefully', async () => {
       try {
@@ -348,7 +348,7 @@ describe('Sync API - Comprehensive Tests', () => {
         expect(error.error_code).toBeDefined();
         console.log('✅ Non-existent content type properly rejected');
       }
-    });
+    }, 30000); // Increased timeout for sync operations
 
   });
 
@@ -384,7 +384,7 @@ describe('Sync API - Comprehensive Tests', () => {
       }
       
       console.log(`✅ Entry published sync: ${result.items.length} items`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('Sync_Type_AssetPublished_ReturnsPublishedAssets', async () => {
       const result = await Stack.sync({ 
@@ -405,7 +405,7 @@ describe('Sync API - Comprehensive Tests', () => {
       }
       
       console.log(`✅ Asset published sync: ${result.items.length} items`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('Sync_Type_EntryDeleted_ReturnsDeletedEntries', async () => {
       const result = await Stack.sync({ 
@@ -418,7 +418,7 @@ describe('Sync API - Comprehensive Tests', () => {
       
       // Might be empty if no deletions
       console.log(`✅ Entry deleted sync: ${result.items.length} items`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('Sync_Type_InvalidType_HandlesGracefully', async () => {
       try {
@@ -435,7 +435,7 @@ describe('Sync API - Comprehensive Tests', () => {
         expect(error.error_code).toBeDefined();
         console.log('✅ Invalid type properly rejected');
       }
-    });
+    }, 30000); // Increased timeout for sync operations
 
   });
 
@@ -471,7 +471,7 @@ describe('Sync API - Comprehensive Tests', () => {
       // Sync token should be defined regardless
       expect(typeof result.sync_token).toBe('string');
       console.log(`✅ Sync token present: ${result.sync_token.substring(0, 20)}...`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('SubsequentSync_SameTokenTwice_Consistent', async () => {
       // Get initial sync token
@@ -488,7 +488,7 @@ describe('Sync API - Comprehensive Tests', () => {
       expect(result2.sync_token).toBeDefined();
       
       console.log(`✅ Same sync token used twice: consistent results`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('SubsequentSync_InvalidToken_HandlesError', async () => {
       try {
@@ -504,7 +504,7 @@ describe('Sync API - Comprehensive Tests', () => {
         expect(error.error_message).toBeDefined();
         console.log('✅ Invalid sync token properly rejected');
       }
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('SubsequentSync_EmptyToken_HandlesError', async () => {
       try {
@@ -517,7 +517,7 @@ describe('Sync API - Comprehensive Tests', () => {
         expect(error).toBeDefined();
         console.log('✅ Empty sync token properly rejected');
       }
-    });
+    }, 30000); // Increased timeout for sync operations
 
   });
 
@@ -546,7 +546,7 @@ describe('Sync API - Comprehensive Tests', () => {
         expect(result.sync_token).toBeDefined();
         console.log(`✅ No pagination token: fewer than 100 items`);
       }
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('Pagination_ValidPaginationToken_ReturnsNextBatch', async () => {
       // Get initial sync with pagination
@@ -570,7 +570,7 @@ describe('Sync API - Comprehensive Tests', () => {
       } else {
         console.log('⚠️ No pagination token available (stack has < 100 items)');
       }
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('Pagination_InvalidToken_HandlesError', async () => {
       try {
@@ -585,7 +585,7 @@ describe('Sync API - Comprehensive Tests', () => {
         expect(error).toBeDefined();
         console.log('✅ Invalid pagination token properly rejected');
       }
-    });
+    }, 30000); // Increased timeout for sync operations
 
   });
 
@@ -612,7 +612,7 @@ describe('Sync API - Comprehensive Tests', () => {
       expect(result.sync_token).toBeDefined();
       
       console.log(`✅ Combined locale+date sync: ${result.items.length} items`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('AdvancedSync_ContentTypeAndType_CombinedFilters', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
@@ -637,7 +637,7 @@ describe('Sync API - Comprehensive Tests', () => {
       }
       
       console.log(`✅ Combined content_type+type sync: ${result.items.length} items`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('AdvancedSync_AllFilters_CombinedQuery', async () => {
       const locale = TestDataHelper.getLocale('primary');
@@ -657,7 +657,7 @@ describe('Sync API - Comprehensive Tests', () => {
       expect(result.sync_token).toBeDefined();
       
       console.log(`✅ All filters combined sync: ${result.items.length} items`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
   });
 
@@ -681,7 +681,7 @@ describe('Sync API - Comprehensive Tests', () => {
       expect(duration).toBeLessThan(10000);
       
       console.log(`✅ Initial sync completed in ${duration}ms`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
     test('Performance_SubsequentSync_FasterThanInitial', async () => {
       // Initial sync
@@ -702,7 +702,7 @@ describe('Sync API - Comprehensive Tests', () => {
       
       console.log(`✅ Initial sync: ${initialDuration}ms, Subsequent sync: ${subsequentDuration}ms`);
       console.log(`   Subsequent sync is ${subsequentDuration <= initialDuration ? 'faster or equal' : 'slower'}`);
-    });
+    }, 30000); // Increased timeout for sync operations
 
   });
 
@@ -723,7 +723,7 @@ describe('Sync API - Comprehensive Tests', () => {
         expect(error).toBeDefined();
         console.log('✅ Missing parameters properly rejected');
       }
-    });
+    }, 15000); // Increased timeout for error handling
 
     test('Error_ConflictingParameters_HandlesGracefully', async () => {
       try {
@@ -741,7 +741,7 @@ describe('Sync API - Comprehensive Tests', () => {
         expect(error).toBeDefined();
         console.log('✅ Conflicting parameters properly rejected');
       }
-    });
+    }, 15000); // Increased timeout for error handling
 
     test('Error_InvalidParameterType_HandlesGracefully', async () => {
       try {
@@ -757,7 +757,7 @@ describe('Sync API - Comprehensive Tests', () => {
         expect(error).toBeDefined();
         console.log('✅ Invalid parameter type properly rejected');
       }
-    });
+    }, 15000); // Increased timeout for error handling
 
   });
 

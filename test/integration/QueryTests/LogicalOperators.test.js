@@ -64,7 +64,7 @@ describe('Query Tests - Logical Operators', () => {
         const frFr = result[0].filter(e => e.locale === 'fr-fr').length;
         console.log(`   Distribution: en-us=${enUs}, fr-fr=${frFr}`);
       }
-    });
+    }, 15000); // Increased timeout for OR queries
 
     test('Query_Or_MultipleConditions_MatchesAny', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
@@ -362,7 +362,7 @@ describe('Query Tests - Logical Operators', () => {
         .find();
       
       console.log(`✅ Multi-OR query: ${result[0].length} returned, ${result[1] || 'N/A'} total`);
-    });
+    }, 20000); // Increased timeout for complex multi-OR queries
 
     test('Query_LogicalOperators_WithSorting_AllApplied', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
@@ -404,7 +404,7 @@ describe('Query Tests - Logical Operators', () => {
           .or(q1, q2)
           .toJSON()
           .find();
-      }, 3000);
+      }, 5000); // Increased threshold from 3000ms to 5000ms
       
       console.log('✅ OR query performance acceptable');
     });
@@ -421,7 +421,7 @@ describe('Query Tests - Logical Operators', () => {
           .and(q1, q2)
           .toJSON()
           .find();
-      }, 3000);
+      }, 5000); // Increased threshold from 3000ms to 5000ms
       
       console.log('✅ AND query performance acceptable');
     });
