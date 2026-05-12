@@ -69,7 +69,7 @@ describe('Global Fields - Nested Global Fields Comprehensive Tests', () => {
           .find();
 
         if (!result[0] || result[0].length === 0) {
-          console.log(`⚠️ No entries found with nested global field: ${nestedGlobalFieldUID}`);
+          console.log('⚠️ No entries found with nested global field (check content type has matching entries)');
           return;
         }
 

@@ -12,7 +12,7 @@ fileignoreconfig:
 - filename: test/integration/GlobalFieldsTests/ContentBlockGlobalField.test.js
   checksum: 8d2bc8cb6661336b57397649259f7e12786256706019efb644f133b336629d96
 - filename: test/integration/GlobalFieldsTests/NestedGlobalField.test.js
-  checksum: 703722cca153df62ffb3cb32fcfc2722d509607e6b91682282df5063650423d1
+  checksum: 1ba81e7a400fd02c5d66170bdd5b2419a8932963dd00c5635d754c89ab5daeba
 - filename: test/integration/NetworkResilienceTests/RetryLogic.test.js
   checksum: 3b5fe23398bdc2327848b3caa95339e51a0aed059c1eb299e78d3dd215ecbd30
 - filename: test/integration/QueryTests/ExistsSearchOperators.test.js
