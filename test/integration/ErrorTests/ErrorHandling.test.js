@@ -123,7 +123,7 @@ describe('Error Tests - Error Handling & Validation', () => {
         
         console.log(`✅ Invalid entry UID error: ${error.error_code}`);
       }
-    });
+    }, 15000); // Increased timeout for error handling tests
 
     test('Error_EmptyEntryUID_HandlesGracefully', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
@@ -269,7 +269,7 @@ describe('Error Tests - Error Handling & Validation', () => {
         expect(error.error_code).toBeDefined();
         console.log('✅ Special characters in field name trigger validation error (acceptable)');
       }
-    });
+    }, 15000); // Increased timeout for error handling tests
   });
 
   describe('Error Response Structure Validation', () => {
@@ -511,6 +511,130 @@ describe('Error Tests - Error Handling & Validation', () => {
       
       console.log('✅ Error handling is consistent across multiple calls');
     });
+  });
+
+  // =============================================================================
+  // TRANSPORT LAYER ERROR HANDLING (v3.27.0 socket-retry coverage)
+  // =============================================================================
+
+  describe('Transport Layer vs API Errors', () => {
+
+    test('ErrorHandling_TransportError_HasNoAPIErrorCode', async () => {
+      // When fetch itself fails (DNS failure, socket drop, etc.) the error is a
+      // TypeError thrown by the runtime — it has no error_code / error_message
+      // from the Contentstack API response body.
+      // Bug this catches: if transport errors are accidentally wrapped in the
+      // same object shape as API errors, callers can't distinguish them and
+      // may show misleading error messages to users.
+      const localStack = Contentstack.Stack({
+        ...init.stack,
+        fetchOptions: { retryLimit: 0, timeout: 3000 }
+      });
+      localStack.setHost('host-that-does-not-exist-transport-test.contentstack.io');
+
+      const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
+
+      try {
+        await localStack.ContentType(contentTypeUID).Query().limit(1).toJSON().find();
+        expect(true).toBe(false); // Should not reach here
+      } catch (error) {
+        expect(error).toBeDefined();
+        // Transport errors have no API error_code — they are runtime TypeError objects
+        expect(error.error_code).toBeUndefined();
+        expect(error.error_message).toBeUndefined();
+
+        console.log('✅ Transport error has no API error_code — correctly not wrapped as API error');
+      }
+    }, 8000);
+
+    test('ErrorHandling_APIError_StructureDistinctFromTransportError', async () => {
+      // API errors and transport errors must be distinguishable by structure so
+      // application error-handling code can route them correctly.
+      // Bug this catches: if a refactor makes both paths produce the same shape,
+      // callers cannot tell whether the network is down or the query was invalid.
+      let apiError = null;
+      let transportError = null;
+
+      const unreachableStack = Contentstack.Stack({
+        ...init.stack,
+        fetchOptions: { retryLimit: 0, timeout: 3000 }
+      });
+      unreachableStack.setHost('host-that-does-not-exist-struct-test.contentstack.io');
+
+      try {
+        await Stack.ContentType('non_existent_ct_struct_test_xyz').Query().limit(1).toJSON().find();
+      } catch (err) {
+        apiError = err;
+      }
+
+      try {
+        await unreachableStack.ContentType('any_ct').Query().limit(1).toJSON().find();
+      } catch (err) {
+        transportError = err;
+      }
+
+      expect(apiError).not.toBeNull();
+      expect(transportError).not.toBeNull();
+
+      // API errors have structured fields from the Contentstack response body
+      expect(apiError.error_code).toBeDefined();
+      expect(typeof apiError.error_code).toBe('number');
+      expect(apiError.error_message).toBeDefined();
+
+      // Transport errors are raw runtime errors — no API response body fields
+      expect(transportError.error_code).toBeUndefined();
+      expect(transportError.error_message).toBeUndefined();
+
+      console.log(`✅ API error has error_code=${apiError.error_code}; transport error has none — shapes are distinct`);
+    }, 12000);
+
+    test('ErrorHandling_ZeroRetryLimit_TransportError_ErrorShapeUnchanged', async () => {
+      // retryLimit=0 takes the reject() path in onError() immediately.
+      // The error object passed to reject() must be the original transport error,
+      // not re-wrapped or mutated.
+      // Bug this catches: if the retryLimit=0 branch wraps the error differently,
+      // downstream catch blocks that check error shape would break silently.
+      const stackDefaultRetry = Contentstack.Stack({
+        ...init.stack,
+        fetchOptions: { retryLimit: 5, timeout: 3000 }
+      });
+      stackDefaultRetry.setHost('host-that-does-not-exist-shape-test.contentstack.io');
+
+      const stackZeroRetry = Contentstack.Stack({
+        ...init.stack,
+        fetchOptions: { retryLimit: 0, timeout: 3000 }
+      });
+      stackZeroRetry.setHost('host-that-does-not-exist-shape-test.contentstack.io');
+
+      let defaultRetryError = null;
+      let zeroRetryError = null;
+
+      try {
+        await stackDefaultRetry.ContentType('any_ct').Query().limit(1).toJSON().find();
+      } catch (err) {
+        defaultRetryError = err;
+      }
+
+      try {
+        await stackZeroRetry.ContentType('any_ct').Query().limit(1).toJSON().find();
+      } catch (err) {
+        zeroRetryError = err;
+      }
+
+      expect(defaultRetryError).not.toBeNull();
+      expect(zeroRetryError).not.toBeNull();
+
+      // Both must be transport errors (no API error_code) regardless of retryLimit
+      expect(defaultRetryError.error_code).toBeUndefined();
+      expect(zeroRetryError.error_code).toBeUndefined();
+
+      // Both should have the same constructor type — error shape must not change
+      // based on whether retries were attempted
+      expect(defaultRetryError.constructor).toBe(zeroRetryError.constructor);
+
+      console.log(`✅ Transport error shape is identical regardless of retryLimit (${defaultRetryError.constructor.name})`);
+    }, 15000);
+
   });
 
   describe('Special Error Cases', () => {

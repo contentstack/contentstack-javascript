@@ -434,6 +434,120 @@ describe('Retry Logic & Network Resilience - Comprehensive Tests', () => {
   });
 
   // =============================================================================
+  // SOCKET & TRANSPORT ERROR HANDLING (v3.27.0 retry coverage)
+  // =============================================================================
+
+  describe('Socket & Transport Error Handling', () => {
+
+    test('RetryLogic_AuthError_FailsFast_NotSlowedByRetryDelay', async () => {
+      // 4xx API errors go through data.then(json => reject) — no retryCondition,
+      // so they are NEVER retried regardless of retryLimit.
+      // Bug this catches: if SDK starts retrying 4xx errors, timing balloons to
+      // retryLimit * retryDelay (5 * 2000ms = 10 000ms) instead of failing fast.
+      const RETRY_DELAY = 2000;
+      const RETRY_LIMIT = 5;
+
+      const localStack = Contentstack.Stack({
+        api_key: 'invalid_api_key_for_timing_test',
+        delivery_token: config.stack.delivery_token,
+        environment: config.stack.environment,
+        fetchOptions: {
+          retryLimit: RETRY_LIMIT,
+          retryDelay: RETRY_DELAY
+        }
+      });
+      localStack.setHost(config.host);
+
+      const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
+      const start = Date.now();
+
+      try {
+        await localStack.ContentType(contentTypeUID).Query().limit(1).toJSON().find();
+        expect(true).toBe(false); // Should not reach here
+      } catch (error) {
+        const duration = Date.now() - start;
+
+        // If retried RETRY_LIMIT times: RETRY_LIMIT * RETRY_DELAY = 10 000ms
+        // Auth errors must be rejected immediately — well under one retry delay.
+        expect(duration).toBeLessThan(RETRY_DELAY);
+        expect(error.error_code).toBeDefined();
+
+        console.log(`✅ Auth error rejected in ${duration}ms — no retry delay (retryLimit=${RETRY_LIMIT}, retryDelay=${RETRY_DELAY}ms)`);
+      }
+    }, 12000);
+
+    test('RetryLogic_CustomRetryCondition_InvokesOnError_WithDelayBetweenRetries', async () => {
+      // retryCondition returning true routes through onError(), which applies
+      // retryDelay before each retry attempt.
+      // Bug this catches: if the retryCondition → onError() wiring is broken,
+      // the test fails immediately (no delays) instead of after >= 2 * retryDelay.
+      const RETRY_DELAY = 400;
+      const RETRY_LIMIT = 2;
+
+      const localStack = Contentstack.Stack({
+        ...config.stack,
+        fetchOptions: {
+          retryLimit: RETRY_LIMIT,
+          retryDelay: RETRY_DELAY,
+          retryCondition: (response) => response.status === 422
+        }
+      });
+      localStack.setHost(config.host);
+
+      const start = Date.now();
+
+      try {
+        await localStack.ContentType('non_existent_ct_retry_test_xyz').Query().limit(1).toJSON().find();
+        expect(true).toBe(false); // Should not reach here
+      } catch (error) {
+        const duration = Date.now() - start;
+
+        // 2 retries × 400ms delay = minimum 800ms of intentional waiting.
+        // Subtract a small tolerance for scheduling jitter.
+        expect(duration).toBeGreaterThan(RETRY_LIMIT * RETRY_DELAY * 0.75);
+        expect(error).toBeDefined();
+
+        console.log(`✅ retryCondition triggered ${RETRY_LIMIT} retries, total ${duration}ms (min expected: ${RETRY_LIMIT * RETRY_DELAY}ms)`);
+      }
+    }, 20000);
+
+    test('RetryLogic_ZeroRetryLimit_NetworkFailure_RejectsWithoutWaiting', async () => {
+      // onError() checks retryLimit === 0 first and calls reject() immediately.
+      // The new socket-error path also has: if (isSocketOrAbort && retryLimit > 0).
+      // Bug this catches: if either guard is removed, a network failure with
+      // retryLimit=0 would enter a retry loop and add retryDelay * N ms of latency.
+      const RETRY_DELAY = 1500;
+
+      const localStack = Contentstack.Stack({
+        ...config.stack,
+        fetchOptions: {
+          retryLimit: 0,
+          retryDelay: RETRY_DELAY,
+          timeout: 3000
+        }
+      });
+      localStack.setHost('host-that-does-not-exist-xyz.contentstack.io');
+
+      const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
+      const start = Date.now();
+
+      try {
+        await localStack.ContentType(contentTypeUID).Query().limit(1).toJSON().find();
+        expect(true).toBe(false); // Should not reach here
+      } catch (error) {
+        const duration = Date.now() - start;
+
+        // With retryLimit=0, no retry delays should be added at all.
+        expect(duration).toBeLessThan(RETRY_DELAY);
+        expect(error).toBeDefined();
+
+        console.log(`✅ retryLimit=0 rejects network failure in ${duration}ms (no ${RETRY_DELAY}ms retry delay added)`);
+      }
+    }, 10000);
+
+  });
+
+  // =============================================================================
   // EDGE CASES
   // =============================================================================
 

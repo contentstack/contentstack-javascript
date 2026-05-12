@@ -12,7 +12,7 @@ fileignoreconfig:
 - filename: test/integration/GlobalFieldsTests/ContentBlockGlobalField.test.js
   checksum: 8d2bc8cb6661336b57397649259f7e12786256706019efb644f133b336629d96
 - filename: test/integration/NetworkResilienceTests/RetryLogic.test.js
-  checksum: 681543c7c982eba430189b541116ffeb06c7955da220b5fd8c6b034b1e9a5e43
+  checksum: 3b5fe23398bdc2327848b3caa95339e51a0aed059c1eb299e78d3dd215ecbd30
 - filename: test/integration/QueryTests/ExistsSearchOperators.test.js
   checksum: e4774c805f1d0876cdc03439ed14a2f35a0ceb6028d86370a49ef0558a7bc46e
 - filename: index.d.ts
@@ -35,8 +35,6 @@ fileignoreconfig:
   checksum: 49d6742d014ce111735611ebab16dc8c888ce8d678dfbc99620252257e780ec5
 - filename: src/core/contentstack.js
   checksum: 22e723507c1fed8b3175b57791f4249889c9305b79e5348d59d741bdf4f006ba
-- filename: test/config.js
-  checksum: 4ada746af34f2868c038f53126c08c21d750ddbd037d0a62e88824dd5d9e20be
 - filename: test/live-preview/live-preview-test.js
   checksum: d742465789e00a17092a7e9664adda4342a13bc4975553371a26df658f109952
 - filename: src/core/lib/request.js
