@@ -14,3 +14,5 @@ coverage
 .dccache
 dist/*
 *.log
+docs-internal/
+talisman_report
