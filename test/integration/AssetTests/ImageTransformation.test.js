@@ -733,6 +733,60 @@ describe('Image Transformation Tests', () => {
     });
   });
 
+  describe('URL Edge Cases - Valid/Invalid URL Question Mark Handling', () => {
+    let Asset;
+    const Regexp = new RegExp('\\?', 'g');
+
+    beforeAll(async () => {
+      const assets = await Stack.Assets().Query().toJSON().find();
+      Asset = assets[0][0];
+    });
+
+    test('ImageTransform_ValidURL_SingleParam_ExactlyOneQuestionMark', () => {
+      const Image = Stack.imageTransform(Asset.url, { quality: 50 });
+      expect(Image.match(Regexp).length).toBe(1);
+    });
+
+    test('ImageTransform_ValidURL_SingleParam_QualityIncluded', () => {
+      const Image = Stack.imageTransform(Asset.url, { quality: 50 });
+      expect(Image.includes('?quality=50')).toBe(true);
+    });
+
+    test('ImageTransform_ValidURL_MultipleParams_ExactlyOneQuestionMark', () => {
+      const Image = Stack.imageTransform(Asset.url, { quality: 50, auto: 'webp', format: 'jpg' });
+      expect(Image.match(Regexp).length).toBe(1);
+    });
+
+    test('ImageTransform_ValidURL_MultipleParams_AllParamsIncluded', () => {
+      const Image = Stack.imageTransform(Asset.url, { quality: 50, auto: 'webp', format: 'jpg' });
+      expect(Image.includes('quality=50')).toBe(true);
+      expect(Image.includes('auto=webp')).toBe(true);
+      expect(Image.includes('format=jpg')).toBe(true);
+    });
+
+    test('ImageTransform_InvalidURL_TrailingQuestion_SingleParam_ExactlyOneQuestionMark', () => {
+      const Image = Stack.imageTransform(Asset.url + '?', { quality: 50 });
+      expect(Image.match(Regexp).length).toBe(1);
+    });
+
+    test('ImageTransform_InvalidURL_TrailingQuestion_SingleParam_QualityIncluded', () => {
+      const Image = Stack.imageTransform(Asset.url + '?', { quality: 50 });
+      expect(Image.includes('quality=50')).toBe(true);
+    });
+
+    test('ImageTransform_InvalidURL_TrailingQuestion_MultipleParams_ExactlyOneQuestionMark', () => {
+      const Image = Stack.imageTransform(Asset.url + '?', { quality: 50, auto: 'webp', format: 'jpg' });
+      expect(Image.match(Regexp).length).toBe(1);
+    });
+
+    test('ImageTransform_InvalidURL_TrailingQuestion_MultipleParams_AllParamsIncluded', () => {
+      const Image = Stack.imageTransform(Asset.url + '?', { quality: 50, auto: 'webp', format: 'jpg' });
+      expect(Image.includes('quality=50')).toBe(true);
+      expect(Image.includes('auto=webp')).toBe(true);
+      expect(Image.includes('format=jpg')).toBe(true);
+    });
+  });
+
   describe('Performance', () => {
     test('ImageTransform_SimpleTransform_FastExecution', async () => {
       const imageUID = TestDataHelper.getImageAssetUID();
