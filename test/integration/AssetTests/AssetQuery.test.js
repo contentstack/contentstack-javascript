@@ -518,4 +518,51 @@ describe('Asset Tests - Asset Queries', () => {
       }
     });
   });
+
+  // =============================================================================
+  // ASSET SPREAD METHOD / ARRAY DESTRUCTURING TESTS
+  // =============================================================================
+
+  describe('Asset Spread Method - Array Destructuring', () => {
+    const field = 'updated_at';
+
+    test('AssetSpread_AssetsAsFirstElement_ReturnsTruthyLength', async () => {
+      const Query = Stack.Assets().Query();
+      const result = await Query.limit(1).toJSON().find();
+      const assets = result[0];
+
+      expect(assets.length).toBeTruthy();
+
+      if (assets && assets.length) {
+        let prev = assets[0][field];
+        const _assets = assets.every((asset) => {
+          prev = asset[field];
+          return asset[field] <= prev;
+        });
+        expect(_assets).toBe(true);
+      }
+
+      console.log(`✅ Assets as first element: ${assets.length} asset(s) returned`);
+    });
+
+    test('AssetSpread_WithIncludeCount_AssetsAndCountDestructured', async () => {
+      const Query = Stack.Assets().Query();
+      const result = await Query.includeCount().toJSON().find();
+      const [assets, count] = result;
+
+      expect(assets.length).toBeTruthy();
+      expect(count).toBeTruthy();
+
+      if (assets && assets.length) {
+        let prev = assets[0][field];
+        const _assets = assets.every((asset) => {
+          prev = asset[field];
+          return asset[field] <= prev;
+        });
+        expect(_assets).toBe(true);
+      }
+
+      console.log(`✅ Assets + count destructured: ${assets.length} assets, total count=${count}`);
+    });
+  });
 });

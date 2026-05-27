@@ -635,6 +635,71 @@ describe('Error Tests - Error Handling & Validation', () => {
     }, 15000);
   });
 
+  // =============================================================================
+  // HTTP STATUS CODE ERRORS (http_code / http_message) — from findone.js
+  // =============================================================================
+
+  describe('HTTP Status Code Errors (http_code / http_message)', () => {
+    describe('422 Unprocessable Entity via findOne', () => {
+      let success = false;
+      let error = null;
+
+      beforeAll(async () => {
+        try {
+          const Query = Stack.ContentType('invalid_content_type').Query();
+          await Query.toJSON().findOne();
+          success = true;
+        } catch (err) {
+          error = err;
+        }
+      });
+
+      test('Should not succeed with invalid content type', () => {
+        expect(success).toBe(false);
+      });
+
+      test('Should return HTTP status 422', () => {
+        expect(error.http_code).toBe(422);
+      });
+
+      test('Should have a non-empty http_message', () => {
+        expect(error.http_message).toBeTruthy();
+      });
+    });
+
+    describe('412 Unauthorized via findOne with invalid API key', () => {
+      let success = false;
+      let error = null;
+      const contentTypes = { source: 'source' };
+
+      beforeAll(async () => {
+        const savedHeaders = { ...Stack.headers };
+        try {
+          Stack.headers = { authorization: 'InvalidAPIKey' };
+          const Query = Stack.ContentType(contentTypes.source).Query();
+          await Query.toJSON().findOne();
+          success = true;
+        } catch (err) {
+          error = err;
+        } finally {
+          Stack.headers = savedHeaders;
+        }
+      });
+
+      test('Should not succeed with invalid API key', () => {
+        expect(success).toBe(false);
+      });
+
+      test('Should return HTTP status 412', () => {
+        expect(error.http_code).toBe(412);
+      });
+
+      test('Should have a non-empty http_message', () => {
+        expect(error.http_message).toBeTruthy();
+      });
+    });
+  });
+
   describe('Special Error Cases', () => {
     test('Error_VeryLongUID_HandlesGracefully', async () => {
       const veryLongUID = 'a'.repeat(1000);
