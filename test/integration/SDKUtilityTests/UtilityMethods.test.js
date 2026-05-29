@@ -105,6 +105,87 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
         .catch(done);
     });
 
+    test('Spread_WithIncludeSchema_SchemaAsSecondArg_CountAsThird', (done) => {
+      const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
+
+      Stack.ContentType(contentTypeUID)
+        .Query()
+        .includeSchema()
+        .includeCount()
+        .toJSON()
+        .find()
+        .spread((entries, schema, count) => {
+          expect(entries).toBeDefined();
+          expect(Array.isArray(entries)).toBe(true);
+          expect(entries.length).toBeGreaterThan(0);
+
+          expect(schema).toBeTruthy();
+
+          expect(count).toBeDefined();
+          expect(typeof count).toBe('number');
+          expect(count).toBeGreaterThanOrEqual(entries.length);
+
+          console.log(`✅ Spread includeSchema+includeCount: entries=${entries.length}, count=${count}`);
+          done();
+        })
+        .catch(done);
+    });
+
+    test('Spread_WithIncludeContentType_ContentTypeHasUID', (done) => {
+      const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
+
+      Stack.ContentType(contentTypeUID)
+        .Query()
+        .includeContentType()
+        .includeCount()
+        .toJSON()
+        .find()
+        .spread((entries, ct, count) => {
+          expect(entries).toBeDefined();
+          expect(Array.isArray(entries)).toBe(true);
+          expect(entries.length).toBeGreaterThan(0);
+
+          if (ct) {
+            expect(ct.uid).toBe(contentTypeUID);
+          }
+
+          expect(count).toBeDefined();
+          expect(typeof count).toBe('number');
+
+          console.log(`✅ Spread includeContentType+includeCount: ct.uid=${ct && ct.uid}, count=${count}`);
+          done();
+        })
+        .catch(done);
+    });
+
+    test('Spread_WithIncludeSchemaAndContentType_AllThreeArgs', (done) => {
+      const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
+
+      Stack.ContentType(contentTypeUID)
+        .Query()
+        .includeCount()
+        .includeSchema()
+        .includeContentType()
+        .toJSON()
+        .find()
+        .spread((entries, ct, count) => {
+          expect(entries).toBeDefined();
+          expect(Array.isArray(entries)).toBe(true);
+          expect(entries.length).toBeGreaterThan(0);
+
+          if (ct) {
+            expect(ct.uid).toBe(contentTypeUID);
+          }
+
+          expect(count).toBeDefined();
+          expect(typeof count).toBe('number');
+
+          console.log(`✅ Spread includeCount+includeSchema+includeContentType: entries=${entries.length}, count=${count}`);
+          done();
+        })
+        .catch(done);
+    });
+
     test('Spread_ErrorHandling_CatchesErrors', async () => {
       try {
         await Stack.ContentType('non_existent_ct_12345')
@@ -216,6 +297,17 @@ describe('SDK Utility Methods - Comprehensive Tests', () => {
       } else {
         console.log('✅ Empty early access array: no header added');
       }
+    });
+
+    test('EarlyAccess_NewCDAAndTaxonomy_HeaderPreservesOrder', () => {
+      const stack = Contentstack.Stack({
+        ...config.stack,
+        early_access: ['newCDA', 'taxonomy']
+      });
+
+      expect(stack.headers['x-header-ea']).toBe('newCDA,taxonomy');
+
+      console.log(`✅ early_access ['newCDA','taxonomy'] → header: ${stack.headers['x-header-ea']}`);
     });
 
     test('EarlyAccess_NoEarlyAccess_NoHeader', () => {
