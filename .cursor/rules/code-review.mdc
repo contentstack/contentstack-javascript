@@ -1,0 +1,38 @@
+---
+description: "PR review themes — API docs, compatibility, errors, security, tests (CDA SDK)"
+alwaysApply: true
+---
+
+# Code review checklist (CDA JavaScript SDK)
+
+Apply when reviewing changes to the **`contentstack`** npm package (Content Delivery API client).
+
+## Public API & documentation
+
+- **JSDoc** updated for new or changed public methods/classes (params, return shape, examples), matching style in `src/core/contentstack.js` / `src/core/stack.js`.
+- **`index.d.ts`** updated when TypeScript consumers would see different signatures or new exports.
+
+## Backward compatibility
+
+- Avoid breaking changes to exported function signatures, option objects, or default behavior without a major version rationale.
+- If behavior changes, ensure **callers inside `src/`** and tests reflect the new contract.
+
+## Errors & safety
+
+- HTTP failures should continue to reject with a predictable shape from **`src/core/lib/request.js`** where applicable (**`error_message`**, **`error_code`**, **`errors`**, **`status`**, **`statusText`**).
+- Do not log full **delivery_token**, **preview_token**, **management_token**, or **api_key** values.
+- Respect **null/undefined** edge cases for optional API fields.
+
+## Dependencies & supply chain
+
+- New **dependencies** should be justified (size, maintenance, license).
+- Lockfile and **`package.json`** version bumps should be minimal and reviewable.
+
+## Tests
+
+- **Jest** tests for new logic or regressions under **`test/`** (JS and/or **`test/typescript/`** as appropriate).
+- Live stack tests must remain compatible with **`test/config.js`** env requirements; document new env needs in **`test/README.md`** or comments near the harness — never commit credentials.
+
+## Security & privacy
+
+- No hardcoded credentials; no accidental exposure of customer content in logs or error messages.
