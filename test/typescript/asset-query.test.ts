@@ -27,8 +27,8 @@ describe('Asset Query Test', () => {
     });
     
     test('Asset Query find test', done => {
-        makeAssetQuery().find().then((response) => done()).catch((error) => done());
-    });
+        makeAssetQuery().find().then((response) => done()).catch((error) => done(error));
+    }, 15000); // Increased timeout for asset query
 
     test('Asset Query find test', done => {
         makeAssetQuery().findOne().then((response) => done()).catch((error) => done());
