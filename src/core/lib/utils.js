@@ -149,7 +149,7 @@ export function resultWrapper (result) {
   if (result && typeof result.entries !== 'undefined') {
     if (result.entries && result.entries.length) {
       for (let i = 0, _i = result.entries.length; i < _i; i++) {
-        result.entries[i] = Result(result.entries[i]);
+        result.entries[i] = new Result(result.entries[i]);
       }
     } else {
       result.entries = [];
@@ -157,17 +157,17 @@ export function resultWrapper (result) {
   } else if (result && result.assets && typeof result.assets !== 'undefined') {
     if (result.assets && result.assets.length) {
       for (let j = 0, _j = result.assets.length; j < _j; j++) {
-        result.assets[j] = Result(result.assets[j]);
+        result.assets[j] = new Result(result.assets[j]);
       }
     } else {
       result.assets = [];
     }
   } else if (result && typeof result.entry !== 'undefined') {
-    result.entry = Result(result.entry);
+    result.entry = new Result(result.entry);
   } else if (result && typeof result.asset !== 'undefined') {
-    result.asset = Result(result.asset);
+    result.asset = new Result(result.asset);
   } else if (result && typeof result.items !== 'undefined') {
-    result.items = Result(result.items).toJSON();
+    result.items = new Result(result.items).toJSON();
   }
 
   return result;
