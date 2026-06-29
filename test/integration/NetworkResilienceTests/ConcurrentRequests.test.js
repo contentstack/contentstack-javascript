@@ -30,7 +30,7 @@ const config = TestDataHelper.getConfig();
 let Stack;
 
 describe('Concurrent Requests - Comprehensive Tests', () => {
-  // Retry up to 2 times with a ~4s pause between attempts to tolerate dev11 server load spikes
+  // Retry up to 2 times with a ~4s pause between attempts to tolerate server load spikes in shared CI environments
   jest.retryTimes(2, { logErrorsBeforeRetry: true });
   afterEach(async () => {
     await new Promise(resolve => setTimeout(resolve, 4000));
