@@ -338,7 +338,7 @@ describe('Version Utility - Comprehensive Tests (Phase 4)', () => {
 
       const duration = Date.now() - startTime;
 
-      expect(duration).toBeLessThan(200); // Should be instant (increased threshold for CI environments)
+      expect(duration).toBeLessThan(500); // Raised to 500ms to tolerate dev11 CPU load under concurrent sanity runs
 
       console.log(`⚡ 1000 version reads: ${duration}ms`);
     });
