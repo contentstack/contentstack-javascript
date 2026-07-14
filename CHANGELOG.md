@@ -1,5 +1,10 @@
 ## Change log
 
+### Version: 3.27.1
+#### Date:  Jul-14-2026
+##### Fix:
+ - Update the internal dependency of @contentstack/utils from 1.8.0 to 1.9.1
+
 ### Version: 3.27.0
 #### Date:  Mar-23-2026
 ##### Fix:
