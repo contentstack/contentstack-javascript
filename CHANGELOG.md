@@ -1,5 +1,10 @@
 ## Change log
 
+## [3.27.1](https://github.com/contentstack/contentstack-javascript/compare/v3.27.0...v3.27.1)
+#### Date:  Jul-14-2026
+##### Fix:
+ - Bump @contentstack/utils dependency from ^1.4.1 to ^1.9.1
+
 ### Version: 3.27.0
 #### Date:  Mar-23-2026
 ##### Fix:
