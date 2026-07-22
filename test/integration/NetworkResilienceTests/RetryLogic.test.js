@@ -270,6 +270,7 @@ describe('Retry Logic & Network Resilience - Comprehensive Tests', () => {
   describe('Error Scenarios', () => {
     test('Error_InvalidAPIKey_FailsWithoutRetry', async () => {
       const localStack = Contentstack.Stack({
+        // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
         api_key: 'invalid_api_key_12345',
         delivery_token: config.stack.delivery_token,
         environment: config.stack.environment,
@@ -436,6 +437,7 @@ describe('Retry Logic & Network Resilience - Comprehensive Tests', () => {
       const RETRY_LIMIT = 5;
 
       const localStack = Contentstack.Stack({
+        // deepcode ignore HardcodedNonCryptoSecret: test fixture value, not a real secret
         api_key: 'invalid_api_key_for_timing_test',
         delivery_token: config.stack.delivery_token,
         environment: config.stack.environment,
