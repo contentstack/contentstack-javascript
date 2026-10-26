@@ -270,7 +270,7 @@ describe('Retry Logic & Network Resilience - Comprehensive Tests', () => {
   describe('Error Scenarios', () => {
     test('Error_InvalidAPIKey_FailsWithoutRetry', async () => {
       const localStack = Contentstack.Stack({
-        api_key: 'invalid_api_key_12345',
+        api_key: 'INVALID_API_KEY',
         delivery_token: config.stack.delivery_token,
         environment: config.stack.environment,
         fetchOptions: {
@@ -436,7 +436,7 @@ describe('Retry Logic & Network Resilience - Comprehensive Tests', () => {
       const RETRY_LIMIT = 5;
 
       const localStack = Contentstack.Stack({
-        api_key: 'invalid_api_key_for_timing_test',
+        api_key: 'INVALID_API_KEY',
         delivery_token: config.stack.delivery_token,
         environment: config.stack.environment,
         fetchOptions: {
