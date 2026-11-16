@@ -14,7 +14,7 @@ fileignoreconfig:
 - filename: test/integration/GlobalFieldsTests/NestedGlobalField.test.js
   checksum: 1ba81e7a400fd02c5d66170bdd5b2419a8932963dd00c5635d754c89ab5daeba
 - filename: test/integration/NetworkResilienceTests/RetryLogic.test.js
-  checksum: 3b5fe23398bdc2327848b3caa95339e51a0aed059c1eb299e78d3dd215ecbd30
+  checksum: 83e60d29f762c4b018f79019766d6edb9653b314085f53891d531f425a50480d
 - filename: test/integration/QueryTests/ExistsSearchOperators.test.js
   checksum: 9b1cec59275ba72fe4b753e956c5b24b237d24d12819434ab65109075cf50f86
 - filename: index.d.ts
@@ -24,7 +24,7 @@ fileignoreconfig:
 - filename: .github/workflows/secrets-scan.yml
   checksum: d79ec3f3288964f7d117b9ad319a54c0ebc152e35f69be8fde95522034fdfb2a
 - filename: package-lock.json
-  checksum: 3d18d543ed9c7b87bcfca8f7af99bb3058ffa67b84a1ff888623686a84d06672
+  checksum: 808b543b347ac557957bc1de1a5a94e40f6be9856f24cb049e761f2ec81a77eb
 - filename: src/core/modules/assets.js
   checksum: 00f19d659b830b0f145b4db0ccf3211a4048d9488f30a224fe3c31cacca6dcd2
 - filename: .husky/pre-commit
