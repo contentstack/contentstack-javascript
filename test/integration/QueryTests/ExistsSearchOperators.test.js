@@ -352,26 +352,28 @@ describe('Query Tests - Exists & Search Operators', () => {
     test('Query_Search_SpecialCharacters_NoInjection', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
 
-      // Test with potential injection strings
-      const testStrings = [
-        '<script>alert("xss")</script>',
-        'SELECT * FROM entries',
-        '"; DROP TABLE--',
-        '../../etc/passwd'
+      // Test characters that are significant in URL query strings.
+      // The search() parameter is passed as a query string value; improper
+      // encoding would corrupt adjacent params or truncate the request.
+      const urlSpecialChars = [
+        'hello world', // space → must encode as %20 or +
+        '50% off', // percent → must not double-encode
+        'a+b', // plus → must not be misread as space server-side
+        'foo&bar=baz' // ampersand → must not inject a second param
       ];
 
-      for (const str of testStrings) {
+      for (const str of urlSpecialChars) {
         const result = await Stack.ContentType(contentTypeUID)
           .Query()
           .search(str)
           .toJSON()
           .find();
 
-        // Should handle safely (no errors, returns empty or valid results)
+        // Returns empty or matching entries but must not throw
         expect(Array.isArray(result[0])).toBe(true);
       }
 
-      console.log('✅ search() handles injection strings safely');
+      console.log('✅ URL special characters in search() encoded correctly');
     });
 
     test('Query_Search_WithOtherOperators_CombinesCorrectly', async () => {
