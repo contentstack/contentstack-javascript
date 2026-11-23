@@ -26,6 +26,12 @@ const config = TestDataHelper.getConfig();
 let Stack;
 
 describe('Stress Testing - High Load Scenarios (Phase 4)', () => {
+  // Retry up to 2 times with a ~4s pause between attempts to tolerate server load spikes in shared CI environments
+  jest.retryTimes(2, { logErrorsBeforeRetry: true });
+  afterEach(async () => {
+    await new Promise(resolve => setTimeout(resolve, 4000));
+  });
+
   beforeAll(() => {
     Stack = Contentstack.Stack(config.stack);
     Stack.setHost(config.host);

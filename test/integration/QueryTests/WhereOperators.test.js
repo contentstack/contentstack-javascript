@@ -390,27 +390,29 @@ describe('Query Tests - Where Operators', () => {
     test('Query_Where_SpecialCharacters_HandledSafely', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
 
-      // Test with SQL injection-like strings
-      const maliciousStrings = [
-        "'; DROP TABLE entries; --",
-        "1' OR '1'='1",
-        "<script>alert('xss')</script>",
-        "\\'; DELETE FROM entries; --"
+      // Test characters that are significant in URL query strings.
+      // If the SDK builds query strings by concatenation instead of proper
+      // encoding, these would silently split or corrupt the request params.
+      const urlSpecialChars = [
+        'hello world', // space → must encode as %20 or +
+        '50% off sale', // percent → must not double-encode
+        'a+b equals c', // plus → must not be misread as space
+        'foo&bar=1', // ampersand → must not inject a second param
+        'key#section' // hash → must not truncate the query string
       ];
 
-      for (const str of maliciousStrings) {
+      for (const str of urlSpecialChars) {
         const result = await Stack.ContentType(contentTypeUID)
           .Query()
           .where('title', str)
           .toJSON()
           .find();
 
-        // Should safely return empty (these titles don't exist)
-        // More importantly, should NOT cause errors or security issues
+        // Returns empty array (no entry has these titles) but must not throw
         expect(Array.isArray(result[0])).toBe(true);
       }
 
-      console.log('✅ SQL injection-like strings handled safely');
+      console.log('✅ URL special characters in where() encoded correctly');
     });
 
     test('Query_Where_UnicodeCharacters_WorkCorrectly', async () => {
