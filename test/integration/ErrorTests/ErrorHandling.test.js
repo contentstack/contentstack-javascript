@@ -718,34 +718,40 @@ describe('Error Tests - Error Handling & Validation', () => {
       }
     });
 
-    test('Error_SQLInjectionAttempt_SafelyHandled', async () => {
+    // SQL/XSS-style strings (e.g. "'; DROP TABLE", "<script>") are blocked by the
+    // Cloudflare WAF on dev11 with an HTML 403 page, which fails these tests at
+    // random. Use URL metacharacters instead: they are what can actually break
+    // a query string the SDK builds, and they pass the WAF.
+    test('Error_QueryDelimitersInValue_TreatedAsLiteral', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
 
+      // If the value were not encoded, "&limit=100" would inject a second param
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
-        .where('title', "'; DROP TABLE entries; --")
+        .where('title', 'foo&limit=100')
         .limit(3)
         .toJSON()
         .find();
 
-      // Should treat as normal string, not SQL
       AssertionHelper.assertQueryResultStructure(result);
-      console.log('✅ SQL injection attempt safely handled');
+      expect(result[0].length).toBeLessThanOrEqual(3);
+      console.log('✅ Query delimiters in value treated as literal');
     });
 
-    test('Error_XSSAttempt_SafelyHandled', async () => {
+    test('Error_PercentPlusHashInValue_HandledSafely', async () => {
       const contentTypeUID = TestDataHelper.getContentTypeUID('article', true);
 
+      // "%" must not be double-encoded, "+" must not become a space,
+      // "#" must not truncate the query string
       const result = await Stack.ContentType(contentTypeUID)
         .Query()
-        .where('title', '<script>alert("xss")</script>')
+        .where('title', '100% a+b #1')
         .limit(3)
         .toJSON()
         .find();
 
-      // Should treat as normal string
       AssertionHelper.assertQueryResultStructure(result);
-      console.log('✅ XSS attempt safely handled');
+      console.log('✅ Percent, plus and hash in value handled safely');
     });
 
     test('Error_UnicodeInQuery_HandlesCorrectly', async () => {
